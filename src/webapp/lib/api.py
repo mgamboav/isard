@@ -490,7 +490,8 @@ class isard():
                 '''
                 allowed=d['allowed']
                 if d['allowed']['roles'] is not False:
-                    if not d['allowed']['roles']:  ''' Len is not 0 '''
+                    if not d['allowed']['roles']:  
+						''' Len is not 0 '''
                         if delete_allowed_key: d.pop('allowed', None)
                         allowed_data.append(d)
                         continue
@@ -910,28 +911,28 @@ class isard():
 
 
 
-'''
-EXAMPLE DOMAIN
-{'allowed': {'categories': False,
-             'groups': False,
-             'roles': False,
-             'users': ['cpe47993090']},
- 'create_dict': {'hardware': {'boot_order': ['iso'],
-                              'diskbus': 'virtio',
-                              'floppies': [{'id': '_jvinolas_virtio-win-0.1.141_amd64'}],
-                              'graphics': ['vnc'],
-                              'interfaces': ['elo-n2l-bridge'],
-                              'isos': [],
-                              'memory': 524288,
-                              'vcpus': '1',
-                              'videos': ['qxl32']}},
- 'description': '',
- 'forced_hyp': 'default',
- 'hypervisors_pools': ['admin_test_pool'],
-                            'id': '_admin_222222',
- 'kind': 'user_template',
- 'name': 'Template 222222'}
-'''
+	'''
+	EXAMPLE DOMAIN
+	{'allowed': {'categories': False,
+				 'groups': False,
+				 'roles': False,
+				 'users': ['cpe47993090']},
+	 'create_dict': {'hardware': {'boot_order': ['iso'],
+								  'diskbus': 'virtio',
+								  'floppies': [{'id': '_jvinolas_virtio-win-0.1.141_amd64'}],
+								  'graphics': ['vnc'],
+								  'interfaces': ['elo-n2l-bridge'],
+								  'isos': [],
+								  'memory': 524288,
+								  'vcpus': '1',
+								  'videos': ['qxl32']}},
+	 'description': '',
+	 'forced_hyp': 'default',
+	 'hypervisors_pools': ['admin_test_pool'],
+								'id': '_admin_222222',
+	 'kind': 'user_template',
+	 'name': 'Template 222222'}
+	'''
 
     def new_tmpl_from_domain(self, from_id, part_dict, user):
         with app.app_context():
