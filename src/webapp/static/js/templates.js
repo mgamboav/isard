@@ -64,11 +64,6 @@ $(document).ready(function() {
                             "render": function ( data, type, full, meta ) {
                               return renderStatus(full);
                             }},
-                            //~ {
-                            //~ "targets": 6,
-                            //~ "render": function ( data, type, full, meta ) {
-                              //~ return renderPending(full);
-                            //~ }},
                             {
                             "targets": 6,
                             "render": function ( data, type, full, meta ) {
@@ -136,7 +131,6 @@ $(document).ready(function() {
    
     //~ Delete confirm modal
     $('#confirm-modal > .modal-dialog > .modal-content > .modal-footer > .btn-primary').click(function() {
-        //~ console.log('id:'+$('#confirm-modal').data('id')+' - action: delete');
         // Needs some work
         });
         
@@ -209,47 +203,6 @@ $(document).ready(function() {
         });
     });
 
-//~ // SERVER SENT EVENTS Stream
-    //~ if (!!window.EventSource) {
-      //~ var desktops_source = new EventSource('/stream/desktops');
-      //~ console.log('on event');
-    //~ } else {
-      //~ // Result to xhr polling :(
-    //~ }
-
-    //~ window.onbeforeunload = function(){
-      //~ desktops_source.close();
-    //~ };
-
-    //~ desktops_source.addEventListener('New', function(e) {
-      //~ var data = JSON.parse(e.data);
-        //~ if($("#" + data.id).length == 0) {
-          //~ //it doesn't exist
-          //~ table.row.add( formatTmplDetails(data)).draw();
-        //~ }else{
-          //~ //if already exists do an update (ie. connection lost and reconnect)
-            //~ var row = table.row('#'+data.id); 
-            //~ table.row(row).data(formatTmplDetails(data));           
-        //~ }
-      
-        //~ if(data.status=='Stopped'){
-            //~ // Should disable details buttons
-        //~ }else{
-            //~ // And enable it again
-        //~ }
-    //~ }, false);
-
-    //~ desktops_source.addEventListener('Status', function(e) {
-      //~ var data = JSON.parse(e.data);
-      //~ var row = table.row('#'+data.id); 
-      //~ table.row(row).data(formatTmplDetails(data));
-    //~ }, false);
-
-    //~ desktops_source.addEventListener('Deleted', function(e) {
-      //~ var data = JSON.parse(e.data);
-      //~ // var row =
-        //~ table.row('#'+data.id).remove().draw();
-    //~ }, false);
 
 
 });   // document ready
@@ -335,10 +288,6 @@ function actionsTmplDetail(){
                             api.ajax('/domains/removable','POST',{'id':pk}).done(function(data) {
                                 console.log('data received:'+data);
                             }); 
-			    			    
-                            //~ api.ajax('/domains/update','POST',{'pk':pk,'name':'status','value':'Deleting'}).done(function(data) {
-                                //~ console.log('data received:'+data);
-                            //~ });  
                         }).on('pnotify.cancel', function() {
                 }); 
             });

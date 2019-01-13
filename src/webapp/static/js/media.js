@@ -215,20 +215,13 @@ $(document).ready(function() {
     
     $("#modalAddMedia #send").on('click', function(e){
             var form = $('#modalAddMediaForm');
-
             form.parsley().validate();
-
             if (form.parsley().isValid()){
                 data=$('#modalAddMediaForm').serializeObject();
                 data=replaceAlloweds_arrays('#modalAddMediaForm #alloweds-add',data)
                 socket.emit('media_add',data)
             }
-            
-
         });
-
-
-
 
 
     // SocketIO
@@ -456,17 +449,6 @@ function modal_add_install_datatables(){
                         $('#modalAddFromMedia #datatables-install-error-status').html('No OS template selected').addClass('my-error');                    
                 }
             }        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
             //~ var form = $('#modalAddFromMedia #modalAdd');
 

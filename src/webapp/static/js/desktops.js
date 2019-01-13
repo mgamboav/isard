@@ -109,11 +109,6 @@ $(document).ready(function() {
 							"render": function ( data, type, full, meta ) {
 							  return renderMedia(full);
 							}},
-							//~ {
-							//~ "targets": 7,
-							//~ "render": function ( data, type, full, meta ) {
-							  //~ return renderHotplugMedia(full);
-							//~ }}
 							]
 	} );
 
@@ -133,19 +128,6 @@ $(document).ready(function() {
              if ( table.row( '.shown' ).length ) {
                       $('.details-control', table.row( '.shown' ).node()).click();
               }
-             //~ if (row.data().status=='Creating'){
-                 //In this case better not to open detail as ajax snippets will fail
-                 //Maybe needs to be blocked also on other -ing's
-						//~ new PNotify({
-						//~ title: "Domain is being created",
-							//~ text: "Wait till domain ["+row.data().name+"] creation completes to view details",
-							//~ hide: true,
-							//~ delay: 3000,
-							//~ icon: 'fa fa-alert-sign',
-							//~ opacity: 1,
-							//~ type: 'error'
-						//~ });                 
-             //~ }else{
                 // Open this row
                 row.child( addDesktopDetailPannel(row.data()) ).show();
                 tr.addClass('shown');
@@ -221,10 +203,7 @@ $(document).ready(function() {
 
     
     // SocketIO
-    //~ reconnect=-1;
     socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port+'/sio_users');
-
-
     
     socket.on('connect', function() {
         connection_done();
@@ -258,10 +237,6 @@ $(document).ready(function() {
         }
 
         }
-        
-        //~ if(claimed==false){
-
-        //~ }
             
         dtUpdateInsert(table,data,false);
         setDesktopDetailButtonsStatus(data.id, data.status);
@@ -621,8 +596,6 @@ function setDefaultsTemplate(id) {
 
 
 function renderTemplateKind(data){
-		//~ if(data.kind=="public_template"){return "public";}
-        //~ if(data.kind=="user_template"){return "private";}
 	if(data.kind=='base'){return 'base';}
         return "template"
 }
@@ -637,19 +610,6 @@ function modal_add_desktop_datatables(){
         if(title=='Name'){
             $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
         }
-        //~ if(title=='Type'){
-                    //~ column=modal_add_desktops.columns(0)
-                    //~ var select = $('<select><option value=""><option value="base">Base</option><option value="public_template">Public</select>')
-                        //~ .appendTo( $(column.header()).empty() )
-                        //~ .on( 'change', function () {
-                            //~ var val = $.fn.dataTable.util.escapeRegex(
-                                //~ $(this).val()
-                            //~ );
-                            //~ column
-                                //~ .search( val ? '^'+val+'$' : '', true, false )
-                                //~ .draw();
-                        //~ } );
-        //~ }
     } );
     
 	modal_add_desktops = $('#modal_add_desktops').DataTable({
