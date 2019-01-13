@@ -26,23 +26,6 @@ import tempfile,os
 @login_required
 @isAdmin
 def admin_media():
-    #~ if request.method == 'POST':
-        #~ hp=request.form['hypervisors_pools']
-        #~ url=request.form['url']
-        #~ filename=url.split('/')[-1]
-        #~ iso=app.isardapi.user_relative_disk_path(current_user.username, filename)
-        #~ if not iso:
-            #~ flash('Something went wrong, filename has extrange characters','danger')
-            #~ return render_template('pages/isos.html', nav='Isos')
-        #~ iso['status']='Starting'
-        #~ iso['name']=request.form['name']
-        #~ iso['percentage']=0
-        #~ iso['url']=url
-        #~ iso['hypervisor_pool']=hp
-        #~ iso['user']=current_user.username
-        #~ if not app.isardapi.add_dict2table(iso,'isos'):
-            #~ flash('Something went wrong. Upload task not scheduled')
-        #~ return redirect(url_for('admin_media_upload'))
     return render_template('admin/pages/media.html', nav='Media')
 
 
@@ -50,7 +33,6 @@ def admin_media():
 @login_required
 @isAdmin
 def admin_media_localupload():
-        # ~ print(tempfile.tempdir)
         tempfile.tempdir='/var/tmp'
         media={}
         media['name']=request.form['name']
@@ -58,13 +40,13 @@ def admin_media_localupload():
         media['description']=request.form['description']
         media['hypervisors_pools']=[request.form['hypervisors_pools']]
         media['allowed']=json.loads(request.form['allowed'])
-        # Only one can be uploaded!
+        ''' Only one can be uploaded! '''
 
         for f in request.files:
             handler=request.files[f]
 
         if app.adminapi.check_socket('isard-hypervisor',22):
-            # It is a docker!
+            ''' It is a docker! '''
             url='http://isard-webapp:5000/'
         else:
             if '5000' not in request.url_root:

@@ -40,10 +40,8 @@ def admin_domains(nav='Domains'):
 @isAdmin
 def admin_mdomains():
     dict=request.get_json(force=True)
-    #~ original_domains=app.adminapi.multiple_action('domains',dict['action'],dict['ids'])
     desktop_domains=app.adminapi.multiple_check_field('domains','kind','desktop',dict['ids'])
     res=app.adminapi.multiple_action('domains',dict['action'],desktop_domains)
-    # ~ print(res)
     return json.dumps({'test':1}), 200, {'ContentType': 'application/json'}
     
 @app.route('/admin/domains/get/<kind>')
@@ -53,10 +51,7 @@ def admin_mdomains():
 def admin_domains_get(kind=False):
     if kind:
         if kind=='Desktops': 
-            # ~ print('im a desktop kind')
             kind='desktop'
-            #~ for d in app.adminapi.get_admin_domains(kind):
-                #~ print(len(d['history_domain']))
         if kind=='Templates': 
             return json.dumps(app.adminapi.get_admin_domains_with_derivates(kind='template')), 200, {'ContentType': 'application/json'}
         if kind=='Bases':

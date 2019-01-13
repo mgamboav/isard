@@ -27,11 +27,6 @@ def desktops():
 @login_required
 def desktops_get():
     return json.dumps(app.isardapi.get_user_domains(current_user.username)), 200, {'ContentType': 'application/json'}
-    # ~ if kind=='category': 
-        # ~ return json.dumps(app.isardapi.get_category_domains(current_user.category)), 200, {'ContentType': 'application/json'}
-    # ~ if kind=='group':
-        # ~ return json.dumps(app.isardapi.get_group_domains(current_user.group)), 200, {'ContentType': 'application/json'}
-    # ~ return url_for('desktops')
 
 @app.route('/desktops/download_viewer/<os>/<id>')
 @login_required
@@ -45,17 +40,8 @@ def viewer_download(os,id):
     except Exception as e:
         print('Download viewer error:'+str(e))
         return Response('Error in viewer',mimetype='application/txt')
-        
-# ~ @app.route('/disposable/download_viewer/<os>/<id>')
-# ~ def viewer_disposable_download(os,id):
-    # ~ remote_addr=request.headers['X-Forwarded-For'].split(',')[0] if 'X-Forwarded-For' in request.headers else request.remote_addr.split(',')[0]
-    # ~ if id.startswith('_disposable_'+remote_addr.replace('.','_')+'_'):
-        # ~ extension,mimetype,consola=app.isardapi.get_viewer_ticket(id,os)
-        # ~ return Response(consola, 
-                        # ~ mimetype=mimetype,
-                        # ~ headers={"Content-Disposition":"attachment;filename=consola."+extension})
                         
-# ~ #~ Serves desktops and templates (domains)
+''' Serves desktops and templates (domains) '''
 @app.route('/domains/update', methods=['POST'])
 @login_required
 @ownsid
@@ -75,6 +61,46 @@ def domains_update():
         except Exception as e:
             return json.dumps('Wrong parameters.'), 500, {'ContentType':'application/json'}
 
+''' Gets all allowed for a domain '''
+@app.route('/domain/alloweds/select2', methods=['POST'])
+@login_required
+def domain_alloweds_select2():
+    return json.dumps(app.isardapi.get_alloweds_select2(request.get_json(force=True)['allowed']))
+       
+
+''' This should be recoded with websockets '''
+@app.route('/desktops/filterTemplate/<kind>', methods=['GET'])
+@app.route('/desktops/filterTemplate/<kind>/category/<category>', methods=['GET'])
+@app.route('/desktops/filterTemplate/<kind>/group/<group>', methods=['GET'])
+@app.route('/desktops/filterTemplate/<kind>/user/<user>', methods=['GET'])
+@login_required
+def filterTemplate(kind,category=False,group=False,user=False):
+    custom_filter={}
+    if category:
+        custom_filter['category']=category
+    if group:
+        custom_filter['group']=group
+    if user:
+        custom_filter['user']=user
+    return Response(json.dumps(app.isardapi.get_alloweds_domains(current_user.username,kind, custom_filter)), mimetype='application/json')
+
+''' Get all templates allowed for current_user '''
+@app.route('/desktops/getAllTemplates', methods=['GET'])
+@login_required
+def getAllTemplates():
+    return Response(json.dumps(app.isardapi.get_all_alloweds_domains(current_user.username)), mimetype='application/json')
+
+''' Gets users, categories and groups'''
+@app.route('/desktops/getDistinc/<field>/<kind>', methods=['GET'])
+@login_required
+def getDistinct(field,kind):
+    return Response(json.dumps(app.isardapi.get_distinc_field(current_user.username, field, kind)), mimetype='application/json')
+
+''' Get template '''
+@app.route('/desktops/templateUpdate/<id>', methods=['GET'])
+@login_required
+def templateUpdate(id):
+    return Response(json.dumps(app.isardapi.get_domain(id)),  mimetype='application/json')
 
 
 
@@ -115,57 +141,7 @@ def domains_update():
 # ~ def domain_alloweds():
     # ~ return json.dumps(app.isardapi.f.unflatten_dict(app.isardapi.get_domain(request.get_json(force=True)['pk']))['allowed'])
 
-# Gets all allowed for a domain
-@app.route('/domain/alloweds/select2', methods=['POST'])
-@login_required
-def domain_alloweds_select2():
-    allowed=request.get_json(force=True)['allowed']
-    return json.dumps(app.isardapi.get_alloweds_select2(allowed))
-       
 
-# We should remove this
-@app.route('/desktops/filterTemplate/<kind>', methods=['GET'])
-@app.route('/desktops/filterTemplate/<kind>/category/<category>', methods=['GET'])
-@app.route('/desktops/filterTemplate/<kind>/group/<group>', methods=['GET'])
-@app.route('/desktops/filterTemplate/<kind>/user/<user>', methods=['GET'])
-@login_required
-def filterTemplate(kind,category=False,group=False,user=False):
-    #~ dict={'kind':kind}
-    custom_filter={}
-    #~ if kind == 'user_template': 
-        #~ custom_filter['user']=current_user.username
-    #~ else:
-    if category:
-        custom_filter['category']=category
-    if group:
-        custom_filter['group']=group
-    if user:
-        custom_filter['user']=user
-    #~ domains = app.isardapi.get_templates(dict)
-    #~ return Response(json.dumps(domains), mimetype='application/json')
-    return Response(json.dumps(app.isardapi.get_alloweds_domains(current_user.username,kind, custom_filter)), mimetype='application/json')
-    #~ return Response(json.dumps(app.isardapi.get_all_alloweds_table(current_user.username,kind, custom_filter)), mimetype='application/json')
-
-# Get all templates allowed for current_user
-@app.route('/desktops/getAllTemplates', methods=['GET'])
-@login_required
-def getAllTemplates():
-    custom_filter={}
-    return Response(json.dumps(app.isardapi.get_all_alloweds_domains(current_user.username)), mimetype='application/json')
-
-# Gets users, categories and groups
-@app.route('/desktops/getDistinc/<field>/<kind>', methods=['GET'])
-@login_required
-def getDistinct(field,kind):
-    data=app.isardapi.get_distinc_field(current_user.username, field, kind)
-    return Response(json.dumps(data), mimetype='application/json')
-
-# Gets 
-@app.route('/desktops/templateUpdate/<id>', methods=['GET'])
-@login_required
-def templateUpdate(id):
-    hardware=app.isardapi.get_domain(id)
-    return Response(json.dumps(hardware),  mimetype='application/json')
 
 # Will get allowed resources for current_user         
 # ~ @app.route('/domains/hardware/allowed', methods=['GET'])
@@ -199,12 +175,15 @@ def templateUpdate(id):
     # ~ except:
         # ~ return json.dumps([])
 
+# ~ @app.route('/disposable/download_viewer/<os>/<id>')
+# ~ def viewer_disposable_download(os,id):
+    # ~ remote_addr=request.headers['X-Forwarded-For'].split(',')[0] if 'X-Forwarded-For' in request.headers else request.remote_addr.split(',')[0]
+    # ~ if id.startswith('_disposable_'+remote_addr.replace('.','_')+'_'):
+        # ~ extension,mimetype,consola=app.isardapi.get_viewer_ticket(id,os)
+        # ~ return Response(consola, 
+                        # ~ mimetype=mimetype,
+                        # ~ headers={"Content-Disposition":"attachment;filename=consola."+extension})
 
-
-
-
-
-   
 # ~ @app.route('/chain', methods=['POST'])
 # ~ @login_required
 # ~ def chain():

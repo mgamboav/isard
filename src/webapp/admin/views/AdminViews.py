@@ -42,7 +42,7 @@ def admin_table_get(table):
             result[i].pop('job_state', None)
     return json.dumps(result), 200, {'ContentType':'application/json'} 
 
-# Used in quota.js for admin users
+''' Used in quota.js for admin users '''
 @app.route('/admin/tabletest/<table>/post', methods=["POST"])
 @login_required
 @isAdmin
@@ -69,8 +69,6 @@ def admin_table_post(table):
         data=request.get_json(force=True)
         if 'pluck' not in data.keys():
             data['pluck']=False
-        #~ if 'order' not in data.keys():
-            #~ data['order']=False
         result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'])
         return json.dumps(result), 200, {'ContentType':'application/json'}
     return json.dumps('Could not delete.'), 500, {'ContentType':'application/json'} 
@@ -104,14 +102,6 @@ def admin_config():
         return json.dumps(app.adminapi.get_admin_config(1)), 200, {'ContentType': 'application/json'}
     return render_template('admin/pages/config.html',nav="Config")
 
-
-#~ @app.route('/admin/disposables', methods=["POST"])
-#~ @login_required
-#~ @isAdmin
-#~ def admin_disposables():
-    #~ result=app.adminapi.get_admin_table('disposables')
-    #~ return json.dumps(result), 200, {'ContentType':'application/json'} 
-
 @app.route('/admin/config/update', methods=['POST'])
 @login_required
 @isAdmin
@@ -141,11 +131,9 @@ def admin_config_update():
 def admin_disposable_add():
     if request.method == 'POST':
         dsps=[]
-        #~ Next 2 lines should be removed when form returns a list
+        ''' Next 2 lines should be removed when form returns a list '''
         nets=[request.form['nets']]
-        #~ print(request.form)
         disposables=request.form.getlist('disposables')
-        #~ disposables=[request.form['disposables']]
         for d in disposables:
             dsps.append(app.adminapi.get_admin_table('domains',pluck=['id','name','description'],id=d))
         disposable=[{'id': app.isardapi.parse_string(request.form['name']),
@@ -157,16 +145,6 @@ def admin_disposable_add():
         if app.adminapi.insert_table_dict('disposables',disposable):
             return json.dumps('Updated'), 200, {'ContentType':'application/json'}
     return json.dumps('Could not update.'), 500, {'ContentType':'application/json'}
-    
-#~ @app.route('/admin/config/checkport', methods=['POST'])
-#~ @login_required
-#~ @isAdmin
-#~ def admin_config_checkport():
-    #~ if request.method == 'POST':
-        
-        #~ if app.adminapi.check_port(request.form['server'],request.form['port']):
-            #~ return json.dumps('Port is open'), 200, {'ContentType':'application/json'}
-    #~ return json.dumps('Port is closed'), 500, {'ContentType':'application/json'}
 
 '''
 BACKUP & RESTORE
@@ -195,11 +173,9 @@ def admin_restore():
 def admin_restore_table(table):
     global backup_data,backup_db
     if request.method == 'POST':
-        #~ print(table)
         data=request.get_json(force=True)['data']
         insert=data['new_backup_data']
         data.pop('new_backup_data',None)
-        #~ print(data)
         if insert:
             if app.adminapi.insert_table_dict(table,data):
                 return json.dumps('Inserted'), 200, {'ContentType':'application/json'}
@@ -332,3 +308,19 @@ def admin_backup_upload():
             #~ c['old_val'].pop('job_state', None)
             #~ yield 'retry: 2000\nevent: %s\nid: %d\ndata: %s\n\n' % ('Status',time.time(),json.dumps(app.isardapi.f.flatten_dict(c['new_val'])))
                     
+#~ @app.route('/admin/disposables', methods=["POST"])
+#~ @login_required
+#~ @isAdmin
+#~ def admin_disposables():
+    #~ result=app.adminapi.get_admin_table('disposables')
+    #~ return json.dumps(result), 200, {'ContentType':'application/json'} 
+    
+#~ @app.route('/admin/config/checkport', methods=['POST'])
+#~ @login_required
+#~ @isAdmin
+#~ def admin_config_checkport():
+    #~ if request.method == 'POST':
+        
+        #~ if app.adminapi.check_port(request.form['server'],request.form['port']):
+            #~ return json.dumps('Port is open'), 200, {'ContentType':'application/json'}
+    #~ return json.dumps('Port is closed'), 500, {'ContentType':'application/json'}

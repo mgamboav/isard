@@ -17,25 +17,13 @@ db = RethinkDB(app)
 db.init_app(app)
 
 import time, json
-
-
-
-
-# Gets all allowed for a domain
-# ~ @app.route('/domain/alloweds/select2', methods=['POST'])
-# ~ @login_required
-# ~ def domain_alloweds_select2():
-    # ~ allowed=request.get_json(force=True)['allowed']
-    # ~ return json.dumps(app.isardapi.get_alloweds_select2(allowed))
-       
-
-# Will get allowed hardware resources for current_user         
+      
+''' Will get allowed hardware resources for current_user          '''
 @app.route('/domains/hardware/allowed', methods=['GET'])
 @login_required
 def domains_hardware_allowed():
     dict={}
     dict['nets']=app.isardapi.get_alloweds(current_user.username,'interfaces',pluck=['id','name','description'],order='name')
-    #~ dict['disks']=app.isardapi.get_alloweds(current_user.username,'disks',pluck=['id','name','description'],order='name')
     dict['graphics']=app.isardapi.get_alloweds(current_user.username,'graphics',pluck=['id','name','description'],order='name')
     dict['videos']=app.isardapi.get_alloweds(current_user.username,'videos',pluck=['id','name','description'],order='name')
     dict['boots']=app.isardapi.get_alloweds(current_user.username,'boots',pluck=['id','name','description'],order='name')
@@ -47,7 +35,7 @@ def domains_hardware_allowed():
     dict['user']=app.isardapi.get_user(current_user.username)
     return json.dumps(dict)
 
-# Get hardware for domain
+''' Get hardware for domain '''
 @app.route('/domains/hardware', methods=['POST'])
 @login_required
 @ownsid
@@ -61,7 +49,7 @@ def domains_hadware():
     except:
         return json.dumps([])
 
-# Who has acces to a table item     
+''' Who has acces to a table item      '''
 @app.route('/alloweds/table/<table>', methods=['POST'])
 @login_required
 @ownsid
@@ -70,7 +58,7 @@ def alloweds_table(table):
         return json.dumps(app.isardapi.get_alloweds_select2(app.adminapi.get_admin_table(table, pluck=['allowed'], id=request.get_json(force=True)['pk'], flatten=False)['allowed']))
 
 
-# Gets all list of roles, categories, groups and users from a 2+ chars term
+''' Gets all list of roles, categories, groups and users from a 2+ chars term '''
 @app.route('/alloweds/term/<table>', methods=["POST"])
 @login_required
 def alloweds_table_term(table):
@@ -89,3 +77,10 @@ def domain_removable():
     if request.method == 'POST':
         return json.dumps(app.adminapi.is_template_removable(request.get_json(force=True)['id'],current_user.username))
     return json.dumps('Could not check.'), 500, {'ContentType':'application/json'} 
+
+# Gets all allowed for a domain
+# ~ @app.route('/domain/alloweds/select2', methods=['POST'])
+# ~ @login_required
+# ~ def domain_alloweds_select2():
+    # ~ allowed=request.get_json(force=True)['allowed']
+    # ~ return json.dumps(app.isardapi.get_alloweds_select2(allowed))

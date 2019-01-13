@@ -49,24 +49,6 @@ def media_select2_post():
             data['pluck']=False
         if data['kind'] == 'isos': kind = 'iso'
         if data['kind'] == 'floppies': kind = 'floppy'
-        #~ if 'order' not in data.keys():
-            #~ data['order']=False
         result=app.isardapi.get_all_table_allowed_term('media',kind,'name',data['term'],current_user.username,pluck=data['pluck'])
-        #~ result=app.adminapi.get_admin_table_term('media','name',data['term'],kind=kind,pluck=data['pluck'])
         return json.dumps(result), 200, {'ContentType':'application/json'}
     return json.dumps('Could not select.'), 500, {'ContentType':'application/json'} 
-
-
-# ~ @app.route('/admin/table/<table>/post', methods=["POST"])
-# ~ @login_required
-# ~ @isAdmin
-# ~ def admin_table_post(table):
-    # ~ if request.method == 'POST':
-        # ~ data=request.get_json(force=True)
-        # ~ if 'pluck' not in data.keys():
-            # ~ data['pluck']=False
-        # ~ #~ if 'order' not in data.keys():
-            # ~ #~ data['order']=False
-        # ~ result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'])
-        # ~ return json.dumps(result), 200, {'ContentType':'application/json'}
-    # ~ return json.dumps('Could not delete.'), 500, {'ContentType':'application/json'} 

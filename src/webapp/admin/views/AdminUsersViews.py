@@ -25,20 +25,6 @@ from ...auth.authentication import *
 @login_required
 @isAdmin
 def admin_users():
-    # ~ res=True
-    # ~ if request.method == 'POST':
-        # ~ create_dict=app.isardapi.f.unflatten_dict(request.form)
-        # ~ create_dict.pop('password2', None)
-        # ~ create_dict['kind']='local'
-        # ~ import pprint
-        # ~ pprint.pprint(create_dict)
-        # ~ if res is True:
-            # ~ flash('Hypervisor '+create_dict['id']+' added to the system.','success')
-            # ~ return redirect(url_for('admin_users'))
-        # ~ else:
-            # ~ flash('Could not create user. Maybe you have one with the same name?','danger')
-            # ~ return redirect(url_for('admin_users'))
-   
     return render_template('admin/pages/users.html', nav="Users")
 
 
@@ -47,7 +33,6 @@ def admin_users():
 @isAdmin
 def admin_users_get():
     return json.dumps(app.adminapi.get_admin_users_domains()), 200, {'ContentType': 'application/json'}
-    #~ return json.dumps(app.adminapi.get_admin_user()), 200, {'ContentType': 'application/json'}
 
 @app.route('/admin/users/detail/<id>')
 @login_required
@@ -95,8 +80,6 @@ def admin_users_update_update():
         except Exception as e:
             return json.dumps('Wrong parameters.'), 500, {'ContentType':'application/json'}
 
-
-
 @app.route('/admin/users/nonexists', methods=['POST'])
 @login_required
 @isAdmin
@@ -114,5 +97,4 @@ def admin_users_nonexists():
                     app.adminapi.user_toggle_active(u['id'])
             return json.dumps(data), 200, {'ContentType':'application/json'}
         except Exception as e:
-            #~ print(e)
             return json.dumps('Wrong parameters.'), 500, {'ContentType':'application/json'}

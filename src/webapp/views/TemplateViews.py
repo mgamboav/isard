@@ -36,7 +36,6 @@ def templates_get():
 @ownsid
 def templates_kind():
     if request.method == 'POST':
-        
         try:
             args = request.get_json(force=True)
         except:

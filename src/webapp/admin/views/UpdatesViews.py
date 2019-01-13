@@ -42,7 +42,6 @@ def admin_updates_register():
                 u.register()
         except Exception as e:
             log.error('Error registering client: '+str(e))
-            #~ return False
     return redirect(url_for('admin_updates'))
             
 @app.route('/admin/updates/<kind>', methods=['GET'])
@@ -59,7 +58,7 @@ def admin_updates_actions(action,kind,id=False):
     if request.method == 'POST':
         if action == 'download':
             if id is not False:
-                # Only one id
+                ''' Only one id '''
                 d=u.getNewKindId(kind,current_user.id,id)
                 if kind == 'domains':
                     missing_resources=u.get_missing_resources(d,current_user.id)
@@ -73,7 +72,7 @@ def admin_updates_actions(action,kind,id=False):
                         d=u.formatMedias([d],current_user)[0]
                     app.adminapi.insert_or_update_table_dict(kind,d)
             else:
-                # No id, do it will all
+                ''' No id, do it will all '''
                 data=u.getNewKind(kind,current_user.id)
                 data=[d for d in data if d['new'] is True]
                 if kind == 'domains': 

@@ -52,7 +52,7 @@ def hypervisors_pools_get():
         pre_dict.pop('viewer-certificate', None)
         create_dict=app.isardapi.f.unflatten_dict(request.form)
         create_dict['viewer']['certificate']=ca
-        #check and parse name not done!
+        ''' check and parse name not done! '''
         create_dict['id']=create_dict['name']
         create_dict['interfaces']=[create_dict['interfaces']]
         if res is True:
