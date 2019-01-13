@@ -1,0 +1,36 @@
+{
+  "name": "isardvdi",
+  "version": "1.0.0",
+  "description": "Virtual Desktops Infrastructure",
+  "main": "isardvdi.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isard-vdi/isard.git"
+  },
+  "keywords": [
+    "vdi",
+    "kvm"
+  ],
+  "author": "Josep Maria Viñolas - Alberto Larraz",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/isard-vdi/isard/issues"
+  },
+  "homepage": "https://github.com/isard-vdi/isard#readme",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-replace": "^1.0.0",
+    "gulp-run": "^1.7.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1"
+  }
+}
