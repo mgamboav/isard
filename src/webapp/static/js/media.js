@@ -39,7 +39,7 @@ $(document).ready(function() {
                 }
 	});
 
-    var table=$('#media').DataTable( {
+    var tbl_media=$('#media').DataTable( {
         "ajax": {
                 "url": "/media/get/",
                 "dataSrc": ""
@@ -122,7 +122,7 @@ $(document).ready(function() {
     } );
 
     $('#media').find(' tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
+        var data = tbl_media.row( $(this).parents('tr') ).data();
         switch($(this).attr('id')){
             case 'btn-delete':
 				new PNotify({

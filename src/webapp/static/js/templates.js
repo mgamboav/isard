@@ -5,11 +5,11 @@
 * License: AGPLv3
 */
 
-var $template='';
-var table='';
+//~ var $template='';
+//~ var table='';
 $(document).ready(function() {
     $template = $(".template-detail");
-    table = $('#templates').DataTable({
+    tbl_templates = $('#templates').DataTable({
             "ajax": {
                 "url": "/templates/get/",
                 "dataSrc": ""
@@ -82,7 +82,7 @@ $(document).ready(function() {
     
     $('#templates').find('tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
-        var row = table.row( tr );
+        var row = tbl_templates.row( tr );
         if ( row.child.isShown() ) {
             // This row is already open - close it
             row.child.hide();
@@ -104,7 +104,7 @@ $(document).ready(function() {
 
 
     $('#templates').find(' tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
+        var data = tbl_templates.row( $(this).parents('tr') ).data();
 
         switch($(this).attr('id')){
             //~ case 'btn-detail':
@@ -203,7 +203,7 @@ function actionsTmplDetail(){
                         }).get().on('pnotify.confirm', function() {
                             api.ajax('/template/togglekind','POST',{'pk':pk}).done(function(data) {
                                 //~ console.log('data received:'+data);
-                                table.ajax.reload() ;
+                                tbl_templates.ajax.reload() ;
                             });  
                         }).on('pnotify.cancel', function() {
                 });

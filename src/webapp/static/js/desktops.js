@@ -44,7 +44,7 @@ $(document).ready(function() {
 
 
 	//DataTable Main renderer
-	var table = $('#desktops').DataTable({
+	var tbl_desktops = $('#desktops').DataTable({
 			"ajax": {
 				"url": "/desktops/get/",
 				"dataSrc": ""
@@ -120,7 +120,7 @@ $(document).ready(function() {
 	// DataTable detail
 	$('#desktops tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
-        var row = table.row( tr );
+        var row = tbl_desktops.row( tr );
         if ( row.child.isShown() ) {
             // This row is already open - close it
             row.child.hide();
@@ -130,8 +130,8 @@ $(document).ready(function() {
         else {
             
             // Close other rows
-             if ( table.row( '.shown' ).length ) {
-                      $('.details-control', table.row( '.shown' ).node()).click();
+             if ( tbl_desktops.row( '.shown' ).length ) {
+                      $('.details-control', tbl_desktops.row( '.shown' ).node()).click();
               }
              //~ if (row.data().status=='Creating'){
                  //In this case better not to open detail as ajax snippets will fail
@@ -164,7 +164,7 @@ $(document).ready(function() {
 
 	// DataTable buttons
     $('#desktops tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
+        var data = tbl_desktops.row( $(this).parents('tr') ).data();
         switch($(this).attr('id')){
             case 'btn-play':
 				if($('.quota-play .perc').text() >=100){
