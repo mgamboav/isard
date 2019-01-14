@@ -25,12 +25,13 @@ var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js',
 				'static/js/restful.js', 
 				'static/js/sockets.js',
 				'static/js/viewer.js', 
-				'static/js/disposables.js', 
+				//~ 'static/js/disposables.js', 
 				'static/js/media.js', 
-				'static/js/quota_socket.js', 
+				//~ 'static/js/quota_socket.js', 
 				'static/js/quota.js', 
 				'static/js/desktops.js', 
 				'static/js/templates.js', 
+				'static/js/media.js',
 				'static/js/snippets/domain_derivates.js', 
 				'static/js/snippets/alloweds.js', 
 				'static/js/snippets/media.js', 
@@ -39,9 +40,6 @@ var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js',
 				'static/js/snippets/domain_graphs.js', 
 				'static/js/snippets/domain_genealogy.js']
 
-				//~ 'static/js/desktops.js', 
-				//~ 'static/js/templates.js', 
-				//~ 'static/js/media.js',	
 //gulpfile.js file
 
 
