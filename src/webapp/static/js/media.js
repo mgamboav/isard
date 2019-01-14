@@ -359,29 +359,6 @@ function modal_add_install_datatables(){
                         $('#modalAddFromMedia #datatables-install-error-status').html('No OS template selected').addClass('my-error');                    
                 }
             }        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            //~ var form = $('#modalAddFromMedia #modalAdd');
-
-            //~ form.parsley().validate();
-
-            //~ if (form.parsley().isValid()){
-                //~ data=$('#modalAddFromMedia #modalAdd').serializeObject();
-                //~ data=replaceAlloweds_arrays(data)
-                //~ console.log(data)
-                //~ socket.emit('domain_media_add',data)
-            //~ }
-            
 
         });    
 

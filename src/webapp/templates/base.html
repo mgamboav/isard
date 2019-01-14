@@ -15,28 +15,7 @@
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
     
-    <!-- Bootstrap -->
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Font Linux -->
-    <link href="/font-linux/font-linux.css" rel="stylesheet">
-    <!-- ion.rangeSlider -->
-    <link href="/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
-    <link href="/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
-    <!-- Datatables -->
-    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-	<!-- PNotify -->
-	<link href="/vendors/pnotify/dist/pnotify.css" media="all" rel="stylesheet" type="text/css" />
-	<link href="/vendors/pnotify/dist/pnotify.buttons.css" media="all" rel="stylesheet" type="text/css" />
-    <!-- iCheck -->
-    <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    <link href="/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
-    
-    <!-- Custom Theme Style -->
-    <link href="/build/css/custom.css" rel="stylesheet">
-    <!-- Isard Style Sheet-->
-    <link href="/static/isard.css" rel="stylesheet">
+	<link href="/static/build/isard-user.css" media="all" rel="stylesheet" type="text/css" />
 
     {% block css %}{% endblock %}
   </head>
@@ -83,7 +62,6 @@
 		</div>
 	  </div>
 	</div>
-
 	<script src="/static/build/isard-user.js"></script>
     <!-- flashed messages with pnotify -->
     {% with messages = get_flashed_messages(with_categories=true) %}
