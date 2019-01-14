@@ -1,4 +1,5 @@
 //~ generic
+$(document).ready(function() {
     socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port+'/sio_users');
 	
     socket.on('connect', function() {
@@ -195,3 +196,5 @@
                 type: 'success'
         });
     });   
+
+});
