@@ -5,8 +5,6 @@
 * License: AGPLv3
 */
 
-//~ var $template='';
-//~ var table='';
 $(document).ready(function() {
     $template = $(".template-detail");
     tbl_templates = $('#templates').DataTable({

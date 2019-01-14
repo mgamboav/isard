@@ -5,8 +5,6 @@
 * License: AGPLv3
 */
 
-//~ socket=null
-//~ user={}
 $(document).ready(function() {
     user['role']=$('#user-data').data("role");
     modal_add_desktops = $('#modal_add_desktops').DataTable()
@@ -44,7 +42,7 @@ $(document).ready(function() {
 
 
 	//DataTable Main renderer
-	var tbl_desktops = $('#desktops').DataTable({
+	tbl_desktops = $('#desktops').DataTable({
 			"ajax": {
 				"url": "/desktops/get/",
 				"dataSrc": ""

@@ -5,6 +5,9 @@
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+var minify = require('gulp-clean-css');
+var prefix = require('gulp-autoprefixer');
+var sourcemaps = require('gulp-sourcemaps');
 
 var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js', 
 				'bower_components/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js',
@@ -42,12 +45,24 @@ var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js',
 
 //gulpfile.js file
 
-
+user_css = ['bower_components/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css', 
+			'bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', 
+			'bower_components/gentelella/vendors/pnotify/dist/pnotify.css', 
+			'bower_components/gentelella/vendors/pnotify/dist/pnotify.buttons.css', 
+			'bower_components/gentelella/build/css/custom.min.css', 
+			'bower_components/gentelella/vendors/animate.css/animate.min.css']
 
 //defining tasks
 gulp.task('default', function() {  //default is a task name, we can give any name.
 	gulp.src(user_js)
+	.pipe(sourcemaps.init())
 	.pipe(concat('isard-user.js'))
+	.pipe(sourcemaps.write()) 
 	.pipe(uglify())
 	.pipe(gulp.dest('static/build'));
+	gulp.src(user_css)
+    .pipe(concat('isard-user.css'))
+    .pipe(minify())
+    .pipe(prefix('last 2 versions'))
+    .pipe(gulp.dest('static/build'))
 });
