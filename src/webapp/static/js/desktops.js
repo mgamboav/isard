@@ -5,8 +5,8 @@
 * License: AGPLv3
 */
 
-socket=null
-user={}
+//~ socket=null
+//~ user={}
 $(document).ready(function() {
     user['role']=$('#user-data').data("role");
     modal_add_desktops = $('#modal_add_desktops').DataTable()
