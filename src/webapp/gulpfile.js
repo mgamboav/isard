@@ -61,7 +61,7 @@ gulp.task('default', function() {  //default is a task name, we can give any nam
 	.pipe(uglify())
 	.pipe(gulp.dest('static/build'));
 	gulp.src(user_css)
-    .pipe(concat('isard-user-css'))
+    .pipe(concat('isard-user.css'))
     .pipe(minify())
     .pipe(prefix('last 2 versions'))
     .pipe(gulp.dest('static/build'))
