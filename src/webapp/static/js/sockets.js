@@ -1,6 +1,5 @@
 //~ generic
     socket = io.connect(location.protocol+'//' + document.domain + ':' + location.port+'/sio_users');
-	startClientViewerSocket(socket);
 	
     socket.on('connect', function() {
         connection_done();
