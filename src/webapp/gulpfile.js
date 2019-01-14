@@ -50,7 +50,7 @@ user_css = ['bower_components/gentelella/vendors/bootstrap/dist/css/bootstrap.mi
 			'bower_components/gentelella/vendors/pnotify/dist/pnotify.css', 
 			'bower_components/gentelella/vendors/pnotify/dist/pnotify.buttons.css', 
 			'bower_components/gentelella/build/css/custom.min.css', 
-			'bower_components/gentelella/vendors/animate.css/animate.min.css'
+			'bower_components/gentelella/vendors/animate.css/animate.min.css',
 			'bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css']
 
 //defining tasks
