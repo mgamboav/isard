@@ -88,7 +88,7 @@
 //~ desktops
     socket.on('desktop_data', function(data){
         var data = JSON.parse(data);
-        if(data.status =='Started' && table.row('#'+data.id).data().status != 'Started'){
+        if(data.status =='Started' && tbl_desktops.row('#'+data.id).data().status != 'Started'){
             if('preferred' in data['options']['viewers'] && data['options']['viewers']['preferred']){
                 socket.emit('domain_viewer',{'pk':data.id,'kind':data['options']['viewers']['preferred'],'os':getOS()});
             }else{
@@ -105,13 +105,13 @@
 
         //~ }
             
-        dtUpdateInsert(table,data,false);
+        dtUpdateInsert(tbl_desktops,data,false);
         setDesktopDetailButtonsStatus(data.id, data.status);
     });
     
     socket.on('desktop_delete', function(data){
         var data = JSON.parse(data);
-        var row = table.row('#'+data.id).remove().draw();
+        var row = tbl_desktops.row('#'+data.id).remove().draw();
         new PNotify({
                 title: "Desktop deleted",
                 text: "Desktop "+data.name+" has been deleted",
@@ -130,7 +130,7 @@
     socket.on('template_data', function(data){
         //~ console.log('update')
         var data = JSON.parse(data);
-        dtUpdateInsert(table,data,false);
+        dtUpdateInsert(tbl_templates,data,false);
         //~ setDesktopDetailButtonsStatus(data.id, data.status);
 
         
@@ -145,18 +145,18 @@
         var data = JSON.parse(data);
         if($("#" + data.id).length == 0) {
           //it doesn't exist
-          table.row.add(data).draw();
+          tbl_templates.row.add(data).draw();
         }else{
           //if already exists do an update (ie. connection lost and reconnect)
-          var row = table.row('#'+data.id); 
-          table.row(row).data(data);            
+          var row = tbl_templates.row('#'+data.id); 
+          tbl_templates.row(row).data(data);            
         }
     });
     
     socket.on('template_delete', function(data){
         //~ console.log('delete')
         var data = JSON.parse(data);
-        var row = table.row('#'+data.id).remove().draw();
+        var row = tbl_templates.row('#'+data.id).remove().draw();
         new PNotify({
                 title: "Desktop deleted",
                 text: "Desktop "+data.name+" has been deleted",
@@ -176,7 +176,7 @@
             //~ $('#pbid_'+data.id).data('transitiongoal',data.percentage);
             //~ $('#pbid_').css('width', data.percentage+'%').attr('aria-valuenow', data.percentage).text(data.percentage); 
             //~ $('#psmid_'+data.id).text(data.percentage);
-        dtUpdateInsert(table,data,false);
+        dtUpdateInsert(tbl_media,data,false);
         //~ $('.progress .progress-bar').progressbar();
     });
 
@@ -184,7 +184,7 @@
     socket.on('media_delete', function(data){
         //~ console.log('delete')
         var data = JSON.parse(data);
-        var row = table.row('#'+data.id).remove().draw();
+        var row = tbl_media.row('#'+data.id).remove().draw();
         new PNotify({
                 title: "Media deleted",
                 text: "Media "+data.name+" has been deleted",
