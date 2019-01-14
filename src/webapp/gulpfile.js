@@ -46,7 +46,6 @@ var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js',
 //gulpfile.js file
 
 user_css = ['bower_components/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css', 
-			'bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css', 
 			'bower_components/gentelella/vendors/pnotify/dist/pnotify.css', 
 			'bower_components/gentelella/vendors/pnotify/dist/pnotify.buttons.css', 
 			'bower_components/gentelella/build/css/custom.min.css', 

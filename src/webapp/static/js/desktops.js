@@ -15,7 +15,7 @@ $(document).ready(function() {
 	$template = $(".template-detail-domain");
 
     
-	$('.btn-new').on('click', function () {
+	$('.btn-new-desktop').on('click', function () {
 		if($('.quota-desktops .perc').text() >=100){
             new PNotify({
                 title: "Quota for creating desktops full.",
