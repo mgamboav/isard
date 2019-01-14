@@ -1,7 +1,4 @@
 
-// including plugins
-
-//Adding dependencies
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
@@ -28,9 +25,7 @@ var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js',
 				'static/js/restful.js', 
 				'static/js/sockets.js',
 				'static/js/viewer.js', 
-				//~ 'static/js/disposables.js', 
 				'static/js/media.js', 
-				//~ 'static/js/quota_socket.js', 
 				'static/js/quota.js', 
 				'static/js/desktops.js', 
 				'static/js/templates.js', 
@@ -43,26 +38,35 @@ var user_js = [ 'bower_components/gentelella/vendors/jquery/dist/jquery.min.js',
 				'static/js/snippets/domain_graphs.js', 
 				'static/js/snippets/domain_genealogy.js']
 
-//gulpfile.js file
-
 user_css = ['bower_components/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css', 
 			'bower_components/gentelella/vendors/pnotify/dist/pnotify.css', 
 			'bower_components/gentelella/vendors/pnotify/dist/pnotify.buttons.css', 
-			'bower_components/gentelella/build/css/custom.min.css', 
 			'bower_components/gentelella/vendors/animate.css/animate.min.css',
-			'bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css']
+			'bower_components/gentelella/vendors/font-awesome/css/font-awesome.min.css',
+			'bower_components/gentelella/build/css/custom.min.css',
+			'bower_components/font-linux/assets/font-logos.css']
 
-//defining tasks
-gulp.task('default', function() {  //default is a task name, we can give any name.
-	gulp.src(user_js)
+function fa_icons(){
+  return gulp.src('bower_components/gentelella/vendors/font-awesome/fonts/*')
+    .pipe(gulp.dest('static/fonts'))
+};
+
+function js(){
+	return gulp.src(user_js)
 	.pipe(sourcemaps.init())
 	.pipe(concat('isard-user.js'))
 	.pipe(sourcemaps.write()) 
 	.pipe(uglify())
 	.pipe(gulp.dest('static/build'));
-	gulp.src(user_css)
+};
+
+function css(){
+	return gulp.src(user_css)
     .pipe(concat('isard-user.css'))
     .pipe(minify())
     .pipe(prefix('last 2 versions'))
     .pipe(gulp.dest('static/build'))
-});
+};
+
+gulp.task('default', gulp.series(fa_icons, js, css));
+
