@@ -64,26 +64,9 @@ function setViewerButtons(id,socket,offer){
     });    
 }
 
-function startClientViewerSocket(socket){
-    socket.on('domain_viewer', function (data) {
-        var data = JSON.parse(data);
-       
-        if(data['kind']=='url'){
-            viewer=data['viewer']
-            window.open(viewer.replace('<domain>',document.domain));            
-            
-        }        
-         if(data['kind']=='file'){
-            var viewerFile = new Blob([data['content']], {type: data['mime']});
-            var a = document.createElement('a');
-                a.download = 'console.'+data['ext'];
-                a.href = window.URL.createObjectURL(viewerFile);
-            var ev = document.createEvent("MouseEvents");
-                ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                a.dispatchEvent(ev);              
-                    }
-    });
-}    
+//~ function startClientViewerSocket(socket){
+
+//~ }    
     
     
 function setViewerHelp(){
