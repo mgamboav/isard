@@ -107,7 +107,6 @@ services:
     restart: always
     depends_on:
       - isard-database
-      - isard-grafana
       
 volumes:
   sshkeys:
