@@ -33,6 +33,7 @@ fi
 # Array containing all the images to build
 images=(
 	#alpine-pandas
+    mosquitto
 	nginx
 	hypervisor
 	app
