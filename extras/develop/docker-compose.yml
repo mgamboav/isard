@@ -1,0 +1,82 @@
+version: "3.5"
+services:
+  isard-database:
+    container_name: isard-database
+    volumes:
+      - "/opt/isard/database:/data"
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+      - target: 28015
+        published: 28015
+        protocol: tcp
+        mode: host
+    networks:
+      - isard_network
+    image: rethinkdb
+    restart: always
+
+  isard-nginx:
+    container_name: isard-nginx
+    volumes:
+      - "/opt/isard/certs/default:/etc/nginx/external"
+      - "/opt/isard/logs/nginx:/var/log/nginx"
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    networks:
+      - isard_network
+    image: isard/nginx:1.1
+    restart: always
+
+  isard-hypervisor:
+    container_name: isard-hypervisor
+    volumes:
+      - "sshkeys:/root/.ssh"
+      - "/opt/isard:/isard"
+      - "/opt/isard/certs/default:/etc/pki/libvirt-spice"
+    ports:
+      - "5900-5949:5900-5949"
+      - "55900-55949:55900-55949"
+    networks:
+      - isard_network
+    image: isard/hypervisor:1.1
+    privileged: true
+    restart: always
+        
+  isard-app:
+    container_name: isard-app
+    volumes:
+      - "sshkeys:/root/.ssh"
+      - "../../src:/src"
+      - "/opt/isard/certs:/certs"
+      - "/opt/isard/logs:/isard/logs"
+      - "/opt/isard/database/wizard:/isard/install/wizard"
+      - "/opt/isard/backups:/isard/backups"
+      - "/opt/isard/uploads:/isard/uploads"
+    extra_hosts:
+      - "isard-engine:127.0.0.1"
+    networks:
+      - isard_network
+    image: isard/app:1.1
+    restart: always
+    depends_on:
+      - isard-database
+      - isard-hypervisor
+      - isard-nginx
+
+volumes:
+  sshkeys:
+
+networks:
+  isard_network:
+    external: false
+    name: isard_network
