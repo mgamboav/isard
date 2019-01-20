@@ -83,6 +83,6 @@ RUN set -x && \
 VOLUME ["/mosquitto/data", "/mosquitto/log"]
 
 # Set up the entry point script and default command
-COPY dockers/mosquitto/docker-entrypoint.sh /
+COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
