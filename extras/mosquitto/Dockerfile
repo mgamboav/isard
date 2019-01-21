@@ -80,8 +80,12 @@ RUN set -x && \
     apk del build-deps && \
     rm -rf /build
 
+# MQTT-CARBON PROXY
+RUN apk add python3
+RUN pip3 install --no-cache-dir paho-mqtt
 VOLUME ["/mosquitto/data", "/mosquitto/log"]
 
+COPY mqtt-carbon-proxy.py /
 # Set up the entry point script and default command
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
