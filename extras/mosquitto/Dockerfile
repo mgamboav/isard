@@ -81,7 +81,7 @@ RUN set -x && \
     rm -rf /build
 
 # MQTT-CARBON PROXY
-RUN apk add python3
+RUN apk add --no-cache python3
 RUN pip3 install --no-cache-dir paho-mqtt
 VOLUME ["/mosquitto/data", "/mosquitto/log"]
 
