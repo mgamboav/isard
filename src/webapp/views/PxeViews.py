@@ -98,6 +98,8 @@ class usrTokens():
             current_user.role = False
 
         viewer = isardviewer.get_viewer(data, current_user,remote_addr)
+        print(current_user.id)
+        print(viewer)
         return Response( viewer['content'],
             mimetype="application/x-virt-viewer",
             headers={"Content-Disposition":"attachment;filename=console.vv"})
