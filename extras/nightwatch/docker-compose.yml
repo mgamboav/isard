@@ -17,6 +17,8 @@ services:
       - WAIT_FOR_HOSTS=isard-nginx:443 chromedriver:4444 chromedriver:6060
     volumes:
       - ./test:/home/node
+    networks:
+      - isard_network
     image: blueimp/nightwatch:1.0
 
 networks:
