@@ -34,12 +34,12 @@ fi
 images=(
 	#alpine-pandas
 	#grafana
+	#ipxe
 	nginx
 	hypervisor
 	app
 	dhcp
 	tftp
-	nfs
 )
 
 # Build all the images and tag them correctly
