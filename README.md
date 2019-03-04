@@ -21,6 +21,8 @@ docker-compose up -d
 
 Connect to **https://<ip|domain>** and follow wizard.
 
+[Install documentation](https://isardvdi.readthedocs.io/en/latest/install/install/)
+
 NOTE: All data will be created in your host /opt/isard folder
 
 ### Desktops

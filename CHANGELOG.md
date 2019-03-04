@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - No date yet | No name yet
+
+### Added
+- Timed/Ephimeral desktops. [#131](https://github.com/isard-vdi/isard/issues/131)
+- New scheduler action for timed desktops. [#131](https://github.com/isard-vdi/isard/issues/131)
+- Auto creation of pre-defined desktops at user login [#124](https://github.com/isard-vdi/isard/issues/124)
+
+### Changed
+- Category and Groups form added options for timed and auto creation of desktops. [#131](https://github.com/isard-vdi/isard/issues/131) & [#124](https://github.com/isard-vdi/isard/issues/124)
+
+### Fixed
+
+### Removed
+
+
 ## [1.1.0] - 2019-02-26 | Canigó
 
 ### Added
