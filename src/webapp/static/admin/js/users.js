@@ -93,15 +93,33 @@ $(document).ready(function() {
     }); 
             
     //~ $("#modalDeleteUser #send").on('click', function(e){
-        //~ var form = $('#modalDeleteUserForm');
-        //~ data=$('#modalDeleteUserForm').serializeObject();
-        //~ form.parsley().validate();
-        //~ if (form.parsley().isValid()){
-            
-            //~ data=quota2dict($('#modalDeleteUserForm').serializeObject());
-            //~ socket.emit('user_delete',data)
-        //~ }
-    //~ }); 
+    $("#modalDeleteUser #send").on('click', function(e){
+        id=$('#modalDeleteUser #id').val();
+        api.ajax('/admin/user/delete','POST',{'id':id}).done(function(data) {
+            if(data){
+                new PNotify({
+                        title: "Deleting",
+                        text: "Deleting all templates and desktops",
+                        hide: true,
+                        delay: 4000,
+                        icon: 'fa fa-success',
+                        opacity: 1,
+                        type: 'success'
+                });                                
+            }else{
+                new PNotify({
+                        title: "Error deleting",
+                        text: "Unable to delete templates and desktops",
+                        hide: true,
+                        delay: 4000,
+                        icon: 'fa fa-warning',
+                        opacity: 1,
+                        type: 'error'
+                });                                
+            }
+            $("#modalDeleteTemplate").modal('hide');                
+        });
+    }); 
 
        document.getElementById('csv').addEventListener('change', readFile, false);
        var filecontents=''
@@ -426,38 +444,45 @@ function actionsUserDetail(){
                                             //~ <input type="checkbox
     
 
-    
-    
-	$('.btn-delete').on('click', function () {
-            // setQuotaOptions('#edit-users-quota');
-            var pk=$(this).closest("div").attr("data-pk");
-            $("#modalDeleteUserForm")[0].reset();
-			$('#modalDeleteUser').modal({
-				backdrop: 'static',
-				keyboard: false
-			}).modal('show');
-            // setModalUser()
-            // setQuotaTableDefaults('#edit-users-quota','users',pk)
-            api.ajax('/admin/user/delete','POST',{'pk':pk}).done(function(user) {
-                $('.user-desktops').text(user.desktops.length);
-                $('.user-templates').text(user.templates.length);
-                $('.user-templates-ok').text(user.templates.length-user.risky_templates.length);
-                $('.user-templates-ko').text(user.risky_templates.length);
-                $('.user-templates-ko-count').text(user.others_domains);
-                // $('#modalEditForm #name').val(user.name);
-                // $('#modalEditForm #id').val(user.id);
-                // $('#modalEditForm #mail').val(user.mail);
-                // $('#modalEditForm #role option:selected').prop("selected", false);
-                // $('#modalEditForm #role option[value="'+user.role+'"]').prop("selected",true);
-                // $('#modalEditForm #category option:selected').prop("selected", false);
-                // $('#modalEditForm #category option[value="'+user.category+'"]').prop("selected",true);
-                // $('#modalEditForm #group option:selected').prop("selected", false);
-                // $('#modalEditForm #group option[value="'+user.group+'"]').prop("selected",true);                
-            });
-             // $('#hardware-block').hide();
-            // $('#modalEdit').parsley();
-            // modal_edit_desktop_datatables(pk);
-	});
+
+    $('.btn-delete').on('click', function () {	
+        var pk = $(this).closest("[data-pk]").attr("data-pk")
+        $('#modalDeleteUser').modal({
+            backdrop: 'static',
+            keyboard: false
+        }).modal('show');
+
+        $('#modalDeleteUser #id').val(pk);
+        modal_delete_user = $('#modal_delete_user').DataTable({
+                "ajax": {
+                    "url": "/admin/user/delete/"+pk,
+                    "dataSrc": ""
+                },
+                "scrollY":        "125px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "language": {
+                    "loadingRecords": '<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+                    "zeroRecords":    "No matching templates found",
+                    "info":           "Showing _START_ to _END_ of _TOTAL_ templates",
+                    "infoEmpty":      "Showing 0 to 0 of 0 templates",
+                    "infoFiltered":   "(filtered from _MAX_ total templates)"
+                },
+                "rowId": "id",
+                "deferRender": true,
+                "columns": [
+                    { "data": "kind"},
+                    { "data": "user"},
+                    { "data": "status"},
+                    { "data": "name"},
+                    ],
+                 //~ "order": [[0, 'asc']],	
+                 "pageLength": 10,	
+                 "destroy" : true 
+        } );
+
+    });
+        
 
 
 		$('.btn-active').on('click', function () {

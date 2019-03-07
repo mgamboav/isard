@@ -94,12 +94,12 @@ def admin_domains_messages(id):
 @isAdmin
 def admin_domains_todelete(id=None):
     if request.method == 'POST':
-        res=app.adminapi.domains_mdelete(request.get_json(force=True))
+        res=app.adminapi.template_delete(request.get_json(force=True)['id'],dry=False)
         if res:
             return json.dumps(res), 200,  {'ContentType': 'application/json'}
         else:
             return json.dumps(res), 500,  {'ContentType': 'application/json'}
-    return json.dumps(app.adminapi.template_delete_list(id)), 200, {'ContentType': 'application/json'}
+    return json.dumps(app.adminapi.template_delete(id)), 200, {'ContentType': 'application/json'}
 
 
 # ~ '''

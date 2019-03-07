@@ -67,14 +67,17 @@ def admin_userschema():
     return json.dumps(dict)
 
 @app.route('/admin/user/delete', methods=['POST'])
+@app.route('/admin/user/delete/<id>', methods=['GET'])
 @login_required
 @isAdmin
-def admin_user_delete(doit=False):
-    try:
-        args = request.get_json(force=True)
-    except:
-        args = request.form.to_dict()
-    return json.dumps(app.adminapi.user_delete_checks(args['pk']))
+def admin_user_delete(id=None):
+    if request.method == 'POST':
+        res=app.adminapi.user_delete_domains(request.get_json(force=True)['id'],dry=False)
+        if res:
+            return json.dumps(res), 200,  {'ContentType': 'application/json'}
+        else:
+            return json.dumps(res), 500,  {'ContentType': 'application/json'}
+    return json.dumps(app.adminapi.user_delete_domains(id)), 200, {'ContentType': 'application/json'}
         
 @app.route('/admin/users/update', methods=['POST'])
 @login_required

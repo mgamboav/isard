@@ -58,58 +58,84 @@ $(document).ready(function() {
         });
         
     $("#modalDeleteTemplate #send").on('click', function(e){
-        //~ var form = $('#modalDeleteTemplate #modalAdd');
-        ids=[]
-        names=''
-        
-        $.each(modal_delete_templates.rows().data(),function(key, value){
-            names+=value['name']+', ';
-            ids.push(value['id']);            
-            if(value['status']=='Started'){
-                socket.emit('domain_update',{'pk':value['id'],'name':'status','value':'Stopping'})
+        id=$('#modalDeleteTemplate #id').val();
+        api.ajax('/admin/domains/todelete','POST',{'id':id}).done(function(data) {
+            if(data){
+                new PNotify({
+                        title: "Deleting",
+                        text: "Deleting all templates and desktops",
+                        hide: true,
+                        delay: 4000,
+                        icon: 'fa fa-success',
+                        opacity: 1,
+                        type: 'success'
+                });                                
+            }else{
+                new PNotify({
+                        title: "Error deleting",
+                        text: "Unable to delete templates and desktops",
+                        hide: true,
+                        delay: 4000,
+                        icon: 'fa fa-warning',
+                        opacity: 1,
+                        type: 'error'
+                });                                
             }
+            $("#modalDeleteTemplate").modal('hide');                
         });
-        
-        stopping_timer = setInterval( function () {
-            modal_delete_templates.ajax.reload(null,false);   
-            console.log('Updating...')
-            status_start=0
-            $.each(modal_delete_templates.rows().data(),function(key, value){
-                if(value['status']=='Started' || value['status']=='Stopping'){
-                    status_start=status_start+1;
-                }
-            });
-            if(status_start==0){
-                clearInterval(stopping_timer);
-                stopping_timer=null;
 
-                id=$('#modalDeleteTemplate #id').val();
-                api.ajax('/admin/domains/todelete','POST',{'id':id,'ids':ids}).done(function(data) {
-                    if(data){
-                        new PNotify({
-                                title: "Deleting",
-                                text: "Deleting all templates and desktops",
-                                hide: true,
-                                delay: 4000,
-                                icon: 'fa fa-success',
-                                opacity: 1,
-                                type: 'success'
-                        });                                
-                    }else{
-                        new PNotify({
-                                title: "Error deleting",
-                                text: "Unable to delete templates and desktops",
-                                hide: true,
-                                delay: 4000,
-                                icon: 'fa fa-warning',
-                                opacity: 1,
-                                type: 'error'
-                        });                                
-                    }
-                    $("#modalDeleteTemplate").modal('hide');                
-                });
-            }
-        }, 1000 );
+        
+        //~ ids=[]
+        //~ names=''
+        
+        //~ $.each(modal_delete_templates.rows().data(),function(key, value){
+            //~ names+=value['name']+', ';
+            //~ ids.push(value['id']);            
+            //~ if(value['status']=='Started'){
+                //~ socket.emit('domain_update',{'pk':value['id'],'name':'status','value':'Stopping'})
+            //~ }
+        //~ });
+        
+        //~ stopping_timer = setInterval( function () {
+            //~ modal_delete_templates.ajax.reload(null,false);   
+            //~ console.log('Updating...')
+            //~ status_start=0
+            //~ $.each(modal_delete_templates.rows().data(),function(key, value){
+                //~ if(value['status']=='Started' || value['status']=='Stopping'){
+                    //~ status_start=status_start+1;
+                //~ }
+            //~ });
+            //~ if(status_start==0){
+                //~ clearInterval(stopping_timer);
+                //~ stopping_timer=null;
+
+                //~ id=$('#modalDeleteTemplate #id').val();
+                //~ api.ajax('/admin/domains/todelete','POST',{'id':id,'ids':ids}).done(function(data) {
+                    //~ if(data){
+                        //~ new PNotify({
+                                //~ title: "Deleting",
+                                //~ text: "Deleting all templates and desktops",
+                                //~ hide: true,
+                                //~ delay: 4000,
+                                //~ icon: 'fa fa-success',
+                                //~ opacity: 1,
+                                //~ type: 'success'
+                        //~ });                                
+                    //~ }else{
+                        //~ new PNotify({
+                                //~ title: "Error deleting",
+                                //~ text: "Unable to delete templates and desktops",
+                                //~ hide: true,
+                                //~ delay: 4000,
+                                //~ icon: 'fa fa-warning',
+                                //~ opacity: 1,
+                                //~ type: 'error'
+                        //~ });                                
+                    //~ }
+                    //~ $("#modalDeleteTemplate").modal('hide');                
+                //~ });
+            //~ }
+        //~ }, 1000 );
         
              
     });

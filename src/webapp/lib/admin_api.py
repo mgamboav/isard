@@ -301,15 +301,41 @@ class isardAdmin():
                     }
                 ).run(db.conn))
 
-    def template_delete_list(self,id):
+    def template_delete(self,id,dry=True):
         with app.app_context():
-            # ~ print(id)
-            # ~ print(list(r.table('domains').pluck('id','name','kind','user','status','parents').filter(lambda derivates: derivates['parents'].contains(id)).run(db.conn)))
             dom_id=r.table('domains').get(id).pluck('id','name','kind','user','status','parents').run(db.conn)
             doms = list(r.table('domains').pluck('id','name','kind','user','status','parents').filter(lambda derivates: derivates['parents'].contains(id)).run(db.conn))
-            # ~ doms.append(dom_id)
-            return [dom_id]+doms
+            d=[dom_id]+doms
+        if dry:
+            return [i for n, i in enumerate(d) if i not in d[n + 1:]]
+        else:
+            for dom in d:
+                if dom['kind'] == 'desktop':
+                    r.table('domains').get(dom['id']).update({'status':'StoppingAndDeleting'}).run(db.conn)
+                else:
+                    r.table('domains').get(dom['id']).update({'status':'Deleting'}).run(db.conn)
+            return True
+
             
+    def user_delete_domains(self,user,dry=True):
+        log.error(user)
+        log.error(dry)
+        with app.app_context():
+            user_doms=list(r.table('domains').get_all(user,index='user').pluck('id','name','kind','user','status','parents').run(db.conn))
+            other_doms=[]
+            for d in user_doms:
+                if d['kind'] != 'desktop':
+                    other_doms=other_doms+list(r.table('domains').pluck('id','name','kind','user','status','parents').filter(lambda derivates: derivates['parents'].contains(d['id'])).run(db.conn))
+            d=user_doms+other_doms
+        if dry:
+            return [i for n, i in enumerate(d) if i not in d[n + 1:]]
+        else:
+            for dom in d:
+                if dom['kind'] == 'desktop':
+                    r.table('domains').get(dom['id']).update({'status':'StoppingAndDeleting'}).run(db.conn)
+                else:
+                    r.table('domains').get(dom['id']).update({'status':'Deleting'}).run(db.conn)
+            return True
 
                 
     def user_delete_checks(self,user_id):
@@ -468,43 +494,36 @@ class isardAdmin():
             except:
                 return False
 
-    def domains_mdelete(self,dict):
-        '''We got domains again just to be sure they have not changed during the modal'''
-        newdict = self.template_delete_list(dict['id'])
-        newids = [d['id'] for d in newdict]
-        if set(dict['ids']) == set(newids):
-            '''This is the only needed if it works StoppingAndDeleting'''
-            # ~ r.table('domains').get_all(r.args(newids)).update({'status':'StoppingAndDeleting'}).run(db.conn) 
+    
+    # ~ def domains_mdelete(self,dict):
+        # ~ '''We got domains again just to be sure they have not changed during the modal'''
+        # ~ newdict = self.template_delete_list(dict['id'])
+        # ~ newids = [d['id'] for d in newdict]
+        # ~ if set(dict['ids']) == set(newids):
+            # ~ '''This is the only needed if it works StoppingAndDeleting'''
+            # ~ # r.table('domains').get_all(r.args(newids)).update({'status':'StoppingAndDeleting'}).run(db.conn) 
             
-            maintenance=[d['id'] for d in newdict if d['status'] != 'Started']
-            res=r.table('domains').get_all(r.args(maintenance)).update({'status':'Maintenance'}).run(db.conn)            
+            # ~ maintenance=[d['id'] for d in newdict if d['status'] != 'Started']
+            # ~ res=r.table('domains').get_all(r.args(maintenance)).update({'status':'Maintenance'}).run(db.conn)            
             
-            # Stopping domains
-            started=[d['id'] for d in newdict if d['status'] == 'Started']
-            res=r.table('domains').get_all(r.args(started)).update({'status':'Stopping'}).run(db.conn)
-            if res['replaced'] > 0:
-                # Wait a bit for domains to be stopped...
-                for i in range(0,5):
-                    time.sleep(.5)
-                    if r.table('domains').get_all(r.args(started)).filter({'status':'Stopping'}).pluck('status').run(db.conn) is None:
-                        r.table('domains').get_all(r.args(started)).filter({'status':'Stopped'}).update({'status':'Maintenance'}).run(db.conn) 
-                        break
-                    else:
-                        r.table('domains').get_all(r.args(started)).filter({'status':'Stopped'}).update({'status':'Maintenance'}).run(db.conn) 
-                    
-                    
-            # Deleting
-            # ~ tmpls = [d for d in newdict if d['kind'] != 'desktop']
-            # ~ desktops = [d for d in newdict if d['kind'] == 'desktop']
-            
-            # ~ r.table('domains').get_all(r.args(desktops)).update({'status':'Deleting'}).run(db.conn) 
-            # ~ time.sleep(1)
-            # ~ r.table('domains').get_all(r.args(tmpls)).update({'status':'Deleting'}).run(db.conn) 
-            r.table('domains').get_all(r.args(newids)).update({'status':'Stopped'}).run(db.conn) 
-            r.table('domains').get_all(r.args(newids)).update({'status':'Deleting'}).run(db.conn) 
-            return True
-        return False
-        
+            # ~ # Stopping domains
+            # ~ started=[d['id'] for d in newdict if d['status'] == 'Started']
+            # ~ res=r.table('domains').get_all(r.args(started)).update({'status':'Stopping'}).run(db.conn)
+            # ~ if res['replaced'] > 0:
+                # ~ # Wait a bit for domains to be stopped...
+                # ~ for i in range(0,5):
+                    # ~ time.sleep(.5)
+                    # ~ if r.table('domains').get_all(r.args(started)).filter({'status':'Stopping'}).pluck('status').run(db.conn) is None:
+                        # ~ r.table('domains').get_all(r.args(started)).filter({'status':'Stopped'}).update({'status':'Maintenance'}).run(db.conn) 
+                        # ~ break
+                    # ~ else:
+                        # ~ r.table('domains').get_all(r.args(started)).filter({'status':'Stopped'}).update({'status':'Maintenance'}).run(db.conn) 
+
+            # ~ r.table('domains').get_all(r.args(newids)).update({'status':'Stopped'}).run(db.conn) 
+            # ~ r.table('domains').get_all(r.args(newids)).update({'status':'Deleting'}).run(db.conn) 
+            # ~ return True
+        # ~ return False
+              
                 
     def get_admin_templates(self,term):
         with app.app_context():
