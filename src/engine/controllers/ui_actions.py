@@ -197,11 +197,15 @@ class UiActions(object):
             self.stop_domain(id, hyp_id)
 
     def stop_domain(self, id_domain, hyp_id, delete_after_stopped=False):
+        if get_domain_status(id_domain) == 'Stopped' and delete_after_stopped:
+            self.deleting_disks_from_domain(id_domain)
+            return True
+            
         update_domain_status(status='Stopping',
                              id_domain=id_domain,
                              hyp_id=hyp_id,
                              detail='desktop stopping in hyp {}'.format(hyp_id))
-
+        
         from pprint import pprint
         action = {'type': 'stop_domain',
                   'id_domain': id_domain,
