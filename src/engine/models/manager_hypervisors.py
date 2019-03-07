@@ -672,7 +672,7 @@ class ManagerHypervisors(object):
                     # INFO TO DEVELOPER Esto es lo que debería ser, pero hay líos con el hyp_started
                     # ui.stop_domain_from_id(id=domain_id)
                     hyp_started = get_domain_hyp_started(domain_id)
-                    print(hyp_started)
+                    # print(hyp_started)
                     ui.stop_domain(id_domain=domain_id, hyp_id=hyp_started, delete_after_stopped=True)
 
             logs.main.info('finalished thread domain changes')
