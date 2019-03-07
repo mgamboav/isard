@@ -310,10 +310,10 @@ class isardAdmin():
             return [i for n, i in enumerate(d) if i not in d[n + 1:]]
         else:
             for dom in d:
-                # ~ if dom['kind'] == 'desktop':
+                if dom['kind'] == 'desktop':
                     r.table('domains').get(dom['id']).update({'status':'StoppingAndDeleting'}).run(db.conn)
-                # ~ else:
-                    # ~ r.table('domains').get(dom['id']).update({'status':'Deleting'}).run(db.conn)
+                else:
+                    r.table('domains').get(dom['id']).update({'status':'Deleting'}).run(db.conn)
             return True
 
             
@@ -331,10 +331,10 @@ class isardAdmin():
             return [i for n, i in enumerate(d) if i not in d[n + 1:]]
         else:
             for dom in d:
-                # ~ if dom['kind'] == 'desktop':
+                if dom['kind'] == 'desktop':
                     r.table('domains').get(dom['id']).update({'status':'StoppingAndDeleting'}).run(db.conn)
-                # ~ else:
-                    # ~ r.table('domains').get(dom['id']).update({'status':'Deleting'}).run(db.conn)
+                else:
+                    r.table('domains').get(dom['id']).update({'status':'Deleting'}).run(db.conn)
             return True
 
                 
