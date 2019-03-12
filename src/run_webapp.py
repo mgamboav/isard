@@ -4,6 +4,7 @@ monkey.patch_all()
 from flask_socketio import SocketIO
 
 from webapp.lib import api
+from webapp.lib import lib
 from webapp import app
 
 
@@ -16,6 +17,7 @@ db.init_app(app)
 socketio = SocketIO(app)
 
 app.isardapi = api.isard()
+app.isardlib = lib.isard_lib()
 
 from webapp.lib import isardSocketio
 

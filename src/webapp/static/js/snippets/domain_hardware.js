@@ -8,7 +8,8 @@
             $(id+" #hypervisors_pools").find('option').remove();
             $(id+" #forced_hyp").find('option').remove();
             
-			api.ajax_async('/domains/hardware/allowed','GET','').done(function(hardware) {
+			api.ajax_async('/api/users/allowed/hardware','GET','').done(function(hardware) {
+                console.log(hardware)
                 // Needs a hidden input to activate disabled dropdowns...
                 //~ if(hardware.nets.length==1){$(id+" #hardware-interfaces").prop('disabled',true);}
 				$.each(hardware.nets,function(key, value) 

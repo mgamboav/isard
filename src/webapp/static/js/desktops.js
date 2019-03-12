@@ -47,7 +47,7 @@ $(document).ready(function() {
 	//DataTable Main renderer
 	var table = $('#desktops').DataTable({
 			"ajax": {
-				"url": "/desktops/get/",
+				"url": "/api/desktops",
 				"dataSrc": ""
 			},
 			"language": {
@@ -634,9 +634,10 @@ function renderHotplugMedia(data){
 function setDefaultsTemplate(id) {
 	$.ajax({
 		type: "GET",
-		url:"/desktops/templateUpdate/" + id,
+		url:"/api/templates/allowed/" + id,
 		success: function(data)
 		{
+            console.log(data)
 			$('.template-id').val(id);
 			$('.template-id').attr('data-pk', id);
             $('.template-name').val('Template '+data.name);
@@ -682,7 +683,7 @@ function modal_add_desktop_datatables(){
     
 	modal_add_desktops = $('#modal_add_desktops').DataTable({
 			"ajax": {
-				"url": "/desktops/getAllTemplates/",
+				"url": "/api/templates/allowed",
 				"dataSrc": ""
 			},
 
@@ -711,7 +712,7 @@ function modal_add_desktop_datatables(){
                 { "data": "kind", "width": "10px", "orderable": false},
 				{ "data": "name"},
                 { "data": "group", "width": "10px"},
-                { "data": "username"}
+                { "data": "user"}
 				],
 			 "order": [[0, 'asc']],	
              "pageLength": 5,	 
