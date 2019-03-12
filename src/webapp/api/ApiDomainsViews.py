@@ -76,7 +76,7 @@ def get_desktops():
 @app.route('/api/desktops/<id>', methods = ['GET'])
 @login_required
 @ownsid
-def get_desktops(id):
+def get_desktops_id(id):
     try:
         data = app.isardlib.desktop_get(current_user,id)
         if data is False:

@@ -118,6 +118,7 @@ from .views import AllowedsViews
 from .views import ProfileViews
 from .views import AboutViews
 
+from .api import ApiLoginViews
 from .api import ApiDomainsViews
 from .api import ApiTemplatesViews
 from .api import ApiUsersViews
