@@ -20,12 +20,16 @@ package main
 
 import (
 	"context"
-	"log"
 	"net"
+	"os"
 
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/cfg"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/db"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/log"
 	isardGRPC "github.com/isard-vdi/isard/src/new_webapp/backend/pkg/transport/grpc"
 	isard "github.com/isard-vdi/isard/src/new_webapp/backend/proto"
 
+	jww "github.com/spf13/jwalterweatherman"
 	"google.golang.org/grpc"
 )
 
@@ -35,7 +39,7 @@ import (
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	// don't check for the token if it's a login method
 	if info.FullMethod != "/isard.Isard/LoginLocal" {
-		if err := isardGRPC.CheckToken(ctx); err != nil {
+		if err := isardGRPC.CheckAuth(ctx); err != nil {
 			return nil, err
 		}
 	}
@@ -45,7 +49,7 @@ func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServ
 
 // streamInterceptor intercepts the gRPC Stream calls and does actions with them before continuing (or returning an error)
 func streamInterceptor(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-	if err := isardGRPC.CheckToken(stream.Context()); err != nil {
+	if err := isardGRPC.CheckAuth(stream.Context()); err != nil {
 		return err
 	}
 
@@ -53,9 +57,14 @@ func streamInterceptor(srv interface{}, stream grpc.ServerStream, info *grpc.Str
 }
 
 func main() {
+	cfg.Init()
+	log.Init()
+	db.Init()
+
 	lis, err := net.Listen("tcp", ":1312")
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		jww.FATAL.Printf("failed to listen: %v", err)
+		os.Exit(1)
 	}
 
 	grpcServer := grpc.NewServer(
@@ -65,8 +74,9 @@ func main() {
 
 	isard.RegisterIsardServer(grpcServer, &isardGRPC.IsardServer{})
 
-	log.Println("Isard listening at port :1312...")
+	jww.WARN.Println("Isard listening at port :1312...")
 	if err = grpcServer.Serve(lis); err != nil {
-		log.Fatalf("error serving Isard: %v", err)
+		jww.FATAL.Printf("failed to listen: %v", err)
+		os.Exit(1)
 	}
 }
