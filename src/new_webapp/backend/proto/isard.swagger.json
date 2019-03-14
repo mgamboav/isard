@@ -1,0 +1,70 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/isard.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1.0/login/local": {
+      "post": {
+        "summary": "LoginLocal logs in the user using the local database and returns the token",
+        "operationId": "LoginLocal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/isardLoginLocalResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/isardLoginLocalRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Isard"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "isardLoginLocalRequest": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "usr": {
+          "type": "string"
+        },
+        "pwd": {
+          "type": "string"
+        }
+      }
+    },
+    "isardLoginLocalResponse": {
+      "type": "object",
+      "properties": {
+        "tkn": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
