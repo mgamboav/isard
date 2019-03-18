@@ -29,45 +29,61 @@ from engine.services.log import *
 
 DEFAULT_HOST_MODE = 'host-passthrough'
 
-class UiActions(object):
+class GrpcActions(object):
     def __init__(self, manager):
-        log.info("Backend uiactions created")
-        self.manager = manager
+        log.info("Backend GRPC Actions created")
+        # ~ self.manager = manager
 
-    def action_from_api(self, action, parameters):
-        if action == 'start_domain':
+    # ~ def action_from_api(self, action, parameters):
+        # ~ if action == 'start_domain':
 
-            if 'ssl' in parameters.keys() and parameters['ssl'] == False:
-                ssl_spice = False
-            if 'domain_id' in parameters.keys():
-                self.start_domain_from_id(parameters['domain_id'], ssl_spice)
-
-
+            # ~ if 'ssl' in parameters.keys() and parameters['ssl'] == False:
+                # ~ ssl_spice = False
+            # ~ if 'domain_id' in parameters.keys():
+                # ~ self.start_domain_from_id(parameters['domain_id'], ssl_spice)
 
 
-    def start_domain_from_id(self, id, ssl=True):
-        # INFO TO DEVELOPER, QUE DE UN ERROR SI EL ID NO EXISTE
 
-        id_domain = id
-        pool_id = get_pool_from_domain(id_domain)
-        cpu_host_model = self.manager.pools[pool_id].conf.get('cpu_host_model',DEFAULT_HOST_MODE)
 
+    def start_domain_from_id(self, domain_id, ssl=True):
+
+        # ~ pool_id = get_pool_from_domain(domain_id)
+        pool_id='default'
+        
+        try:
+            cpu_host_model = self.manager.pools[pool_id].conf.get('cpu_host_model',DEFAULT_HOST_MODE)
+        except Exception as e:
+            log.error('cpu_host_model in domain {}'.format(domain_id))
+            log.error('Traceback: \n .{}'.format(traceback.format_exc()))
+            log.error('Exception message: {}'.format(e))
+            update_domain_status('Failed', id_domain,
+                                 detail="DomainXML failed to start in hypervisor because incompatible cpu host model.")            
+            return False
+            
         # TODO: Read the cpu_host_model value from hypervisor_pool database
         try:
-            xml = recreate_xml_to_start(id_domain, ssl, cpu_host_model)
+            xml = recreate_xml_to_start(domain_id, ssl, cpu_host_model)
         except Exception as e:
-            log.error('recreate_xml_to_start in domain {}'.format(id_domain))
+            log.error('recreate_xml_to_start in domain {}'.format(domain_id))
             log.error('Traceback: \n .{}'.format(traceback.format_exc()))
             log.error('Exception message: {}'.format(e))
             xml = False
 
         if xml is False:
-            update_domain_status('Failed', id_domain,
+            update_domain_status('Failed', domain_id,
                                  detail="DomainXML can not parse and modify xml to start")
             return False
-        else:
-            hyp = self.start_domain_from_xml(xml, id_domain, pool_id=pool_id)
-            return hyp
+            
+        return self.start_domain_from_xml(xml, domain_id, pool_id=pool_id)
+
+
+
+
+
+
+
+
+
 
     def start_paused_domain_from_xml(self, xml, id_domain, pool_id):
     #def start_paused_domain_from_xml(self, xml, id_domain, pool_id, start_after_created=False):

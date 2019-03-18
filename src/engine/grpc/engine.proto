@@ -1,0 +1,52 @@
+syntax = "proto3";
+ 
+package engine;
+ 
+service Engine{
+ rpc DomainStart(domainID) returns (actionResult) {}
+ rpc DomainStop(domainID) returns (actionResult) {}
+ rpc DomainDelete(domainID) returns (actionResult) {}
+ rpc DomainCreateFromTemplate(domainCreateFromTemplate) returns (actionResult) {}
+ rpc TemplateCreateFromDomain(templateCreateFromDomain) returns (actionResult) {}
+}
+
+message domainID{
+ string id=1;
+}
+ 
+message domainCreateFromTemplate{
+ string domain_id=1;
+ string template_id=2;
+ message hardware{
+	 int32 vcpus=1;
+	 int32 memory=2;
+	 repeated string videos=3;
+	 repeated string boot=4;
+	 repeated string interfaces=5;
+	 string diskbus=6;
+	 repeated string isos=7;
+	 repeated string floppies=8;
+ }
+}
+
+message templateCreateFromDomain{
+ string domain_id=1;
+ string template_id=2;
+ message hardware{
+	 int32 vcpus=1;
+	 int32 memory=2;
+	 repeated string videos=3;
+	 repeated string boot=4;
+	 repeated string interfaces=5;
+	 string diskbus=6;
+	 repeated string isos=7;
+	 repeated string floppies=8;
+ }
+}
+
+message actionResult{
+ message{
+    bool result = 1;
+    string status = 2;
+ }
+}
