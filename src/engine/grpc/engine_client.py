@@ -30,7 +30,18 @@ class EngineClient(object):
         result = self.stub.DomainStart(to_engine_message)
         print(result)
         return result
+        
+    def domain_create_from_id(self,message):
+        print(message)
+        to_engine_message = engine_pb2.domainCreateFromTemplate(domain_id=message['domain_id'],template_id='la template id')
+        result = self.stub.DomainCreateFromTemplate(to_engine_message)
+        return result
+        
+        
+        
 
 curr_client = EngineClient()
 
-curr_client.domain_start('el_id_de_guais')
+# ~ curr_client.domain_start('el_id_de_guais')
+message = {'domain_id':'el id de nou domain','template_id':'el id de plantilla a derivar'}
+curr_client.domain_create_from_id(message)

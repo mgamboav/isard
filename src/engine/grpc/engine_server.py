@@ -49,7 +49,9 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
     def DomainCreateFromTemplate(self, request, context):
         print( 'received request to create domain')
         print(request)
-        print(request.domainCreateFromTemplate)
+        if 'domain_id' not in request.keys(): print ('No trobo el domain_id!!')
+        if 'template_id' not in request.keys(): print ('No trobo la template_id!!')
+        # ~ print(request.domainCreateFromTemplate)
         
         # ~ self.grpc.xxxxx(request.domainCreateFromTemplate)
         
