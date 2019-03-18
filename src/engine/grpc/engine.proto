@@ -32,3 +32,20 @@ message Hardware{
  repeated string floppies=8;
  int32 disk_size=9;
 }
+
+/*
+message Data{
+ string name
+ string description
+ string kind
+ string user
+ string role
+ string category
+ string group
+}
+
+message Options{
+ message viewer{
+   bool full_screen=1;
+}
+*/

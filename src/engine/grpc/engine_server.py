@@ -6,6 +6,23 @@ import engine_pb2_grpc
 from concurrent import futures
 
 import rethinkdb as r
+from rethinkdb.errors import (
+    ReqlAuthError,
+    ReqlCursorEmpty,
+    ReqlDriverError,
+    ReqlError,
+    ReqlInternalError,
+    ReqlNonExistenceError,
+    ReqlOpFailedError,
+    ReqlOpIndeterminateError,
+    ReqlPermissionError,
+    ReqlQueryLogicError,
+    ReqlResourceLimitError,
+    ReqlRuntimeError,
+    ReqlServerCompileError,
+    ReqlTimeoutError,
+    ReqlUserError)
+    
 # ~ from ..services.db import new_rethink_connection, close_rethink_connection
     
 # ~ from .controllers.grpc_actions import GrpcActions
@@ -67,16 +84,17 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
-            if len(domain)==0: 
-                result = {'result': False, 'status': 'domain_id not found in database.'}
-                return engine_pb2.actionResult(**result)
-            elif domain['status'] not in ['Started']: 
+            if domain['status'] not in ['Started']: 
                 result = {'result': False, 'status': 'It is not started.'}
                 return engine_pb2.actionResult(**result)
             elif domain['kind'] != 'desktop':
                 result = {'result': False, 'status': 'You don\'t want to mess status in templates.'}
                 return engine_pb2.actionResult(**result)
+        except ReqlNonExistenceError:
+            result = {'result': False, 'status': 'domain_id not found in database.'}
+            return engine_pb2.actionResult(**result)         
         except Exception as e:
+            print(e)
             result = {'result': False, 'status': 'Unable to access database.'}
             return engine_pb2.actionResult(**result)
         
@@ -98,16 +116,17 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
-            if len(domain)==0: 
-                result = {'result': False, 'status': 'domain_id not found in database.'}
-                return engine_pb2.actionResult(**result)
-            elif domain['status'] in ['Started','Starting']: 
+            if domain['status'] in ['Started','Starting']: 
                 result = {'result': False, 'status': 'It is started.'}
                 return engine_pb2.actionResult(**result)
             elif domain['kind'] != 'desktop':
                 result = {'result': False, 'status': 'You don\'t want to delete a template.'}
                 return engine_pb2.actionResult(**result)
+        except ReqlNonExistenceError:
+            result = {'result': False, 'status': 'domain_id not found in database.'}
+            return engine_pb2.actionResult(**result)         
         except Exception as e:
+            print(e)
             result = {'result': False, 'status': 'Unable to access database.'}
             return engine_pb2.actionResult(**result)
         
@@ -125,17 +144,41 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         return engine_pb2.actionResult(**result)
 
     def DomainCreateFromTemplate(self, request, context):
-        print( 'received request to create domain')
-        print(request)
-        if 'domain_id' not in request.keys(): print ('No trobo el domain_id!!')
-        if 'template_id' not in request.keys(): print ('No trobo la template_id!!')
-        # ~ print(request.domainCreateFromTemplate)
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                template = r.table('domains').get(request.template_id).pluck('status','kind').run(conn)
+            if template['kind'] == 'desktop':
+                result = {'result': False, 'status': 'You don\'t want to create a desktop from a desktop.'}
+                return engine_pb2.actionResult(**result)
+        except ReqlNonExistenceError:
+            result = {'result': False, 'status': 'domain_id not found in database.'}
+            return engine_pb2.actionResult(**result)         
+        except Exception as e:
+            print(e)
+            result = {'result': False, 'status': 'Unable to access database.'}
+            return engine_pb2.actionResult(**result)
+
+        ''' Check for all hardware in request or get the one in template '''
+        # ~ try:
+            # ~ hardware=request.hardware
+        # ~ except:
+            # ~ hardware=template['hardware']
         
-        # ~ self.grpc.xxxxx(request.domainCreateFromTemplate)
-        
-        result = {'result': True, 'status': 'Stopped'}
-        # ~ return engine_pb2.actionResult(result=True,status='Stopped')
-        return engine_pb2.actionResult(**result) 
+            
+        ''' Create domain_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.create_domain_from_template(request.domain_id)
+            ''' DATABASE '''
+            # ~ with rdb() as conn:
+                # ~ r.table('domains').insert({'status':'Deleting'}).run(conn)
+            None
+        except:
+            result = {'result': False, 'status': 'Unable to delete this domain now.'}
+            return engine_pb2.actionResult(**result)
+        result = {'result': True, 'status': 'Deleting'}
+        return engine_pb2.actionResult(**result)
  
     def TemplateCreateFromDomain(self, request, context):
         print( 'received request to create template')
