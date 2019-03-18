@@ -16,27 +16,27 @@ class EngineStub(object):
     """
     self.DomainStart = channel.unary_unary(
         '/engine.Engine/DomainStart',
-        request_serializer=engine__pb2.domainID.SerializeToString,
+        request_serializer=engine__pb2.Domain.SerializeToString,
         response_deserializer=engine__pb2.actionResult.FromString,
         )
     self.DomainStop = channel.unary_unary(
         '/engine.Engine/DomainStop',
-        request_serializer=engine__pb2.domainID.SerializeToString,
+        request_serializer=engine__pb2.Domain.SerializeToString,
         response_deserializer=engine__pb2.actionResult.FromString,
         )
     self.DomainDelete = channel.unary_unary(
         '/engine.Engine/DomainDelete',
-        request_serializer=engine__pb2.domainID.SerializeToString,
+        request_serializer=engine__pb2.Domain.SerializeToString,
         response_deserializer=engine__pb2.actionResult.FromString,
         )
     self.DomainCreateFromTemplate = channel.unary_unary(
         '/engine.Engine/DomainCreateFromTemplate',
-        request_serializer=engine__pb2.domainCreateFromTemplate.SerializeToString,
+        request_serializer=engine__pb2.Domain.SerializeToString,
         response_deserializer=engine__pb2.actionResult.FromString,
         )
     self.TemplateCreateFromDomain = channel.unary_unary(
         '/engine.Engine/TemplateCreateFromDomain',
-        request_serializer=engine__pb2.templateCreateFromDomain.SerializeToString,
+        request_serializer=engine__pb2.Domain.SerializeToString,
         response_deserializer=engine__pb2.actionResult.FromString,
         )
 
@@ -85,27 +85,27 @@ def add_EngineServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'DomainStart': grpc.unary_unary_rpc_method_handler(
           servicer.DomainStart,
-          request_deserializer=engine__pb2.domainID.FromString,
+          request_deserializer=engine__pb2.Domain.FromString,
           response_serializer=engine__pb2.actionResult.SerializeToString,
       ),
       'DomainStop': grpc.unary_unary_rpc_method_handler(
           servicer.DomainStop,
-          request_deserializer=engine__pb2.domainID.FromString,
+          request_deserializer=engine__pb2.Domain.FromString,
           response_serializer=engine__pb2.actionResult.SerializeToString,
       ),
       'DomainDelete': grpc.unary_unary_rpc_method_handler(
           servicer.DomainDelete,
-          request_deserializer=engine__pb2.domainID.FromString,
+          request_deserializer=engine__pb2.Domain.FromString,
           response_serializer=engine__pb2.actionResult.SerializeToString,
       ),
       'DomainCreateFromTemplate': grpc.unary_unary_rpc_method_handler(
           servicer.DomainCreateFromTemplate,
-          request_deserializer=engine__pb2.domainCreateFromTemplate.FromString,
+          request_deserializer=engine__pb2.Domain.FromString,
           response_serializer=engine__pb2.actionResult.SerializeToString,
       ),
       'TemplateCreateFromDomain': grpc.unary_unary_rpc_method_handler(
           servicer.TemplateCreateFromDomain,
-          request_deserializer=engine__pb2.templateCreateFromDomain.FromString,
+          request_deserializer=engine__pb2.Domain.FromString,
           response_serializer=engine__pb2.actionResult.SerializeToString,
       ),
   }

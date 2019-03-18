@@ -5,7 +5,23 @@ import engine_pb2
 import engine_pb2_grpc
 from concurrent import futures
 
+import rethinkdb as r
+# ~ from ..services.db import new_rethink_connection, close_rethink_connection
+    
 # ~ from .controllers.grpc_actions import GrpcActions
+
+class rdb():
+    def __init__(self, RETHINK_HOST='localhost', RETHINK_PORT=28015, RETHINK_DB='isard'):
+        self.conn = None
+        self.rh=RETHINK_HOST
+        self.rp=RETHINK_PORT
+        self.rb=RETHINK_DB
+    def __enter__(self):
+        self.conn = r.connect(self.rh, self.rp, db=self.rb)
+        return self.conn
+    def __exit__(self, type, value, traceback):
+        self.conn.close()
+        
  
 class EngineServicer(engine_pb2_grpc.EngineServicer):
     """
@@ -16,35 +32,97 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         # ~ self.grpc=GrpcActions()
  
     def DomainStart(self, request, context):
-        print( 'received request to start domain')
-        # ~ print(request)
-        print(request.id)
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
+            if len(domain)==0: 
+                result = {'result': False, 'status': 'domain_id not found in database.'}
+                return engine_pb2.actionResult(**result)
+            elif domain['status'] not in ['Stopped','Failed']: 
+                result = {'result': False, 'status': 'It is not in stopped or failed status'}
+                return engine_pb2.actionResult(**result)
+            elif domain['kind'] != 'desktop':
+                result = {'result': False, 'status': 'You don\'t want to start a template.'}
+                return engine_pb2.actionResult(**result)
+        except Exception as e:
+            result = {'result': False, 'status': 'Unable to access database.'}
+            return engine_pb2.actionResult(**result)
         
-        # ~ self.grpc.start_domain_from_id(request.domainID)
-        
-        result = {'result': True, 'status': 'Started'}
- 
+        ''' Start domain_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.start_domain_from_id(request.domain_id)
+            ''' DATABASE '''
+            with rdb() as conn:
+                r.table('domains').get(request.domain_id).update({'status':'Starting'}).run(conn)
+        except:
+            result = {'result': False, 'status': 'Unable to start this domain now.'}
+            return engine_pb2.actionResult(**result)
+        result = {'result': True, 'status': 'Starting'}
         return engine_pb2.actionResult(**result)
  
     def DomainStop(self, request, context):
-        print( 'received request to stop domain')
-        print(request.domainID)
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
+            if len(domain)==0: 
+                result = {'result': False, 'status': 'domain_id not found in database.'}
+                return engine_pb2.actionResult(**result)
+            elif domain['status'] not in ['Started']: 
+                result = {'result': False, 'status': 'It is not started.'}
+                return engine_pb2.actionResult(**result)
+            elif domain['kind'] != 'desktop':
+                result = {'result': False, 'status': 'You don\'t want to mess status in templates.'}
+                return engine_pb2.actionResult(**result)
+        except Exception as e:
+            result = {'result': False, 'status': 'Unable to access database.'}
+            return engine_pb2.actionResult(**result)
         
-        # ~ self.grpc.stop_domain_from_id(request.domainID)
-        
-        result = {'result': True, 'status': 'Stopped'}
- 
+        ''' Stop domain_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.stop_domain_from_id(request.domain_id)
+            ''' DATABASE '''
+            with rdb() as conn:
+                r.table('domains').get(request.domain_id).update({'status':'Stopping'}).run(conn)
+        except:
+            result = {'result': False, 'status': 'Unable to stop this domain now.'}
+            return engine_pb2.actionResult(**result)
+        result = {'result': True, 'status': 'Stopping'}
         return engine_pb2.actionResult(**result)
 
     def DomainDelete(self, request, context):
-        print( 'received request to delete domain')
-        print(request.domainID)
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
+            if len(domain)==0: 
+                result = {'result': False, 'status': 'domain_id not found in database.'}
+                return engine_pb2.actionResult(**result)
+            elif domain['status'] in ['Started','Starting']: 
+                result = {'result': False, 'status': 'It is started.'}
+                return engine_pb2.actionResult(**result)
+            elif domain['kind'] != 'desktop':
+                result = {'result': False, 'status': 'You don\'t want to delete a template.'}
+                return engine_pb2.actionResult(**result)
+        except Exception as e:
+            result = {'result': False, 'status': 'Unable to access database.'}
+            return engine_pb2.actionResult(**result)
         
-        # ~ self.grpc.xxxxx(request.domainID)
-        
-        result = {'result': True, 'status': 'Stopped'}
- 
-        return engine_pb2.actionResult(**result) 
+        ''' Delete domain_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.delete_domain_from_id(request.domain_id)
+            ''' DATABASE '''
+            with rdb() as conn:
+                r.table('domains').get(request.domain_id).update({'status':'Deleting'}).run(conn)
+        except:
+            result = {'result': False, 'status': 'Unable to delete this domain now.'}
+            return engine_pb2.actionResult(**result)
+        result = {'result': True, 'status': 'Deleting'}
+        return engine_pb2.actionResult(**result)
 
     def DomainCreateFromTemplate(self, request, context):
         print( 'received request to create domain')
@@ -56,13 +134,13 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         # ~ self.grpc.xxxxx(request.domainCreateFromTemplate)
         
         result = {'result': True, 'status': 'Stopped'}
- 
+        # ~ return engine_pb2.actionResult(result=True,status='Stopped')
         return engine_pb2.actionResult(**result) 
  
     def TemplateCreateFromDomain(self, request, context):
         print( 'received request to create template')
         print(request)
-        print(request.templateCreateFromDomain)
+        print(request.domain_id)
         
         # ~ self.grpc.xxxxx(templateCreateFromDomain)
         
