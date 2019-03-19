@@ -3,11 +3,13 @@ syntax = "proto3";
 package engine;
  
 service Engine{
- rpc DomainStart(Domain) returns (actionResult) {}
- rpc DomainStop(Domain) returns (actionResult) {}
- rpc DomainDelete(Domain) returns (actionResult) {}
- rpc DomainCreateFromTemplate(Domain) returns (actionResult) {}
- rpc TemplateCreateFromDomain(Domain) returns (actionResult) {}
+ rpc DesktopStart(Domain) returns (Response) {}
+ rpc DesktopStop(Domain) returns (Response) {}
+ rpc DesktopDelete(Domain) returns (Response) {}
+ rpc DesktopFromTemplate(Domain) returns (Response) {}
+ 
+ rpc TemplateDelete(Domain) returns (Response) {}
+ rpc TemplateFromDomain(Domain) returns (Response) {}
 }
  
 message Domain{
@@ -16,36 +18,33 @@ message Domain{
  Hardware hardware=3;
 }
 
-message actionResult{
-    bool result = 1;
-    string status = 2;
-}
-
 message Hardware{
  int32 vcpus=1;
  int32 memory=2;
+ int32  boot_disk_size=10;
+ string boot_disk_rpath=11;
+ string boot_diskbus=7; 
  repeated string videos=3;
- repeated string boot=4;
- repeated string interfaces=5;
- string diskbus=6;
- repeated string isos=7;
- repeated string floppies=8;
- int32 disk_size=9;
+ repeated string graphics=4;
+ repeated string boots=5;
+ repeated string interfaces=6;
+ repeated string isos=8;
+ repeated string floppies=9;
 }
 
-/*
-message Data{
- string name
- string description
- string kind
- string user
- string role
- string category
- string group
+message Response{
+    bool result = 1;
+    string status = 2;
+    Viewer viewer=3;
 }
 
-message Options{
- message viewer{
-   bool full_screen=1;
+message Viewer{
+    string host=1;
+    string graphics=2;
+    int32  port=3;
+    int32  tlsport=4;
+    string passwd=5;
 }
-*/
+            
+            
+            

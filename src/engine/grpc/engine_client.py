@@ -62,8 +62,8 @@ class EngineClient(object):
 
 curr_client = EngineClient()
 
-# ~ curr_client.domain_start('_admin_downloaded_tetros')
-curr_client.domain_stop('_admin_downloaded_zxspectrum')
+curr_client.domain_start('_admin_downloaded_zxspectrum')
+#curr_client.domain_stop('_admin_downloaded_zxspectrum')
 # ~ curr_client.domain_delete('_admin_downloaded_tetros')
 
 

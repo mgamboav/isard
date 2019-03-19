@@ -65,7 +65,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         except Exception as e:
             result = {'result': False, 'status': 'Unable to access database.'}
             return engine_pb2.actionResult(**result)
-        
+        grpc.start_domain_from_id(request.domai
         ''' Start domain_id '''
         try:
             ''' DIRECT TO ENGINE '''
@@ -208,7 +208,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
  
         # start the server
         engine_server.start()
-        print ('Engine Server running ...')
+        print ('Engine Server running ...')kers=10))
  
         try:
             # need an infinite loop since the above
