@@ -23,6 +23,8 @@ from rethinkdb.errors import (
     ReqlTimeoutError,
     ReqlUserError)
 
+MIN_TIMEOUT = 5  # Start/Stop/delete
+MAX_TIMEOUT = 10 # Creations...
     
 # ~ from ..services.db import new_rethink_connection, close_rethink_connection
     
@@ -49,27 +51,28 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         self.server_port = 46001
         # ~ self.grpc=GrpcActions()
  
-    def DomainStart(self, request, context):
+    def DesktopStart(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
-            if len(domain)==0: 
-                context.set_details('domain_id not found in database.')
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                return engine_pb2.DomainStartResult()
-            elif domain['status'] not in ['Stopped','Failed']: 
+            if domain['status'] not in ['Stopped','Failed']: 
                 context.set_details('It is not in stopped or failed status')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return engine_pb2.DomainStartResult()
+                return engine_pb2.DesktopStartResponse()
             elif domain['kind'] != 'desktop':
                 context.set_details('You don\'t want to start a template.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
-                return engine_pb2.DomainStartResult()
+                return engine_pb2.DesktopStartResponse()
+        except ReqlNonExistenceError:
+            context.set_details('domain_id not found in database.')
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            return engine_pb2.DesktopStartResponse()            
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return engine_pb2.DomainStartResult(**result)
+            return engine_pb2.DesktopStartResponse()
+            
         ''' Start domain_id '''
         try:
             ''' DIRECT TO ENGINE '''
@@ -79,37 +82,65 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
                 r.table('domains').get(request.domain_id).update({'status':'Starting'}).run(conn)
                 with rdb() as conn:
                     c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.domain_id}).pluck('status').changes().run(conn)
-                    status=c.next(5)
-                    result = {'state': status['new_value']['status']}
+                    state=c.next(MIN_TIMEOUT)
+                    return engine_pb2.DesktopStartResponse(state=state['new_val']['status'].upper())
         except ReqlTimeoutError:
             context.set_details('Not able to start the domain')
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return engine_pb2.DomainStartResult()            
+            return engine_pb2.DesktopStartResponse()            
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return engine_pb2.DomainStartResult()
-        #~ result = {'state': ', 'detail': 'Starting'}
-        #~ return engine_pb2.DomainStartResult(**result)
+            return engine_pb2.DesktopStartResponse()
  
-    def DomainStop(self, request, context):
+    def DesktopStop(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
             if domain['status'] not in ['Started']: 
-                result = {'result': False, 'status': 'It is not started.'}
-                return engine_pb2.actionResult(**result)
+                context.set_details('It is not started.')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+                return engine_pb2.DesktopStopResponse()
             elif domain['kind'] != 'desktop':
-                result = {'result': False, 'status': 'You don\'t want to mess status in templates.'}
-                return engine_pb2.actionResult(**result)
+                context.set_details('You don\'t want to mess status in templates.')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+                return engine_pb2.DesktopStopResponse()                
         except ReqlNonExistenceError:
-            result = {'result': False, 'status': 'domain_id not found in database.'}
-            return engine_pb2.actionResult(**result)         
+            context.set_details('domain_id not found in database.')
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            return engine_pb2.DesktopStopResponse()         
         except Exception as e:
-            print(e)
-            result = {'result': False, 'status': 'Unable to access database.'}
-            return engine_pb2.actionResult(**result)
+            context.set_details('Unable to access database.')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return engine_pb2.DesktopStopResponse()
+            
+        ''' Stop domain_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.stop_domain_from_id(request.domain_id)
+            ''' DATABASE '''
+            with rdb() as conn:
+                r.table('domains').get(request.domain_id).update({'status':'Stopping'}).run(conn)
+                with rdb() as conn:
+                    c = r.table('domains').get_all(r.args(['Stopped']),index='status').filter({'id':request.domain_id}).pluck('status').changes().run(conn)
+                    state=c.next(MIN_TIMEOUT)
+                    return engine_pb2.DesktopStopResponse(state=state['new_val']['status'].upper())
+        except ReqlTimeoutError:
+            context.set_details('Not able to stop the domain')
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.DesktopStopResponse()            
+        except Exception as e:
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.DesktopStopResponse()
+
+
+
+
+
+
+
         
         ''' Stop domain_id '''
         try:
