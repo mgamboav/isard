@@ -22,6 +22,7 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
+
     
 # ~ from ..services.db import new_rethink_connection, close_rethink_connection
     
@@ -54,18 +55,21 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             with rdb() as conn:
                 domain = r.table('domains').get(request.domain_id).pluck('status','kind').run(conn)
             if len(domain)==0: 
-                result = {'result': False, 'status': 'domain_id not found in database.'}
-                return engine_pb2.actionResult(**result)
+                context.set_details('domain_id not found in database.')
+                context.set_code(grpc.StatusCode.UNKNOWN)
+                return engine_pb2.DomainStartResult()
             elif domain['status'] not in ['Stopped','Failed']: 
-                result = {'result': False, 'status': 'It is not in stopped or failed status'}
-                return engine_pb2.actionResult(**result)
+                context.set_details('It is not in stopped or failed status')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+                return engine_pb2.DomainStartResult()
             elif domain['kind'] != 'desktop':
-                result = {'result': False, 'status': 'You don\'t want to start a template.'}
-                return engine_pb2.actionResult(**result)
+                context.set_details('You don\'t want to start a template.')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
+                return engine_pb2.DomainStartResult()
         except Exception as e:
-            result = {'result': False, 'status': 'Unable to access database.'}
-            return engine_pb2.actionResult(**result)
-        grpc.start_domain_from_id(request.domai
+            context.set_details('Unable to access database.')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return engine_pb2.DomainStartResult(**result)
         ''' Start domain_id '''
         try:
             ''' DIRECT TO ENGINE '''
@@ -73,11 +77,20 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.domain_id).update({'status':'Starting'}).run(conn)
-        except:
-            result = {'result': False, 'status': 'Unable to start this domain now.'}
-            return engine_pb2.actionResult(**result)
-        result = {'result': True, 'status': 'Starting'}
-        return engine_pb2.actionResult(**result)
+                with rdb() as conn:
+                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.domain_id}).pluck('status').changes().run(conn)
+                    status=c.next(5)
+                    result = {'state': status['new_value']['status']}
+        except ReqlTimeoutError:
+            context.set_details('Not able to start the domain')
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.DomainStartResult()            
+        except Exception as e:
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.DomainStartResult()
+        #~ result = {'state': ', 'detail': 'Starting'}
+        #~ return engine_pb2.DomainStartResult(**result)
  
     def DomainStop(self, request, context):
         ''' Checks '''
@@ -208,7 +221,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
  
         # start the server
         engine_server.start()
-        print ('Engine Server running ...')kers=10))
+        print ('Engine Server running ...')
  
         try:
             # need an infinite loop since the above

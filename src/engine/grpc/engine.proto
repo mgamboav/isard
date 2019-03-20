@@ -3,48 +3,18 @@ syntax = "proto3";
 package engine;
  
 service Engine{
- rpc DesktopStart(Domain) returns (Response) {}
- rpc DesktopStop(Domain) returns (Response) {}
- rpc DesktopDelete(Domain) returns (Response) {}
- rpc DesktopFromTemplate(Domain) returns (Response) {}
+ rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
+ rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
+ rpc DesktopDelete(DesktopDeleteRequest) returns (DesktopDeleteResponse) {}
+ rpc DesktopFromTemplate(DesktopFromTemplateRequest) returns (DesktopFromTemplateResponse) {}
+ rpc DesktopFromMedia(DesktopFromMediaRequest) returns (DesktopFromMediaResponse) {}
+ rpc DesktopUpdate(DesktopUpdateRequest) returns (DesktopUpdateResponse) {}
  
- rpc TemplateDelete(Domain) returns (Response) {}
- rpc TemplateFromDomain(Domain) returns (Response) {}
-}
- 
-message Domain{
- string domain_id=1;
- string template_id=2;
- Hardware hardware=3;
+ rpc TemplateDelete(TemplateDeleteRequest) returns (TemplateDeleteResponse) {}
+ rpc TemplateUpdate(TemplateUpdateRequest) returns (TemplateUpdateResponse) {}
+ rpc TemplateFromDomain(TemplateFromDomainRequest) returns (TemplateFromDomainResponse) {}
 }
 
-message Hardware{
- int32 vcpus=1;
- int32 memory=2;
- int32  boot_disk_size=10;
- string boot_disk_rpath=11;
- string boot_diskbus=7; 
- repeated string videos=3;
- repeated string graphics=4;
- repeated string boots=5;
- repeated string interfaces=6;
- repeated string isos=8;
- repeated string floppies=9;
-}
+import "proto/desktops.proto";
+import "proto/templates.proto";
 
-message Response{
-    bool result = 1;
-    string status = 2;
-    Viewer viewer=3;
-}
-
-message Viewer{
-    string host=1;
-    string graphics=2;
-    int32  port=3;
-    int32  tlsport=4;
-    string passwd=5;
-}
-            
-            
-            
