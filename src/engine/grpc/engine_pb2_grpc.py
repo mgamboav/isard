@@ -2,6 +2,7 @@
 import grpc
 
 import engine_pb2 as engine__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class EngineStub(object):
@@ -14,6 +15,16 @@ class EngineStub(object):
     Args:
       channel: A grpc.Channel.
     """
+    self.DesktopGet = channel.unary_unary(
+        '/engine.Engine/DesktopGet',
+        request_serializer=engine__pb2.DesktopGetRequest.SerializeToString,
+        response_deserializer=engine__pb2.DesktopGetResponse.FromString,
+        )
+    self.DesktopList = channel.unary_unary(
+        '/engine.Engine/DesktopList',
+        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        response_deserializer=engine__pb2.DesktopListResponse.FromString,
+        )
     self.DesktopStart = channel.unary_unary(
         '/engine.Engine/DesktopStart',
         request_serializer=engine__pb2.DesktopStartRequest.SerializeToString,
@@ -44,6 +55,16 @@ class EngineStub(object):
         request_serializer=engine__pb2.DesktopUpdateRequest.SerializeToString,
         response_deserializer=engine__pb2.DesktopUpdateResponse.FromString,
         )
+    self.TemplateGet = channel.unary_unary(
+        '/engine.Engine/TemplateGet',
+        request_serializer=engine__pb2.TemplateGetRequest.SerializeToString,
+        response_deserializer=engine__pb2.TemplateGetResponse.FromString,
+        )
+    self.TemplateList = channel.unary_unary(
+        '/engine.Engine/TemplateList',
+        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        response_deserializer=engine__pb2.TemplateListResponse.FromString,
+        )
     self.TemplateDelete = channel.unary_unary(
         '/engine.Engine/TemplateDelete',
         request_serializer=engine__pb2.TemplateDeleteRequest.SerializeToString,
@@ -56,14 +77,38 @@ class EngineStub(object):
         )
     self.TemplateFromDomain = channel.unary_unary(
         '/engine.Engine/TemplateFromDomain',
-        request_serializer=engine__pb2.TemplateFromDomainRequest.SerializeToString,
-        response_deserializer=engine__pb2.TemplateFromDomainResponse.FromString,
+        request_serializer=engine__pb2.TemplateFromDesktopRequest.SerializeToString,
+        response_deserializer=engine__pb2.TemplateFromDesktopResponse.FromString,
+        )
+    self.BaseGet = channel.unary_unary(
+        '/engine.Engine/BaseGet',
+        request_serializer=engine__pb2.BaseGetRequest.SerializeToString,
+        response_deserializer=engine__pb2.BaseGetResponse.FromString,
+        )
+    self.BaseList = channel.unary_unary(
+        '/engine.Engine/BaseList',
+        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        response_deserializer=engine__pb2.BaseListResponse.FromString,
         )
 
 
 class EngineServicer(object):
   # missing associated documentation comment in .proto file
   pass
+
+  def DesktopGet(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DesktopList(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
 
   def DesktopStart(self, request, context):
     # missing associated documentation comment in .proto file
@@ -107,6 +152,20 @@ class EngineServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def TemplateGet(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def TemplateList(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def TemplateDelete(self, request, context):
     # missing associated documentation comment in .proto file
     pass
@@ -128,9 +187,33 @@ class EngineServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def BaseGet(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def BaseList(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_EngineServicer_to_server(servicer, server):
   rpc_method_handlers = {
+      'DesktopGet': grpc.unary_unary_rpc_method_handler(
+          servicer.DesktopGet,
+          request_deserializer=engine__pb2.DesktopGetRequest.FromString,
+          response_serializer=engine__pb2.DesktopGetResponse.SerializeToString,
+      ),
+      'DesktopList': grpc.unary_unary_rpc_method_handler(
+          servicer.DesktopList,
+          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          response_serializer=engine__pb2.DesktopListResponse.SerializeToString,
+      ),
       'DesktopStart': grpc.unary_unary_rpc_method_handler(
           servicer.DesktopStart,
           request_deserializer=engine__pb2.DesktopStartRequest.FromString,
@@ -161,6 +244,16 @@ def add_EngineServicer_to_server(servicer, server):
           request_deserializer=engine__pb2.DesktopUpdateRequest.FromString,
           response_serializer=engine__pb2.DesktopUpdateResponse.SerializeToString,
       ),
+      'TemplateGet': grpc.unary_unary_rpc_method_handler(
+          servicer.TemplateGet,
+          request_deserializer=engine__pb2.TemplateGetRequest.FromString,
+          response_serializer=engine__pb2.TemplateGetResponse.SerializeToString,
+      ),
+      'TemplateList': grpc.unary_unary_rpc_method_handler(
+          servicer.TemplateList,
+          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          response_serializer=engine__pb2.TemplateListResponse.SerializeToString,
+      ),
       'TemplateDelete': grpc.unary_unary_rpc_method_handler(
           servicer.TemplateDelete,
           request_deserializer=engine__pb2.TemplateDeleteRequest.FromString,
@@ -173,8 +266,18 @@ def add_EngineServicer_to_server(servicer, server):
       ),
       'TemplateFromDomain': grpc.unary_unary_rpc_method_handler(
           servicer.TemplateFromDomain,
-          request_deserializer=engine__pb2.TemplateFromDomainRequest.FromString,
-          response_serializer=engine__pb2.TemplateFromDomainResponse.SerializeToString,
+          request_deserializer=engine__pb2.TemplateFromDesktopRequest.FromString,
+          response_serializer=engine__pb2.TemplateFromDesktopResponse.SerializeToString,
+      ),
+      'BaseGet': grpc.unary_unary_rpc_method_handler(
+          servicer.BaseGet,
+          request_deserializer=engine__pb2.BaseGetRequest.FromString,
+          response_serializer=engine__pb2.BaseGetResponse.SerializeToString,
+      ),
+      'BaseList': grpc.unary_unary_rpc_method_handler(
+          servicer.BaseList,
+          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          response_serializer=engine__pb2.BaseListResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

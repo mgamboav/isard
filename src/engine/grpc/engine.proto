@@ -1,8 +1,13 @@
 syntax = "proto3";
- 
+
 package engine;
+
+import "google/protobuf/empty.proto"; 
+import "google/protobuf/any.proto";
  
 service Engine{
+ rpc DesktopGet(DesktopGetRequest) returns (DesktopGetResponse) {}
+ rpc DesktopList(google.protobuf.Empty) returns (DesktopListResponse) {}
  rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
  rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
  rpc DesktopDelete(DesktopDeleteRequest) returns (DesktopDeleteResponse) {}
@@ -10,13 +15,32 @@ service Engine{
  rpc DesktopFromMedia(DesktopFromMediaRequest) returns (DesktopFromMediaResponse) {}
  rpc DesktopUpdate(DesktopUpdateRequest) returns (DesktopUpdateResponse) {}
  
+ rpc TemplateGet(TemplateGetRequest) returns (TemplateGetResponse) {}
+ rpc TemplateList(google.protobuf.Empty) returns (TemplateListResponse) {}
  rpc TemplateDelete(TemplateDeleteRequest) returns (TemplateDeleteResponse) {}
  rpc TemplateUpdate(TemplateUpdateRequest) returns (TemplateUpdateResponse) {}
- rpc TemplateFromDomain(TemplateFromDomainRequest) returns (TemplateFromDomainResponse) {}
+ rpc TemplateFromDomain(TemplateFromDesktopRequest) returns (TemplateFromDesktopResponse) {}
+ 
+ rpc BaseGet(BaseGetRequest) returns (BaseGetResponse) {}
+ rpc BaseList(google.protobuf.Empty) returns (BaseListResponse) {}
+}
+
+    // DESKTOPS //
+
+message DesktopGetRequest{
+ string desktop_id=1;
+}
+
+message DesktopGetResponse{
+  repeated google.protobuf.Any desktop = 1;
+}
+
+message DesktopListResponse{
+ repeated string desktops=1;
 }
 
 message DesktopStartRequest{
- string domain_id=1;
+ string desktop_id=1;
 }
 
 message DesktopStartResponse{
@@ -32,10 +56,8 @@ message DesktopStartResponse{
  Viewer viewer = 3;
 }
 
-
-
 message DesktopStopRequest{
- string domain_id=1;
+ string desktop_id=1;
 }
 
 message DesktopStopResponse{
@@ -50,7 +72,7 @@ message DesktopStopResponse{
 }
 
 message DesktopDeleteRequest{
- string domain_id=1;
+ string desktop_id=1;
 }
 
 message DesktopDeleteResponse{
@@ -63,21 +85,20 @@ message DesktopDeleteResponse{
  string detail = 2;
 }
 
-
 message DesktopFromTemplateRequest{
     message Hardware{
      int32 vcpus=1;
      int32 memory=2;
-     string boot_disk_rpath=11;
-     string boot_diskbus=7; 
-     repeated string videos=3;
-     repeated string graphics=4;
-     repeated string boots=5;
-     repeated string interfaces=6;
-     repeated string isos=8;
-     repeated string floppies=9;
+     string boot_disk_rpath=3;
+     string boot_diskbus=4; 
+     repeated string videos=5;
+     repeated string graphics=6;
+     repeated string boots=7;
+     repeated string interfaces=8;
+     repeated string isos=9;
+     repeated string floppies=10;
     }
- string domain_id=1;
+ string desktop_id=1;
  string template_id=2;
  Hardware hardware=3;
 }
@@ -106,7 +127,7 @@ message DesktopFromMediaRequest{
      repeated string isos=8;
      repeated string floppies=9;
     }
- string domain_id=1;
+ string desktop_id=1;
  string virt_install_id=2;
  Hardware hardware=3;
 }
@@ -133,7 +154,7 @@ message DesktopUpdateRequest{
      repeated string isos=8;
      repeated string floppies=9;
     }
- string domain_id=1;
+ string desktop_id=1;
  Hardware hardware=2;
 }
 
@@ -155,7 +176,19 @@ message Viewer{
     string passwd=5;
 }
 
+    // TEMPLATE //
 
+message TemplateGetRequest{
+ string template_id=1;
+}
+
+message TemplateGetResponse{
+  repeated google.protobuf.Any template = 1;
+}
+
+message TemplateListResponse{
+ repeated string templates=1;
+}
 
 message TemplateDeleteRequest{
  string template_id=1;
@@ -197,8 +230,7 @@ message TemplateUpdateResponse{
  string detail = 2;
 }
 
-
-message TemplateFromDomainRequest{
+message TemplateFromDesktopRequest{
     message Hardware{
      int32 vcpus=1;
      int32 memory=2;
@@ -210,7 +242,7 @@ message TemplateFromDomainRequest{
      repeated string isos=8;
      repeated string floppies=9;
     }
- string domain_id=1;
+ string desktop_id=1;
  string template_id=2;
      enum Kind{
         TEMPLATE = 0;
@@ -220,7 +252,7 @@ message TemplateFromDomainRequest{
  Hardware hardware=4;
 }
 
-message TemplateFromDomainResponse{
+message TemplateFromDesktopResponse{
     enum State{
      STOPPED= 0;
      FAILED = 1;
@@ -230,4 +262,18 @@ message TemplateFromDomainResponse{
  string detail = 2;
 }
 
+
+    // BASE //
+
+message BaseGetRequest{
+ string base_id=1;
+}
+
+message BaseGetResponse{
+  repeated google.protobuf.Any base = 1;
+}
+
+message BaseListResponse{
+ repeated string bases=1;
+}
 
