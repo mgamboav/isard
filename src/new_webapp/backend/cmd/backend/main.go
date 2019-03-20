@@ -34,6 +34,7 @@ import (
 )
 
 // TODO: API version check
+// TODO: Bearer thing
 
 // unaryInterceptor intercepts the gRPC Unary calls and does actions with them before continuing (or returning an error)
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {

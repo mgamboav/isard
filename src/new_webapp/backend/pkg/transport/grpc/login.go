@@ -35,5 +35,5 @@ func (i *IsardServer) LoginLocal(ctx context.Context, req *isard.LoginLocalReque
 		return nil, status.Errorf(codes.InvalidArgument, "authentication error: %v", err)
 	}
 
-	return &isard.LoginLocalResponse{Tkn: tkn}, nil
+	return &isard.LoginLocalResponse{Tkn: tkn.String()}, nil
 }

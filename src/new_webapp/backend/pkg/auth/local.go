@@ -18,7 +18,51 @@
 
 package auth
 
+import (
+	"errors"
+	"fmt"
+
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/db"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/models"
+	"golang.org/x/crypto/bcrypt"
+
+	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
+)
+
 // LoginLocal logs in the user using the local database and returns the token
-func LoginLocal(usr, pwd string) (string, error) {
-	return "", nil
+func LoginLocal(id, pwd string) (Token, error) {
+	res, err := r.Table("users").Get(id).Run(db.Session)
+	if err != nil {
+		return "", fmt.Errorf("error querying the DB: %v", err)
+	}
+
+	var usr models.User
+	err = res.One(&usr)
+	if err != nil {
+		if err == r.ErrEmptyResult {
+			return "", fmt.Errorf("user not found")
+		}
+
+		return "", fmt.Errorf("error getting the user from the DB: %v", err)
+	}
+
+	if usr.Type != "local" {
+		return "", fmt.Errorf("invalid authentication method: user auth type is %v", usr.Type)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(usr.Password), []byte(pwd))
+	if err != nil {
+		if err == bcrypt.ErrMismatchedHashAndPassword {
+			return "", errors.New("incorrect password")
+		}
+
+		return "", fmt.Errorf("password error: %v", err)
+	}
+
+	tkn, err := NewToken(usr.ID)
+	if err != nil {
+		return "", fmt.Errorf("error generating the login token: %v", err)
+	}
+
+	return tkn, nil
 }

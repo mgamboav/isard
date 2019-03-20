@@ -28,7 +28,7 @@ import (
 )
 
 // Session is the opened RethinkDB connection
-var Session *r.Session
+var Session r.QueryExecutor
 
 // Init initalizes the database connection
 func Init() {

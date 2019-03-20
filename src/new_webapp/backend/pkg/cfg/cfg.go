@@ -53,6 +53,12 @@ func SetDefaults() {
 	Config.AddConfigPath("$HOME/.isard")
 	Config.AddConfigPath("/etc/isard")
 
+	Config.SetDefault("tokens", map[string]interface{}{
+		"secret": nil,
+		// Minutes
+		"lifespan": 5,
+	})
+
 	Config.SetDefault("db", map[string]interface{}{
 		"host": "localhost",
 		"port": 28015,

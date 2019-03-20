@@ -16,9 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package auth
+package models
 
-// ValidateTkn checks the validity of a token
-func ValidateTkn(tkn string) error {
-	return nil
+// Category is a category of users
+type Category struct {
+	// ID is the unique identifier of the category
+	ID string `rethinkdb:"id"`
+
+	// Name is the name of the category
+	Name string `rethinkdb:"name"`
+
+	// Description is a small description of the category
+	Description string `rethinkdb:"description"`
+
+	// Role is the parent role of the category
+	Role Role `rethinkdb:"role"`
+
+	// Quota is the default quota of the category
+	Quota Quota `rethinkdb:"quota"`
 }

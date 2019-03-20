@@ -16,33 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package grpc
+package auth_test
 
 import (
-	"context"
+	"testing"
 
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/auth"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/cfg"
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/assert"
 )
 
-// CheckAuth checks if the user is authenticated
-func CheckAuth(ctx context.Context) error {
-	if md, ok := metadata.FromIncomingContext(ctx); ok {
-		if len(md["tkn"]) > 0 {
-			tkn := auth.Token(md["tkn"][0])
-			if !tkn.Validate() {
-				return status.Errorf(codes.InvalidArgument, "invalid token")
-			}
+func TestValidate(t *testing.T) {
+	assert := assert.New(t)
 
-			return nil
-		}
-	}
+	t.Run("should return no error if the token is valid", func(t *testing.T) {
+		cfg.Config = viper.New()
+		cfg.Config.Set("tokens.secret", "godoesnotexist")
 
-	return status.Errorf(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
+		tkn, err := auth.NewToken("egoldman")
+		assert.Nil(err)
+		// TODO: Improve this assert
+		assert.NotNil(tkn)
+	})
 }
 
-// IsardServer is the implementation of the gRPC Isard service
-type IsardServer struct{}
+func TestString(t *testing.T) {
+	assert := assert.New(t)
+
+	t.Run("shoud return the token as a string", func(t *testing.T) {
+		var tkn auth.Token = "token!"
+		assert.Equal("token!", tkn.String())
+	})
+}

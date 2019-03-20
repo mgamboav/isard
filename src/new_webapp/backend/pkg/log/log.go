@@ -56,6 +56,7 @@ func Init() {
 	}
 
 	jww.SetLogThreshold(threshold)
+	jww.SetStdoutThreshold(threshold)
 
 	f, err := os.OpenFile(cfg.Config.GetString("log.file"), os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {

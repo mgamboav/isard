@@ -1,0 +1,225 @@
+/*
+ * Copyright (C) 2019 IsardVDI
+ * Authors: IsardVDI Authors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+package isard;
+
+import "google/api/annotations.proto";
+
+// Service to manage Isard
+service Isard {
+  // GetUserDesktops returns a list with all the desktops of an user
+  // rpc GetUserDesktops (GetUserDesktopsRequest) returns (GetUserDesktopsResponse) {
+  //   option (google.api.http) = {
+  //     get: "/v1/user/{id}/desktops"
+  //   };
+  // }
+
+  // LoginLocal logs in the user using the local database and returns the token
+  rpc LoginLocal (LoginLocalRequest) returns (LoginLocalResponse) {
+    option (google.api.http) = {
+      post: "/v1.0/login/local"
+      body: "*"
+    };
+  }
+}
+
+message LoginLocalRequest {
+  string api = 1;
+
+  string usr = 2;
+  string pwd = 3;
+}
+
+message LoginLocalResponse {
+  string tkn = 1;
+}
+
+// // Permissions are the permissions of a resource
+// message Permissions {
+//   // public specifies if everyone has access the resource. If it's set to true, it's going to ignore the other fields
+//   bool public = 1;
+
+//   // roles are the roles that have access to the resource
+//   repeated string roles = 2;
+
+//   // categories are the categories that have access to the resource
+//   repeated string categories = 3;
+
+//   // users are the users that have access to the resource
+//   repeated string users = 4;
+// }
+
+// // DomainKind are the different types of domain
+// enum DomainKind {
+//   DESKTOP = 0;
+//   TEMPLATE = 1;
+//   BASE = 2;
+// }
+
+// // DomainStatus are the different statuses that a domain can be on
+// enum DomainStatus {
+// }
+
+// // DomainIcon are the different icons that a domain can have
+// enum DomainIcon {
+//   ALPINE = 0;
+//   AOSC = 1;
+//   ARCHLINUX = 2;
+//   APPLE = 3;
+//   CENTOS = 4;
+//   COREOS = 5;
+//   DEBIAN = 6;
+//   DEVUAN = 7;
+//   DOCKER = 8;
+//   ELEMENTARY = 9;
+//   FEDORA = 10;
+//   FLATHUB = 11;
+//   FREEBSD = 12;
+//   GENTOO = 13;
+//   GNUGUIX = 14;
+//   LINUXMINT = 15;
+//   MAGEIA = 16;
+//   MANDRIVA = 17;
+//   MANJARO = 18;
+//   NIXOS = 19;
+//   OPENSUSE = 20;
+//   RASPBERRYPI = 21;
+//   REDHAT = 22;
+//   SABAYON = 23;
+//   SLACKWARE = 24;
+//   SNAPPY = 25;
+//   TUX = 26;
+//   UBUNTU = 27;
+// }
+
+// // DomainHardware is the hardware definition of a domain
+// message DomainHardware {
+//   // Disk is an individual disk
+//   message Disk {
+//     // bus is the bus of the disk
+//     string bus = 1;
+//     // dev is the device name of the disk
+//     string dev = 2;
+//     // file is the path to the disk file
+//     string file = 3;
+//     // type is the disk type
+//     string type = 4;
+//   }
+
+//   // Interface is a network interface
+//   message Interface {
+//     // id is the 
+//     // mac is the MAC address of the interface
+//     string mac = 2;
+//     // model is the model of the network card
+//     string model = 3;
+//     // type
+//   }
+
+//   // bootOrder is the order of preference of the devices from which the domain is going to boot
+//   repeated string bootOrder = 1;
+
+//   // disks are all the disks that the domain has
+//   repeated Disk disks = 5;
+
+//   // graphics are the graphics configurations
+//   Graphics graphics = 7;
+
+//   // interfaces are the network interfaces of the domain
+//   Interface interfaces = 8;
+// }
+
+// // DomainOptions are the different options that a domain can hae
+// message DomainOptions {
+//   // Viewers are the options related with the viewers
+//   message Viewers {
+//     // Spice are the options related with the Spice viewer
+//     message Spice {
+//       // fullscreen sets if the desktop is going to be opened in fullscreen
+//       bool fullscreen = 1;
+//     }
+
+//     Spice spice = 1;
+//   }
+
+//   Viewers viewers = 1;
+
+//   // server sets if the desktop is going to be stopped by the automatic jobs
+//   bool server = 2;
+// }
+
+
+// message Desktop {
+//   // id is the unique identifier of the domain. It's formed by "_{username}_{desktopName}"
+//   string id = 1;
+
+//   // name is the name of the desktop
+//   string name = 2;
+//   // description is the user description of the desktop
+//   string description = 3;
+//   // DomainIcon is the icon of the desktop. 
+//   DomainIcon icon = 4;
+
+//   // kind is the type of domain
+//   DomainKind kind = 5;
+//   // status is the current status of the desktop
+//   DomainStatus status = 6;
+//   // detail shows messages in case there's an error doing an operation with the desktop
+//   string detail = 7;
+
+//   // permissions are the permissions that people has 
+//   Permissions permissions = 8;
+//   // category is the category that owns the desktop
+//   string category = 9;
+//   // group is the group that owns the desktop
+//   string group = 10;
+//   // user is the user that owns the desktop
+//   string user = 11;
+
+//   // createDict contains the definition for the domain that Isard is going to create
+//   DomainCreateDict createDict = 12;
+//   // DomainHardware is the hardware definition of the desktop
+//   DomainHardware hardware = 12;
+//   // xml is the raw XML definition of the desktop
+//   string xml = 13;
+//   // os is the Operative System of the desktop
+//   string os = 14;
+
+//   // hypervisors_pools are all the pools of hypervisors where the desktop can be started
+//   repeated string hypervisors_pools = 15;
+//   // forced_hyp is the hypervisor where the desktop is always going to be started
+//   string forced_hyp = 16;
+//   // hyp_started is the hypervisor where the desktop is started if it's started
+//   string hyp_started = 17;
+
+//   // options are the options of the desktop
+//   DomainOptions options = 18;
+// }
+
+// message GetUserDesktopsRequest {
+//   string api = 1;
+
+//   string id = 2;
+// }
+
+// message GetUserDesktopsResponse {
+//   string api = 1;
+
+//   repeated Desktop desktops = 2;
+// }

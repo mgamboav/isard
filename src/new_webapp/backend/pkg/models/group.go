@@ -16,33 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package grpc
+package models
 
-import (
-	"context"
+// Group is a group of users
+type Group struct {
+	// ID is the unique identifier of the group
+	ID string `rethinkdb:"id"`
 
-	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/auth"
+	// Name is the name of the group
+	Name string `rethinkdb:"name"`
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
-)
+	// Description is a small description of the group
+	Description string `rethinkdb:"description"`
 
-// CheckAuth checks if the user is authenticated
-func CheckAuth(ctx context.Context) error {
-	if md, ok := metadata.FromIncomingContext(ctx); ok {
-		if len(md["tkn"]) > 0 {
-			tkn := auth.Token(md["tkn"][0])
-			if !tkn.Validate() {
-				return status.Errorf(codes.InvalidArgument, "invalid token")
-			}
+	// Role is the parent role of the group
+	Role Role `rethinkdb:"role"`
 
-			return nil
-		}
-	}
+	// Category is the parent category of the group
+	Category Category `rethinkdb:"category"`
 
-	return status.Errorf(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
+	// Quota is the default quota of the group
+	Quota Quota `rethinkdb:"quota"`
 }
-
-// IsardServer is the implementation of the gRPC Isard service
-type IsardServer struct{}

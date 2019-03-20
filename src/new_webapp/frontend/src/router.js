@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
+import store from './store'
 
 Vue.use(Router)
 
@@ -27,11 +28,9 @@ var router = new Router({
   ]
 })
 
-var isLogged = false
-
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (isLogged === false) {
+    if (store.getters.tkn === null) {
       next({
         path: '/login'
       })

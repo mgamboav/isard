@@ -38,11 +38,34 @@ export default {
       }
     }
   },
+  computed: {
+    tkn () {
+      return this.$store.getters.tkn
+    }
+  },
+  watch: {
+    tkn (oldTkn, newTkn) {
+      this.redirect()
+    }
+  },
   methods: {
     login (event) {
       event.preventDefault()
-      console.log('Logged in!')
+
+      let payload = {
+        'usr': this.form.username,
+        'pwd': this.form.password
+      }
+      this.$store.dispatch('login', payload)
+    },
+    redirect () {
+      if (this.$store.getters.tkn !== null) {
+        this.$router.push('/')
+      }
     }
+  },
+  mounted: function () {
+    this.redirect()
   }
 }
 </script>
