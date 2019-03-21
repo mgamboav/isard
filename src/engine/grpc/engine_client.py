@@ -38,15 +38,14 @@ class EngineClient(object):
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
-        print(response.desktop)
-        return True
+        return response.desktop
 
     def desktop_list(self):
         """
         Client function to call the rpc
         """
         try:
-            response = self.stub.DesktopList(engine_pb2.google_dot_protobuf_dot_empty__pb2._EMPTY)
+            response = self.stub.DesktopList(engine_pb2.Empty())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -58,8 +57,7 @@ class EngineClient(object):
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
-        print(response.desktops)
-        return True
+        return response.desktops
                  
     def desktop_start(self, message):
         """
@@ -101,21 +99,65 @@ class EngineClient(object):
         print(response.state)
         return True
 
-    def domain_delete(self, message):
+    def desktop_delete(self, message):
         """
         Client function to call the rpc
         """
-        to_engine_message = engine_pb2.Domain(domain_id=message)
-        print(to_engine_message)
-        result = self.stub.DomainDelete(to_engine_message)
-        print(result)
-        return result
+        try:
+            response = self.stub.DesktopDelete(engine_pb2.DesktopDeleteRequest(desktop_id=message))
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == engine_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        print(response.state)
+        return True
+
+    def template_list(self):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.stub.TemplateList(engine_pb2.Empty())
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == engine_pb2.DesktopStartResponse.State.STARTED:
+            #~ print(message+' was started')
+        #~ else:
+            #~ print(response.state)
+        return response.templates
                         
-    def domain_create_from_id(self,message):
-        print(message)
-        to_engine_message = engine_pb2.domainCreateFromTemplate(domain_id=message['domain_id'],template_id='la template id')
-        result = self.stub.DomainCreateFromTemplate(to_engine_message)
-        return result
+    def desktop_from_template(self,message):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.stub.DesktopFromTemplate(engine_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == engine_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        print(response.state)
+        return True
+
         
         
         
@@ -123,10 +165,30 @@ class EngineClient(object):
 curr_client = EngineClient()
 
 import time
+desktops = curr_client.desktop_list()
+templates = curr_client.template_list()
+t=templates[0]
+# ~ curr_client.desktop_delete('_admin_pepinillo')
+for i in range(0,20):
+    curr_client.desktop_from_template({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
+    print('Created desktop: '+str(i))
+for i in range(0,20):
+    curr_client.desktop_delete('_admin_pepinillo_'+str(i))
+    print('deleting desktop')
+'''delete'''
+# ~ desktops = curr_client.desktop_list()
+# ~ print(desktops)
+# ~ curr_client.desktop_delete(desktops[0])
+# ~ desktops = curr_client.desktop_list()
+# ~ print(desktops)
 
-curr_client.desktop_list()
+'''list'''
+# ~ desktops = curr_client.desktop_list()
+# ~ print(desktops)
+# ~ print(curr_client.desktop_get(desktops[0]))
 # ~ curr_client.desktop_get('_admin_downloaded_zxspectrum')
 
+'''start/stop'''
 # ~ while True:
     # ~ curr_client.desktop_start('_admin_downloaded_zxspectrum')
     # ~ # time.sleep(1)

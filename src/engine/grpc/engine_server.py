@@ -51,22 +51,24 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         self.server_port = 46001
         # ~ self.grpc=GrpcActions()
 
-    def DesktopList(self, unused_request, context):
+    def DesktopList(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 desktops = list(r.table('domains').get_all('desktop', index='kind').pluck('id').run(conn))
+                desktops = [d['id'] for d in desktops]
             return engine_pb2.DesktopListResponse(desktops=desktops)
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return engine_pb2.DesktopStartResponse()  
+            return engine_pb2.DesktopListResponse()  
 
     def DesktopGet(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
-                desktop = list(r.table('domains').get(request.desktop_id).run(conn))
+                desktop = r.table('domains').get(request.desktop_id).run(conn)
+                print(desktop)
             if len(desktop) == 0:
                 context.set_details(desktop_id+'  not found in database.')
                 context.set_code(grpc.StatusCode.UNKNOWN)
@@ -191,11 +193,11 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Deleting'}).run(conn)
                 with rdb() as conn:
-                    c = r.table('domains').get_all(r.args(['Deleted']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
-                    state=c.next(MIN_TIMEOUT)
-                return engine_pb2.DesktopDeleteResponse(state=state['new_val']['status'].upper())
+                    c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':None}).run(conn) 
+                    c.next(MIN_TIMEOUT)
+                return engine_pb2.DesktopDeleteResponse(state='DELETED')
         except ReqlTimeoutError:
-            context.set_details('Unable to stop the domain '+request.desktop_id)
+            context.set_details('Unable to delete the domain '+request.desktop_id)
             context.set_code(grpc.StatusCode.INTERNAL)             
             return engine_pb2.DesktopDeleteResponse()            
         except Exception as e:
@@ -215,6 +217,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
+            print('1 '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.DesktopFromTemplateResponse()
@@ -225,7 +228,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
                 context.set_details(request.template_id+' it is not stopped.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
                 return engine_pb2.DesktopFromTemplateResponse()
-            elif domain['kind'] == 'desktop':
+            elif template['kind'] == 'desktop':
                 context.set_details(request.template_id+' it is not a template.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
                 return engine_pb2.DesktopFromTemplateResponse()                
@@ -234,85 +237,95 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return engine_pb2.DesktopFromTemplateResponse()         
         except Exception as e:
+            print('2: '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.DesktopFromTemplateResponse()
         
         ''' OPTIONAL VALUES '''
-        if not request.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
-        if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
-        if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
-        if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
-        if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
-        if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
-        if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
-        if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
-        if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
-        if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
-        
-        hitems = ['videos','graphics','boots','interfaces','isos','floppies']
- 
-        domain={'id': '_'+user+'_'+parsed_name,
-              'name': create_dict['name'],
-              'description': create_dict['description'],
-              'kind': 'desktop',
-              'user': userObj['id'],
-              'status': 'Creating',
-              'detail': None,
-              'category': userObj['category'],
-              'group': userObj['group'],
-              'xml': None,
-              'icon': dom['icon'],
-              'server': dom['server'],
-              'os': dom['os'],
-              'options': {'viewers':{'spice':{'fullscreen':True}}},
-              'create_dict': {'hardware':create_dict['hardware'], 
-                                'origin': create_dict['template']}, 
-              'hypervisors_pools': create_dict['hypervisors_pools'],
-              'allowed': {'roles': False,
-                          'categories': False,
-                          'groups': False,
-                          'users': False}}
+        if not request.HasField("hardware"):
+            print('before hardware')
+            print(template['create_dict'])
+            hardware = {"vcpus": template['create_dict']['hardware']['vcpus'],
+                        "memory": template['create_dict']['hardware']['memory'],
+                        "boot_order": template['create_dict']['hardware']['boot_order'],
+                        "graphics": template['create_dict']['hardware']['graphics'],
+                        "interfaces": template['create_dict']['hardware']['interfaces'],
+                        "videos": template['create_dict']['hardware']['videos'],
+                        "disks": [{ 'file':request.desktop_id+'.qcow2',
+                                    'parent':template['hardware']['disks'][0]['file']}]}
+        # ~ else:
+            # ~ if not request.hardware.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
+            # ~ if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
+            # ~ if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
+            # ~ if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
+            # ~ if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
+            # ~ if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
+            # ~ if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
+            # ~ if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
+            # ~ if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
+            # ~ if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
+        desktop = { 'id': request.desktop_id,
+                    'name': request.desktop_id,
+                    'description': request.desktop_id,
+                    'kind': 'desktop',
+                    'user': 'admin',
+                    'status': 'Creating',
+                    'detail': None,
+                    'category': 'local',
+                    'group': 'local',
+                    'xml': None,
+                    'icon': 'debian',
+                    'server': False,
+                    'os': 'linux',
+                    'options': {'viewers':{'spice':{'fullscreen':True}}},
+                    'create_dict': {'hardware':hardware, 
+                                    'origin': request.template_id}, 
+                    'hypervisors_pools': template['hypervisors_pools'],
+                    'allowed': {'roles': False,
+                              'categories': False,
+                              'groups': False,
+                              'users': False}}
 
- 
- 
- 
- 
- 
- 
- 
- 
-        ''' Check for all hardware in request or get the one in template '''
-        # ~ try:
-            # ~ hardware=request.hardware
-        # ~ except:
-            # ~ hardware=template['hardware']
-        
-            
-        ''' Create desktop_id '''
+        print(desktop)
+        ''' Add desktop_id '''
         try:
             ''' DIRECT TO ENGINE '''
-            # ~ self.grpc.create_domain_from_template(request.desktop_id)
+            # ~ self.grpc.add_domain_from_id(request.desktop_id)
             ''' DATABASE '''
-            # ~ with rdb() as conn:
-                # ~ r.table('domains').insert({'status':'Deleting'}).run(conn)
-            None
-        except:
-            result = {'result': False, 'status': 'Unable to delete this domain now.'}
-            return engine_pb2.actionResult(**result)
-        result = {'result': True, 'status': 'Deleting'}
-        return engine_pb2.actionResult(**result)
+            with rdb() as conn:
+                r.table('domains').insert(desktop).run(conn)
+                with rdb() as conn:
+                    c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
+                    c.next(MIN_TIMEOUT)
+                return engine_pb2.DesktopFromTemplateResponse(state='STOPPED')
+        except ReqlTimeoutError:
+            context.set_details('Unable to create the domain '+request.desktop_id)
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.DesktopFromTemplateResponse()            
+        except Exception as e:
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.DesktopFromTemplateResponse()
+
+
+    def TemplateList(self, request, context):
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                templates = list(r.table('domains').filter(r.row['kind'].match("template")).pluck('id').run(conn))
+                templates = [t['id'] for t in templates]
+            return engine_pb2.TemplateListResponse(templates=templates)
+        except Exception as e:
+            print(e)
+            context.set_details('Unable to access database.')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return engine_pb2.TemplateListResponse()  
  
-    def TemplateCreateFromDomain(self, request, context):
-        print( 'received request to create template')
-        print(request)
-        print(request.desktop_id)
-        
-        # ~ self.grpc.xxxxx(templateCreateFromDomain)
-        
-        result = {'result': True, 'status': 'Stopped'}
  
-        return engine_pb2.actionResult(**result)
+ 
+ 
+
         
     def start_server(self):
         """

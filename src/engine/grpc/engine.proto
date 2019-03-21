@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package engine;
 
-import "google/protobuf/empty.proto"; 
+//import "google/protobuf/empty.proto"; 
 import "google/protobuf/any.proto";
  
 service Engine{
  rpc DesktopGet(DesktopGetRequest) returns (DesktopGetResponse) {}
- rpc DesktopList(google.protobuf.Empty) returns (DesktopListResponse) {}
+ rpc DesktopList(Empty) returns (DesktopListResponse) {}
  rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
  rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
  rpc DesktopDelete(DesktopDeleteRequest) returns (DesktopDeleteResponse) {}
@@ -16,14 +16,16 @@ service Engine{
  rpc DesktopUpdate(DesktopUpdateRequest) returns (DesktopUpdateResponse) {}
  
  rpc TemplateGet(TemplateGetRequest) returns (TemplateGetResponse) {}
- rpc TemplateList(google.protobuf.Empty) returns (TemplateListResponse) {}
+ rpc TemplateList(Empty) returns (TemplateListResponse) {}
  rpc TemplateDelete(TemplateDeleteRequest) returns (TemplateDeleteResponse) {}
  rpc TemplateUpdate(TemplateUpdateRequest) returns (TemplateUpdateResponse) {}
  rpc TemplateFromDomain(TemplateFromDesktopRequest) returns (TemplateFromDesktopResponse) {}
  
  rpc BaseGet(BaseGetRequest) returns (BaseGetResponse) {}
- rpc BaseList(google.protobuf.Empty) returns (BaseListResponse) {}
+ rpc BaseList(Empty) returns (BaseListResponse) {}
 }
+
+message Empty{}
 
     // DESKTOPS //
 
@@ -187,11 +189,11 @@ message TemplateGetResponse{
 }
 
 message TemplateListResponse{
- repeated string templates=1;
+ repeated string templates = 1;
 }
 
 message TemplateDeleteRequest{
- string template_id=1;
+ string template_id = 1;
 }
 
 message TemplateDeleteResponse{

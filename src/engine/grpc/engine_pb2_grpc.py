@@ -22,7 +22,7 @@ class EngineStub(object):
         )
     self.DesktopList = channel.unary_unary(
         '/engine.Engine/DesktopList',
-        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        request_serializer=engine__pb2.Empty.SerializeToString,
         response_deserializer=engine__pb2.DesktopListResponse.FromString,
         )
     self.DesktopStart = channel.unary_unary(
@@ -211,7 +211,7 @@ def add_EngineServicer_to_server(servicer, server):
       ),
       'DesktopList': grpc.unary_unary_rpc_method_handler(
           servicer.DesktopList,
-          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          request_deserializer=engine__pb2.Empty.FromString,
           response_serializer=engine__pb2.DesktopListResponse.SerializeToString,
       ),
       'DesktopStart': grpc.unary_unary_rpc_method_handler(
