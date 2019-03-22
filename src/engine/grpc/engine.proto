@@ -27,6 +27,54 @@ service Engine{
 
 message Empty{}
 
+message HardwareNew{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_rpath=3;
+ string boot_disk_bus=4;
+ int32  boot_disk_size=5; 
+ repeated string videos=6;
+ repeated string graphics=7;
+ repeated string boots=8;
+ repeated string interfaces=9;
+ repeated string isos=10;
+ repeated string floppies=11;
+}
+
+message HardwareDerived{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_rpath=3;
+ string boot_disk_bus=4; 
+ repeated string videos=5;
+ repeated string graphics=6;
+ repeated string boots=7;
+ repeated string interfaces=8;
+ repeated string isos=9;
+ repeated string floppies=10;
+}
+
+message HardwareUpdate{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_bus=7; 
+ repeated string videos=3;
+ repeated string graphics=4;
+ repeated string boots=5;
+ repeated string interfaces=6;
+ repeated string isos=8;
+ repeated string floppies=9;
+}
+    
+message Options{
+ message viewers{
+  string preferred = 1;
+  message spice{
+   bool fullscreen = 1;
+  }
+ }
+}
+    
 message Allowed{
  bool onlyowner = 1;
  repeated string roles = 2;
@@ -35,6 +83,18 @@ message Allowed{
  repeated string users = 5;
 }
 
+message ExtraData{
+ string name = 1;
+ string description = 2;
+ string user = 3;
+ string role = 4;
+ string category = 5;
+ string group = 6;
+ string hypervisors_pools = 7;
+ Options options = 8;
+ Allowed allowed = 9;
+}
+    
     // DESKTOPS //
 
 message DesktopGetRequest{
@@ -96,31 +156,10 @@ message DesktopDeleteResponse{
 }
 
 message DesktopFromTemplateRequest{
-    message Hardware{
-     int32 vcpus=1;
-     int32 memory=2;
-     string boot_disk_rpath=3;
-     string boot_disk_bus=4; 
-     repeated string videos=5;
-     repeated string graphics=6;
-     repeated string boots=7;
-     repeated string interfaces=8;
-     repeated string isos=9;
-     repeated string floppies=10;
-    }
-    message Data{
-     string name = 1;
-     string description = 2;
-     string user = 3;
-     string role = 4;
-     string category = 5;
-     string group = 6;
-     string hypervisors_pools = 7;
-     Allowed allowed = 8;
-    }
  string desktop_id=1;
  string template_id=2;
- Hardware hardware=3;
+ HardwareDerived hardware=3;
+ ExtraData data = 4;
 }
 
 message DesktopFromTemplateResponse{
@@ -134,22 +173,10 @@ message DesktopFromTemplateResponse{
 }
 
 message DesktopFromMediaRequest{
-    message Hardware{
-     int32 vcpus=1;
-     int32 memory=2;
-     int32  boot_disk_size=10;     
-     string boot_disk_rpath=11;
-     string boot_diskbus=7; 
-     repeated string videos=3;
-     repeated string graphics=4;
-     repeated string boots=5;
-     repeated string interfaces=6;
-     repeated string isos=8;
-     repeated string floppies=9;
-    }
  string desktop_id=1;
  string virt_install_id=2;
- Hardware hardware=3;
+ HardwareNew hardware=3;
+ ExtraData data = 4;
 }
 
 message DesktopFromMediaResponse{
@@ -163,19 +190,9 @@ message DesktopFromMediaResponse{
 }
 
 message DesktopUpdateRequest{
-    message Hardware{
-     int32 vcpus=1;
-     int32 memory=2;
-     string boot_diskbus=7; 
-     repeated string videos=3;
-     repeated string graphics=4;
-     repeated string boots=5;
-     repeated string interfaces=6;
-     repeated string isos=8;
-     repeated string floppies=9;
-    }
  string desktop_id=1;
- Hardware hardware=2;
+ HardwareUpdate hardware=2;
+ ExtraData data=3;
 }
 
 message DesktopUpdateResponse{
@@ -225,19 +242,9 @@ message TemplateDeleteResponse{
 }
 
 message TemplateUpdateRequest{
-    message Hardware{
-     int32 vcpus=1;
-     int32 memory=2;
-     string boot_diskbus=7; 
-     repeated string videos=3;
-     repeated string graphics=4;
-     repeated string boots=5;
-     repeated string interfaces=6;
-     repeated string isos=8;
-     repeated string floppies=9;
-    }
  string template_id=1;
- Hardware hardware=2;
+ HardwareUpdate hardware=2;
+ ExtraData data=4;
 }
 
 message TemplateUpdateResponse{
@@ -251,25 +258,10 @@ message TemplateUpdateResponse{
 }
 
 message TemplateFromDesktopRequest{
-    message Hardware{
-     int32 vcpus=1;
-     int32 memory=2;
-     string boot_diskbus=7; 
-     repeated string videos=3;
-     repeated string graphics=4;
-     repeated string boots=5;
-     repeated string interfaces=6;
-     repeated string isos=8;
-     repeated string floppies=9;
-    }
  string desktop_id=1;
  string template_id=2;
-     enum Kind{
-        TEMPLATE = 0;
-        BASE = 1;
-     }
- Kind kind=3;
- Hardware hardware=4;
+ HardwareDerived hardware=3;
+ ExtraData data=4;
 }
 
 message TemplateFromDesktopResponse{

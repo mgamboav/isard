@@ -2,7 +2,6 @@
 import grpc
 
 import engine_pb2 as engine__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class EngineStub(object):
@@ -62,7 +61,7 @@ class EngineStub(object):
         )
     self.TemplateList = channel.unary_unary(
         '/engine.Engine/TemplateList',
-        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        request_serializer=engine__pb2.Empty.SerializeToString,
         response_deserializer=engine__pb2.TemplateListResponse.FromString,
         )
     self.TemplateDelete = channel.unary_unary(
@@ -87,7 +86,7 @@ class EngineStub(object):
         )
     self.BaseList = channel.unary_unary(
         '/engine.Engine/BaseList',
-        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        request_serializer=engine__pb2.Empty.SerializeToString,
         response_deserializer=engine__pb2.BaseListResponse.FromString,
         )
 
@@ -251,7 +250,7 @@ def add_EngineServicer_to_server(servicer, server):
       ),
       'TemplateList': grpc.unary_unary_rpc_method_handler(
           servicer.TemplateList,
-          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          request_deserializer=engine__pb2.Empty.FromString,
           response_serializer=engine__pb2.TemplateListResponse.SerializeToString,
       ),
       'TemplateDelete': grpc.unary_unary_rpc_method_handler(
@@ -276,7 +275,7 @@ def add_EngineServicer_to_server(servicer, server):
       ),
       'BaseList': grpc.unary_unary_rpc_method_handler(
           servicer.BaseList,
-          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          request_deserializer=engine__pb2.Empty.FromString,
           response_serializer=engine__pb2.BaseListResponse.SerializeToString,
       ),
   }
