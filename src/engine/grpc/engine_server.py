@@ -254,17 +254,17 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
                         "videos": template['create_dict']['hardware']['videos'],
                         "disks": [{ 'file':request.desktop_id+'.qcow2',
                                     'parent':template['hardware']['disks'][0]['file']}]}
-        # ~ else:
-            # ~ if not request.hardware.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
-            # ~ if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
-            # ~ if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
-            # ~ if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
-            # ~ if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
-            # ~ if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
-            # ~ if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
-            # ~ if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
-            # ~ if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
-            # ~ if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
+        else:
+            if not request.hardware.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
+            if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
+            if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
+            if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
+            if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
+            if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
+            if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
+            if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
+            if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
+            if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
         desktop = { 'id': request.desktop_id,
                     'name': request.desktop_id,
                     'description': request.desktop_id,
