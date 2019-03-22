@@ -27,6 +27,14 @@ service Engine{
 
 message Empty{}
 
+message Allowed{
+ bool onlyowner = 1;
+ repeated string roles = 2;
+ repeated string categories = 3;
+ repeated string groups = 4;
+ repeated string users = 5;
+}
+
     // DESKTOPS //
 
 message DesktopGetRequest{
@@ -92,13 +100,23 @@ message DesktopFromTemplateRequest{
      int32 vcpus=1;
      int32 memory=2;
      string boot_disk_rpath=3;
-     string boot_diskbus=4; 
+     string boot_disk_bus=4; 
      repeated string videos=5;
      repeated string graphics=6;
      repeated string boots=7;
      repeated string interfaces=8;
      repeated string isos=9;
      repeated string floppies=10;
+    }
+    message Data{
+     string name = 1;
+     string description = 2;
+     string user = 3;
+     string role = 4;
+     string category = 5;
+     string group = 6;
+     string hypervisors_pools = 7;
+     Allowed allowed = 8;
     }
  string desktop_id=1;
  string template_id=2;

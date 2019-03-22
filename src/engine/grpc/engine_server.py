@@ -287,7 +287,6 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
                               'groups': False,
                               'users': False}}
 
-        print(desktop)
         ''' Add desktop_id '''
         try:
             ''' DIRECT TO ENGINE '''
@@ -297,7 +296,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
                 r.table('domains').insert(desktop).run(conn)
                 with rdb() as conn:
                     c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
-                    c.next(MIN_TIMEOUT)
+                    c.next(MAX_TIMEOUT)
                 return engine_pb2.DesktopFromTemplateResponse(state='STOPPED')
         except ReqlTimeoutError:
             context.set_details('Unable to create the domain '+request.desktop_id)
