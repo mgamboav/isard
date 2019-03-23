@@ -29,6 +29,11 @@ class EngineStub(object):
         request_serializer=engine__pb2.DesktopStartRequest.SerializeToString,
         response_deserializer=engine__pb2.DesktopStartResponse.FromString,
         )
+    self.DesktopViewer = channel.unary_unary(
+        '/engine.Engine/DesktopViewer',
+        request_serializer=engine__pb2.DesktopViewerRequest.SerializeToString,
+        response_deserializer=engine__pb2.DesktopViewerResponse.FromString,
+        )
     self.DesktopStop = channel.unary_unary(
         '/engine.Engine/DesktopStop',
         request_serializer=engine__pb2.DesktopStopRequest.SerializeToString,
@@ -110,6 +115,13 @@ class EngineServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def DesktopStart(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DesktopViewer(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -217,6 +229,11 @@ def add_EngineServicer_to_server(servicer, server):
           servicer.DesktopStart,
           request_deserializer=engine__pb2.DesktopStartRequest.FromString,
           response_serializer=engine__pb2.DesktopStartResponse.SerializeToString,
+      ),
+      'DesktopViewer': grpc.unary_unary_rpc_method_handler(
+          servicer.DesktopViewer,
+          request_deserializer=engine__pb2.DesktopViewerRequest.FromString,
+          response_serializer=engine__pb2.DesktopViewerResponse.SerializeToString,
       ),
       'DesktopStop': grpc.unary_unary_rpc_method_handler(
           servicer.DesktopStop,

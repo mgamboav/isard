@@ -2,6 +2,25 @@ import grpc
 import engine_pb2
 import engine_pb2_grpc
 
+import rethinkdb as r
+from rethinkdb.errors import (
+    ReqlAuthError,
+    ReqlCursorEmpty,
+    ReqlDriverError,
+    ReqlError,
+    ReqlInternalError,
+    ReqlNonExistenceError,
+    ReqlOpFailedError,
+    ReqlOpIndeterminateError,
+    ReqlPermissionError,
+    ReqlQueryLogicError,
+    ReqlResourceLimitError,
+    ReqlRuntimeError,
+    ReqlServerCompileError,
+    ReqlTimeoutError,
+    ReqlUserError)
+from database import rdb
+
 class EngineClient(object):
     """
     Client for accessing the gRPC functionality
@@ -77,8 +96,29 @@ class EngineClient(object):
         #~ else:
             #~ print(response.state)
         print(response.state)
+        print(response.viewer)
         return True
 
+    def desktop_viewer(self, message):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.stub.DesktopViewer(engine_pb2.DesktopViewerRequest(desktop_id=message))
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == engine_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        print(response.viewer)
+        return True
+        
     def desktop_stop(self, message):
         """
         Client function to call the rpc
@@ -140,21 +180,63 @@ class EngineClient(object):
                         
     def desktop_from_template(self,message):
         """
-        Client function to call the rpc
+        PARAMETERS: name, description, user, category, group, icon, server,
+        os, options '''
+        
         """
         try:
             response = self.stub.DesktopFromTemplate(engine_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
         except grpc.RpcError as e:
+            ## Should be deleted as it failed?##
             print(e.details())
             print(e.code().name)
             print(e.code().value)
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == engine_pb2.DesktopStopResponse.State.STARTED:
+        #~ if response.state == engine_pb2.DesktopFromTemplateResponse.State.STOPPED:
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
+
+        try:
+            with rdb() as conn:
+                template = r.table('domains').get(message['template_id']).pluck('id','name','description','user','category','group','icon','server','os','options').run(conn)             
+        except ReqlNonExistenceError:
+            return False       
+        except Exception as e:
+            print('2: '+str(e))
+            context.set_details('Unable to access database.')
+            return False           
+        desktop = { 'name': message['desktop_id'].replace('_',' '),  ## PASS PARAMETER!
+                    'description': 'the description',
+                    'user': 'admin',
+                    'category': 'admin',
+                    'group': 'admin',
+                    'icon': 'linux',
+                    'server': False,
+                    'os': 'linux',
+                    'options': {'viewers':{'preferred':'spice','spice':{'fullscreen':True}}},
+                    'allowed': {'private':True,
+                                'roles': [],
+                                'categories': [],
+                                'groups': [],
+                                'users': []}}    
+                              
+        ''' Add desktop_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.add_domain_from_id(request.desktop_id)
+            ''' DATABASE '''
+            with rdb() as conn:
+                r.table('domains').get(message['desktop_id']).update(desktop).run(conn)
+                return True
+        except ReqlTimeoutError:
+            print(e)
+            return False          
+        except Exception as e:
+            print(e)
+            return False                                       
         print(response.state)
         return True
 
@@ -165,16 +247,28 @@ class EngineClient(object):
 curr_client = EngineClient()
 
 import time
-desktops = curr_client.desktop_list()
-templates = curr_client.template_list()
-t=templates[0]
-# ~ curr_client.desktop_delete('_admin_pepinillo')
-for i in range(0,20):
-    curr_client.desktop_from_template({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
-    print('Created desktop: '+str(i))
-for i in range(0,20):
-    curr_client.desktop_delete('_admin_pepinillo_'+str(i))
-    print('deleting desktop')
+
+''' NEW DESKTOP CREATION '''
+# ~ templates = curr_client.template_list()
+# ~ t=templates[0]
+# ~ curr_client.desktop_from_template({'desktop_id':'_admin_renew','template_id':t})
+
+''' TEST VIEWER '''
+# ~ curr_client.desktop_stop('_admin_renew')
+# ~ curr_client.desktop_start('_admin_renew')
+curr_client.desktop_viewer('_admin_renew')
+
+''' BULK CREATE DELETE '''
+# ~ desktops = curr_client.desktop_list()
+# ~ templates = curr_client.template_list()
+# ~ t=templates[0]
+# ~ for i in range(0,20):
+    # ~ curr_client.desktop_from_template({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
+    # ~ print('Created desktop: '+str(i))
+# ~ for i in range(0,20):
+    # ~ curr_client.desktop_delete('_admin_pepinillo_'+str(i))
+    # ~ print('deleting desktop')
+    
 '''delete'''
 # ~ desktops = curr_client.desktop_list()
 # ~ print(desktops)

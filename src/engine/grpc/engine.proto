@@ -9,6 +9,7 @@ service Engine{
  rpc DesktopGet(DesktopGetRequest) returns (DesktopGetResponse) {}
  rpc DesktopList(Empty) returns (DesktopListResponse) {}
  rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
+ rpc DesktopViewer(DesktopViewerRequest) returns (DesktopViewerResponse) {}
  rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
  rpc DesktopDelete(DesktopDeleteRequest) returns (DesktopDeleteResponse) {}
  rpc DesktopFromTemplate(DesktopFromTemplateRequest) returns (DesktopFromTemplateResponse) {}
@@ -66,33 +67,16 @@ message HardwareUpdate{
  repeated string floppies=9;
 }
     
-message Options{
- message viewers{
-  string preferred = 1;
-  message spice{
-   bool fullscreen = 1;
-  }
- }
-}
-    
-message Allowed{
- bool onlyowner = 1;
- repeated string roles = 2;
- repeated string categories = 3;
- repeated string groups = 4;
- repeated string users = 5;
-}
-
-message ExtraData{
- string name = 1;
- string description = 2;
- string user = 3;
- string role = 4;
- string category = 5;
- string group = 6;
- string hypervisors_pools = 7;
- Options options = 8;
- Allowed allowed = 9;
+message Viewer{
+ string hostname=1;
+ string hostname_external=2;
+ int32 port_spice=5;
+ int32 port_spice_ssl=6;
+ int32 port_vnc=7;
+ int32 port_vnc_websocket=8;
+ string passwd=9;
+ string client_addr=10;
+ float client_since=11;
 }
     
     // DESKTOPS //
@@ -114,6 +98,23 @@ message DesktopStartRequest{
 }
 
 message DesktopStartResponse{
+    enum State{
+     STARTED = 0;
+     STOPPED = 1;
+     FAILED = 2;
+     UNKNOWN = 3;
+     PAUSED = 4;
+    }
+ State state = 1;
+ string detail = 2;
+ Viewer viewer = 3;
+}
+
+message DesktopViewerRequest{
+ string desktop_id=1;
+}
+
+message DesktopViewerResponse{
     enum State{
      STARTED = 0;
      STOPPED = 1;
@@ -159,7 +160,6 @@ message DesktopFromTemplateRequest{
  string desktop_id=1;
  string template_id=2;
  HardwareDerived hardware=3;
- ExtraData data = 4;
 }
 
 message DesktopFromTemplateResponse{
@@ -176,7 +176,6 @@ message DesktopFromMediaRequest{
  string desktop_id=1;
  string virt_install_id=2;
  HardwareNew hardware=3;
- ExtraData data = 4;
 }
 
 message DesktopFromMediaResponse{
@@ -192,7 +191,6 @@ message DesktopFromMediaResponse{
 message DesktopUpdateRequest{
  string desktop_id=1;
  HardwareUpdate hardware=2;
- ExtraData data=3;
 }
 
 message DesktopUpdateResponse{
@@ -203,14 +201,6 @@ message DesktopUpdateResponse{
     }
  State state = 1;
  string detail = 2;
-}
-
-message Viewer{
-    string host=1;
-    string graphics=2;
-    int32  port=3;
-    int32  tlsport=4;
-    string passwd=5;
 }
 
     // TEMPLATE //
@@ -244,7 +234,6 @@ message TemplateDeleteResponse{
 message TemplateUpdateRequest{
  string template_id=1;
  HardwareUpdate hardware=2;
- ExtraData data=4;
 }
 
 message TemplateUpdateResponse{
@@ -261,7 +250,6 @@ message TemplateFromDesktopRequest{
  string desktop_id=1;
  string template_id=2;
  HardwareDerived hardware=3;
- ExtraData data=4;
 }
 
 message TemplateFromDesktopResponse{

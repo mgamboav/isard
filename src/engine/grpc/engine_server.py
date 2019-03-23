@@ -22,26 +22,10 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
+from database import rdb
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
-    
-# ~ from ..services.db import new_rethink_connection, close_rethink_connection
-    
-# ~ from .controllers.grpc_actions import GrpcActions
-
-class rdb():
-    def __init__(self, RETHINK_HOST='localhost', RETHINK_PORT=28015, RETHINK_DB='isard'):
-        self.conn = None
-        self.rh=RETHINK_HOST
-        self.rp=RETHINK_PORT
-        self.rb=RETHINK_DB
-    def __enter__(self):
-        self.conn = r.connect(self.rh, self.rp, db=self.rb)
-        return self.conn
-    def __exit__(self, type, value, traceback):
-        self.conn.close()
-        
  
 class EngineServicer(engine_pb2_grpc.EngineServicer):
     """
@@ -109,9 +93,20 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
                 with rdb() as conn:
-                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
+                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
                     state=c.next(MIN_TIMEOUT)
-                return engine_pb2.DesktopStartResponse(state=state['new_val']['status'].upper())
+                    viewer={'hostname':state['new_val']['viewer']['hostname'],
+                            'hostname_external':state['new_val']['viewer']['hostname_external'],
+                            # ~ 'port':int(state['new_val']['viewer']['port']),
+                            # ~ 'port_tls':int(state['new_val']['viewer']['tlsport']),
+                            'port_spice':int(state['new_val']['viewer']['port_spice']),
+                            'port_spice_ssl':int(state['new_val']['viewer']['port_spice_ssl']),
+                            'port_vnc':int(state['new_val']['viewer']['port_vnc']),
+                            'port_vnc_websocket':int(state['new_val']['viewer']['port_vnc_websocket']),
+                            'passwd':state['new_val']['viewer']['passwd'],
+                            'client_addr':state['new_val']['viewer']['client_addr'] if state['new_val']['viewer']['client_addr'] else '',
+                            'client_since':state['new_val']['viewer']['client_since'] if state['new_val']['viewer']['client_since'] else 0.0}
+                return engine_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer)
         except ReqlTimeoutError:
             context.set_details('Not able to start the domain')
             context.set_code(grpc.StatusCode.INTERNAL)             
@@ -120,7 +115,43 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
             return engine_pb2.DesktopStartResponse()
- 
+
+    def DesktopViewer(self, request, context):
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                domain = r.table('domains').get(request.desktop_id).pluck('status','kind','viewer').run(conn)
+            if domain['status'] not in ['Started']: 
+                context.set_details('It is not in started status')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+                return engine_pb2.DesktopStartResponse()
+            elif domain['kind'] != 'desktop':
+                context.set_details('You don\'t want to view a template.')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
+                return engine_pb2.DesktopStartResponse()
+        except ReqlNonExistenceError:
+            context.set_details(desktop_id+' not found in database.')
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            return engine_pb2.DesktopStartResponse()            
+        except Exception as e:
+            context.set_details('Unable to access database.')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return engine_pb2.DesktopStartResponse()
+            
+        ''' get viewer for desktop_id '''
+        viewer={'hostname':domain['viewer']['hostname'],
+                'hostname_external':domain['viewer']['hostname_external'],
+                # ~ 'port':int(domain['viewer']['port']),
+                # ~ 'port_tls':int(domain['viewer']['tlsport']),
+                'port_spice':int(domain['viewer']['port_spice']),
+                'port_spice_ssl':int(domain['viewer']['port_spice_ssl']),
+                'port_vnc':int(domain['viewer']['port_vnc']),
+                'port_vnc_websocket':int(domain['viewer']['port_vnc_websocket']),
+                'passwd':domain['viewer']['passwd'],
+                'client_addr':domain['viewer']['client_addr'] if domain['viewer']['client_addr'] else '',
+                'client_since':domain['viewer']['client_since'] if domain['viewer']['client_since'] else 0.0}
+        return engine_pb2.DesktopViewerResponse(state=domain['status'].upper(),viewer=viewer)
+             
     def DesktopStop(self, request, context):
         ''' Checks '''
         try:
@@ -217,7 +248,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
-            print('1 '+str(e))
+            # ~ print('1 '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.DesktopFromTemplateResponse()
@@ -237,7 +268,7 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return engine_pb2.DesktopFromTemplateResponse()         
         except Exception as e:
-            print('2: '+str(e))
+            # ~ print('2: '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.DesktopFromTemplateResponse()
@@ -254,38 +285,24 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
                         "videos": template['create_dict']['hardware']['videos'],
                         "disks": [{ 'file':request.desktop_id+'.qcow2',
                                     'parent':template['hardware']['disks'][0]['file']}]}
-        else:
-            if not request.hardware.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
-            if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
-            if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
-            if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
-            if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
-            if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
-            if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
-            if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
-            if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
-            if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
+        # ~ else:
+            # ~ if not request.hardware.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
+            # ~ if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
+            # ~ if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
+            # ~ if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
+            # ~ if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
+            # ~ if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
+            # ~ if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
+            # ~ if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
+            # ~ if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
+            # ~ if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
+
         desktop = { 'id': request.desktop_id,
-                    'name': request.desktop_id,
-                    'description': request.desktop_id,
                     'kind': 'desktop',
-                    'user': 'admin',
                     'status': 'Creating',
-                    'detail': None,
-                    'category': 'local',
-                    'group': 'local',
-                    'xml': None,
-                    'icon': 'debian',
-                    'server': False,
-                    'os': 'linux',
-                    'options': {'viewers':{'spice':{'fullscreen':True}}},
                     'create_dict': {'hardware':hardware, 
                                     'origin': request.template_id}, 
-                    'hypervisors_pools': template['hypervisors_pools'],
-                    'allowed': {'roles': False,
-                              'categories': False,
-                              'groups': False,
-                              'users': False}}
+                    'hypervisors_pools': template['hypervisors_pools']}
 
         ''' Add desktop_id '''
         try:
@@ -294,9 +311,8 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').insert(desktop).run(conn)
-                with rdb() as conn:
-                    c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
-                    c.next(MAX_TIMEOUT)
+                c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
+                c.next(MAX_TIMEOUT)
                 return engine_pb2.DesktopFromTemplateResponse(state='STOPPED')
         except ReqlTimeoutError:
             context.set_details('Unable to create the domain '+request.desktop_id)

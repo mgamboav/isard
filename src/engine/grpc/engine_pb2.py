@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='engine',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0c\x65ngine.proto\x12\x06\x65ngine\x1a\x19google/protobuf/any.proto\"\x07\n\x05\x45mpty\"\xd9\x01\n\x0bHardwareNew\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x16\n\x0e\x62oot_disk_size\x18\x05 \x01(\x05\x12\x0e\n\x06videos\x18\x06 \x03(\t\x12\x10\n\x08graphics\x18\x07 \x03(\t\x12\r\n\x05\x62oots\x18\x08 \x03(\t\x12\x12\n\ninterfaces\x18\t \x03(\t\x12\x0c\n\x04isos\x18\n \x03(\t\x12\x10\n\x08\x66loppies\x18\x0b \x03(\t\"\xc5\x01\n\x0fHardwareDerived\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x0e\n\x06videos\x18\x05 \x03(\t\x12\x10\n\x08graphics\x18\x06 \x03(\t\x12\r\n\x05\x62oots\x18\x07 \x03(\t\x12\x12\n\ninterfaces\x18\x08 \x03(\t\x12\x0c\n\x04isos\x18\t \x03(\t\x12\x10\n\x08\x66loppies\x18\n \x03(\t\"\xab\x01\n\x0eHardwareUpdate\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x15\n\rboot_disk_bus\x18\x07 \x01(\t\x12\x0e\n\x06videos\x18\x03 \x03(\t\x12\x10\n\x08graphics\x18\x04 \x03(\t\x12\r\n\x05\x62oots\x18\x05 \x03(\t\x12\x12\n\ninterfaces\x18\x06 \x03(\t\x12\x0c\n\x04isos\x18\x08 \x03(\t\x12\x10\n\x08\x66loppies\x18\t \x03(\t\"D\n\x07Options\x1a\x39\n\x07viewers\x12\x11\n\tpreferred\x18\x01 \x01(\t\x1a\x1b\n\x05spice\x12\x12\n\nfullscreen\x18\x01 \x01(\x08\"^\n\x07\x41llowed\x12\x11\n\tonlyowner\x18\x01 \x01(\x08\x12\r\n\x05roles\x18\x02 \x03(\t\x12\x12\n\ncategories\x18\x03 \x03(\t\x12\x0e\n\x06groups\x18\x04 \x03(\t\x12\r\n\x05users\x18\x05 \x03(\t\"\xca\x01\n\tExtraData\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0c\n\x04user\x18\x03 \x01(\t\x12\x0c\n\x04role\x18\x04 \x01(\t\x12\x10\n\x08\x63\x61tegory\x18\x05 \x01(\t\x12\r\n\x05group\x18\x06 \x01(\t\x12\x19\n\x11hypervisors_pools\x18\x07 \x01(\t\x12 \n\x07options\x18\x08 \x01(\x0b\x32\x0f.engine.Options\x12 \n\x07\x61llowed\x18\t \x01(\x0b\x32\x0f.engine.Allowed\"\'\n\x11\x44\x65sktopGetRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\";\n\x12\x44\x65sktopGetResponse\x12%\n\x07\x64\x65sktop\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\"\'\n\x13\x44\x65sktopListResponse\x12\x10\n\x08\x64\x65sktops\x18\x01 \x03(\t\")\n\x13\x44\x65sktopStartRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xc1\x01\n\x14\x44\x65sktopStartResponse\x12\x31\n\x05state\x18\x01 \x01(\x0e\x32\".engine.DesktopStartResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x1e\n\x06viewer\x18\x03 \x01(\x0b\x32\x0e.engine.Viewer\"F\n\x05State\x12\x0b\n\x07STARTED\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x12\x0b\n\x07UNKNOWN\x10\x03\x12\n\n\x06PAUSED\x10\x04\"(\n\x12\x44\x65sktopStopRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\x93\x01\n\x13\x44\x65sktopStopResponse\x12\x30\n\x05state\x18\x01 \x01(\x0e\x32!.engine.DesktopStopResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\":\n\x05State\x12\x0b\n\x07STARTED\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x12\x0b\n\x07UNKNOWN\x10\x03\"*\n\x14\x44\x65sktopDeleteRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\x8a\x01\n\x15\x44\x65sktopDeleteResponse\x12\x32\n\x05state\x18\x01 \x01(\x0e\x32#.engine.DesktopDeleteResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07\x44\x45LETED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"\x91\x01\n\x1a\x44\x65sktopFromTemplateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12)\n\x08hardware\x18\x03 \x01(\x0b\x32\x17.engine.HardwareDerived\x12\x1f\n\x04\x64\x61ta\x18\x04 \x01(\x0b\x32\x11.engine.ExtraData\"\x96\x01\n\x1b\x44\x65sktopFromTemplateResponse\x12\x38\n\x05state\x18\x01 \x01(\x0e\x32).engine.DesktopFromTemplateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"\x8e\x01\n\x17\x44\x65sktopFromMediaRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12%\n\x08hardware\x18\x03 \x01(\x0b\x32\x13.engine.HardwareNew\x12\x1f\n\x04\x64\x61ta\x18\x04 \x01(\x0b\x32\x11.engine.ExtraData\"\x90\x01\n\x18\x44\x65sktopFromMediaResponse\x12\x35\n\x05state\x18\x01 \x01(\x0e\x32&.engine.DesktopFromMediaResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"u\n\x14\x44\x65sktopUpdateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12(\n\x08hardware\x18\x02 \x01(\x0b\x32\x16.engine.HardwareUpdate\x12\x1f\n\x04\x64\x61ta\x18\x03 \x01(\x0b\x32\x11.engine.ExtraData\"\x8a\x01\n\x15\x44\x65sktopUpdateResponse\x12\x32\n\x05state\x18\x01 \x01(\x0e\x32#.engine.DesktopUpdateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"W\n\x06Viewer\x12\x0c\n\x04host\x18\x01 \x01(\t\x12\x10\n\x08graphics\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\x05\x12\x0f\n\x07tlsport\x18\x04 \x01(\x05\x12\x0e\n\x06passwd\x18\x05 \x01(\t\")\n\x12TemplateGetRequest\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\"=\n\x13TemplateGetResponse\x12&\n\x08template\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\")\n\x14TemplateListResponse\x12\x11\n\ttemplates\x18\x01 \x03(\t\",\n\x15TemplateDeleteRequest\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\"\x8c\x01\n\x16TemplateDeleteResponse\x12\x33\n\x05state\x18\x01 \x01(\x0e\x32$.engine.TemplateDeleteResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07\x44\x45LETED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"w\n\x15TemplateUpdateRequest\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\x12(\n\x08hardware\x18\x02 \x01(\x0b\x32\x16.engine.HardwareUpdate\x12\x1f\n\x04\x64\x61ta\x18\x04 \x01(\x0b\x32\x11.engine.ExtraData\"\x8c\x01\n\x16TemplateUpdateResponse\x12\x33\n\x05state\x18\x01 \x01(\x0e\x32$.engine.TemplateUpdateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"\x91\x01\n\x1aTemplateFromDesktopRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12)\n\x08hardware\x18\x03 \x01(\x0b\x32\x17.engine.HardwareDerived\x12\x1f\n\x04\x64\x61ta\x18\x04 \x01(\x0b\x32\x11.engine.ExtraData\"\x96\x01\n\x1bTemplateFromDesktopResponse\x12\x38\n\x05state\x18\x01 \x01(\x0e\x32).engine.TemplateFromDesktopResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"!\n\x0e\x42\x61seGetRequest\x12\x0f\n\x07\x62\x61se_id\x18\x01 \x01(\t\"5\n\x0f\x42\x61seGetResponse\x12\"\n\x04\x62\x61se\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\"!\n\x10\x42\x61seListResponse\x12\r\n\x05\x62\x61ses\x18\x01 \x03(\t2\x83\t\n\x06\x45ngine\x12\x45\n\nDesktopGet\x12\x19.engine.DesktopGetRequest\x1a\x1a.engine.DesktopGetResponse\"\x00\x12;\n\x0b\x44\x65sktopList\x12\r.engine.Empty\x1a\x1b.engine.DesktopListResponse\"\x00\x12K\n\x0c\x44\x65sktopStart\x12\x1b.engine.DesktopStartRequest\x1a\x1c.engine.DesktopStartResponse\"\x00\x12H\n\x0b\x44\x65sktopStop\x12\x1a.engine.DesktopStopRequest\x1a\x1b.engine.DesktopStopResponse\"\x00\x12N\n\rDesktopDelete\x12\x1c.engine.DesktopDeleteRequest\x1a\x1d.engine.DesktopDeleteResponse\"\x00\x12`\n\x13\x44\x65sktopFromTemplate\x12\".engine.DesktopFromTemplateRequest\x1a#.engine.DesktopFromTemplateResponse\"\x00\x12W\n\x10\x44\x65sktopFromMedia\x12\x1f.engine.DesktopFromMediaRequest\x1a .engine.DesktopFromMediaResponse\"\x00\x12N\n\rDesktopUpdate\x12\x1c.engine.DesktopUpdateRequest\x1a\x1d.engine.DesktopUpdateResponse\"\x00\x12H\n\x0bTemplateGet\x12\x1a.engine.TemplateGetRequest\x1a\x1b.engine.TemplateGetResponse\"\x00\x12=\n\x0cTemplateList\x12\r.engine.Empty\x1a\x1c.engine.TemplateListResponse\"\x00\x12Q\n\x0eTemplateDelete\x12\x1d.engine.TemplateDeleteRequest\x1a\x1e.engine.TemplateDeleteResponse\"\x00\x12Q\n\x0eTemplateUpdate\x12\x1d.engine.TemplateUpdateRequest\x1a\x1e.engine.TemplateUpdateResponse\"\x00\x12_\n\x12TemplateFromDomain\x12\".engine.TemplateFromDesktopRequest\x1a#.engine.TemplateFromDesktopResponse\"\x00\x12<\n\x07\x42\x61seGet\x12\x16.engine.BaseGetRequest\x1a\x17.engine.BaseGetResponse\"\x00\x12\x35\n\x08\x42\x61seList\x12\r.engine.Empty\x1a\x18.engine.BaseListResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0c\x65ngine.proto\x12\x06\x65ngine\x1a\x19google/protobuf/any.proto\"\x07\n\x05\x45mpty\"\xd9\x01\n\x0bHardwareNew\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x16\n\x0e\x62oot_disk_size\x18\x05 \x01(\x05\x12\x0e\n\x06videos\x18\x06 \x03(\t\x12\x10\n\x08graphics\x18\x07 \x03(\t\x12\r\n\x05\x62oots\x18\x08 \x03(\t\x12\x12\n\ninterfaces\x18\t \x03(\t\x12\x0c\n\x04isos\x18\n \x03(\t\x12\x10\n\x08\x66loppies\x18\x0b \x03(\t\"\xc5\x01\n\x0fHardwareDerived\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x0e\n\x06videos\x18\x05 \x03(\t\x12\x10\n\x08graphics\x18\x06 \x03(\t\x12\r\n\x05\x62oots\x18\x07 \x03(\t\x12\x12\n\ninterfaces\x18\x08 \x03(\t\x12\x0c\n\x04isos\x18\t \x03(\t\x12\x10\n\x08\x66loppies\x18\n \x03(\t\"\xab\x01\n\x0eHardwareUpdate\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x15\n\rboot_disk_bus\x18\x07 \x01(\t\x12\x0e\n\x06videos\x18\x03 \x03(\t\x12\x10\n\x08graphics\x18\x04 \x03(\t\x12\r\n\x05\x62oots\x18\x05 \x03(\t\x12\x12\n\ninterfaces\x18\x06 \x03(\t\x12\x0c\n\x04isos\x18\x08 \x03(\t\x12\x10\n\x08\x66loppies\x18\t \x03(\t\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\'\n\x11\x44\x65sktopGetRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\";\n\x12\x44\x65sktopGetResponse\x12%\n\x07\x64\x65sktop\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\"\'\n\x13\x44\x65sktopListResponse\x12\x10\n\x08\x64\x65sktops\x18\x01 \x03(\t\")\n\x13\x44\x65sktopStartRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xc1\x01\n\x14\x44\x65sktopStartResponse\x12\x31\n\x05state\x18\x01 \x01(\x0e\x32\".engine.DesktopStartResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x1e\n\x06viewer\x18\x03 \x01(\x0b\x32\x0e.engine.Viewer\"F\n\x05State\x12\x0b\n\x07STARTED\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x12\x0b\n\x07UNKNOWN\x10\x03\x12\n\n\x06PAUSED\x10\x04\"*\n\x14\x44\x65sktopViewerRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xc3\x01\n\x15\x44\x65sktopViewerResponse\x12\x32\n\x05state\x18\x01 \x01(\x0e\x32#.engine.DesktopViewerResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x1e\n\x06viewer\x18\x03 \x01(\x0b\x32\x0e.engine.Viewer\"F\n\x05State\x12\x0b\n\x07STARTED\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x12\x0b\n\x07UNKNOWN\x10\x03\x12\n\n\x06PAUSED\x10\x04\"(\n\x12\x44\x65sktopStopRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\x93\x01\n\x13\x44\x65sktopStopResponse\x12\x30\n\x05state\x18\x01 \x01(\x0e\x32!.engine.DesktopStopResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\":\n\x05State\x12\x0b\n\x07STARTED\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x12\x0b\n\x07UNKNOWN\x10\x03\"*\n\x14\x44\x65sktopDeleteRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\x8a\x01\n\x15\x44\x65sktopDeleteResponse\x12\x32\n\x05state\x18\x01 \x01(\x0e\x32#.engine.DesktopDeleteResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07\x44\x45LETED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"p\n\x1a\x44\x65sktopFromTemplateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12)\n\x08hardware\x18\x03 \x01(\x0b\x32\x17.engine.HardwareDerived\"\x96\x01\n\x1b\x44\x65sktopFromTemplateResponse\x12\x38\n\x05state\x18\x01 \x01(\x0e\x32).engine.DesktopFromTemplateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"m\n\x17\x44\x65sktopFromMediaRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12%\n\x08hardware\x18\x03 \x01(\x0b\x32\x13.engine.HardwareNew\"\x90\x01\n\x18\x44\x65sktopFromMediaResponse\x12\x35\n\x05state\x18\x01 \x01(\x0e\x32&.engine.DesktopFromMediaResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"T\n\x14\x44\x65sktopUpdateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12(\n\x08hardware\x18\x02 \x01(\x0b\x32\x16.engine.HardwareUpdate\"\x8a\x01\n\x15\x44\x65sktopUpdateResponse\x12\x32\n\x05state\x18\x01 \x01(\x0e\x32#.engine.DesktopUpdateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\")\n\x12TemplateGetRequest\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\"=\n\x13TemplateGetResponse\x12&\n\x08template\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\")\n\x14TemplateListResponse\x12\x11\n\ttemplates\x18\x01 \x03(\t\",\n\x15TemplateDeleteRequest\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\"\x8c\x01\n\x16TemplateDeleteResponse\x12\x33\n\x05state\x18\x01 \x01(\x0e\x32$.engine.TemplateDeleteResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07\x44\x45LETED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"V\n\x15TemplateUpdateRequest\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\x12(\n\x08hardware\x18\x02 \x01(\x0b\x32\x16.engine.HardwareUpdate\"\x8c\x01\n\x16TemplateUpdateResponse\x12\x33\n\x05state\x18\x01 \x01(\x0e\x32$.engine.TemplateUpdateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"p\n\x1aTemplateFromDesktopRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12)\n\x08hardware\x18\x03 \x01(\x0b\x32\x17.engine.HardwareDerived\"\x96\x01\n\x1bTemplateFromDesktopResponse\x12\x38\n\x05state\x18\x01 \x01(\x0e\x32).engine.TemplateFromDesktopResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"!\n\x0e\x42\x61seGetRequest\x12\x0f\n\x07\x62\x61se_id\x18\x01 \x01(\t\"5\n\x0f\x42\x61seGetResponse\x12\"\n\x04\x62\x61se\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\"!\n\x10\x42\x61seListResponse\x12\r\n\x05\x62\x61ses\x18\x01 \x03(\t2\xd3\t\n\x06\x45ngine\x12\x45\n\nDesktopGet\x12\x19.engine.DesktopGetRequest\x1a\x1a.engine.DesktopGetResponse\"\x00\x12;\n\x0b\x44\x65sktopList\x12\r.engine.Empty\x1a\x1b.engine.DesktopListResponse\"\x00\x12K\n\x0c\x44\x65sktopStart\x12\x1b.engine.DesktopStartRequest\x1a\x1c.engine.DesktopStartResponse\"\x00\x12N\n\rDesktopViewer\x12\x1c.engine.DesktopViewerRequest\x1a\x1d.engine.DesktopViewerResponse\"\x00\x12H\n\x0b\x44\x65sktopStop\x12\x1a.engine.DesktopStopRequest\x1a\x1b.engine.DesktopStopResponse\"\x00\x12N\n\rDesktopDelete\x12\x1c.engine.DesktopDeleteRequest\x1a\x1d.engine.DesktopDeleteResponse\"\x00\x12`\n\x13\x44\x65sktopFromTemplate\x12\".engine.DesktopFromTemplateRequest\x1a#.engine.DesktopFromTemplateResponse\"\x00\x12W\n\x10\x44\x65sktopFromMedia\x12\x1f.engine.DesktopFromMediaRequest\x1a .engine.DesktopFromMediaResponse\"\x00\x12N\n\rDesktopUpdate\x12\x1c.engine.DesktopUpdateRequest\x1a\x1d.engine.DesktopUpdateResponse\"\x00\x12H\n\x0bTemplateGet\x12\x1a.engine.TemplateGetRequest\x1a\x1b.engine.TemplateGetResponse\"\x00\x12=\n\x0cTemplateList\x12\r.engine.Empty\x1a\x1c.engine.TemplateListResponse\"\x00\x12Q\n\x0eTemplateDelete\x12\x1d.engine.TemplateDeleteRequest\x1a\x1e.engine.TemplateDeleteResponse\"\x00\x12Q\n\x0eTemplateUpdate\x12\x1d.engine.TemplateUpdateRequest\x1a\x1e.engine.TemplateUpdateResponse\"\x00\x12_\n\x12TemplateFromDomain\x12\".engine.TemplateFromDesktopRequest\x1a#.engine.TemplateFromDesktopResponse\"\x00\x12<\n\x07\x42\x61seGet\x12\x16.engine.BaseGetRequest\x1a\x17.engine.BaseGetResponse\"\x00\x12\x35\n\x08\x42\x61seList\x12\r.engine.Empty\x1a\x18.engine.BaseListResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
 
@@ -55,10 +55,44 @@ _DESKTOPSTARTRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1335,
-  serialized_end=1405,
+  serialized_start=1169,
+  serialized_end=1239,
 )
 _sym_db.RegisterEnumDescriptor(_DESKTOPSTARTRESPONSE_STATE)
+
+_DESKTOPVIEWERRESPONSE_STATE = _descriptor.EnumDescriptor(
+  name='State',
+  full_name='engine.DesktopViewerResponse.State',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='STARTED', index=0, number=0,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='STOPPED', index=1, number=1,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='FAILED', index=2, number=2,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='UNKNOWN', index=3, number=3,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='PAUSED', index=4, number=4,
+      serialized_options=None,
+      type=None),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=1169,
+  serialized_end=1239,
+)
+_sym_db.RegisterEnumDescriptor(_DESKTOPVIEWERRESPONSE_STATE)
 
 _DESKTOPSTOPRESPONSE_STATE = _descriptor.EnumDescriptor(
   name='State',
@@ -85,8 +119,8 @@ _DESKTOPSTOPRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1335,
-  serialized_end=1393,
+  serialized_start=1169,
+  serialized_end=1227,
 )
 _sym_db.RegisterEnumDescriptor(_DESKTOPSTOPRESPONSE_STATE)
 
@@ -111,8 +145,8 @@ _DESKTOPDELETERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1737,
-  serialized_end=1782,
+  serialized_start=1813,
+  serialized_end=1858,
 )
 _sym_db.RegisterEnumDescriptor(_DESKTOPDELETERESPONSE_STATE)
 
@@ -137,8 +171,8 @@ _DESKTOPFROMTEMPLATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2038,
-  serialized_end=2083,
+  serialized_start=2080,
+  serialized_end=2125,
 )
 _sym_db.RegisterEnumDescriptor(_DESKTOPFROMTEMPLATERESPONSE_STATE)
 
@@ -163,8 +197,8 @@ _DESKTOPFROMMEDIARESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2038,
-  serialized_end=2083,
+  serialized_start=2080,
+  serialized_end=2125,
 )
 _sym_db.RegisterEnumDescriptor(_DESKTOPFROMMEDIARESPONSE_STATE)
 
@@ -189,8 +223,8 @@ _DESKTOPUPDATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2038,
-  serialized_end=2083,
+  serialized_start=2080,
+  serialized_end=2125,
 )
 _sym_db.RegisterEnumDescriptor(_DESKTOPUPDATERESPONSE_STATE)
 
@@ -215,8 +249,8 @@ _TEMPLATEDELETERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1737,
-  serialized_end=1782,
+  serialized_start=1813,
+  serialized_end=1858,
 )
 _sym_db.RegisterEnumDescriptor(_TEMPLATEDELETERESPONSE_STATE)
 
@@ -241,8 +275,8 @@ _TEMPLATEUPDATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2038,
-  serialized_end=2083,
+  serialized_start=2080,
+  serialized_end=2125,
 )
 _sym_db.RegisterEnumDescriptor(_TEMPLATEUPDATERESPONSE_STATE)
 
@@ -267,8 +301,8 @@ _TEMPLATEFROMDESKTOPRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2038,
-  serialized_end=2083,
+  serialized_start=2080,
+  serialized_end=2125,
 )
 _sym_db.RegisterEnumDescriptor(_TEMPLATEFROMDESKTOPRESPONSE_STATE)
 
@@ -579,216 +613,73 @@ _HARDWAREUPDATE = _descriptor.Descriptor(
 )
 
 
-_OPTIONS_VIEWERS_SPICE = _descriptor.Descriptor(
-  name='spice',
-  full_name='engine.Options.viewers.spice',
+_VIEWER = _descriptor.Descriptor(
+  name='Viewer',
+  full_name='engine.Viewer',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='fullscreen', full_name='engine.Options.viewers.spice.fullscreen', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=695,
-  serialized_end=722,
-)
-
-_OPTIONS_VIEWERS = _descriptor.Descriptor(
-  name='viewers',
-  full_name='engine.Options.viewers',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='preferred', full_name='engine.Options.viewers.preferred', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_OPTIONS_VIEWERS_SPICE, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=665,
-  serialized_end=722,
-)
-
-_OPTIONS = _descriptor.Descriptor(
-  name='Options',
-  full_name='engine.Options',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[_OPTIONS_VIEWERS, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=654,
-  serialized_end=722,
-)
-
-
-_ALLOWED = _descriptor.Descriptor(
-  name='Allowed',
-  full_name='engine.Allowed',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='onlyowner', full_name='engine.Allowed.onlyowner', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='roles', full_name='engine.Allowed.roles', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='categories', full_name='engine.Allowed.categories', index=2,
-      number=3, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='groups', full_name='engine.Allowed.groups', index=3,
-      number=4, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='users', full_name='engine.Allowed.users', index=4,
-      number=5, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=724,
-  serialized_end=818,
-)
-
-
-_EXTRADATA = _descriptor.Descriptor(
-  name='ExtraData',
-  full_name='engine.ExtraData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='name', full_name='engine.ExtraData.name', index=0,
+      name='hostname', full_name='engine.Viewer.hostname', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='description', full_name='engine.ExtraData.description', index=1,
+      name='hostname_external', full_name='engine.Viewer.hostname_external', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='user', full_name='engine.ExtraData.user', index=2,
-      number=3, type=9, cpp_type=9, label=1,
+      name='port_spice', full_name='engine.Viewer.port_spice', index=2,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_spice_ssl', full_name='engine.Viewer.port_spice_ssl', index=3,
+      number=6, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_vnc', full_name='engine.Viewer.port_vnc', index=4,
+      number=7, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_vnc_websocket', full_name='engine.Viewer.port_vnc_websocket', index=5,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='passwd', full_name='engine.Viewer.passwd', index=6,
+      number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='role', full_name='engine.ExtraData.role', index=3,
-      number=4, type=9, cpp_type=9, label=1,
+      name='client_addr', full_name='engine.Viewer.client_addr', index=7,
+      number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='category', full_name='engine.ExtraData.category', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='group', full_name='engine.ExtraData.group', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='hypervisors_pools', full_name='engine.ExtraData.hypervisors_pools', index=6,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='options', full_name='engine.ExtraData.options', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='allowed', full_name='engine.ExtraData.allowed', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='client_since', full_name='engine.Viewer.client_since', index=8,
+      number=11, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -804,8 +695,8 @@ _EXTRADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=821,
-  serialized_end=1023,
+  serialized_start=655,
+  serialized_end=857,
 )
 
 
@@ -835,8 +726,8 @@ _DESKTOPGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1025,
-  serialized_end=1064,
+  serialized_start=859,
+  serialized_end=898,
 )
 
 
@@ -866,8 +757,8 @@ _DESKTOPGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1066,
-  serialized_end=1125,
+  serialized_start=900,
+  serialized_end=959,
 )
 
 
@@ -897,8 +788,8 @@ _DESKTOPLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1127,
-  serialized_end=1166,
+  serialized_start=961,
+  serialized_end=1000,
 )
 
 
@@ -928,8 +819,8 @@ _DESKTOPSTARTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1168,
-  serialized_end=1209,
+  serialized_start=1002,
+  serialized_end=1043,
 )
 
 
@@ -974,8 +865,85 @@ _DESKTOPSTARTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1212,
-  serialized_end=1405,
+  serialized_start=1046,
+  serialized_end=1239,
+)
+
+
+_DESKTOPVIEWERREQUEST = _descriptor.Descriptor(
+  name='DesktopViewerRequest',
+  full_name='engine.DesktopViewerRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='desktop_id', full_name='engine.DesktopViewerRequest.desktop_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1241,
+  serialized_end=1283,
+)
+
+
+_DESKTOPVIEWERRESPONSE = _descriptor.Descriptor(
+  name='DesktopViewerResponse',
+  full_name='engine.DesktopViewerResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='state', full_name='engine.DesktopViewerResponse.state', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='detail', full_name='engine.DesktopViewerResponse.detail', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='viewer', full_name='engine.DesktopViewerResponse.viewer', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+    _DESKTOPVIEWERRESPONSE_STATE,
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1286,
+  serialized_end=1481,
 )
 
 
@@ -1005,8 +973,8 @@ _DESKTOPSTOPREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1407,
-  serialized_end=1447,
+  serialized_start=1483,
+  serialized_end=1523,
 )
 
 
@@ -1044,8 +1012,8 @@ _DESKTOPSTOPRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1450,
-  serialized_end=1597,
+  serialized_start=1526,
+  serialized_end=1673,
 )
 
 
@@ -1075,8 +1043,8 @@ _DESKTOPDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1599,
-  serialized_end=1641,
+  serialized_start=1675,
+  serialized_end=1717,
 )
 
 
@@ -1114,8 +1082,8 @@ _DESKTOPDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1644,
-  serialized_end=1782,
+  serialized_start=1720,
+  serialized_end=1858,
 )
 
 
@@ -1147,13 +1115,6 @@ _DESKTOPFROMTEMPLATEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data', full_name='engine.DesktopFromTemplateRequest.data', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1166,8 +1127,8 @@ _DESKTOPFROMTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1785,
-  serialized_end=1930,
+  serialized_start=1860,
+  serialized_end=1972,
 )
 
 
@@ -1205,8 +1166,8 @@ _DESKTOPFROMTEMPLATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1933,
-  serialized_end=2083,
+  serialized_start=1975,
+  serialized_end=2125,
 )
 
 
@@ -1238,13 +1199,6 @@ _DESKTOPFROMMEDIAREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data', full_name='engine.DesktopFromMediaRequest.data', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1257,8 +1211,8 @@ _DESKTOPFROMMEDIAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2086,
-  serialized_end=2228,
+  serialized_start=2127,
+  serialized_end=2236,
 )
 
 
@@ -1296,8 +1250,8 @@ _DESKTOPFROMMEDIARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2231,
-  serialized_end=2375,
+  serialized_start=2239,
+  serialized_end=2383,
 )
 
 
@@ -1322,13 +1276,6 @@ _DESKTOPUPDATEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data', full_name='engine.DesktopUpdateRequest.data', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1341,8 +1288,8 @@ _DESKTOPUPDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2377,
-  serialized_end=2494,
+  serialized_start=2385,
+  serialized_end=2469,
 )
 
 
@@ -1380,67 +1327,8 @@ _DESKTOPUPDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2497,
-  serialized_end=2635,
-)
-
-
-_VIEWER = _descriptor.Descriptor(
-  name='Viewer',
-  full_name='engine.Viewer',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='host', full_name='engine.Viewer.host', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='graphics', full_name='engine.Viewer.graphics', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='port', full_name='engine.Viewer.port', index=2,
-      number=3, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tlsport', full_name='engine.Viewer.tlsport', index=3,
-      number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='passwd', full_name='engine.Viewer.passwd', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=2637,
-  serialized_end=2724,
+  serialized_start=2472,
+  serialized_end=2610,
 )
 
 
@@ -1470,8 +1358,8 @@ _TEMPLATEGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2726,
-  serialized_end=2767,
+  serialized_start=2612,
+  serialized_end=2653,
 )
 
 
@@ -1501,8 +1389,8 @@ _TEMPLATEGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2769,
-  serialized_end=2830,
+  serialized_start=2655,
+  serialized_end=2716,
 )
 
 
@@ -1532,8 +1420,8 @@ _TEMPLATELISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2832,
-  serialized_end=2873,
+  serialized_start=2718,
+  serialized_end=2759,
 )
 
 
@@ -1563,8 +1451,8 @@ _TEMPLATEDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2875,
-  serialized_end=2919,
+  serialized_start=2761,
+  serialized_end=2805,
 )
 
 
@@ -1602,8 +1490,8 @@ _TEMPLATEDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2922,
-  serialized_end=3062,
+  serialized_start=2808,
+  serialized_end=2948,
 )
 
 
@@ -1628,13 +1516,6 @@ _TEMPLATEUPDATEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data', full_name='engine.TemplateUpdateRequest.data', index=2,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1647,8 +1528,8 @@ _TEMPLATEUPDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3064,
-  serialized_end=3183,
+  serialized_start=2950,
+  serialized_end=3036,
 )
 
 
@@ -1686,8 +1567,8 @@ _TEMPLATEUPDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3186,
-  serialized_end=3326,
+  serialized_start=3039,
+  serialized_end=3179,
 )
 
 
@@ -1719,13 +1600,6 @@ _TEMPLATEFROMDESKTOPREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='data', full_name='engine.TemplateFromDesktopRequest.data', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1738,8 +1612,8 @@ _TEMPLATEFROMDESKTOPREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3329,
-  serialized_end=3474,
+  serialized_start=3181,
+  serialized_end=3293,
 )
 
 
@@ -1777,8 +1651,8 @@ _TEMPLATEFROMDESKTOPRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3477,
-  serialized_end=3627,
+  serialized_start=3296,
+  serialized_end=3446,
 )
 
 
@@ -1808,8 +1682,8 @@ _BASEGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3629,
-  serialized_end=3662,
+  serialized_start=3448,
+  serialized_end=3481,
 )
 
 
@@ -1839,8 +1713,8 @@ _BASEGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3664,
-  serialized_end=3717,
+  serialized_start=3483,
+  serialized_end=3536,
 )
 
 
@@ -1870,43 +1744,37 @@ _BASELISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3719,
-  serialized_end=3752,
+  serialized_start=3538,
+  serialized_end=3571,
 )
 
-_OPTIONS_VIEWERS_SPICE.containing_type = _OPTIONS_VIEWERS
-_OPTIONS_VIEWERS.containing_type = _OPTIONS
-_EXTRADATA.fields_by_name['options'].message_type = _OPTIONS
-_EXTRADATA.fields_by_name['allowed'].message_type = _ALLOWED
 _DESKTOPGETRESPONSE.fields_by_name['desktop'].message_type = google_dot_protobuf_dot_any__pb2._ANY
 _DESKTOPSTARTRESPONSE.fields_by_name['state'].enum_type = _DESKTOPSTARTRESPONSE_STATE
 _DESKTOPSTARTRESPONSE.fields_by_name['viewer'].message_type = _VIEWER
 _DESKTOPSTARTRESPONSE_STATE.containing_type = _DESKTOPSTARTRESPONSE
+_DESKTOPVIEWERRESPONSE.fields_by_name['state'].enum_type = _DESKTOPVIEWERRESPONSE_STATE
+_DESKTOPVIEWERRESPONSE.fields_by_name['viewer'].message_type = _VIEWER
+_DESKTOPVIEWERRESPONSE_STATE.containing_type = _DESKTOPVIEWERRESPONSE
 _DESKTOPSTOPRESPONSE.fields_by_name['state'].enum_type = _DESKTOPSTOPRESPONSE_STATE
 _DESKTOPSTOPRESPONSE_STATE.containing_type = _DESKTOPSTOPRESPONSE
 _DESKTOPDELETERESPONSE.fields_by_name['state'].enum_type = _DESKTOPDELETERESPONSE_STATE
 _DESKTOPDELETERESPONSE_STATE.containing_type = _DESKTOPDELETERESPONSE
 _DESKTOPFROMTEMPLATEREQUEST.fields_by_name['hardware'].message_type = _HARDWAREDERIVED
-_DESKTOPFROMTEMPLATEREQUEST.fields_by_name['data'].message_type = _EXTRADATA
 _DESKTOPFROMTEMPLATERESPONSE.fields_by_name['state'].enum_type = _DESKTOPFROMTEMPLATERESPONSE_STATE
 _DESKTOPFROMTEMPLATERESPONSE_STATE.containing_type = _DESKTOPFROMTEMPLATERESPONSE
 _DESKTOPFROMMEDIAREQUEST.fields_by_name['hardware'].message_type = _HARDWARENEW
-_DESKTOPFROMMEDIAREQUEST.fields_by_name['data'].message_type = _EXTRADATA
 _DESKTOPFROMMEDIARESPONSE.fields_by_name['state'].enum_type = _DESKTOPFROMMEDIARESPONSE_STATE
 _DESKTOPFROMMEDIARESPONSE_STATE.containing_type = _DESKTOPFROMMEDIARESPONSE
 _DESKTOPUPDATEREQUEST.fields_by_name['hardware'].message_type = _HARDWAREUPDATE
-_DESKTOPUPDATEREQUEST.fields_by_name['data'].message_type = _EXTRADATA
 _DESKTOPUPDATERESPONSE.fields_by_name['state'].enum_type = _DESKTOPUPDATERESPONSE_STATE
 _DESKTOPUPDATERESPONSE_STATE.containing_type = _DESKTOPUPDATERESPONSE
 _TEMPLATEGETRESPONSE.fields_by_name['template'].message_type = google_dot_protobuf_dot_any__pb2._ANY
 _TEMPLATEDELETERESPONSE.fields_by_name['state'].enum_type = _TEMPLATEDELETERESPONSE_STATE
 _TEMPLATEDELETERESPONSE_STATE.containing_type = _TEMPLATEDELETERESPONSE
 _TEMPLATEUPDATEREQUEST.fields_by_name['hardware'].message_type = _HARDWAREUPDATE
-_TEMPLATEUPDATEREQUEST.fields_by_name['data'].message_type = _EXTRADATA
 _TEMPLATEUPDATERESPONSE.fields_by_name['state'].enum_type = _TEMPLATEUPDATERESPONSE_STATE
 _TEMPLATEUPDATERESPONSE_STATE.containing_type = _TEMPLATEUPDATERESPONSE
 _TEMPLATEFROMDESKTOPREQUEST.fields_by_name['hardware'].message_type = _HARDWAREDERIVED
-_TEMPLATEFROMDESKTOPREQUEST.fields_by_name['data'].message_type = _EXTRADATA
 _TEMPLATEFROMDESKTOPRESPONSE.fields_by_name['state'].enum_type = _TEMPLATEFROMDESKTOPRESPONSE_STATE
 _TEMPLATEFROMDESKTOPRESPONSE_STATE.containing_type = _TEMPLATEFROMDESKTOPRESPONSE
 _BASEGETRESPONSE.fields_by_name['base'].message_type = google_dot_protobuf_dot_any__pb2._ANY
@@ -1914,14 +1782,14 @@ DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 DESCRIPTOR.message_types_by_name['HardwareNew'] = _HARDWARENEW
 DESCRIPTOR.message_types_by_name['HardwareDerived'] = _HARDWAREDERIVED
 DESCRIPTOR.message_types_by_name['HardwareUpdate'] = _HARDWAREUPDATE
-DESCRIPTOR.message_types_by_name['Options'] = _OPTIONS
-DESCRIPTOR.message_types_by_name['Allowed'] = _ALLOWED
-DESCRIPTOR.message_types_by_name['ExtraData'] = _EXTRADATA
+DESCRIPTOR.message_types_by_name['Viewer'] = _VIEWER
 DESCRIPTOR.message_types_by_name['DesktopGetRequest'] = _DESKTOPGETREQUEST
 DESCRIPTOR.message_types_by_name['DesktopGetResponse'] = _DESKTOPGETRESPONSE
 DESCRIPTOR.message_types_by_name['DesktopListResponse'] = _DESKTOPLISTRESPONSE
 DESCRIPTOR.message_types_by_name['DesktopStartRequest'] = _DESKTOPSTARTREQUEST
 DESCRIPTOR.message_types_by_name['DesktopStartResponse'] = _DESKTOPSTARTRESPONSE
+DESCRIPTOR.message_types_by_name['DesktopViewerRequest'] = _DESKTOPVIEWERREQUEST
+DESCRIPTOR.message_types_by_name['DesktopViewerResponse'] = _DESKTOPVIEWERRESPONSE
 DESCRIPTOR.message_types_by_name['DesktopStopRequest'] = _DESKTOPSTOPREQUEST
 DESCRIPTOR.message_types_by_name['DesktopStopResponse'] = _DESKTOPSTOPRESPONSE
 DESCRIPTOR.message_types_by_name['DesktopDeleteRequest'] = _DESKTOPDELETEREQUEST
@@ -1932,7 +1800,6 @@ DESCRIPTOR.message_types_by_name['DesktopFromMediaRequest'] = _DESKTOPFROMMEDIAR
 DESCRIPTOR.message_types_by_name['DesktopFromMediaResponse'] = _DESKTOPFROMMEDIARESPONSE
 DESCRIPTOR.message_types_by_name['DesktopUpdateRequest'] = _DESKTOPUPDATEREQUEST
 DESCRIPTOR.message_types_by_name['DesktopUpdateResponse'] = _DESKTOPUPDATERESPONSE
-DESCRIPTOR.message_types_by_name['Viewer'] = _VIEWER
 DESCRIPTOR.message_types_by_name['TemplateGetRequest'] = _TEMPLATEGETREQUEST
 DESCRIPTOR.message_types_by_name['TemplateGetResponse'] = _TEMPLATEGETRESPONSE
 DESCRIPTOR.message_types_by_name['TemplateListResponse'] = _TEMPLATELISTRESPONSE
@@ -1975,42 +1842,12 @@ HardwareUpdate = _reflection.GeneratedProtocolMessageType('HardwareUpdate', (_me
   ))
 _sym_db.RegisterMessage(HardwareUpdate)
 
-Options = _reflection.GeneratedProtocolMessageType('Options', (_message.Message,), dict(
-
-  viewers = _reflection.GeneratedProtocolMessageType('viewers', (_message.Message,), dict(
-
-    spice = _reflection.GeneratedProtocolMessageType('spice', (_message.Message,), dict(
-      DESCRIPTOR = _OPTIONS_VIEWERS_SPICE,
-      __module__ = 'engine_pb2'
-      # @@protoc_insertion_point(class_scope:engine.Options.viewers.spice)
-      ))
-    ,
-    DESCRIPTOR = _OPTIONS_VIEWERS,
-    __module__ = 'engine_pb2'
-    # @@protoc_insertion_point(class_scope:engine.Options.viewers)
-    ))
-  ,
-  DESCRIPTOR = _OPTIONS,
+Viewer = _reflection.GeneratedProtocolMessageType('Viewer', (_message.Message,), dict(
+  DESCRIPTOR = _VIEWER,
   __module__ = 'engine_pb2'
-  # @@protoc_insertion_point(class_scope:engine.Options)
+  # @@protoc_insertion_point(class_scope:engine.Viewer)
   ))
-_sym_db.RegisterMessage(Options)
-_sym_db.RegisterMessage(Options.viewers)
-_sym_db.RegisterMessage(Options.viewers.spice)
-
-Allowed = _reflection.GeneratedProtocolMessageType('Allowed', (_message.Message,), dict(
-  DESCRIPTOR = _ALLOWED,
-  __module__ = 'engine_pb2'
-  # @@protoc_insertion_point(class_scope:engine.Allowed)
-  ))
-_sym_db.RegisterMessage(Allowed)
-
-ExtraData = _reflection.GeneratedProtocolMessageType('ExtraData', (_message.Message,), dict(
-  DESCRIPTOR = _EXTRADATA,
-  __module__ = 'engine_pb2'
-  # @@protoc_insertion_point(class_scope:engine.ExtraData)
-  ))
-_sym_db.RegisterMessage(ExtraData)
+_sym_db.RegisterMessage(Viewer)
 
 DesktopGetRequest = _reflection.GeneratedProtocolMessageType('DesktopGetRequest', (_message.Message,), dict(
   DESCRIPTOR = _DESKTOPGETREQUEST,
@@ -2046,6 +1883,20 @@ DesktopStartResponse = _reflection.GeneratedProtocolMessageType('DesktopStartRes
   # @@protoc_insertion_point(class_scope:engine.DesktopStartResponse)
   ))
 _sym_db.RegisterMessage(DesktopStartResponse)
+
+DesktopViewerRequest = _reflection.GeneratedProtocolMessageType('DesktopViewerRequest', (_message.Message,), dict(
+  DESCRIPTOR = _DESKTOPVIEWERREQUEST,
+  __module__ = 'engine_pb2'
+  # @@protoc_insertion_point(class_scope:engine.DesktopViewerRequest)
+  ))
+_sym_db.RegisterMessage(DesktopViewerRequest)
+
+DesktopViewerResponse = _reflection.GeneratedProtocolMessageType('DesktopViewerResponse', (_message.Message,), dict(
+  DESCRIPTOR = _DESKTOPVIEWERRESPONSE,
+  __module__ = 'engine_pb2'
+  # @@protoc_insertion_point(class_scope:engine.DesktopViewerResponse)
+  ))
+_sym_db.RegisterMessage(DesktopViewerResponse)
 
 DesktopStopRequest = _reflection.GeneratedProtocolMessageType('DesktopStopRequest', (_message.Message,), dict(
   DESCRIPTOR = _DESKTOPSTOPREQUEST,
@@ -2116,13 +1967,6 @@ DesktopUpdateResponse = _reflection.GeneratedProtocolMessageType('DesktopUpdateR
   # @@protoc_insertion_point(class_scope:engine.DesktopUpdateResponse)
   ))
 _sym_db.RegisterMessage(DesktopUpdateResponse)
-
-Viewer = _reflection.GeneratedProtocolMessageType('Viewer', (_message.Message,), dict(
-  DESCRIPTOR = _VIEWER,
-  __module__ = 'engine_pb2'
-  # @@protoc_insertion_point(class_scope:engine.Viewer)
-  ))
-_sym_db.RegisterMessage(Viewer)
 
 TemplateGetRequest = _reflection.GeneratedProtocolMessageType('TemplateGetRequest', (_message.Message,), dict(
   DESCRIPTOR = _TEMPLATEGETREQUEST,
@@ -2216,8 +2060,8 @@ _ENGINE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=3755,
-  serialized_end=4910,
+  serialized_start=3574,
+  serialized_end=4809,
   methods=[
   _descriptor.MethodDescriptor(
     name='DesktopGet',
@@ -2247,9 +2091,18 @@ _ENGINE = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='DesktopViewer',
+    full_name='engine.Engine.DesktopViewer',
+    index=3,
+    containing_service=None,
+    input_type=_DESKTOPVIEWERREQUEST,
+    output_type=_DESKTOPVIEWERRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='DesktopStop',
     full_name='engine.Engine.DesktopStop',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_DESKTOPSTOPREQUEST,
     output_type=_DESKTOPSTOPRESPONSE,
@@ -2258,7 +2111,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DesktopDelete',
     full_name='engine.Engine.DesktopDelete',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_DESKTOPDELETEREQUEST,
     output_type=_DESKTOPDELETERESPONSE,
@@ -2267,7 +2120,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DesktopFromTemplate',
     full_name='engine.Engine.DesktopFromTemplate',
-    index=5,
+    index=6,
     containing_service=None,
     input_type=_DESKTOPFROMTEMPLATEREQUEST,
     output_type=_DESKTOPFROMTEMPLATERESPONSE,
@@ -2276,7 +2129,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DesktopFromMedia',
     full_name='engine.Engine.DesktopFromMedia',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_DESKTOPFROMMEDIAREQUEST,
     output_type=_DESKTOPFROMMEDIARESPONSE,
@@ -2285,7 +2138,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='DesktopUpdate',
     full_name='engine.Engine.DesktopUpdate',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_DESKTOPUPDATEREQUEST,
     output_type=_DESKTOPUPDATERESPONSE,
@@ -2294,7 +2147,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TemplateGet',
     full_name='engine.Engine.TemplateGet',
-    index=8,
+    index=9,
     containing_service=None,
     input_type=_TEMPLATEGETREQUEST,
     output_type=_TEMPLATEGETRESPONSE,
@@ -2303,7 +2156,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TemplateList',
     full_name='engine.Engine.TemplateList',
-    index=9,
+    index=10,
     containing_service=None,
     input_type=_EMPTY,
     output_type=_TEMPLATELISTRESPONSE,
@@ -2312,7 +2165,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TemplateDelete',
     full_name='engine.Engine.TemplateDelete',
-    index=10,
+    index=11,
     containing_service=None,
     input_type=_TEMPLATEDELETEREQUEST,
     output_type=_TEMPLATEDELETERESPONSE,
@@ -2321,7 +2174,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TemplateUpdate',
     full_name='engine.Engine.TemplateUpdate',
-    index=11,
+    index=12,
     containing_service=None,
     input_type=_TEMPLATEUPDATEREQUEST,
     output_type=_TEMPLATEUPDATERESPONSE,
@@ -2330,7 +2183,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TemplateFromDomain',
     full_name='engine.Engine.TemplateFromDomain',
-    index=12,
+    index=13,
     containing_service=None,
     input_type=_TEMPLATEFROMDESKTOPREQUEST,
     output_type=_TEMPLATEFROMDESKTOPRESPONSE,
@@ -2339,7 +2192,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='BaseGet',
     full_name='engine.Engine.BaseGet',
-    index=13,
+    index=14,
     containing_service=None,
     input_type=_BASEGETREQUEST,
     output_type=_BASEGETRESPONSE,
@@ -2348,7 +2201,7 @@ _ENGINE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='BaseList',
     full_name='engine.Engine.BaseList',
-    index=14,
+    index=15,
     containing_service=None,
     input_type=_EMPTY,
     output_type=_BASELISTRESPONSE,
