@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from 'tiny-cookie';
+import { getCookie, setCookie } from 'tiny-cookie'
 
 import actions from '@/store/actions'
 import * as proto from '@/proto/isard_grpc_web_pb'
@@ -8,12 +8,12 @@ describe('login', () => {
   let state = {
     api: 'v1.0',
     isard: {
-      loginLocal: jest.fn().mockImplementationOnce((req, metadata, callback) => {
-        callback(null, {
+      loginLocal: jest.fn().mockImplementationOnce((req, metadata, func) => {
+        func(null, {
           getTkn: () => 'token'
         })
-      }).mockImplementationOnce((req, metadata, callback) => {
-        callback({
+      }).mockImplementationOnce((req, metadata, func) => {
+        func({
           message: 'error :('
         }, {})
       })
@@ -24,9 +24,9 @@ describe('login', () => {
 
   proto.default = {
     LoginLocalRequest: class {
-      setApi() {}
-      setUsr() {}
-      setPwd() {}
+      setApi () {}
+      setUsr () {}
+      setPwd () {}
     }
   }
 

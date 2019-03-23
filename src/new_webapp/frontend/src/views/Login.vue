@@ -3,9 +3,9 @@
         <b-col sm="10" md="6" lg="5" xl="4">
             <img src="../assets/logo_black.png" alt="IsardVDI logo (an Isard head icon)" />
 
-            <h1>IsardVDI Login</h1>
+            <h1>{{ $t('views.login.title') }}</h1>
 
-            <b-alert id="login-error" variant="danger" show>{{ loginErr }}</b-alert>
+            <b-alert id="login-error" variant="danger" :show="loginErr !== '' ? true : false">{{ loginErr }}</b-alert>
 
             <b-form @submit="login">
                 <b-form-input
@@ -14,16 +14,16 @@
                     required
                     v-model="form.username"
                     autofocus
-                    placeholder="Username" />
+                    :placeholder="$t('views.login.form.username')" />
 
                 <b-form-input
                     id="password"
                     type="password"
                     required
                     v-model="form.password"
-                    placeholder="Password" />
+                    :placeholder="$t('views.login.form.password')" />
 
-                <b-button id="submit" type="submit">Login</b-button>
+                <b-button id="submit" type="submit">{{ $t('views.login.form.login') }}</b-button>
             </b-form>
         </b-col>
     </b-row>

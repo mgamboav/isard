@@ -29,7 +29,7 @@ var router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path == '/logout') {
+  if (to.path === '/logout') {
     store.dispatch('logout')
     next({
       path: '/login'

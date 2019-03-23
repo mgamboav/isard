@@ -2,9 +2,11 @@ import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 
 import Vuex from 'vuex'
 import Router from 'vue-router'
+import i18n from '@/i18n'
+
+import BootstrapVue from 'bootstrap-vue'
 
 import Login from '@/views/Login.vue'
-import BootstrapVue from 'bootstrap-vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -25,10 +27,10 @@ describe('Login.vue', () => {
     state = {
       tkn: null,
       loginErr: ''
-    },
+    }
     getters = {
       tkn: state => state.tkn,
-      loginErr: state => state.loginErr,
+      loginErr: state => state.loginErr
     }
     mutations = {
       setTkn: (state, tkn) => {
@@ -51,7 +53,14 @@ describe('Login.vue', () => {
   })
 
   it('dispatches "login" when the form is submitted', () => {
-    const wrapper = mount(Login, { store, localVue })
+    const wrapper = mount(Login, {
+      store,
+      localVue,
+      i18n
+    })
+
+    // The login error alert shouldn't be visible
+    expect(wrapper.find('#login-error').exists()).toBe(false)
 
     wrapper.find('#username').setValue = 'username'
     wrapper.find('#password').setValue = 'P4$$w0rd!'
@@ -66,9 +75,10 @@ describe('Login.vue', () => {
     const wrapper = shallowMount(Login, {
       store,
       localVue,
-      router
+      router,
+      i18n
     })
-    
+
     expect(wrapper.vm.$route.path).toBe('/')
   })
 
@@ -76,7 +86,8 @@ describe('Login.vue', () => {
     const wrapper = shallowMount(Login, {
       store,
       localVue,
-      router
+      router,
+      i18n
     })
 
     wrapper.vm.$router.push('/login')
@@ -89,7 +100,11 @@ describe('Login.vue', () => {
   it("the login error alert is shown when there's a login error", () => {
     state.loginErr = 'authentication error'
 
-    const wrapper = mount(Login, { store, localVue })
+    const wrapper = mount(Login, {
+      store,
+      localVue,
+      i18n
+    })
 
     const alert = wrapper.find('#login-error')
     expect(alert.name()).toBe('BAlert')
