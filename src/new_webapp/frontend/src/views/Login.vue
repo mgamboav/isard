@@ -5,6 +5,8 @@
 
             <h1>IsardVDI Login</h1>
 
+            <b-alert id="login-error" variant="danger" show>{{ loginErr }}</b-alert>
+
             <b-form @submit="login">
                 <b-form-input
                     id="username"
@@ -21,13 +23,15 @@
                     v-model="form.password"
                     placeholder="Password" />
 
-                <b-button type="submit">Login</b-button>
+                <b-button id="submit" type="submit">Login</b-button>
             </b-form>
         </b-col>
     </b-row>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'login',
   data () {
@@ -38,11 +42,10 @@ export default {
       }
     }
   },
-  computed: {
-    tkn () {
-      return this.$store.getters.tkn
-    }
-  },
+  computed: mapGetters({
+    tkn: 'tkn',
+    loginErr: 'loginErr'
+  }),
   watch: {
     tkn (oldTkn, newTkn) {
       this.redirect()
@@ -56,13 +59,16 @@ export default {
         'usr': this.form.username,
         'pwd': this.form.password
       }
-      this.$store.dispatch('login', payload)
+      this.storeLogin(payload)
     },
     redirect () {
-      if (this.$store.getters.tkn !== null) {
+      if (this.tkn !== null) {
         this.$router.push('/')
       }
-    }
+    },
+    ...mapActions({
+      storeLogin: 'login'
+    })
   },
   mounted: function () {
     this.redirect()
@@ -82,6 +88,14 @@ export default {
 
         // Position
         margin-bottom: 25px;
+    }
+
+    #login-error {
+      // Position
+      margin-top: 25px;
+
+      // Visual
+      text-transform: capitalize;
     }
 
     form {

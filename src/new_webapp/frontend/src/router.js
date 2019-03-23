@@ -29,7 +29,12 @@ var router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.path == '/logout') {
+    store.dispatch('logout')
+    next({
+      path: '/login'
+    })
+  } else if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.tkn === null) {
       next({
         path: '/login'
