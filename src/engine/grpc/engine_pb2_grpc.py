@@ -6,6 +6,7 @@ try:
 except:
     from engine.grpc import engine_pb2 as engine__pb2
 
+
 class EngineStub(object):
   # missing associated documentation comment in .proto file
   pass
@@ -81,8 +82,8 @@ class EngineStub(object):
         request_serializer=engine__pb2.TemplateUpdateRequest.SerializeToString,
         response_deserializer=engine__pb2.TemplateUpdateResponse.FromString,
         )
-    self.TemplateFromDomain = channel.unary_unary(
-        '/engine.Engine/TemplateFromDomain',
+    self.TemplateFromDesktop = channel.unary_unary(
+        '/engine.Engine/TemplateFromDesktop',
         request_serializer=engine__pb2.TemplateFromDesktopRequest.SerializeToString,
         response_deserializer=engine__pb2.TemplateFromDesktopResponse.FromString,
         )
@@ -95,6 +96,16 @@ class EngineStub(object):
         '/engine.Engine/BaseList',
         request_serializer=engine__pb2.Empty.SerializeToString,
         response_deserializer=engine__pb2.BaseListResponse.FromString,
+        )
+    self.EngineIsAlive = channel.unary_unary(
+        '/engine.Engine/EngineIsAlive',
+        request_serializer=engine__pb2.Empty.SerializeToString,
+        response_deserializer=engine__pb2.EngineIsAliveResponse.FromString,
+        )
+    self.EngineStatus = channel.unary_unary(
+        '/engine.Engine/EngineStatus',
+        request_serializer=engine__pb2.Empty.SerializeToString,
+        response_deserializer=engine__pb2.EngineStatusResponse.FromString,
         )
 
 
@@ -193,7 +204,7 @@ class EngineServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def TemplateFromDomain(self, request, context):
+  def TemplateFromDesktop(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -208,6 +219,20 @@ class EngineServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def BaseList(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def EngineIsAlive(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def EngineStatus(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -282,8 +307,8 @@ def add_EngineServicer_to_server(servicer, server):
           request_deserializer=engine__pb2.TemplateUpdateRequest.FromString,
           response_serializer=engine__pb2.TemplateUpdateResponse.SerializeToString,
       ),
-      'TemplateFromDomain': grpc.unary_unary_rpc_method_handler(
-          servicer.TemplateFromDomain,
+      'TemplateFromDesktop': grpc.unary_unary_rpc_method_handler(
+          servicer.TemplateFromDesktop,
           request_deserializer=engine__pb2.TemplateFromDesktopRequest.FromString,
           response_serializer=engine__pb2.TemplateFromDesktopResponse.SerializeToString,
       ),
@@ -296,6 +321,16 @@ def add_EngineServicer_to_server(servicer, server):
           servicer.BaseList,
           request_deserializer=engine__pb2.Empty.FromString,
           response_serializer=engine__pb2.BaseListResponse.SerializeToString,
+      ),
+      'EngineIsAlive': grpc.unary_unary_rpc_method_handler(
+          servicer.EngineIsAlive,
+          request_deserializer=engine__pb2.Empty.FromString,
+          response_serializer=engine__pb2.EngineIsAliveResponse.SerializeToString,
+      ),
+      'EngineStatus': grpc.unary_unary_rpc_method_handler(
+          servicer.EngineStatus,
+          request_deserializer=engine__pb2.Empty.FromString,
+          response_serializer=engine__pb2.EngineStatusResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

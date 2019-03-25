@@ -34,7 +34,7 @@ if __name__ == "__main__":
     app.m = ManagerHypervisors()
     app.db = db
 
-    app.grpc = EngineServicer()
+    app.grpc = EngineServicer(app)
     app.grpc.start_server(app)
     
     # ~ app.grpc = start_server()

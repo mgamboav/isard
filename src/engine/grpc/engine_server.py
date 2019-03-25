@@ -43,8 +43,10 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
     """
     gRPC server for Engine Service
     """
-    def __init__(self):
+    def __init__(self, app):
         self.server_port = 46001
+        self.manager = app.m
+        self.grpc = GrpcActions(self.manager)
         
 
     def DesktopList(self, request, context):
@@ -285,29 +287,20 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.DesktopFromTemplateResponse()
         
-        ''' OPTIONAL VALUES '''
-        if not request.HasField("hardware"):
-            print('before hardware')
-            print(template['create_dict'])
-            hardware = {"vcpus": template['create_dict']['hardware']['vcpus'],
-                        "memory": template['create_dict']['hardware']['memory'],
-                        "boot_order": template['create_dict']['hardware']['boot_order'],
-                        "graphics": template['create_dict']['hardware']['graphics'],
-                        "interfaces": template['create_dict']['hardware']['interfaces'],
-                        "videos": template['create_dict']['hardware']['videos'],
-                        "disks": [{ 'file':request.desktop_id+'.qcow2',
-                                    'parent':template['hardware']['disks'][0]['file']}]}
-        # ~ else:
-            # ~ if not request.hardware.HasField("vcpus"): request.vcpus = template.create_dict.hardware.vcpus
-            # ~ if not request.HasField("memory"): request.memory = template.create_dict.hardware.memory
-            # ~ if not request.HasField("boot_disk_rpath"): request.boot_disk_rpath = request.desktop_id + '.qcow2'
-            # ~ if not request.HasField("boot_diskbus"): request.boot_diskbus = template.create_dict.hardware.boot_diskbus
-            # ~ if     len(request.videos) == 0: request.videos = template.create_dict.hardware.videos
-            # ~ if     len(request.graphics) == 0: request.graphics = template.create_dict.hardware.graphics
-            # ~ if     len(request.boots) == 0: request.boots = template.create_dict.hardware.boots
-            # ~ if     len(request.interfaces) == 0: request.interfaces = template.create_dict.hardware.interfaces
-            # ~ if     len(request.isos) == 0: request.isos = template.create_dict.hardware.isos
-            # ~ if     len(request.floppies) == 0: request.floppies = template.create_dict.hardware.floppies
+        ''' OPTIONAL HARDWARE VALUES | GET FROM TEMPLATE '''
+        hardware = {}
+        hardware['vcpus'] = int(template['create_dict']['hardware']['vcpus']) if request.hardware.vcpus == 0 else request.hardware.vcpus
+        hardware['memory'] = int(template['create_dict']['hardware']['memory']) if request.hardware.memory == 0 else request.hardware.memory
+        hardware['videos'] = template['create_dict']['hardware']['videos'] if len(request.hardware.videos) == 0 else request.hardware.videos
+        hardware['graphics'] = template['create_dict']['hardware']['graphics'] if len(request.hardware.graphics) == 0 else request.hardware.graphics
+        hardware['boot_order'] = template['create_dict']['hardware']['boot_order'] if len(request.hardware.boots) == 0 else request.hardware.boots
+        hardware['interfaces'] = template['create_dict']['hardware']['interfaces'] if len(request.hardware.interfaces) == 0 else request.hardware.interfaces
+        hardware['isos'] = template['create_dict']['hardware']['isos'] if len(request.hardware.isos) == 0 else request.hardware.isos
+        hardware['floppies'] = template['create_dict']['hardware']['floppies'] if len(request.hardware.floppies) == 0 else request.hardware.floppies
+        ## Check for .qcow in boot_disk_rpath??   
+        hardware['disks']=[{'file': request.desktop_id + '.qcow2' if request.hardware.boot_disk_rpath == '' else request.hardware.boot_disk_rpath,
+                            'parent':template['hardware']['disks'][0]['file']}]    
+        # ~ if request.hardware.boot_disk_bus == '': request.hardware.boot_disk_bus = 'virtio'
 
         desktop = { 'id': request.desktop_id,
                     'kind': 'desktop',
@@ -349,25 +342,111 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.TemplateListResponse()  
 
+    def TemplateFromDesktop(self, request, context):
+        return self.TemplateAndBaseFromDesktop('template', request, context)
         
-    def start_server(self, app=False):
+    def BaseFromDesktop(self, request, context):
+        return self.TemplateAndBaseFromDesktop('base', request, context)
+                
+    def TemplateAndBaseFromDesktop(self, kind, request, context):
+        ''' Checks '''
+        try:
+            with rdb() as conn:
+                template = r.table('domains').get(request.template_id).pluck('id').run(conn)
+            context.set_details(request.template_id+' already exists in system.')
+            context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+            return engine_pb2.TemplateFromDesktopResponse()                
+        except ReqlNonExistenceError:
+            pass        
+        except Exception as e:
+            context.set_details('Unable to access database.')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return engine_pb2.TemplateFromDesktopResponse()
+        try:
+            with rdb() as conn:
+                desktop = r.table('domains').get(request.desktop_id).without('history_domain').run(conn)
+            if desktop['status'] not in ['Stopped']: 
+                context.set_details(request.desktop_id+' it is not stopped.')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+                return engine_pb2.TemplateFromDesktopResponse()
+            elif desktop['kind'] != 'desktop':
+                context.set_details(request.desktop_id+' it is not a desktop.')
+                context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+                return engine_pb2.TemplateFromDesktopResponse()                
+        except ReqlNonExistenceError:
+            context.set_details(request.desktop_id+' not found in database.')
+            context.set_code(grpc.StatusCode.UNKNOWN)
+            return engine_pb2.TemplateFromDesktopResponse()         
+        except Exception as e:
+            context.set_details('Unable to access database.')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return engine_pb2.TemplateFromDesktopResponse()
+        
+        ''' OPTIONAL HARDWARE VALUES | GET FROM DESKTOP '''
+        hardware = {}
+        hardware['vcpus'] = int(desktop['create_dict']['hardware']['vcpus']) if request.hardware.vcpus == 0 else request.hardware.vcpus
+        hardware['memory'] = int(desktop['create_dict']['hardware']['memory']) if request.hardware.memory == 0 else request.hardware.memory
+        hardware['videos'] = desktop['create_dict']['hardware']['videos'] if len(request.hardware.videos) == 0 else request.hardware.videos
+        hardware['graphics'] = desktop['create_dict']['hardware']['graphics'] if len(request.hardware.graphics) == 0 else request.hardware.graphics
+        hardware['boot_order'] = desktop['create_dict']['hardware']['boot_order'] if len(request.hardware.boots) == 0 else request.hardware.boots
+        hardware['interfaces'] = desktop['create_dict']['hardware']['interfaces'] if len(request.hardware.interfaces) == 0 else request.hardware.interfaces
+        hardware['isos'] = desktop['create_dict']['hardware']['isos'] if len(request.hardware.isos) == 0 and 'isos' in desktop['create_dict']['hardware'].keys() else request.hardware.isos
+        hardware['floppies'] = desktop['create_dict']['hardware']['floppies'] if len(request.hardware.floppies) == 0  and 'floppies' in desktop['create_dict']['hardware'].keys() else request.hardware.floppies
+        ## Check for .qcow in boot_disk_rpath??   
+        hardware['disks']=[{'file': request.template_id + '.qcow2' if request.hardware.boot_disk_rpath == '' else request.hardware.boot_disk_rpath,
+                            'parent':''}]    
+        # ~ if request.hardware.boot_disk_bus == '': request.hardware.boot_disk_bus = 'virtio'
+                           
+        ''' Create a new minimal domain inside template_dict '''
+        create_dict=desktop['create_dict']
+        create_dict['origin']=request.desktop_id
+        create_dict['template_dict']={ 'id': request.template_id,
+                                        'kind': kind,
+                                        'hypervisors_pools': desktop['hypervisors_pools'],
+                                        'create_dict': {'hardware': hardware}}
+                                        
+        ''' Add template_id '''
+        try:
+            ''' DIRECT TO ENGINE '''
+            # ~ self.grpc.add_template_from_desktop(request.desktop_id)
+            ''' DATABASE '''
+            with rdb() as conn:
+                r.table('domains').get(request.desktop_id).update({'create_dict':create_dict,'status':'CreatingTemplate'}).run(conn)
+                c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
+                c.next(MAX_TIMEOUT)
+                return engine_pb2.TemplateFromDesktopResponse(state='STOPPED')
+        except ReqlTimeoutError:
+            context.set_details('Unable to create the domain '+request.template_id)
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.TemplateFromDesktopResponse()            
+        except Exception as e:
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.INTERNAL)             
+            return engine_pb2.TemplateFromDesktopResponse()
+
+    def EngineIsAlive(self, request, context):
+        return engine_pb2.EngineIsAliveResponse(is_alive = self.grpc.engine_info()['is_alive'])
+        
+    def EngineStatus(self, request, context):
+        return engine_pb2.EngineStatuseResponse(self.grpc.engine_info())
+        
+    def start_server(self, app):
         """
         Function which actually starts the gRPC server, and preps
         it for serving incoming connections
         """
-        if app:
-            self.app = app
-            self.grpc=GrpcActions(app.m)
-        else:
-            self.app = False
-            self.grpc = False
+        # ~ if app:
+            # ~ self.app = app
+
+        # ~ else:
+            # ~ self.app = False
             
         # declare a server object with desired number
         # of thread pool workers.
         engine_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
  
         # This line can be ignored
-        engine_pb2_grpc.add_EngineServicer_to_server(EngineServicer(),engine_server)
+        engine_pb2_grpc.add_EngineServicer_to_server(EngineServicer(app),engine_server)
  
         # bind the server to the port defined above
         engine_server.add_insecure_port('[::]:{}'.format(self.server_port))
@@ -380,9 +459,9 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             # code is non blocking, and if I don't do this
             # the program will exit
             while True:
-                time.sleep(2)
-                print(self.grpc.engine_info())
-                # ~ time.sleep(60*60*60)
+                # ~ time.sleep(2)
+                # ~ print(self.grpc.engine_info())
+                time.sleep(60*60*60)
         except KeyboardInterrupt:
             engine_server.stop(0)
             print('Engine Server Stopped ...')

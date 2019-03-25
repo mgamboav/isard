@@ -83,16 +83,16 @@ class GrpcActions(object):
                     d_engine['is_alive'] = False
             else:
                 d_engine['is_alive'] = False
-            import pprint
-            pprint.pprint(d_engine)
+            # ~ import pprint
+            # ~ pprint.pprint(d_engine)
             return d_engine
         except AttributeError:
             d_engine['is_alive'] = False
-            print('ERROR ----- ENGINE IS DEATH')
+            print('ERROR ----- ENGINE IS DEAD')
             return d_engine
         except Exception as e:
             d_engine['is_alive'] = False
-            print('ERROR ----- ENGINE IS DEATH AND EXCEPTION DETECTED')
+            print('ERROR ----- ENGINE IS DEAD AND EXCEPTION DETECTED')
             return d_engine
 
 
