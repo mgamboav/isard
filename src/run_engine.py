@@ -12,12 +12,13 @@ check_tables_populated()
 from engine.services import db
 from engine.models.manager_hypervisors import ManagerHypervisors
 
+from engine.grpc.engine_server import EngineServicer
 
 
 
-def run(app):
-    http_server = WSGIServer(('0.0.0.0', 5555), app)
-    http_server.serve_forever()
+# ~ def run(app):
+    # ~ http_server = WSGIServer(('0.0.0.0', 5555), app)
+    # ~ http_server.serve_forever()
 
 # if app.debug:
 #     from werkzeug.debug import DebuggedApplication
@@ -32,6 +33,11 @@ if __name__ == "__main__":
 
     app.m = ManagerHypervisors()
     app.db = db
+
+    app.grpc = EngineServicer()
+    app.grpc.start_server(app)
+    
+    # ~ app.grpc = start_server()
 
     # remove default logging for get/post messages
     werk = logging.getLogger('werkzeug')

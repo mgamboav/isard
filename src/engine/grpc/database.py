@@ -19,7 +19,7 @@ from rethinkdb.errors import (
 
 
 class rdb():
-    def __init__(self, RETHINK_HOST='localhost', RETHINK_PORT=28015, RETHINK_DB='isard'):
+    def __init__(self, RETHINK_HOST='isard-database', RETHINK_PORT=28015, RETHINK_DB='isard'):
         self.conn = None
         self.rh=RETHINK_HOST
         self.rp=RETHINK_PORT

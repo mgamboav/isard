@@ -1,8 +1,14 @@
 import grpc
 import time
 import hashlib
-import engine_pb2
-import engine_pb2_grpc
+
+try:
+    import engine_pb2
+    import engine_pb2_grpc
+except:
+    from engine.grpc import engine_pb2
+    from engine.grpc import engine_pb2_grpc
+    
 from concurrent import futures
 
 import rethinkdb as r
@@ -22,7 +28,13 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
-from database import rdb
+
+try:
+    from database import rdb
+    from grpc_actions import GrpcActions
+except:
+    from engine.grpc.database import rdb
+    from engine.grpc.grpc_actions import GrpcActions
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
@@ -31,9 +43,9 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
     """
     gRPC server for Engine Service
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.server_port = 46001
-        # ~ self.grpc=GrpcActions()
+        
 
     def DesktopList(self, request, context):
         ''' Checks '''
@@ -336,17 +348,20 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return engine_pb2.TemplateListResponse()  
- 
- 
- 
- 
 
         
-    def start_server(self):
+    def start_server(self, app=False):
         """
         Function which actually starts the gRPC server, and preps
         it for serving incoming connections
         """
+        if app:
+            self.app = app
+            self.grpc=GrpcActions(app.m)
+        else:
+            self.app = False
+            self.grpc = False
+            
         # declare a server object with desired number
         # of thread pool workers.
         engine_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -359,17 +374,18 @@ class EngineServicer(engine_pb2_grpc.EngineServicer):
  
         # start the server
         engine_server.start()
-        print ('Engine Server running ...')
- 
+        print ('Engine GRPC Server running ...')
         try:
             # need an infinite loop since the above
             # code is non blocking, and if I don't do this
             # the program will exit
             while True:
-                time.sleep(60*60*60)
+                time.sleep(2)
+                print(self.grpc.engine_info())
+                # ~ time.sleep(60*60*60)
         except KeyboardInterrupt:
             engine_server.stop(0)
             print('Engine Server Stopped ...')
  
-curr_server = EngineServicer()
-curr_server.start_server()
+# ~ curr_server = EngineServicer()
+# ~ curr_server.start_server()
