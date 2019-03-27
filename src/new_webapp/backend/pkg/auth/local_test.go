@@ -26,8 +26,8 @@ import (
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/auth"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/cfg"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/db"
-	"github.com/spf13/viper"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
@@ -35,6 +35,18 @@ import (
 func TestLoginLocal(t *testing.T) {
 	assert := assert.New(t)
 	var emptyTkn auth.Token = ""
+
+	t.Run("should return an error if there's an error getting the user", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("users").Get("egoldman")).Return([]interface{}{}, errors.New("testing error"))
+		db.Session = mock
+
+		tkn, err := auth.LoginLocal("egoldman", "")
+		assert.EqualError(err, "error getting the user: error querying the DB: testing error")
+		assert.Equal(emptyTkn, tkn)
+
+		mock.AssertExpectations(t)
+	})
 
 	t.Run("should return a token if the authentication suceeds", func(t *testing.T) {
 		cfg.Config = viper.New()
@@ -53,44 +65,6 @@ func TestLoginLocal(t *testing.T) {
 		tkn, err := auth.LoginLocal("egoldman", "P4$$w0rd!")
 		assert.Nil(err)
 		assert.Equal(3, len(strings.Split(tkn.String(), ".")))
-
-		mock.AssertExpectations(t)
-	})
-
-	t.Run("should return an error if there's an error querying the DB", func(t *testing.T) {
-		mock := r.NewMock()
-		mock.On(r.Table("users").Get("egoldman")).Return([]interface{}{}, errors.New("testing error"))
-		db.Session = mock
-
-		tkn, err := auth.LoginLocal("egoldman", "")
-		assert.EqualError(err, "error querying the DB: testing error")
-		assert.Equal(emptyTkn, tkn)
-
-		mock.AssertExpectations(t)
-	})
-
-	t.Run("should return an error if the user isn't found", func(t *testing.T) {
-		mock := r.NewMock()
-		mock.On(r.Table("users").Get("egoldman")).Return([]interface{}{}, nil)
-		db.Session = mock
-
-		tkn, err := auth.LoginLocal("egoldman", "")
-		assert.EqualError(err, "user not found")
-		assert.Equal(emptyTkn, tkn)
-
-		mock.AssertExpectations(t)
-	})
-
-	t.Run("should return an error if there's an error getting the user from the DB", func(t *testing.T) {
-		mock := r.NewMock()
-		mock.On(r.Table("users").Get("egoldman")).Return([]interface{}{
-			0,
-		}, nil)
-		db.Session = mock
-
-		tkn, err := auth.LoginLocal("egoldman", "P4$$w0rd!")
-		assert.EqualError(err, "error getting the user from the DB: rethinkdb: could not decode type int into Go value of type models.User")
-		assert.Equal(emptyTkn, tkn)
 
 		mock.AssertExpectations(t)
 	})

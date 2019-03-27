@@ -26,7 +26,12 @@ protoc -I . \
   --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. \
   proto/isard.proto
 
-find ./proto -type f -name "*.js" -exec sed -i -e "s~require('\.\./\.\./\.\./\.\./google~require('@/proto/third_party/google~g" -e "s~require('\.\./google~require('@/proto/third_party/google~g" {} \;
+find ./proto -type f -name "*.js" -exec sed -i \
+  -e "s~require('\.\./\.\./\.\./\.\./google~require('@/proto/third_party/google~g" \
+  -e "s~require('\.\./google~require('@/proto/third_party/google~g" \
+  -e "s~require('\.\./\.\./\.\./\.\./protoc-gen-swagger~require('@/proto/third_party/protoc-gen-swagger~g" \
+  -e "s~require('\.\./protoc-gen-swagger~require('@/proto/third_party/protoc-gen-swagger~g" \
+  {} \;
 
 head -n -3 ./proto/isard_grpc_web_pb.js > ./proto/isard_grpc_web_pb_tmp.js
 mv ./proto/isard_grpc_web_pb_tmp.js ./proto/isard_grpc_web_pb.js

@@ -5,7 +5,7 @@
 
             <h1>{{ $t('views.login.title') }}</h1>
 
-            <b-alert id="login-error" variant="danger" :show="loginErr !== '' ? true : false">{{ loginErr }}</b-alert>
+            <b-alert id="login-error" variant="danger" :show="loginErr !== ''">{{ loginErr }}</b-alert>
 
             <b-form @submit="login">
                 <b-form-input

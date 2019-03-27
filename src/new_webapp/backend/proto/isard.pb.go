@@ -6,6 +6,7 @@ package isard
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
+import _ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 import _ "google.golang.org/genproto/googleapis/api/annotations"
 
 import (
@@ -24,6 +25,303 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
+// Permissions are the permissions of a resource
+type Permissions struct {
+	// public specifies if everyone has access the resource. If it's set to true, it's going to ignore the other fields
+	Public bool `protobuf:"varint,1,opt,name=public,proto3" json:"public,omitempty"`
+	// roles are the roles that have access to the resource
+	Roles []string `protobuf:"bytes,2,rep,name=roles,proto3" json:"roles,omitempty"`
+	// categories are the categories that have access to the resource
+	Categories []string `protobuf:"bytes,3,rep,name=categories,proto3" json:"categories,omitempty"`
+	// users are the users that have access to the resource
+	Users                []string `protobuf:"bytes,4,rep,name=users,proto3" json:"users,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Permissions) Reset()         { *m = Permissions{} }
+func (m *Permissions) String() string { return proto.CompactTextString(m) }
+func (*Permissions) ProtoMessage()    {}
+func (*Permissions) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{0}
+}
+func (m *Permissions) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Permissions.Unmarshal(m, b)
+}
+func (m *Permissions) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Permissions.Marshal(b, m, deterministic)
+}
+func (dst *Permissions) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Permissions.Merge(dst, src)
+}
+func (m *Permissions) XXX_Size() int {
+	return xxx_messageInfo_Permissions.Size(m)
+}
+func (m *Permissions) XXX_DiscardUnknown() {
+	xxx_messageInfo_Permissions.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Permissions proto.InternalMessageInfo
+
+func (m *Permissions) GetPublic() bool {
+	if m != nil {
+		return m.Public
+	}
+	return false
+}
+
+func (m *Permissions) GetRoles() []string {
+	if m != nil {
+		return m.Roles
+	}
+	return nil
+}
+
+func (m *Permissions) GetCategories() []string {
+	if m != nil {
+		return m.Categories
+	}
+	return nil
+}
+
+func (m *Permissions) GetUsers() []string {
+	if m != nil {
+		return m.Users
+	}
+	return nil
+}
+
+// DomainOptions are the different options that a domain can hae
+type DomainOptions struct {
+	Viewers *DomainOptions_Viewers `protobuf:"bytes,1,opt,name=viewers,proto3" json:"viewers,omitempty"`
+	// server sets if the desktop is going to be stopped by the automatic jobs
+	Server               bool     `protobuf:"varint,2,opt,name=server,proto3" json:"server,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DomainOptions) Reset()         { *m = DomainOptions{} }
+func (m *DomainOptions) String() string { return proto.CompactTextString(m) }
+func (*DomainOptions) ProtoMessage()    {}
+func (*DomainOptions) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{1}
+}
+func (m *DomainOptions) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DomainOptions.Unmarshal(m, b)
+}
+func (m *DomainOptions) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DomainOptions.Marshal(b, m, deterministic)
+}
+func (dst *DomainOptions) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DomainOptions.Merge(dst, src)
+}
+func (m *DomainOptions) XXX_Size() int {
+	return xxx_messageInfo_DomainOptions.Size(m)
+}
+func (m *DomainOptions) XXX_DiscardUnknown() {
+	xxx_messageInfo_DomainOptions.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DomainOptions proto.InternalMessageInfo
+
+func (m *DomainOptions) GetViewers() *DomainOptions_Viewers {
+	if m != nil {
+		return m.Viewers
+	}
+	return nil
+}
+
+func (m *DomainOptions) GetServer() bool {
+	if m != nil {
+		return m.Server
+	}
+	return false
+}
+
+// Viewers are the options related with the viewers
+type DomainOptions_Viewers struct {
+	Spice                *DomainOptions_Viewers_Spice `protobuf:"bytes,1,opt,name=spice,proto3" json:"spice,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
+}
+
+func (m *DomainOptions_Viewers) Reset()         { *m = DomainOptions_Viewers{} }
+func (m *DomainOptions_Viewers) String() string { return proto.CompactTextString(m) }
+func (*DomainOptions_Viewers) ProtoMessage()    {}
+func (*DomainOptions_Viewers) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{1, 0}
+}
+func (m *DomainOptions_Viewers) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DomainOptions_Viewers.Unmarshal(m, b)
+}
+func (m *DomainOptions_Viewers) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DomainOptions_Viewers.Marshal(b, m, deterministic)
+}
+func (dst *DomainOptions_Viewers) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DomainOptions_Viewers.Merge(dst, src)
+}
+func (m *DomainOptions_Viewers) XXX_Size() int {
+	return xxx_messageInfo_DomainOptions_Viewers.Size(m)
+}
+func (m *DomainOptions_Viewers) XXX_DiscardUnknown() {
+	xxx_messageInfo_DomainOptions_Viewers.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DomainOptions_Viewers proto.InternalMessageInfo
+
+func (m *DomainOptions_Viewers) GetSpice() *DomainOptions_Viewers_Spice {
+	if m != nil {
+		return m.Spice
+	}
+	return nil
+}
+
+// Spice are the options related with the Spice viewer
+type DomainOptions_Viewers_Spice struct {
+	// fullscreen sets if the desktop is going to be opened in fullscreen
+	Fullscreen           bool     `protobuf:"varint,1,opt,name=fullscreen,proto3" json:"fullscreen,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DomainOptions_Viewers_Spice) Reset()         { *m = DomainOptions_Viewers_Spice{} }
+func (m *DomainOptions_Viewers_Spice) String() string { return proto.CompactTextString(m) }
+func (*DomainOptions_Viewers_Spice) ProtoMessage()    {}
+func (*DomainOptions_Viewers_Spice) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{1, 0, 0}
+}
+func (m *DomainOptions_Viewers_Spice) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DomainOptions_Viewers_Spice.Unmarshal(m, b)
+}
+func (m *DomainOptions_Viewers_Spice) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DomainOptions_Viewers_Spice.Marshal(b, m, deterministic)
+}
+func (dst *DomainOptions_Viewers_Spice) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DomainOptions_Viewers_Spice.Merge(dst, src)
+}
+func (m *DomainOptions_Viewers_Spice) XXX_Size() int {
+	return xxx_messageInfo_DomainOptions_Viewers_Spice.Size(m)
+}
+func (m *DomainOptions_Viewers_Spice) XXX_DiscardUnknown() {
+	xxx_messageInfo_DomainOptions_Viewers_Spice.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DomainOptions_Viewers_Spice proto.InternalMessageInfo
+
+func (m *DomainOptions_Viewers_Spice) GetFullscreen() bool {
+	if m != nil {
+		return m.Fullscreen
+	}
+	return false
+}
+
+type Desktop struct {
+	// id is the unique identifier of the domain. It's formed by "_{username}_{desktopName}"
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// name is the name of the desktop
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// description is the user description of the desktop
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// status is the current status of the desktop
+	// DomainStatus status = 6;
+	Status string `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
+	// detail shows messages in case there's an error doing an operation with the desktop
+	Detail string `protobuf:"bytes,7,opt,name=detail,proto3" json:"detail,omitempty"`
+	// user is the user that owns the desktop
+	User string `protobuf:"bytes,11,opt,name=user,proto3" json:"user,omitempty"`
+	// os is the Operative System of the desktop
+	Os string `protobuf:"bytes,14,opt,name=os,proto3" json:"os,omitempty"`
+	// options are the options of the desktop
+	Options              *DomainOptions `protobuf:"bytes,18,opt,name=options,proto3" json:"options,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *Desktop) Reset()         { *m = Desktop{} }
+func (m *Desktop) String() string { return proto.CompactTextString(m) }
+func (*Desktop) ProtoMessage()    {}
+func (*Desktop) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{2}
+}
+func (m *Desktop) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Desktop.Unmarshal(m, b)
+}
+func (m *Desktop) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Desktop.Marshal(b, m, deterministic)
+}
+func (dst *Desktop) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Desktop.Merge(dst, src)
+}
+func (m *Desktop) XXX_Size() int {
+	return xxx_messageInfo_Desktop.Size(m)
+}
+func (m *Desktop) XXX_DiscardUnknown() {
+	xxx_messageInfo_Desktop.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Desktop proto.InternalMessageInfo
+
+func (m *Desktop) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Desktop) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Desktop) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *Desktop) GetStatus() string {
+	if m != nil {
+		return m.Status
+	}
+	return ""
+}
+
+func (m *Desktop) GetDetail() string {
+	if m != nil {
+		return m.Detail
+	}
+	return ""
+}
+
+func (m *Desktop) GetUser() string {
+	if m != nil {
+		return m.User
+	}
+	return ""
+}
+
+func (m *Desktop) GetOs() string {
+	if m != nil {
+		return m.Os
+	}
+	return ""
+}
+
+func (m *Desktop) GetOptions() *DomainOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
 type LoginLocalRequest struct {
 	Api                  string   `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
 	Usr                  string   `protobuf:"bytes,2,opt,name=usr,proto3" json:"usr,omitempty"`
@@ -37,7 +335,7 @@ func (m *LoginLocalRequest) Reset()         { *m = LoginLocalRequest{} }
 func (m *LoginLocalRequest) String() string { return proto.CompactTextString(m) }
 func (*LoginLocalRequest) ProtoMessage()    {}
 func (*LoginLocalRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_isard_5acb4a69a332070d, []int{0}
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{3}
 }
 func (m *LoginLocalRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LoginLocalRequest.Unmarshal(m, b)
@@ -89,7 +387,7 @@ func (m *LoginLocalResponse) Reset()         { *m = LoginLocalResponse{} }
 func (m *LoginLocalResponse) String() string { return proto.CompactTextString(m) }
 func (*LoginLocalResponse) ProtoMessage()    {}
 func (*LoginLocalResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_isard_5acb4a69a332070d, []int{1}
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{4}
 }
 func (m *LoginLocalResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LoginLocalResponse.Unmarshal(m, b)
@@ -116,9 +414,186 @@ func (m *LoginLocalResponse) GetTkn() string {
 	return ""
 }
 
+type UserDesktopsGetRequest struct {
+	Api                  string   `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
+	Id                   string   `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UserDesktopsGetRequest) Reset()         { *m = UserDesktopsGetRequest{} }
+func (m *UserDesktopsGetRequest) String() string { return proto.CompactTextString(m) }
+func (*UserDesktopsGetRequest) ProtoMessage()    {}
+func (*UserDesktopsGetRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{5}
+}
+func (m *UserDesktopsGetRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UserDesktopsGetRequest.Unmarshal(m, b)
+}
+func (m *UserDesktopsGetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UserDesktopsGetRequest.Marshal(b, m, deterministic)
+}
+func (dst *UserDesktopsGetRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserDesktopsGetRequest.Merge(dst, src)
+}
+func (m *UserDesktopsGetRequest) XXX_Size() int {
+	return xxx_messageInfo_UserDesktopsGetRequest.Size(m)
+}
+func (m *UserDesktopsGetRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserDesktopsGetRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserDesktopsGetRequest proto.InternalMessageInfo
+
+func (m *UserDesktopsGetRequest) GetApi() string {
+	if m != nil {
+		return m.Api
+	}
+	return ""
+}
+
+func (m *UserDesktopsGetRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+type UserDesktopsGetResponse struct {
+	Api                  string     `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
+	Desktops             []*Desktop `protobuf:"bytes,2,rep,name=desktops,proto3" json:"desktops,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
+	XXX_unrecognized     []byte     `json:"-"`
+	XXX_sizecache        int32      `json:"-"`
+}
+
+func (m *UserDesktopsGetResponse) Reset()         { *m = UserDesktopsGetResponse{} }
+func (m *UserDesktopsGetResponse) String() string { return proto.CompactTextString(m) }
+func (*UserDesktopsGetResponse) ProtoMessage()    {}
+func (*UserDesktopsGetResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{6}
+}
+func (m *UserDesktopsGetResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UserDesktopsGetResponse.Unmarshal(m, b)
+}
+func (m *UserDesktopsGetResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UserDesktopsGetResponse.Marshal(b, m, deterministic)
+}
+func (dst *UserDesktopsGetResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserDesktopsGetResponse.Merge(dst, src)
+}
+func (m *UserDesktopsGetResponse) XXX_Size() int {
+	return xxx_messageInfo_UserDesktopsGetResponse.Size(m)
+}
+func (m *UserDesktopsGetResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserDesktopsGetResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserDesktopsGetResponse proto.InternalMessageInfo
+
+func (m *UserDesktopsGetResponse) GetApi() string {
+	if m != nil {
+		return m.Api
+	}
+	return ""
+}
+
+func (m *UserDesktopsGetResponse) GetDesktops() []*Desktop {
+	if m != nil {
+		return m.Desktops
+	}
+	return nil
+}
+
+type DesktopStartRequest struct {
+	Api                  string   `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
+	Id                   string   `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DesktopStartRequest) Reset()         { *m = DesktopStartRequest{} }
+func (m *DesktopStartRequest) String() string { return proto.CompactTextString(m) }
+func (*DesktopStartRequest) ProtoMessage()    {}
+func (*DesktopStartRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{7}
+}
+func (m *DesktopStartRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DesktopStartRequest.Unmarshal(m, b)
+}
+func (m *DesktopStartRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DesktopStartRequest.Marshal(b, m, deterministic)
+}
+func (dst *DesktopStartRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DesktopStartRequest.Merge(dst, src)
+}
+func (m *DesktopStartRequest) XXX_Size() int {
+	return xxx_messageInfo_DesktopStartRequest.Size(m)
+}
+func (m *DesktopStartRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DesktopStartRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DesktopStartRequest proto.InternalMessageInfo
+
+func (m *DesktopStartRequest) GetApi() string {
+	if m != nil {
+		return m.Api
+	}
+	return ""
+}
+
+func (m *DesktopStartRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+type DesktopStartResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DesktopStartResponse) Reset()         { *m = DesktopStartResponse{} }
+func (m *DesktopStartResponse) String() string { return proto.CompactTextString(m) }
+func (*DesktopStartResponse) ProtoMessage()    {}
+func (*DesktopStartResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_isard_d08dc45cfb6646cf, []int{8}
+}
+func (m *DesktopStartResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DesktopStartResponse.Unmarshal(m, b)
+}
+func (m *DesktopStartResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DesktopStartResponse.Marshal(b, m, deterministic)
+}
+func (dst *DesktopStartResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DesktopStartResponse.Merge(dst, src)
+}
+func (m *DesktopStartResponse) XXX_Size() int {
+	return xxx_messageInfo_DesktopStartResponse.Size(m)
+}
+func (m *DesktopStartResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DesktopStartResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DesktopStartResponse proto.InternalMessageInfo
+
 func init() {
+	proto.RegisterType((*Permissions)(nil), "isard.Permissions")
+	proto.RegisterType((*DomainOptions)(nil), "isard.DomainOptions")
+	proto.RegisterType((*DomainOptions_Viewers)(nil), "isard.DomainOptions.Viewers")
+	proto.RegisterType((*DomainOptions_Viewers_Spice)(nil), "isard.DomainOptions.Viewers.Spice")
+	proto.RegisterType((*Desktop)(nil), "isard.Desktop")
 	proto.RegisterType((*LoginLocalRequest)(nil), "isard.LoginLocalRequest")
 	proto.RegisterType((*LoginLocalResponse)(nil), "isard.LoginLocalResponse")
+	proto.RegisterType((*UserDesktopsGetRequest)(nil), "isard.UserDesktopsGetRequest")
+	proto.RegisterType((*UserDesktopsGetResponse)(nil), "isard.UserDesktopsGetResponse")
+	proto.RegisterType((*DesktopStartRequest)(nil), "isard.DesktopStartRequest")
+	proto.RegisterType((*DesktopStartResponse)(nil), "isard.DesktopStartResponse")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -135,6 +610,8 @@ const _ = grpc.SupportPackageIsVersion4
 type IsardClient interface {
 	// LoginLocal logs in the user using the local database and returns the token
 	LoginLocal(ctx context.Context, in *LoginLocalRequest, opts ...grpc.CallOption) (*LoginLocalResponse, error)
+	// UserDesktopsGet returns a list with all the desktops of an user
+	UserDesktopsGet(ctx context.Context, in *UserDesktopsGetRequest, opts ...grpc.CallOption) (*UserDesktopsGetResponse, error)
 }
 
 type isardClient struct {
@@ -154,10 +631,21 @@ func (c *isardClient) LoginLocal(ctx context.Context, in *LoginLocalRequest, opt
 	return out, nil
 }
 
+func (c *isardClient) UserDesktopsGet(ctx context.Context, in *UserDesktopsGetRequest, opts ...grpc.CallOption) (*UserDesktopsGetResponse, error) {
+	out := new(UserDesktopsGetResponse)
+	err := c.cc.Invoke(ctx, "/isard.Isard/UserDesktopsGet", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IsardServer is the server API for Isard service.
 type IsardServer interface {
 	// LoginLocal logs in the user using the local database and returns the token
 	LoginLocal(context.Context, *LoginLocalRequest) (*LoginLocalResponse, error)
+	// UserDesktopsGet returns a list with all the desktops of an user
+	UserDesktopsGet(context.Context, *UserDesktopsGetRequest) (*UserDesktopsGetResponse, error)
 }
 
 func RegisterIsardServer(s *grpc.Server, srv IsardServer) {
@@ -182,6 +670,24 @@ func _Isard_LoginLocal_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Isard_UserDesktopsGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDesktopsGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IsardServer).UserDesktopsGet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/isard.Isard/UserDesktopsGet",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IsardServer).UserDesktopsGet(ctx, req.(*UserDesktopsGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Isard_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "isard.Isard",
 	HandlerType: (*IsardServer)(nil),
@@ -190,27 +696,62 @@ var _Isard_serviceDesc = grpc.ServiceDesc{
 			MethodName: "LoginLocal",
 			Handler:    _Isard_LoginLocal_Handler,
 		},
+		{
+			MethodName: "UserDesktopsGet",
+			Handler:    _Isard_UserDesktopsGet_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/isard.proto",
 }
 
-func init() { proto.RegisterFile("proto/isard.proto", fileDescriptor_isard_5acb4a69a332070d) }
+func init() { proto.RegisterFile("proto/isard.proto", fileDescriptor_isard_d08dc45cfb6646cf) }
 
-var fileDescriptor_isard_5acb4a69a332070d = []byte{
-	// 211 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0x28, 0xca, 0x2f,
-	0xc9, 0xd7, 0xcf, 0x2c, 0x4e, 0x2c, 0x4a, 0xd1, 0x03, 0xb3, 0x85, 0x58, 0xc1, 0x1c, 0x29, 0x99,
-	0xf4, 0xfc, 0xfc, 0xf4, 0x9c, 0x54, 0xfd, 0xc4, 0x82, 0x4c, 0xfd, 0xc4, 0xbc, 0xbc, 0xfc, 0x92,
-	0xc4, 0x92, 0xcc, 0xfc, 0xbc, 0x62, 0x88, 0x22, 0x25, 0x4f, 0x2e, 0x41, 0x9f, 0xfc, 0xf4, 0xcc,
-	0x3c, 0x9f, 0xfc, 0xe4, 0xc4, 0x9c, 0xa0, 0xd4, 0xc2, 0xd2, 0xd4, 0xe2, 0x12, 0x21, 0x01, 0x2e,
-	0xe6, 0xc4, 0x82, 0x4c, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xce, 0x20, 0x10, 0x13, 0x24, 0x52, 0x5a,
-	0x5c, 0x24, 0xc1, 0x04, 0x11, 0x29, 0x2d, 0x2e, 0x02, 0x89, 0x14, 0x94, 0xa7, 0x48, 0x30, 0x43,
-	0x44, 0x0a, 0xca, 0x53, 0x94, 0xd4, 0xb8, 0x84, 0x90, 0x8d, 0x2a, 0x2e, 0xc8, 0xcf, 0x2b, 0x4e,
-	0x05, 0xa9, 0x2b, 0xc9, 0xce, 0x83, 0x99, 0x55, 0x92, 0x9d, 0x67, 0x94, 0xc1, 0xc5, 0xea, 0x09,
-	0x72, 0x99, 0x50, 0x3c, 0x17, 0x17, 0x42, 0x83, 0x90, 0x84, 0x1e, 0xc4, 0xf1, 0x18, 0xce, 0x91,
-	0x92, 0xc4, 0x22, 0x03, 0x31, 0x5d, 0x49, 0xa6, 0xe9, 0xf2, 0x93, 0xc9, 0x4c, 0x62, 0x4a, 0x82,
-	0xfa, 0x65, 0x86, 0x7a, 0x06, 0xfa, 0x39, 0x20, 0x15, 0xfa, 0x39, 0x20, 0x25, 0x56, 0x8c, 0x5a,
-	0x49, 0x6c, 0x60, 0x3f, 0x1a, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x57, 0x54, 0x26, 0xb2, 0x1d,
-	0x01, 0x00, 0x00,
+var fileDescriptor_isard_d08dc45cfb6646cf = []byte{
+	// 706 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xcd, 0x4e, 0x1b, 0x49,
+	0x10, 0xd6, 0xd8, 0x18, 0xe3, 0xf2, 0x2e, 0x3f, 0xbd, 0x96, 0x77, 0x76, 0xc4, 0x22, 0x6b, 0x0e,
+	0xbb, 0xc8, 0x5a, 0x66, 0xc0, 0x48, 0x6c, 0xe4, 0x53, 0x1c, 0x40, 0xc8, 0x92, 0x95, 0xa0, 0x41,
+	0x21, 0xa7, 0x1c, 0xda, 0x33, 0xcd, 0xd0, 0x61, 0x3c, 0x3d, 0x74, 0xb7, 0xcd, 0x21, 0xca, 0x25,
+	0x8f, 0x90, 0x1c, 0xf3, 0x3c, 0x39, 0xe4, 0x90, 0x13, 0x97, 0x3c, 0x40, 0x1e, 0x24, 0xea, 0x1f,
+	0x07, 0x83, 0x21, 0x51, 0x4e, 0x53, 0xf5, 0xd5, 0x57, 0xf5, 0x55, 0x7d, 0x1a, 0x35, 0xac, 0x15,
+	0x9c, 0x49, 0x16, 0x52, 0x81, 0x79, 0x12, 0xe8, 0x18, 0x55, 0x74, 0xe2, 0xad, 0xa7, 0x8c, 0xa5,
+	0x19, 0x09, 0x71, 0x41, 0x43, 0x9c, 0xe7, 0x4c, 0x62, 0x49, 0x59, 0x2e, 0x0c, 0xc9, 0xfb, 0x4f,
+	0x7f, 0xe2, 0xad, 0x94, 0xe4, 0x5b, 0xe2, 0x0a, 0xa7, 0x29, 0xe1, 0x21, 0x2b, 0x34, 0x63, 0x9e,
+	0xed, 0x5f, 0x42, 0xfd, 0x98, 0xf0, 0x11, 0x15, 0x42, 0x81, 0xa8, 0x09, 0x8b, 0xc5, 0x78, 0x98,
+	0xd1, 0xd8, 0x75, 0x5a, 0xce, 0xe6, 0x52, 0x64, 0x33, 0xd4, 0x80, 0x0a, 0x67, 0x19, 0x11, 0x6e,
+	0xa9, 0x55, 0xde, 0xac, 0x45, 0x26, 0x41, 0x1b, 0x00, 0x31, 0x96, 0x24, 0x65, 0x9c, 0x12, 0xe1,
+	0x96, 0x75, 0x69, 0x06, 0x51, 0x5d, 0x63, 0x41, 0xb8, 0x70, 0x17, 0x4c, 0x97, 0x4e, 0xfc, 0xcf,
+	0x0e, 0xfc, 0x7e, 0xc0, 0x46, 0x98, 0xe6, 0xcf, 0xcc, 0x5a, 0x68, 0x0f, 0xaa, 0x13, 0x4a, 0xae,
+	0x14, 0x53, 0xc9, 0xd6, 0x3b, 0xeb, 0x81, 0x39, 0xfb, 0x16, 0x2d, 0x38, 0x35, 0x9c, 0x68, 0x4a,
+	0x56, 0xdb, 0x0a, 0xc2, 0x27, 0x84, 0xbb, 0x25, 0xb3, 0xad, 0xc9, 0xbc, 0x0c, 0xaa, 0x96, 0x8b,
+	0x1e, 0x41, 0x45, 0x14, 0x34, 0x26, 0x76, 0xb0, 0xff, 0xa3, 0xc1, 0xc1, 0x89, 0x62, 0x46, 0xa6,
+	0xc1, 0xfb, 0x17, 0x2a, 0x3a, 0x57, 0x57, 0x9e, 0x8d, 0xb3, 0x4c, 0xc4, 0x9c, 0x90, 0xdc, 0xfa,
+	0x32, 0x83, 0xf8, 0xd7, 0x0e, 0x54, 0x0f, 0x88, 0xb8, 0x90, 0xac, 0x40, 0xcb, 0x50, 0xa2, 0x89,
+	0xe6, 0xd4, 0xa2, 0x12, 0x4d, 0x10, 0x82, 0x85, 0x1c, 0x8f, 0x88, 0xde, 0xaf, 0x16, 0xe9, 0x18,
+	0xb5, 0xa0, 0x9e, 0x10, 0x11, 0x73, 0xaa, 0xd5, 0xdd, 0xb2, 0x2e, 0xcd, 0x42, 0xfa, 0x2e, 0x89,
+	0xe5, 0x58, 0xb8, 0x8b, 0xba, 0x68, 0x33, 0x85, 0x27, 0x44, 0x62, 0x9a, 0xb9, 0x55, 0x83, 0x9b,
+	0x4c, 0xa9, 0x28, 0x6b, 0xdd, 0xba, 0x51, 0x51, 0xb1, 0xda, 0x84, 0x09, 0x77, 0xd9, 0x6c, 0xc2,
+	0x04, 0x0a, 0xa0, 0x6a, 0xff, 0x02, 0x17, 0x69, 0x2b, 0x1a, 0xf7, 0x59, 0x11, 0x4d, 0x49, 0x7e,
+	0x1f, 0xd6, 0x06, 0x2c, 0xa5, 0xf9, 0x80, 0xc5, 0x38, 0x8b, 0xc8, 0xe5, 0x98, 0x08, 0x89, 0x56,
+	0xa1, 0x8c, 0x0b, 0x6a, 0xef, 0x53, 0xa1, 0x42, 0xc6, 0x82, 0xdb, 0xfb, 0x54, 0xa8, 0x90, 0xe2,
+	0x2a, 0xb1, 0x67, 0xa9, 0xd0, 0xff, 0x07, 0xd0, 0xec, 0x28, 0x51, 0xb0, 0x5c, 0x10, 0xc5, 0x93,
+	0x17, 0xf9, 0x74, 0x96, 0xbc, 0xc8, 0xfd, 0x2e, 0x34, 0x9f, 0x0b, 0xc2, 0xad, 0x97, 0xe2, 0x88,
+	0xc8, 0x87, 0x75, 0x8d, 0xd1, 0xa5, 0xa9, 0xd1, 0xfe, 0x0b, 0xf8, 0x73, 0xae, 0xf7, 0x46, 0xe8,
+	0x4e, 0x73, 0x1b, 0x96, 0x12, 0x4b, 0xd4, 0x3f, 0x74, 0xbd, 0xb3, 0x3c, 0x35, 0xc3, 0xc0, 0xd1,
+	0xf7, 0xba, 0xff, 0x3f, 0xfc, 0x61, 0xc1, 0x13, 0x89, 0xf9, 0x2f, 0x6c, 0xd4, 0x84, 0xc6, 0xed,
+	0x46, 0xb3, 0x4e, 0xe7, 0x8b, 0x03, 0x95, 0xbe, 0x12, 0x43, 0x2f, 0x01, 0x6e, 0x7c, 0x41, 0xae,
+	0x5d, 0x61, 0xce, 0x75, 0xef, 0xaf, 0x7b, 0x2a, 0x66, 0x98, 0xef, 0xbd, 0xbd, 0xfe, 0xfa, 0xbe,
+	0xd4, 0xf0, 0x57, 0xc2, 0xc9, 0x4e, 0x98, 0xa9, 0x7a, 0x98, 0x29, 0x42, 0xd7, 0x69, 0xa3, 0x02,
+	0x56, 0xee, 0x58, 0x82, 0xfe, 0xb6, 0x93, 0xee, 0xb7, 0xd9, 0xdb, 0x78, 0xa8, 0x6c, 0xd5, 0x36,
+	0xb4, 0x9a, 0x8b, 0x9a, 0x4a, 0x4d, 0xfd, 0x65, 0xe1, 0x6b, 0x9a, 0xbc, 0x09, 0xa7, 0x5e, 0x3d,
+	0xf9, 0xe4, 0xbc, 0xeb, 0x7d, 0x74, 0xd0, 0x07, 0x07, 0x7e, 0xd3, 0x17, 0x9e, 0x1e, 0xf4, 0x5b,
+	0xbd, 0xe3, 0xbe, 0xdf, 0x83, 0xa5, 0x69, 0x8e, 0xfc, 0x73, 0x29, 0x0b, 0xd1, 0x0d, 0xc3, 0x94,
+	0xca, 0xf3, 0xf1, 0x30, 0x88, 0xd9, 0xc8, 0xbc, 0x71, 0x5b, 0x93, 0x84, 0x9a, 0xc8, 0x5b, 0xa3,
+	0xf9, 0x19, 0x7b, 0xac, 0xe3, 0x49, 0x42, 0x15, 0xa5, 0xbd, 0x0f, 0xb5, 0xde, 0xd1, 0xf1, 0xa0,
+	0x35, 0xd9, 0x0d, 0xb6, 0xd1, 0xde, 0xcf, 0x67, 0x84, 0xc3, 0x8c, 0x0d, 0xc3, 0x11, 0x16, 0x92,
+	0xf0, 0x70, 0xd0, 0xdf, 0x3f, 0x7c, 0x7a, 0x72, 0xd8, 0x29, 0xef, 0x04, 0xdb, 0x6d, 0xa7, 0xd4,
+	0x59, 0xc5, 0x45, 0x91, 0xd1, 0x58, 0x3f, 0x84, 0xe1, 0x2b, 0xc1, 0xf2, 0xee, 0x1c, 0x32, 0x5c,
+	0xd4, 0xef, 0xe3, 0xee, 0xb7, 0x00, 0x00, 0x00, 0xff, 0xff, 0x91, 0xfb, 0xb4, 0xf0, 0x87, 0x05,
+	0x00, 0x00,
 }

@@ -18,6 +18,14 @@
 
 package models
 
+import (
+	"fmt"
+
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/db"
+
+	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
+)
+
 // User is an individual user of Isard
 type User struct {
 	// ID is the unique identifier of the User (it's also the username)
@@ -36,14 +44,35 @@ type User struct {
 	Mail string `rethinkdb:"mail"`
 
 	// Role is the role of the user
-	Role Role `rethinkdb:"role,reference" rethinkdb_ref:"id"`
+	Role string `rethinkdb:"role"`
 
 	// Category is the category of the user
-	Category Category `rethinkdb:"role,reference" rethinkdb_ref:"id"`
+	Category string `rethinkdb:"category"`
 
 	// Group is the the group of the user
-	Group Group `rethinkdb:"role,reference" rethinkdb_ref:"id"`
+	Group string `rethinkdb:"group"`
 
 	// Quota is the quota that the user has
 	Quota Quota `rethinkdb:"quota"`
+}
+
+// GetUser returns searches an user in the DB
+func GetUser(id string) (*User, error) {
+	res, err := r.Table("users").Get(id).Run(db.Session)
+	if err != nil {
+		return &User{}, fmt.Errorf("error querying the DB: %v", err)
+	}
+	defer res.Close()
+
+	var usr User
+	err = res.One(&usr)
+	if err != nil {
+		if err == r.ErrEmptyResult {
+			return &User{}, fmt.Errorf("user not found")
+		}
+
+		return &User{}, fmt.Errorf("error getting the user from the DB: %v", err)
+	}
+
+	return &usr, nil
 }

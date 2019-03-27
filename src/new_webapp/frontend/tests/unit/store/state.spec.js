@@ -15,6 +15,9 @@ describe('state.js', () => {
       }
     })
     expect(state.tkn).toBe(null)
+    expect(state.usr).toBe('')
     expect(state.loginErr).toBe('')
+    expect(state.desktops).toEqual([])
+    expect(state.getDesktopsErr).toBe('')
   })
 })

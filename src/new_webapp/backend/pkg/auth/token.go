@@ -62,7 +62,7 @@ func (t *Token) Validate() bool {
 	tkn, err := jwt.ParseWithClaims(t.String(), claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(cfg.Config.GetString("tokens.secret")), nil
 	})
-	if !tkn.Valid || err != nil {
+	if err != nil || !tkn.Valid {
 		return false
 	}
 
@@ -71,14 +71,14 @@ func (t *Token) Validate() bool {
 
 // Renew renews the validity of the token
 // TODO: Renew already expired tokens
-func (t Token) Renew() error {
+func (t *Token) Renew() error {
 	claims := &TokenClaims{}
 
 	tkn, err := jwt.ParseWithClaims(t.String(), claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(cfg.Config.GetString("tokens.secret")), nil
 	})
-	if !tkn.Valid || err != nil {
-		return errors.New("error renewing the token: the token is invalid or has been already expired")
+	if err != nil || !tkn.Valid {
+		return errors.New("error renewing the token: the token is invalid or has already expired")
 	}
 
 	claims.ExpiresAt = time.Now().Add(
@@ -91,7 +91,7 @@ func (t Token) Renew() error {
 		return fmt.Errorf("error singing the token: %v", err)
 	}
 
-	t = Token(tknStr)
+	*t = Token(tknStr)
 	return nil
 }
 

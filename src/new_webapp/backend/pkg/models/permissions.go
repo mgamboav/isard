@@ -16,24 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package grpc
+package models
 
-import (
-	"context"
+// Permissions are the permissions of a resource
+type Permissions struct {
+	// Public sets if the resource is public or not
+	Public bool
 
-	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/auth"
-	isard "github.com/isard-vdi/isard/src/new_webapp/backend/proto"
+	// Roles are the roles that have access to the resource
+	Roles []string
 
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-)
+	// Categories are the categories that have acess to the resource
+	Categories []string
 
-// LoginLocal logs in the user using the local database and returns the token
-func (i *IsardServer) LoginLocal(ctx context.Context, req *isard.LoginLocalRequest) (*isard.LoginLocalResponse, error) {
-	tkn, err := auth.LoginLocal(req.Usr, req.Pwd)
-	if err != nil {
-		return &isard.LoginLocalResponse{}, status.Errorf(codes.InvalidArgument, "authentication error: %v", err)
-	}
+	// Groups are the groups that have access to the resource
+	Groups []string
 
-	return &isard.LoginLocalResponse{Tkn: tkn.String()}, nil
+	// Users are the users that have access to the resource
+	Users []string
 }

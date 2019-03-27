@@ -39,5 +39,4 @@ yarn run test:unit
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 TODO:
- - Languages
  - Error handling (responses for the user)

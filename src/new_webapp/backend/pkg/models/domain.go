@@ -16,24 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package grpc
+package models
 
-import (
-	"context"
-
-	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/auth"
-	isard "github.com/isard-vdi/isard/src/new_webapp/backend/proto"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-)
-
-// LoginLocal logs in the user using the local database and returns the token
-func (i *IsardServer) LoginLocal(ctx context.Context, req *isard.LoginLocalRequest) (*isard.LoginLocalResponse, error) {
-	tkn, err := auth.LoginLocal(req.Usr, req.Pwd)
-	if err != nil {
-		return &isard.LoginLocalResponse{}, status.Errorf(codes.InvalidArgument, "authentication error: %v", err)
+// DomainOptions are the different options that a domain can have
+type DomainOptions struct {
+	// Viewers contains the options related with the viewers
+	Viewers struct {
+		// Spice contains the options related with the Spice viewer
+		Spice struct {
+			// Fullscreen sets if the desktop is going to be opened in
+			// fullscreen when using the spice viewer
+			Fullscreen bool
+		}
 	}
-
-	return &isard.LoginLocalResponse{Tkn: tkn.String()}, nil
 }

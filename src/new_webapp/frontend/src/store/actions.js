@@ -12,6 +12,7 @@ export default {
     state.isard.loginLocal(req, {}, (err, rsp) => {
       if (err === null) {
         commit('updateTkn', rsp.getTkn())
+        commit('updateUser', payload.usr)
         commit('loginErr', '')
         setCookie('tkn', rsp.getTkn())
       } else {
@@ -22,5 +23,19 @@ export default {
   logout (context) {
     context.commit('updateTkn', null)
     removeCookie('tkn')
+  },
+  getDesktops ({ commit, state }) {
+    let req = new proto.UserDesktopsGetRequest()
+    req.setApi(state.api)
+    req.setId(state.user)
+
+    state.isard.userDesktopsGet(req, { 'tkn': state.tkn }, (err, rsp) => {
+      if (err === null) {
+        commit('updateDesktops', rsp.getDesktopsList())
+        commit('getDesktopsErr', '')
+      } else {
+        commit('getDesktopsErr', err.message)
+      }
+    })
   }
 }

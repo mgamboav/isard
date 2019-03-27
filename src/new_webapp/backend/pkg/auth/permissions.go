@@ -19,38 +19,35 @@
 package auth
 
 import (
-	"errors"
-	"fmt"
-
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/cfg"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/models"
 
-	"golang.org/x/crypto/bcrypt"
+	"github.com/dgrijalva/jwt-go"
 )
 
-// LoginLocal logs in the user using the local database and returns the token
-func LoginLocal(id, pwd string) (Token, error) {
-	usr, err := models.GetUser(id)
+// CanAccess checks if an user can access to a specific resource
+func (t Token) CanAccess(ownerID string) bool {
+	claims := &TokenClaims{}
+
+	tkn, err := jwt.ParseWithClaims(t.String(), claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(cfg.Config.GetString("tokens.secret")), nil
+	})
+	if err != nil || !tkn.Valid {
+		return false
+	}
+
+	usr, err := models.GetUser(claims.Usr)
 	if err != nil {
-		return "", fmt.Errorf("error getting the user: %v", err)
+		return false
 	}
 
-	if usr.Type != "local" {
-		return "", fmt.Errorf("invalid authentication method: user auth type is %v", usr.Type)
+	if usr.Role == "admin" {
+		return true
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(usr.Password), []byte(pwd))
-	if err != nil {
-		if err == bcrypt.ErrMismatchedHashAndPassword {
-			return "", errors.New("incorrect password")
-		}
-
-		return "", fmt.Errorf("password error: %v", err)
+	if usr.ID == ownerID {
+		return true
 	}
 
-	tkn, err := NewToken(usr.ID)
-	if err != nil {
-		return "", fmt.Errorf("error generating the login token: %v", err)
-	}
-
-	return tkn, nil
+	return false
 }

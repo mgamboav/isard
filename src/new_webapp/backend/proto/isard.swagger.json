@@ -1,11 +1,19 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/isard.proto",
-    "version": "version not set"
+    "title": "IsardVDI API",
+    "version": "1.0",
+    "contact": {
+      "name": "IsardVDI",
+      "url": "https://github.com/isard-vdi/isard",
+      "email": "info@isardvdi.com"
+    },
+    "license": {
+      "name": "AGPL v3.0",
+      "url": "https://github.com/isard-vdi/isard/blob/master/LICENSE"
+    }
   },
   "schemes": [
-    "http",
     "https"
   ],
   "consumes": [
@@ -15,7 +23,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1.0/login/local": {
+    "/v1/login/local": {
       "post": {
         "summary": "LoginLocal logs in the user using the local database and returns the token",
         "operationId": "LoginLocal",
@@ -41,9 +49,111 @@
           "Isard"
         ]
       }
+    },
+    "/v1/user/{id}/desktops": {
+      "get": {
+        "summary": "UserDesktopsGet returns a list with all the desktops of an user",
+        "operationId": "UserDesktopsGet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/isardUserDesktopsGetResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "api",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Isard"
+        ]
+      }
     }
   },
   "definitions": {
+    "DomainOptionsViewers": {
+      "type": "object",
+      "properties": {
+        "spice": {
+          "$ref": "#/definitions/ViewersSpice"
+        }
+      },
+      "title": "Viewers are the options related with the viewers"
+    },
+    "ViewersSpice": {
+      "type": "object",
+      "properties": {
+        "fullscreen": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "fullscreen sets if the desktop is going to be opened in fullscreen"
+        }
+      },
+      "title": "Spice are the options related with the Spice viewer"
+    },
+    "isardDesktop": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "id is the unique identifier of the domain. It's formed by \"_{username}_{desktopName}\""
+        },
+        "name": {
+          "type": "string",
+          "title": "name is the name of the desktop"
+        },
+        "description": {
+          "type": "string",
+          "title": "description is the user description of the desktop"
+        },
+        "status": {
+          "type": "string",
+          "title": "status is the current status of the desktop\nDomainStatus status = 6;"
+        },
+        "detail": {
+          "type": "string",
+          "title": "detail shows messages in case there's an error doing an operation with the desktop"
+        },
+        "user": {
+          "type": "string",
+          "title": "user is the user that owns the desktop"
+        },
+        "os": {
+          "type": "string",
+          "title": "os is the Operative System of the desktop"
+        },
+        "options": {
+          "$ref": "#/definitions/isardDomainOptions",
+          "title": "options are the options of the desktop"
+        }
+      }
+    },
+    "isardDomainOptions": {
+      "type": "object",
+      "properties": {
+        "viewers": {
+          "$ref": "#/definitions/DomainOptionsViewers"
+        },
+        "server": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "server sets if the desktop is going to be stopped by the automatic jobs"
+        }
+      },
+      "title": "DomainOptions are the different options that a domain can hae"
+    },
     "isardLoginLocalRequest": {
       "type": "object",
       "properties": {
@@ -63,6 +173,20 @@
       "properties": {
         "tkn": {
           "type": "string"
+        }
+      }
+    },
+    "isardUserDesktopsGetResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "desktops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/isardDesktop"
+          }
         }
       }
     }
