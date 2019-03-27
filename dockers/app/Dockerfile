@@ -6,6 +6,12 @@ RUN apk add --no-cache bash yarn py3-libvirt py3-paramiko py3-lxml py3-pexpect p
 COPY dockers/app/requirements.pip3 /requirements.pip3
 RUN pip3 install --no-cache-dir -r requirements.pip3
 
+## GRPC
+RUN apk add --no-cache --virtual .build_deps build-base python3-dev
+RUN pip3 install grpcio grpcio-tools
+RUN apk del .build_deps
+
+
 RUN mkdir -p /root/.ssh
 RUN echo "Host isard-hypervisor \
 	StrictHostKeyChecking no" >/root/.ssh/config
