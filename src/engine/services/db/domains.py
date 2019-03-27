@@ -197,22 +197,22 @@ def get_domain_hyp_started_and_status_and_detail(id_domain):
 #     return results
 
 
-# def get_domains_with_status(status):
-#     """
-#     NOT USED
-#     :param status:
-#     :return:
-#     """
-#     r_conn = new_rethink_connection()
-#     rtable = r.table('domains')
-#     try:
-#         results = rtable.get_all(status, index='status').pluck('id').run(r_conn)
-#         close_rethink_connection(r_conn)
-#     except:
-#         # if results is None:
-#         close_rethink_connection(r_conn)
-#         return []
-#     return [d['id'] for d in results]
+def get_domains_with_status(status):
+    """
+    get domain with status
+    :param status
+    :return: list id_domains
+    """
+    r_conn = new_rethink_connection()
+    rtable = r.table('domains')
+    try:
+        results = rtable.get_all(status, index='status').pluck('id').run(r_conn)
+        close_rethink_connection(r_conn)
+    except:
+        # if results is None:
+        close_rethink_connection(r_conn)
+        return []
+    return [d['id'] for d in results]
 
 
 def get_domains_with_transitional_status(list_status=TRANSITIONAL_STATUS):
@@ -225,6 +225,15 @@ def get_domains_with_transitional_status(list_status=TRANSITIONAL_STATUS):
     close_rethink_connection(r_conn)
     return l
 
+def get_domains_with_status_in_list(list_status=['Started']):
+    r_conn = new_rethink_connection()
+    rtable = r.table('domains')
+    # ~ l = list(rtable.filter(lambda d: r.expr(list_status).
+    # ~ contains(d['status'])).pluck('status', 'id', 'hyp_started').
+    # ~ run
+    l = list(rtable.get_all(r.args(list_status), index='status').pluck('status', 'id', 'hyp_started').run(r_conn))
+    close_rethink_connection(r_conn)
+    return l
 
 # def change_status_to_all_domains_with_status(oldstatus, newstatus):
 #     """
@@ -335,6 +344,13 @@ def remove_disk_template_created_list_in_domain(id_domain):
     close_rethink_connection(r_conn)
     return results
 
+def update_origin_and_parents_to_new_template(id_domain,template_id):
+    r_conn = new_rethink_connection()
+    rtable = r.table('domains')
+    new_create_dict_origin = {'create_dict':{'origin':template_id}}
+    results = rtable.get(id_domain).update(new_create_dict_origin).run(r_conn)
+    close_rethink_connection(r_conn)
+    return results
 
 def remove_dict_new_template_from_domain(id_domain):
     r_conn = new_rethink_connection()
@@ -393,24 +409,20 @@ def get_pool_from_domain(domain_id):
     r_conn = new_rethink_connection()
     rtable = r.table('domains')
     try:
-        d = rtable.get(domain_id).pluck('pool', 'kind').run(r_conn)
-        if d['kind'] == 'desktop':
-            if 'pool' not in d.keys():
-                pool = 'default'
+        d = rtable.get(domain_id).pluck('hypervisors_pools').run(r_conn)
+        if len(d) > 0:
+            if len(d['hypervisors_pools']) > 0:
+                pool = d['hypervisors_pools'][0]
             else:
-                if type(d['pool']) is unicode or type(d['pool']) is str:
-                    rtable = r.table('hypervisors_pools')
-                    d_pool = rtable.get(d['pool']).run(r_conn)
-                    if len(d_pool.keys()) > 0:
-                        pool = d['pool']
-                    else:
-                        pool = 'default'
+                log.error(f'domain: {domain_id} with not hypervisors_pools in list. Pool default forced.')
+                pool = 'default'
         else:
-            pool = False
+            log.error(f'domain: {domain_id} withouth hypervisors_pools key defined. Pool default forced.')
+            pool = 'default'
     except r.ReqlNonExistenceError:
         log.error('domain_id {} does not exist in domains table'.format(domain_id))
         log.debug('function: {}'.format(sys._getframe().f_code.co_name))
-        pool = False
+        pool = 'default'
 
     close_rethink_connection(r_conn)
     return pool
@@ -597,7 +609,7 @@ def update_domain_history_status(domain_id, new_status, when, history_domain, de
 
     r_conn = new_rethink_connection()
     rtable = r.table('domains')
-    results = rtable.get(domain_id).update({'history_domain': list_history_domain}).run(r_conn)
+    results = rtable.get(domain_id).update({'history_domain': list_history_domain,'accessed':int(when)}).run(r_conn)
 
     close_rethink_connection(r_conn)
     return results

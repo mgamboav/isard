@@ -26,6 +26,16 @@ $(document).ready(function() {
         setModalUser();
 	});
 
+	$('#btn-download-bulkusers').on('click', function () {
+        var viewerFile = new Blob(["username,name,mail,password\njdoe,John Doe,jdoe@isardvdi.com,sup3rs3cr3t\nauser,Another User,auser@domain.com,a1sera1ser"], {type: "text/csv"});
+        var a = document.createElement('a');
+            a.download = 'bulk-users-template.csv';
+            a.href = window.URL.createObjectURL(viewerFile);
+        var ev = document.createEvent("MouseEvents");
+            ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(ev);  
+	});
+    
 	$('.btn-old-users').on('click', function () {
         $('#modalOldUsers').modal({backdrop: 'static', keyboard: false}).modal('show');
         populate_users_table()
@@ -59,31 +69,39 @@ $(document).ready(function() {
         }
     }); 
 
-    //~ $("#modalEditUser #send").on('click', function(e){
-        //~ var form = $('#modalEditUserForm');
-        //~ data=quota2dict($('#modalEditUserForm').serializeObject());
-        //~ console.log(data)
+    $("#modalPasswdUser #send").on('click', function(e){
+        var form = $('#modalPasswdUserForm');
+        form.parsley().validate();
+        if (form.parsley().isValid()){
+            data={}
+            data['id']=data['username']=$('#modalPasswdUserForm #id').val();
+            data['name']=$('#modalPasswdUserForm #name').val();
+            data['password']=$('#modalPasswdUserForm #password').val();
+            socket.emit('user_passwd',data)
+        }
+    }); 
+
+    $("#modalDeleteUserTree #send").on('click', function(e){
+        //~ var form = $('#modalDeleteUserForm');
+        //~ data=$('#modalDeleteUserForm').serializeObject();
         //~ form.parsley().validate();
         //~ if (form.parsley().isValid()){
             
-            //~ data=quota2dict($('#modalEditUserForm').serializeObject());
-            //~ delete data['password2']
-            //~ data['id']=data['username']=$('#modalEditUserForm #id').val();
-            //~ console.log(data)
-            //~ socket.emit('user_edit',data)
+            //~ data=quota2dict($('#modalDeleteUserForm').serializeObject());
+            //~ socket.emit('user_delete',data)
+        //~ }
+    }); 
+            
+    //~ $("#modalDeleteUser #send").on('click', function(e){
+        //~ var form = $('#modalDeleteUserForm');
+        //~ data=$('#modalDeleteUserForm').serializeObject();
+        //~ form.parsley().validate();
+        //~ if (form.parsley().isValid()){
+            
+            //~ data=quota2dict($('#modalDeleteUserForm').serializeObject());
+            //~ socket.emit('user_delete',data)
         //~ }
     //~ }); 
-    
-    $("#modalDeleteUser #send").on('click', function(e){
-        var form = $('#modalDeleteUserForm');
-        data=$('#modalDeleteUserForm').serializeObject();
-        form.parsley().validate();
-        if (form.parsley().isValid()){
-            
-            data=quota2dict($('#modalDeleteUserForm').serializeObject());
-            socket.emit('user_delete',data)
-        }
-    }); 
 
        document.getElementById('csv').addEventListener('change', readFile, false);
        var filecontents=''
@@ -160,7 +178,25 @@ $(document).ready(function() {
     $("#bulk-group").on('change', function(e){
         setQuotaTableDefaults('#bulkusers-quota','groups',$(this).val())
     });
-        
+
+            //~ $("input").click(function () {
+                //~ console.log('in')
+                //~ if($(this).prop("checked")){
+                    //~ $(this).next('ul').find('input:checkbox').prop('checked', $(this).prop("checked")).prop('disabled',true);
+                //~ }else{
+                    //~ $(this).next('ul').find('input:checkbox').prop('checked', $(this).prop("checked")).prop('disabled',true);
+                //~ }
+            //~ });
+
+    //~ $('#domains_tree input:checkbox').attr('disabled',true);
+     $('#domains_tree input:checkbox').on('ifChecked', function(event){
+         console.log('ifchecked')
+        $(this).closest('div').next('ul').find('input:checkbox').iCheck('check').attr('disabled',true) //.prop('disabled',true);
+     });
+     $('#domains_tree input:checkbox').on('ifUnchecked', function(event){
+         console.log('ifunchecked')
+          $(this).closest('div').next('ul').find('input:checkbox').iCheck('uncheck').attr('disabled',false)
+     });        
             
     table=$('#users').DataTable( {
         "ajax": {
@@ -345,35 +381,82 @@ function actionsUserDetail(){
             //~ modal_edit_desktop_datatables(pk);
 	});
 
-	$('.btn-delete').on('click', function () {
+	$('.btn-passwd').on('click', function () {
             //~ setQuotaOptions('#edit-users-quota');
+            var closest=$(this).closest("div");
+            var pk=closest.attr("data-pk");
+            var name=closest.attr("data-name");
+            //~ var user=closest.attr("data-user");
+            $("#modalPasswdUserForm")[0].reset();
+			$('#modalPasswdUser').modal({
+				backdrop: 'static',
+				keyboard: false
+			}).modal('show');
+            $('#modalPasswdUserForm #name').val(name);
+            $('#modalPasswdUserForm #id').val(pk);
+             //~ $('#hardware-block').hide();
+            //~ $('#modalEdit').parsley();
+            //~ modal_edit_desktop_datatables(pk);
+	});
+
+	//~ $('.btn-delete').on('click', function () {
+            //~ // setQuotaOptions('#edit-users-quota');
+            //~ var pk=$(this).closest("div").attr("data-pk");
+            //~ // $("#modalDeleteUserForm")[0].reset();
+			//~ $('#modalDeleteUserTree').modal({
+				//~ backdrop: 'static',
+				//~ keyboard: false
+			//~ }).modal('show');
+            //~ // GENERATE DOMAINS_TREE
+            //~ api.ajax('/admin/user/delete','POST',{'pk':pk}).done(function(user) {console.log('done')})
+            //~ $('#domains_tree input:checkbox').iCheck('check');
+    //~ });
+    
+//~ <div id="domains_tree">
+                    //~ <ul>
+                        //~ <li>
+                            //~ <input type="checkbox" />
+                            //~ Root
+                            //~ <ul>
+                                //~ <li>
+                                    //~ <input type="checkbox" />
+                                    //~ Child 1
+                                    //~ <ul>
+                                        //~ <li>
+                                            //~ <input type="checkbox
+    
+
+    
+    
+	$('.btn-delete').on('click', function () {
+            // setQuotaOptions('#edit-users-quota');
             var pk=$(this).closest("div").attr("data-pk");
             $("#modalDeleteUserForm")[0].reset();
 			$('#modalDeleteUser').modal({
 				backdrop: 'static',
 				keyboard: false
 			}).modal('show');
-            //~ setModalUser()
-            //~ setQuotaTableDefaults('#edit-users-quota','users',pk)
+            // setModalUser()
+            // setQuotaTableDefaults('#edit-users-quota','users',pk)
             api.ajax('/admin/user/delete','POST',{'pk':pk}).done(function(user) {
                 $('.user-desktops').text(user.desktops.length);
                 $('.user-templates').text(user.templates.length);
                 $('.user-templates-ok').text(user.templates.length-user.risky_templates.length);
                 $('.user-templates-ko').text(user.risky_templates.length);
                 $('.user-templates-ko-count').text(user.others_domains);
-                //~ $('#modalEditForm #name').val(user.name);
-                //~ $('#modalEditForm #id').val(user.id);
-                //~ $('#modalEditForm #mail').val(user.mail);
-                //~ $('#modalEditForm #role option:selected').prop("selected", false);
-                //~ $('#modalEditForm #role option[value="'+user.role+'"]').prop("selected",true);
-                //~ $('#modalEditForm #category option:selected').prop("selected", false);
-                //~ $('#modalEditForm #category option[value="'+user.category+'"]').prop("selected",true);
-                //~ $('#modalEditForm #group option:selected').prop("selected", false);
-                //~ $('#modalEditForm #group option[value="'+user.group+'"]').prop("selected",true);                
+                // $('#modalEditForm #name').val(user.name);
+                // $('#modalEditForm #id').val(user.id);
+                // $('#modalEditForm #mail').val(user.mail);
+                // $('#modalEditForm #role option:selected').prop("selected", false);
+                // $('#modalEditForm #role option[value="'+user.role+'"]').prop("selected",true);
+                // $('#modalEditForm #category option:selected').prop("selected", false);
+                // $('#modalEditForm #category option[value="'+user.category+'"]').prop("selected",true);
+                // $('#modalEditForm #group option:selected').prop("selected", false);
+                // $('#modalEditForm #group option[value="'+user.group+'"]').prop("selected",true);                
             });
-             //~ $('#hardware-block').hide();
-            //~ $('#modalEdit').parsley();
-            //~ modal_edit_desktop_datatables(pk);
+             // $('#hardware-block').hide();
+            // $('#modalEdit').parsley();
+            // modal_edit_desktop_datatables(pk);
 	});
 
 
@@ -396,7 +479,7 @@ function actionsUserDetail(){
 							history: {
 								history: false
 							},
-							stack: stack_center
+							addclass: 'pnotify-center'
 						}).get().on('pnotify.confirm', function() {
                             socket.emit('user_toggle',{'pk':pk,'name':name})
 						}).on('pnotify.cancel', function() {
@@ -447,7 +530,7 @@ function renderUsersDetailPannel ( d ) {
                     $("."+key+' option[value="local"]').prop("selected",true);
             });
                 
-        });
+        });       
     }
 
 function populate_users_table(){
@@ -484,7 +567,7 @@ function populate_users_table(){
 							confirm: {confirm: true},
 							buttons: {closer: false,sticker: false},
 							history: {history: false},
-							stack: stack_center
+							addclass: 'pnotify-center'
 						}).get().on('pnotify.confirm', function() {
                             api.ajax('/admin/users/nonexists','POST',{'commit':true}).done(function(data) {
                                             $("#modalOldUsers").modal('hide');

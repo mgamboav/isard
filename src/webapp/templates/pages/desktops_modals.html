@@ -234,7 +234,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Template name <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                           <input id="name" class="form-control col-md-7 col-xs-12 template-name" data-validate-length-range="4,40" name="name" placeholder="New desktop name" required="required" type="text">
+                            <input id="name" class="form-control template-name" maxlength="40" pattern="[-_àèìòùáéíóúñçÀÈÌÒÙÁÉÍÓÚÑÇ .a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="name" placeholder="New template name" data-parsley-trigger="change" required type="text">
                         </div>
                      </div>
                      <div class="item form-group">
@@ -291,7 +291,7 @@
                      <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                           <button id="send" type="submit" class="btn btn-success">Create template</button>
+                           <button id="send" type="button" class="btn btn-success">Create template</button>
                         </div>
                      </div>
             </div>
@@ -300,7 +300,8 @@
     </div>
 </div>
 </div>
-
+    </div>
+</div>
 
 <div class="modal fade" id="modalShowInfo" tabindex="-1" role="dialog" 
      aria-labelledby="myModalLabel" aria-hidden="true">
@@ -346,4 +347,6 @@
             </div>
             </form>
         </div>
+</div>
+    </div>
 </div>

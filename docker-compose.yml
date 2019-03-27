@@ -4,10 +4,11 @@ services:
     container_name: isard-database
     volumes:
       - "/opt/isard/database:/data"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       - isard_network
     image: rethinkdb
-    restart: always
+    restart: unless-stopped
     logging:
         driver: none
 
@@ -16,19 +17,16 @@ services:
     volumes:
       - "/opt/isard/certs/default:/etc/nginx/external"
       - "/opt/isard/logs/nginx:/var/log/nginx"
+      - "/etc/localtime:/etc/localtime:ro"
     ports:
-      - target: 80
-        published: 80
-        protocol: tcp
-        mode: host
-      - target: 443
-        published: 443
-        protocol: tcp
-        mode: host
+      - "80:80"
+      - "443:443"
     networks:
       - isard_network
-    image: isard/nginx:1.1
-    restart: always
+    image: isard/nginx:1
+    restart: unless-stopped
+    depends_on:
+      - isard-app
 
   isard-hypervisor:
     container_name: isard-hypervisor
@@ -36,14 +34,15 @@ services:
       - "sshkeys:/root/.ssh"
       - "/opt/isard:/isard"
       - "/opt/isard/certs/default:/etc/pki/libvirt-spice"
+      - "/etc/localtime:/etc/localtime:ro"
     ports:
-      - "5900-5949:5900-5949"
-      - "55900-55949:55900-55949"
+      - "5900-5999:5900-5999"
+      - "55900-55999:55900-55999"
     networks:
       - isard_network
-    image: isard/hypervisor:1.1
+    image: isard/hypervisor:1
     privileged: true
-    restart: always
+    restart: unless-stopped
         
   isard-app:
     container_name: isard-app
@@ -54,16 +53,16 @@ services:
       - "/opt/isard/database/wizard:/isard/install/wizard"
       - "/opt/isard/backups:/isard/backups"
       - "/opt/isard/uploads:/isard/uploads"
+      - "/etc/localtime:/etc/localtime:ro"
     extra_hosts:
       - "isard-engine:127.0.0.1"
     networks:
       - isard_network
-    image: isard/app:1.1
-    restart: always
+    image: isard/app:1
+    restart: unless-stopped
     depends_on:
       - isard-database
       - isard-hypervisor
-      - isard-nginx
 
 volumes:
   sshkeys:

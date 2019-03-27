@@ -176,8 +176,11 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                            <select id="action" name="action" class="form-control" onchange="hiddenFields(this);console.log('hide');" required>
                               <option value="">Choose..</option>
+<!--
                               <option value="delete_old_stats">Delete old stats</option>
+-->
                               <option value="stop_domains_without_viewer">Stop domains without viewer</option>
+                              <option value="check_ephimeral_status">Check ephimeral domain status</option>
                            </select>
                         </div>
                      </div>
@@ -282,8 +285,10 @@ function hiddenFields(obj) {
               <form id="modalAddBackupInfo" class="form-horizontal form-label-left">
 -->
             <ul class="nav navbar-right panel_toolbox">
+<!--
 				<li><a class="btn-bulk-restore"><span style="color: #5499c7; "><i class="fa fa-plus"></i> Restore table</span></a>
                </li>
+-->
             </ul>
 			  <div class="x_panel">
                  <div class="x_content">
@@ -312,6 +317,7 @@ function hiddenFields(obj) {
                    </thead>
                 </table>
             </div>
+        </div>
         </div>
     </div>
 </div>

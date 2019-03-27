@@ -30,7 +30,7 @@ LANDING ADMIN PAGE
 @login_required
 @isAdmin
 def admin():
-    return redirect(url_for('admin_hypervisors'))
+    return render_template('admin/pages/hypervisors.html', title="Hypervisors", header="Hypervisors", nav="Hypervisors")
  
 @app.route('/admin/table/<table>/get')
 @login_required
@@ -69,9 +69,19 @@ def admin_table_post(table):
         data=request.get_json(force=True)
         if 'pluck' not in data.keys():
             data['pluck']=False
+        if 'kind' not in data.keys():
+            data['kind']=False
+        # ~ else:
+            # ~ if data['kind']=='template':
+                # ~ result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'],kind=data['kind'])
+                # ~ result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'],kind=data['kind'])
+                # ~ result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'],kind=data['kind'])
+        # ~ else:
+            # ~ if data['kind']='not_desktops':
+                # ~ result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'],kind=)
         #~ if 'order' not in data.keys():
             #~ data['order']=False
-        result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'])
+        result=app.adminapi.get_admin_table_term(table,'name',data['term'],pluck=data['pluck'],kind=data['kind'])
         return json.dumps(result), 200, {'ContentType':'application/json'}
     return json.dumps('Could not delete.'), 500, {'ContentType':'application/json'} 
 
@@ -132,7 +142,8 @@ def admin_config_update():
             dict['disposable_desktops'].pop('id',None)
             dict['disposable_desktops']['active']=False if 'active' not in dict['disposable_desktops'] else True
         if app.adminapi.update_table_dict('config',1,dict):
-            return json.dumps('Updated'), 200, {'ContentType':'application/json'}
+            # ~ return json.dumps('Updated'), 200, {'ContentType':'application/json'}
+            return render_template('admin/pages/config.html',nav="Config")
     return json.dumps('Could not update.'), 500, {'ContentType':'application/json'}
 
 @app.route('/admin/disposable/add', methods=['POST'])

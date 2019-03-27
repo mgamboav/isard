@@ -8,7 +8,7 @@
 from decimal import Decimal
 import random, queue
 from threading import Thread
-import time
+import time, pytz
 from webapp import app
 import rethinkdb as r
 #~ from flask import current_app
@@ -43,7 +43,7 @@ class isardScheduler():
                                          # ~ port=app.config['RETHINKDB_PORT'],
                                          # ~ auth_key=app.config['RETHINKDB_AUTH'])
 #>>>>>>> fe171dc30ddd8a2dabafa7b2085cbb60e6432c35
-        self.scheduler = BackgroundScheduler()
+        self.scheduler = BackgroundScheduler(timezone=pytz.timezone('UTC'))
         self.scheduler.add_jobstore('rethinkdb',self.rStore, database='isard', table='scheduler_jobs',host=app.config['RETHINKDB_HOST'],
                          port=app.config['RETHINKDB_PORT'],
                          auth_key=app.config['RETHINKDB_AUTH'])
@@ -77,7 +77,15 @@ class isardScheduler():
     def stop_domains_without_viewer():
         with app.app_context():
             r.table('domains').get_all('Started',index='status').filter({'viewer':{'client_since':False}}).update({'status':'Stopping'}).run(db.conn)
-          
+
+    def check_ephimeral_status():
+        with app.app_context():
+            domains=r.table('domains').get_all('Started',index='status').has_fields('ephimeral').pluck('id','ephimeral','history_domain').run(db.conn)
+            t=time.time()
+            for d in domains:
+                if d['history_domain'][0]['when']+int(d['ephimeral']['minutes'])*60 < t:
+                    r.table('domains').get(d['id']).update({'status':d['ephimeral']['action']}).run(db.conn)
+                      
     def delete_old_stats(reduce_interval=300,delete_interval=86400): # 24h
         with app.app_context():
             # domains_status

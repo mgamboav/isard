@@ -9,6 +9,7 @@ socket=null
 user={}
 $(document).ready(function() {
     user['role']=$('#user-data').data("role");
+    $('.btn-delete-template').remove()
     modal_add_desktops = $('#modal_add_desktops').DataTable()
 	initalize_modal_all_desktops_events()
     
@@ -91,7 +92,7 @@ $(document).ready(function() {
 							{
 							"targets": 4,
 							"render": function ( data, type, full, meta ) {
-							  return renderStatus(full);
+							  return renderStatus(full,table);
 							}},
                             {
 							"targets": 5,
@@ -199,7 +200,7 @@ $(document).ready(function() {
 							history: {
 								history: false
 							},
-							stack: stack_center
+                            addclass: 'pnotify-center'
 						}).get().on('pnotify.confirm', function() {
                             socket.emit('domain_update',{'pk':data['id'],'name':'status','value':'Stopping'})
 						}).on('pnotify.cancel', function() {
@@ -243,10 +244,11 @@ $(document).ready(function() {
     });
 
    
-    
+    countdown ={}
     socket.on('desktop_data', function(data){
         var data = JSON.parse(data);
         if(data.status =='Started' && table.row('#'+data.id).data().status != 'Started'){
+            
             if('preferred' in data['options']['viewers'] && data['options']['viewers']['preferred']){
                 socket.emit('domain_viewer',{'pk':data.id,'kind':data['options']['viewers']['preferred'],'os':getOS()});
             }else{
@@ -255,14 +257,16 @@ $(document).ready(function() {
                         backdrop: 'static',
                         keyboard: false
                     }).modal('show');
-        }
-
+            }
+        }else{
+            //~ if('ephimeral' in data && !countdown[data.id]){
+                clearInterval(countdown[data.id])
+                countdown[data.id]=null
+            //~ }
         }
         
-        //~ if(claimed==false){
 
-        //~ }
-            
+
         dtUpdateInsert(table,data,false);
         setDesktopDetailButtonsStatus(data.id, data.status);
     });
@@ -283,15 +287,17 @@ $(document).ready(function() {
     
     socket.on('result', function (data) {
         var data = JSON.parse(data);
-        new PNotify({
-                title: data.title,
-                text: data.text,
-                hide: true,
-                delay: 4000,
-                icon: 'fa fa-'+data.icon,
-                opacity: 1,
-                type: data.type
-        });
+        if(data.title){
+            new PNotify({
+                    title: data.title,
+                    text: data.text,
+                    hide: true,
+                    delay: 4000,
+                    icon: 'fa fa-'+data.icon,
+                    opacity: 1,
+                    type: data.type
+            });
+        };
     });
 
     socket.on('add_form_result', function (data) {
@@ -299,6 +305,8 @@ $(document).ready(function() {
         if(data.result){
             $("#modalAdd")[0].reset();
             $("#modalAddDesktop").modal('hide');
+            $("#modalTemplateDesktop #modalTemplateDesktopForm")[0].reset();
+            $("#modalTemplateDesktop").modal('hide');            
         }
         new PNotify({
                 title: data.title,
@@ -399,7 +407,7 @@ function actionsDesktopDetail(){
 							history: {
 								history: false
 							},
-							stack: stack_center
+							addclass: 'pnotify-center'
 						}).get().on('pnotify.confirm', function() {
                             socket.emit('domain_update',{'pk':pk,'name':'status','value':'Deleting'})
 						}).on('pnotify.cancel', function() {
@@ -483,16 +491,16 @@ function addDesktopDetailPannel ( d ) {
 }
 
 function setDesktopDetailButtonsStatus(id,status){
-          if(status=='Stopped'){
-                $('#actions-'+id+' *[class^="btn"]').prop('disabled', false);
-          }else{
-                $('#actions-'+id+' *[class^="btn"]').prop('disabled', true);
-          }
-          if(status=='Failed'){
-              $('#actions-'+id+' .btn-edit').prop('disabled', false);
-              $('#actions-'+id+' .btn-delete').prop('disabled', false);
-          }
-           
+    
+    if(status=='Stopped'){
+        $('#actions-'+id+' *[class^="btn"]').prop('disabled', false);
+    }else{
+        $('#actions-'+id+' *[class^="btn"]').prop('disabled', true);
+    }
+    if(status=='Failed'){
+      $('#actions-'+id+' .btn-edit').prop('disabled', false);
+    }
+    $('#actions-'+id+' .btn-delete').prop('disabled', false);
 }
 	
 function icon(name){
@@ -537,7 +545,15 @@ function renderIcon1x(data){
 		return '<span class="xe-icon" data-pk="'+data.id+'">'+icon1x(data.icon)+'</span>'
 }
 
-function renderStatus(data){
+function renderStatus(data,table){
+        if(data.status =='Started' && 'ephimeral' in data && !countdown[data.id]){
+                countdown[data.id]=setInterval(function(){
+                    if(data.finish < moment().unix()){clearInterval(countdown[data.id]);}
+                    data.description="<b style='color:red'>REMAINIG STARTED DESKTOP TIME: "+moment.unix(data.ephimeral.finish).diff(moment(), "seconds")+' seconds</b>'
+                    dtUpdateInsert(table,data,false);
+                    },1000);
+        }
+    
 		return data.status;
 }
 	
@@ -564,6 +580,18 @@ function renderAction(data){
 		//~ return '';
 //~ }
 
+//~ function renderEphimeral(data){ 
+            
+            //~ perc = data.ephimeral.minutes
+            //~ time_remaining=
+            //~ return data.ephimeral.minutes+''+data.accessed'<div class="progress"> \
+                  //~ <div id="pbid_'+data.id+'" class="progress-bar" role="progressbar" aria-valuenow="'+perc+'" \
+                  //~ aria-valuemin="0" aria-valuemax="'+data.ephimeral.minutes+'" style="width:'+perc+'%"> \
+                    //~ Time remaining:'+perc+'%  \
+                  //~ </div> \
+                //~ </<div> '
+//~ }
+
 function renderMedia(data){
         html=''
         if('isos' in data.create_dict.hardware){
@@ -580,7 +608,7 @@ function renderMedia(data){
             $.each(data.create_dict.hardware.storage,function(key, value){
                 html+='<i class="fa fa-hdd-o fa-2x" title="'+value.name+'"></i> ';
             });
-        }                
+        }    
         return html;
 }
 
