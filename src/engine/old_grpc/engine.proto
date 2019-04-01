@@ -7,7 +7,7 @@ import "google/protobuf/any.proto";
  
 service Engine{
  rpc DesktopGet(DesktopGetRequest) returns (DesktopGetResponse) {}
- rpc DesktopList(Empty) returns (DesktopListResponse) {}
+ rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
  rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
  rpc DesktopViewer(DesktopViewerRequest) returns (DesktopViewerResponse) {}
  rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
@@ -17,19 +17,21 @@ service Engine{
  rpc DesktopUpdate(DesktopUpdateRequest) returns (DesktopUpdateResponse) {}
  
  rpc TemplateGet(TemplateGetRequest) returns (TemplateGetResponse) {}
- rpc TemplateList(Empty) returns (TemplateListResponse) {}
+ rpc TemplateList(TemplateListRequest) returns (TemplateListResponse) {}
  rpc TemplateDelete(TemplateDeleteRequest) returns (TemplateDeleteResponse) {}
  rpc TemplateUpdate(TemplateUpdateRequest) returns (TemplateUpdateResponse) {}
  rpc TemplateFromDesktop(TemplateFromDesktopRequest) returns (TemplateFromDesktopResponse) {}
  
  rpc BaseGet(BaseGetRequest) returns (BaseGetResponse) {}
- rpc BaseList(Empty) returns (BaseListResponse) {}
+ rpc BaseList(BaseListRequest) returns (BaseListResponse) {}
  
- rpc EngineIsAlive(Empty) returns (EngineIsAliveResponse) {}
- rpc EngineStatus(Empty) returns (EngineStatusResponse) {}
+ rpc DomainState(DomainStateRequest) returns (DomainStateResponse) {}
+ rpc DomainStateList(DomainStateListRequest) returns (DomainStateListResponse) {}
+ rpc DomainChanges(DomainChangesRequest) returns (DomainChangesResponse) {}
+ 
+ rpc EngineIsAlive(EngineIsAliveRequest) returns (EngineIsAliveResponse) {}
+ rpc EngineStatus(EngineStatusRequest) returns (EngineStatusResponse) {}
 }
-
-message Empty{}
 
 message HardwareNew{
  int32 vcpus=1;
@@ -92,6 +94,8 @@ message DesktopGetResponse{
   repeated google.protobuf.Any desktop = 1;
 }
 
+message DesktopListRequest{}
+
 message DesktopListResponse{
  repeated string desktops=1;
 }
@@ -111,6 +115,7 @@ message DesktopStartResponse{
  State state = 1;
  string detail = 2;
  Viewer viewer = 3;
+ repeated string next_actions = 4;
 }
 
 message DesktopViewerRequest{
@@ -143,6 +148,7 @@ message DesktopStopResponse{
     }
  State state = 1;
  string detail = 2;
+ repeated string next_actions = 3;
 }
 
 message DesktopDeleteRequest{
@@ -173,6 +179,7 @@ message DesktopFromTemplateResponse{
     }
  State state = 1;
  string detail = 2;
+ repeated string next_actions = 3;
 }
 
 message DesktopFromMediaRequest{
@@ -216,6 +223,8 @@ message TemplateGetResponse{
   repeated google.protobuf.Any template = 1;
 }
 
+message TemplateListRequest{}
+
 message TemplateListResponse{
  repeated string templates = 1;
 }
@@ -253,6 +262,7 @@ message TemplateFromDesktopRequest{
  string desktop_id=1;
  string template_id=2;
  HardwareDerived hardware=3;
+ repeated string next_actions = 4;
 }
 
 message TemplateFromDesktopResponse{
@@ -276,15 +286,21 @@ message BaseGetResponse{
   repeated google.protobuf.Any base = 1;
 }
 
+message BaseListRequest{}
+
 message BaseListResponse{
  repeated string bases=1;
 }
 
     // ENGINE //
 
+message EngineIsAliveRequest{}
+
 message EngineIsAliveResponse{
  bool is_alive = 1;
 }
+
+message EngineStatusRequest{}
 
 message EngineStatusResponse{
  bool is_alive = 1;

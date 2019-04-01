@@ -12,7 +12,7 @@ check_tables_populated()
 from engine.services import db
 from engine.models.manager_hypervisors import ManagerHypervisors
 
-from engine.grpc.engine_server import EngineServicer
+from engine.grpc.grpc_server import GrpcServer
 
 
 
@@ -34,10 +34,8 @@ if __name__ == "__main__":
     app.m = ManagerHypervisors()
     app.db = db
 
-    app.grpc = EngineServicer(app)
-    app.grpc.start_server(app)
-    
-    # ~ app.grpc = start_server()
+    app.grpc = GrpcServer(app)
+    app.grpc.start_server()
 
     # remove default logging for get/post messages
     werk = logging.getLogger('werkzeug')

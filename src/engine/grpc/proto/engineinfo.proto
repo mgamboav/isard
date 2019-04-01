@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package engineinfo;
+
+//import "google/protobuf/empty.proto"; 
+//import "google/protobuf/any.proto";
+ 
+service EngineInfo{
+ rpc EngineIsAlive(EngineIsAliveRequest) returns (EngineIsAliveResponse) {}
+ rpc EngineStatus(EngineStatusRequest) returns (EngineStatusResponse) {}
+}
+
+    // ENGINE //
+
+message EngineIsAliveRequest{}
+
+message EngineIsAliveResponse{
+ bool is_alive = 1;
+}
+
+message EngineStatusRequest{}
+
+message EngineStatusResponse{
+ bool is_alive = 1;
+ bool background_is_alive = 2;
+ bool broom_thread_is_alive = 3;
+ bool changes_domains_thread_is_alive = 4;
+ bool changes_hyps_thread_is_alive = 5;
+ bool download_changes_thread_is_alive = 6;
+ bool event_thread_is_alive = 7;
+ repeated string disk_operations_thread = 8;
+ repeated string long_operations_thread = 9;
+ repeated string working_threads = 10;
+ repeated string status_threads = 11;
+}

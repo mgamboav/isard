@@ -1,0 +1,199 @@
+syntax = "proto3";
+
+package desktops;
+
+//import "google/protobuf/empty.proto"; 
+import "google/protobuf/any.proto";
+ 
+service Desktops{
+ rpc DesktopGet(DesktopGetRequest) returns (DesktopGetResponse) {}
+ rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
+ rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
+ rpc DesktopViewer(DesktopViewerRequest) returns (DesktopViewerResponse) {}
+ rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
+ rpc DesktopDelete(DesktopDeleteRequest) returns (DesktopDeleteResponse) {}
+ rpc DesktopFromTemplate(DesktopFromTemplateRequest) returns (DesktopFromTemplateResponse) {}
+ rpc DesktopFromMedia(DesktopFromMediaRequest) returns (DesktopFromMediaResponse) {}
+ rpc DesktopUpdate(DesktopUpdateRequest) returns (DesktopUpdateResponse) {}
+
+}
+
+message HardwareNew{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_rpath=3;
+ string boot_disk_bus=4;
+ int32  boot_disk_size=5; 
+ repeated string videos=6;
+ repeated string graphics=7;
+ repeated string boots=8;
+ repeated string interfaces=9;
+ repeated string isos=10;
+ repeated string floppies=11;
+}
+
+message HardwareDerived{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_rpath=3;
+ string boot_disk_bus=4; 
+ repeated string videos=5;
+ repeated string graphics=6;
+ repeated string boots=7;
+ repeated string interfaces=8;
+ repeated string isos=9;
+ repeated string floppies=10;
+}
+
+message HardwareUpdate{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_bus=7; 
+ repeated string videos=3;
+ repeated string graphics=4;
+ repeated string boots=5;
+ repeated string interfaces=6;
+ repeated string isos=8;
+ repeated string floppies=9;
+}
+    
+message Viewer{
+ string hostname=1;
+ string hostname_external=2;
+ int32 port_spice=5;
+ int32 port_spice_ssl=6;
+ int32 port_vnc=7;
+ int32 port_vnc_websocket=8;
+ string passwd=9;
+ string client_addr=10;
+ float client_since=11;
+}
+    
+    // DESKTOPS //
+
+message DesktopGetRequest{
+ string desktop_id=1;
+}
+
+message DesktopGetResponse{
+  repeated google.protobuf.Any desktop = 1;
+}
+
+message DesktopListRequest{}
+
+message DesktopListResponse{
+ repeated string desktops=1;
+}
+
+message DesktopStartRequest{
+ string desktop_id=1;
+}
+
+message DesktopStartResponse{
+    enum State{
+     STARTED = 0;
+     STOPPED = 1;
+     FAILED = 2;
+     UNKNOWN = 3;
+     PAUSED = 4;
+    }
+ State state = 1;
+ string detail = 2;
+ Viewer viewer = 3;
+ repeated string next_actions = 4;
+}
+
+message DesktopViewerRequest{
+ string desktop_id=1;
+}
+
+message DesktopViewerResponse{
+    enum State{
+     STARTED = 0;
+     STOPPED = 1;
+     FAILED = 2;
+     UNKNOWN = 3;
+     PAUSED = 4;
+    }
+ State state = 1;
+ string detail = 2;
+ Viewer viewer = 3;
+}
+
+message DesktopStopRequest{
+ string desktop_id=1;
+}
+
+message DesktopStopResponse{
+    enum State{
+     STARTED = 0;
+     STOPPED = 1;
+     FAILED = 2;
+     UNKNOWN = 3;
+    }
+ State state = 1;
+ string detail = 2;
+ repeated string next_actions = 3;
+}
+
+message DesktopDeleteRequest{
+ string desktop_id=1;
+}
+
+message DesktopDeleteResponse{
+    enum State{
+     DELETED = 0;
+     FAILED = 1;
+     UNKNOWN = 2;
+    }
+ State state = 1;
+ string detail = 2;
+}
+
+message DesktopFromTemplateRequest{
+ string desktop_id=1;
+ string template_id=2;
+ HardwareDerived hardware=3;
+}
+
+message DesktopFromTemplateResponse{
+    enum State{
+     STOPPED= 0;
+     FAILED = 1;
+     UNKNOWN = 2;
+    }
+ State state = 1;
+ string detail = 2;
+ repeated string next_actions = 3;
+}
+
+message DesktopFromMediaRequest{
+ string desktop_id=1;
+ string virt_install_id=2;
+ HardwareNew hardware=3;
+}
+
+message DesktopFromMediaResponse{
+    enum State{
+     STOPPED= 0;
+     FAILED = 1;
+     UNKNOWN = 2;
+    }
+ State state = 1;
+ string detail = 2;
+}
+
+message DesktopUpdateRequest{
+ string desktop_id=1;
+ HardwareUpdate hardware=2;
+}
+
+message DesktopUpdateResponse{
+    enum State{
+     STOPPED= 0;
+     FAILED = 1;
+     UNKNOWN = 2;
+    }
+ State state = 1;
+ string detail = 2;
+}
