@@ -48,7 +48,7 @@ class EngineClient(object):
     def domain_changes(self):
         try:
             for c in self.domains_stream_stub.Changes(domains_stream_pb2.DomainsStreamRequest()):
-                print(c)
+                print(c.state)
         except KeyboardInterrupt:            
             return 
             

@@ -26,11 +26,13 @@ message DomainsStreamRequest{}
 message DomainsStreamResponse{
   string domain_id = 1;
     enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
-     PAUSED = 4;
+     STOPPED = 0;
+     STARTED = 1;
+     PAUSED = 2;
+     DELETED = 3;
+     FAILED = 4;
+     UNKNOWN = 5;
+     NEW = 6;
     }
  State state = 2;
  string detail = 3; 

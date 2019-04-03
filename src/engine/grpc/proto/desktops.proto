@@ -91,11 +91,12 @@ message DesktopStartRequest{
 
 message DesktopStartResponse{
     enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
-     PAUSED = 4;
+     STOPPED = 0;
+     STARTED = 1;
+     PAUSED = 2;
+     DELETED = 3;
+     FAILED = 4;
+     UNKNOWN = 5;
     }
  State state = 1;
  string detail = 2;
@@ -108,16 +109,8 @@ message DesktopViewerRequest{
 }
 
 message DesktopViewerResponse{
-    enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
-     PAUSED = 4;
-    }
- State state = 1;
- string detail = 2;
- Viewer viewer = 3;
+ string detail = 1;
+ Viewer viewer = 2;
 }
 
 message DesktopStopRequest{
@@ -126,10 +119,12 @@ message DesktopStopRequest{
 
 message DesktopStopResponse{
     enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
+     STOPPED = 0;
+     STARTED = 1;
+     PAUSED = 2;
+     DELETED = 3;
+     FAILED = 4;
+     UNKNOWN = 5;
     }
  State state = 1;
  string detail = 2;

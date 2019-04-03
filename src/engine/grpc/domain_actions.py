@@ -32,8 +32,8 @@ class DomainActions():
             self.transitions[init_state]={}
         if action not in self.transitions[init_state].keys():
             self.transitions[init_state][action] = {}
-        self.transitions[init_state][action][end_state] = True
-        self.transitions[init_state][action]['FAILED'] = False
+            self.transitions[init_state][action][end_state] = True
+            self.transitions[init_state][action]['FAILED'] = False
 
     def define_machine(self):
         self.add_transition('STOPPED','START','STARTED')
@@ -54,9 +54,10 @@ class DomainActions():
         self.add_transition('UNKNOWN','DELETE','DELETED')
         
     def get_states(self):
-        return [s.title() for s in self.states]
+        return self.states
     
     def get_next_actions(self,state):
+        if state == 'DELETED': return []
         if state in self.transitions.keys():
             return self.transitions[state].keys()
         raise StateInvalidError

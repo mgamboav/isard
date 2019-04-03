@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='changes',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n&engine/grpc/proto/domains_stream.proto\x12\x07\x63hanges\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\x16\n\x14\x44omainsStreamRequest\"\xfc\x01\n\x15\x44omainsStreamResponse\x12\x11\n\tdomain_id\x18\x01 \x01(\t\x12\x33\n\x05state\x18\x02 \x01(\x0e\x32$.changes.DomainsStreamResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x03 \x01(\t\x12\x0c\n\x04kind\x18\x04 \x01(\t\x12\x14\n\x0cnext_actions\x18\x05 \x03(\t\x12\x1f\n\x06viewer\x18\x06 \x01(\x0b\x32\x0f.changes.Viewer\"F\n\x05State\x12\x0b\n\x07STARTED\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\x12\x0b\n\x07UNKNOWN\x10\x03\x12\n\n\x06PAUSED\x10\x04\x32]\n\rDomainsStream\x12L\n\x07\x43hanges\x12\x1d.changes.DomainsStreamRequest\x1a\x1e.changes.DomainsStreamResponse\"\x00\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n&engine/grpc/proto/domains_stream.proto\x12\x07\x63hanges\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\x16\n\x14\x44omainsStreamRequest\"\x89\x02\n\x15\x44omainsStreamResponse\x12\x11\n\tdomain_id\x18\x01 \x01(\t\x12\x33\n\x05state\x18\x02 \x01(\x0e\x32$.changes.DomainsStreamResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x03 \x01(\t\x12\x0c\n\x04kind\x18\x04 \x01(\t\x12\x14\n\x0cnext_actions\x18\x05 \x03(\t\x12\x1f\n\x06viewer\x18\x06 \x01(\x0b\x32\x0f.changes.Viewer\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\x32]\n\rDomainsStream\x12L\n\x07\x43hanges\x12\x1d.changes.DomainsStreamRequest\x1a\x1e.changes.DomainsStreamResponse\"\x00\x30\x01\x62\x06proto3')
 )
 
 
@@ -31,30 +31,34 @@ _DOMAINSSTREAMRESPONSE_STATE = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='STARTED', index=0, number=0,
+      name='STOPPED', index=0, number=0,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='STOPPED', index=1, number=1,
+      name='STARTED', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='FAILED', index=2, number=2,
+      name='PAUSED', index=2, number=2,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='UNKNOWN', index=3, number=3,
+      name='DELETED', index=3, number=3,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='PAUSED', index=4, number=4,
+      name='FAILED', index=4, number=4,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='UNKNOWN', index=5, number=5,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=463,
-  serialized_end=533,
+  serialized_end=546,
 )
 _sym_db.RegisterEnumDescriptor(_DOMAINSSTREAMRESPONSE_STATE)
 
@@ -233,7 +237,7 @@ _DOMAINSSTREAMRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=281,
-  serialized_end=533,
+  serialized_end=546,
 )
 
 _DOMAINSSTREAMRESPONSE.fields_by_name['state'].enum_type = _DOMAINSSTREAMRESPONSE_STATE
@@ -273,8 +277,8 @@ _DOMAINSSTREAM = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=535,
-  serialized_end=628,
+  serialized_start=548,
+  serialized_end=641,
   methods=[
   _descriptor.MethodDescriptor(
     name='Changes',
