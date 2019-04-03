@@ -2,9 +2,29 @@ import grpc
 from engine.grpc.proto import desktops_stream_pb2
 from engine.grpc.proto import desktops_stream_pb2_grpc
 
+import rethinkdb as r
+from rethinkdb.errors import (
+    ReqlAuthError,
+    ReqlCursorEmpty,
+    ReqlDriverError,
+    ReqlError,
+    ReqlInternalError,
+    ReqlNonExistenceError,
+    ReqlOpFailedError,
+    ReqlOpIndeterminateError,
+    ReqlPermissionError,
+    ReqlQueryLogicError,
+    ReqlResourceLimitError,
+    ReqlRuntimeError,
+    ReqlServerCompileError,
+    ReqlTimeoutError,
+    ReqlUserError)
+from engine.grpc.database import rdb
+
 from engine.grpc.desktops_sm import DesktopsSM, StateInvalidError
 from engine.grpc.helpers import get_viewer
- 
+
+
 class DesktopsStreamServicer(desktops_stream_pb2_grpc.DesktopsStreamServicer):
     """
     gRPC server for Domain Changes stream Service

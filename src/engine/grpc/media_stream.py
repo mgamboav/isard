@@ -2,6 +2,25 @@ import grpc
 from engine.grpc.proto import media_stream_pb2
 from engine.grpc.proto import media_stream_pb2_grpc
 
+import rethinkdb as r
+from rethinkdb.errors import (
+    ReqlAuthError,
+    ReqlCursorEmpty,
+    ReqlDriverError,
+    ReqlError,
+    ReqlInternalError,
+    ReqlNonExistenceError,
+    ReqlOpFailedError,
+    ReqlOpIndeterminateError,
+    ReqlPermissionError,
+    ReqlQueryLogicError,
+    ReqlResourceLimitError,
+    ReqlRuntimeError,
+    ReqlServerCompileError,
+    ReqlTimeoutError,
+    ReqlUserError)
+from engine.grpc.database import rdb
+
 from engine.grpc.media_sm import MediaSM, StateInvalidError
  
 class MediaStreamServicer(media_stream_pb2_grpc.MediaStreamServicer):

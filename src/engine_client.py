@@ -3,8 +3,8 @@ import grpc
 from engine.grpc.proto import desktops_pb2
 from engine.grpc.proto import desktops_pb2_grpc
 
-from engine.grpc.proto import domains_stream_pb2
-from engine.grpc.proto import domains_stream_pb2_grpc
+from engine.grpc.proto import desktops_stream_pb2
+from engine.grpc.proto import desktops_stream_pb2_grpc
 
 import rethinkdb as r
 from rethinkdb.errors import (
@@ -43,11 +43,11 @@ class EngineClient(object):
  
         # bind the client to the server channel
         self.stub = desktops_pb2_grpc.DesktopsStub(self.channel)
-        self.domains_stream_stub = domains_stream_pb2_grpc.DomainsStreamStub(self.channel)
+        self.desktops_stream_stub = desktops_stream_pb2_grpc.DesktopsStreamStub(self.channel)
 
-    def domain_changes(self):
+    def desktops_changes(self):
         try:
-            for c in self.domains_stream_stub.Changes(domains_stream_pb2.DomainsStreamRequest()):
+            for c in self.desktops_stream_stub.Changes(desktops_stream_pb2.DesktopsStreamRequest()):
                 print(c.state)
         except KeyboardInterrupt:            
             return 
@@ -347,7 +347,7 @@ curr_client = EngineClient()
 
 import time
 ''' CHANGES '''
-threading.Thread(target=curr_client.domain_changes, daemon=True).start()
+threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 while True: time.sleep(9999)
 
 #~ curr_client.domain_changes()
