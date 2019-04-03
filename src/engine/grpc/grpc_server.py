@@ -5,12 +5,14 @@ import hashlib
 from engine.grpc.proto import desktops_pb2_grpc
 from engine.grpc.proto import templates_pb2_grpc
 from engine.grpc.proto import engineinfo_pb2_grpc
+from engine.grpc.proto import changes_pb2_grpc
 
 from concurrent import futures
 
 from engine.grpc.desktops import DesktopsServicer
 from engine.grpc.templates import TemplatesServicer
 from engine.grpc.engineinfo import EngineInfoServicer
+from engine.grpc.changes import ChangesServicer
 
 class GrpcServer(object):
     def __init__(self, app):
@@ -30,6 +32,7 @@ class GrpcServer(object):
         desktops_pb2_grpc.add_DesktopsServicer_to_server(DesktopsServicer(self.app),engine_grpc_server)
         templates_pb2_grpc.add_TemplatesServicer_to_server(TemplatesServicer(self.app),engine_grpc_server)
         engineinfo_pb2_grpc.add_EngineInfoServicer_to_server(EngineInfoServicer(self.app),engine_grpc_server)
+        changes_pb2_grpc.add_ChangesServicer_to_server(ChangesServicer(self.app),engine_grpc_server)
 
         # bind the server to the port defined above
         engine_grpc_server.add_insecure_port('[::]:{}'.format(self.server_port))

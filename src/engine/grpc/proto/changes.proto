@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package changes;
+
+//import "google/protobuf/empty.proto"; 
+//import "google/protobuf/any.proto";
+ 
+service Changes{
+ rpc DomainChanges(DomainChangesRequest) returns (DomainChangesResponse) {}
+}
+
+message Viewer{
+ string hostname=1;
+ string hostname_external=2;
+ int32 port_spice=5;
+ int32 port_spice_ssl=6;
+ int32 port_vnc=7;
+ int32 port_vnc_websocket=8;
+ string passwd=9;
+ string client_addr=10;
+ float client_since=11;
+}
+
+message DomainChangesRequest{}
+
+message DomainChangesResponse{
+  string domain_id = 1;
+    enum State{
+     STARTED = 0;
+     STOPPED = 1;
+     FAILED = 2;
+     UNKNOWN = 3;
+     PAUSED = 4;
+    }
+ State state = 2;
+ Viewer viewer =3;
+}

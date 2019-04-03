@@ -90,6 +90,7 @@ message DesktopStartRequest{
 }
 
 message DesktopStartResponse{
+/*
     enum State{
      STARTED = 0;
      STOPPED = 1;
@@ -101,6 +102,7 @@ message DesktopStartResponse{
  string detail = 2;
  Viewer viewer = 3;
  repeated string next_actions = 4;
+*/
 }
 
 message DesktopViewerRequest{
@@ -125,6 +127,7 @@ message DesktopStopRequest{
 }
 
 message DesktopStopResponse{
+/*
     enum State{
      STARTED = 0;
      STOPPED = 1;
@@ -134,6 +137,7 @@ message DesktopStopResponse{
  State state = 1;
  string detail = 2;
  repeated string next_actions = 3;
+*/
 }
 
 message DesktopDeleteRequest{

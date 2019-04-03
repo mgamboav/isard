@@ -2,6 +2,9 @@ import grpc
 from engine.grpc.proto import desktops_pb2
 from engine.grpc.proto import desktops_pb2_grpc
 
+from engine.grpc.proto import changes_pb2
+from engine.grpc.proto import changes_pb2_grpc
+
 import rethinkdb as r
 from rethinkdb.errors import (
     ReqlAuthError,
@@ -39,7 +42,12 @@ class EngineClient(object):
  
         # bind the client to the server channel
         self.stub = desktops_pb2_grpc.DesktopsStub(self.channel)
+        self.changes_stub = changes_pb2_grpc.ChangesStub(self.channel)
 
+    def domain_changes(self):
+        for c in self.changes_stub.DomainChanges(changes_pb2.DomainChangesRequest()):
+            print(c)
+            
     def desktop_get(self, message):
         """
         Client function to call the rpc
@@ -95,8 +103,8 @@ class EngineClient(object):
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
-        print(response.state)
-        print(response.viewer)
+        # ~ print(response.state)
+        # ~ print(response.viewer)
         return True
 
     def desktop_viewer(self, message):
@@ -136,7 +144,7 @@ class EngineClient(object):
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
-        print(response.state)
+        # ~ print(response.state)
         return True
 
     def desktop_delete(self, message):
@@ -334,6 +342,8 @@ class EngineClient(object):
 curr_client = EngineClient()
 
 import time
+''' CHANGES '''
+curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
 # ~ print(curr_client.engine_is_alive())
@@ -385,10 +395,10 @@ import time
 # ~ curr_client.desktop_get('_admin_downloaded_zxspectrum')
 
 '''start/stop'''
-while True:
-    curr_client.desktop_start('_admin_downloaded_zxspectrum')
-    # time.sleep(1)
-    curr_client.desktop_stop('_admin_downloaded_zxspectrum')
+# ~ while True:
+    # ~ curr_client.desktop_start('_admin_downloaded_zxspectrum')
+    # ~ # time.sleep(1)
+    # ~ curr_client.desktop_stop('_admin_downloaded_zxspectrum')
 
 
 # ~ curr_client.domain_delete('_admin_downloaded_tetros')

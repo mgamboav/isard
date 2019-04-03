@@ -106,26 +106,31 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
-                with rdb() as conn:
-                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
-                    state=c.next(MIN_TIMEOUT)
-                    next_actions = self.domain_actions.for_desktop(request.desktop_id,state['status'])
-                    viewer={'hostname':state['new_val']['viewer']['hostname'],
-                            'hostname_external':state['new_val']['viewer']['hostname_external'],
-                            # ~ 'port':int(state['new_val']['viewer']['port']),
-                            # ~ 'port_tls':int(state['new_val']['viewer']['tlsport']),
-                            'port_spice':int(state['new_val']['viewer']['port_spice']),
-                            'port_spice_ssl':int(state['new_val']['viewer']['port_spice_ssl']),
-                            'port_vnc':int(state['new_val']['viewer']['port_vnc']),
-                            'port_vnc_websocket':int(state['new_val']['viewer']['port_vnc_websocket']),
-                            'passwd':state['new_val']['viewer']['passwd'],
-                            'client_addr':state['new_val']['viewer']['client_addr'] if state['new_val']['viewer']['client_addr'] else '',
-                            'client_since':state['new_val']['viewer']['client_since'] if state['new_val']['viewer']['client_since'] else 0.0}
-                return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
-        except ReqlTimeoutError:
-            context.set_details('Not able to start the domain '+request.desktop_id)
+                # ~ with rdb() as conn:
+                    # ~ c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
+                    # ~ state=c.next(MIN_TIMEOUT)
+                    # ~ next_actions = self.domain_actions.for_desktop(request.desktop_id,state['status'])
+                    # ~ viewer={'hostname':state['new_val']['viewer']['hostname'],
+                            # ~ 'hostname_external':state['new_val']['viewer']['hostname_external'],
+                            #'port':int(state['new_val']['viewer']['port']),
+                            #'port_tls':int(state['new_val']['viewer']['tlsport']),
+                            # ~ 'port_spice':int(state['new_val']['viewer']['port_spice']),
+                            # ~ 'port_spice_ssl':int(state['new_val']['viewer']['port_spice_ssl']),
+                            # ~ 'port_vnc':int(state['new_val']['viewer']['port_vnc']),
+                            # ~ 'port_vnc_websocket':int(state['new_val']['viewer']['port_vnc_websocket']),
+                            # ~ 'passwd':state['new_val']['viewer']['passwd'],
+                            # ~ 'client_addr':state['new_val']['viewer']['client_addr'] if state['new_val']['viewer']['client_addr'] else '',
+                            # ~ 'client_since':state['new_val']['viewer']['client_since'] if state['new_val']['viewer']['client_since'] else 0.0}
+                # ~ return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
+                return desktops_pb2.DesktopStartResponse()
+        # ~ except ReqlTimeoutError:
+            # ~ context.set_details('Not able to start the domain '+request.desktop_id)
+            # ~ context.set_code(grpc.StatusCode.INTERNAL)             
+            # ~ return desktops_pb2.DesktopStartResponse()  
+        except ReqlNonExistenceError:
+            context.set_details(request.desktop_id+' domain not found')
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStartResponse()            
+            return desktops_pb2.DesktopStartResponse()             
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
@@ -196,15 +201,20 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Stopping'}).run(conn)
-                with rdb() as conn:
-                    c = r.table('domains').get_all(r.args(['Stopped']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
-                    state=c.next(MIN_TIMEOUT)
-                    next_actions = self.domain_actions.for_desktop(request.desktop_id,state['new_val']['status'])
-                return desktops_pb2.DesktopStopResponse(state=state['new_val']['status'].upper(), next_actions=next_actions)
-        except ReqlTimeoutError:
-            context.set_details('Not able to stop the domain')
+                # ~ with rdb() as conn:
+                    # ~ c = r.table('domains').get_all(r.args(['Stopped']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
+                    # ~ state=c.next(MIN_TIMEOUT)
+                    # ~ next_actions = self.domain_actions.for_desktop(request.desktop_id,state['new_val']['status'])
+                # ~ return desktops_pb2.DesktopStopResponse(state=state['new_val']['status'].upper(), next_actions=next_actions)
+                return desktops_pb2.DesktopStopResponse()
+        # ~ except ReqlTimeoutError:
+            # ~ context.set_details('Not able to stop the domain')
+            # ~ context.set_code(grpc.StatusCode.INTERNAL)             
+            # ~ return desktops_pb2.DesktopStopResponse() 
+        except ReqlNonExistenceError:
+            context.set_details(request.desktop_id+' domain not found')
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStopResponse()            
+            return desktops_pb2.DesktopStopResponse()                        
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
