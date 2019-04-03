@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package changes;
+package desktops_stream;
 
 //import "google/protobuf/empty.proto"; 
 //import "google/protobuf/any.proto";
  
-service DomainsStream{
- rpc Changes(DomainsStreamRequest) returns (stream DomainsStreamResponse) {}
+service DesktopsStream{
+ rpc Changes(DesktopsStreamRequest) returns (stream DesktopsStreamResponse) {}
 }
 
 message Viewer{
@@ -21,10 +21,10 @@ message Viewer{
  float client_since=11;
 }
 
-message DomainsStreamRequest{}
+message DesktopsStreamRequest{}
 
-message DomainsStreamResponse{
-  string domain_id = 1;
+message DesktopsStreamResponse{
+  string desktop_id = 1;
     enum State{
      STOPPED = 0;
      STARTED = 1;
@@ -36,7 +36,6 @@ message DomainsStreamResponse{
     }
  State state = 2;
  string detail = 3; 
- string kind = 4;
- repeated string next_actions = 5; 
- Viewer viewer = 6;
+ repeated string next_actions = 4; 
+ Viewer viewer = 5;
 }

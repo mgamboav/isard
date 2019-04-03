@@ -1,11 +1,6 @@
 import grpc
-import time
-import hashlib
-
 from engine.grpc.proto import templates_pb2
 from engine.grpc.proto import templates_pb2_grpc
-    
-from concurrent import futures
 
 import rethinkdb as r
 from rethinkdb.errors import (
@@ -24,27 +19,22 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
-
 from engine.grpc.database import rdb
+
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
+from engine.grpc.desktops_sm import DesktopsSM, StateInvalidError
 
-from engine.grpc.domain_actions import DomainActions
-
-    
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
 
- 
 class TemplatesServicer(templates_pb2_grpc.TemplatesServicer):
     """
     gRPC server for Templates Service
     """
     def __init__(self, app):
-        self.server_port = 46001
-        self.manager = app.m
         # ~ self.grpc = GrpcActions(self.manager)
-        self.domain_actions = DomainActions()
+        self.desktops_sm = DesktopsSM()
     
 
     def TemplateList(self, request, context):

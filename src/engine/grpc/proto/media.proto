@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package media;
+
+//import "google/protobuf/empty.proto"; 
+import "google/protobuf/any.proto";
+ 
+service Media{
+ rpc MediaGet(MediaGetRequest) returns (MediaGetResponse) {}
+ rpc MediaList(MediaListRequest) returns (MediaListResponse) {}
+ rpc MediaDelete(MediaDeleteRequest) returns (MediaDeleteResponse) {}
+}
+
+    // MEDIA //
+
+message MediaGetRequest{
+ string media_id=1;
+}
+
+message MediaGetResponse{
+  repeated google.protobuf.Any media = 1;
+}
+
+message MediaListRequest{}
+
+message MediaListResponse{
+ repeated string media = 1;
+}
+
+message MediaDeleteRequest{
+ string media_id = 1;
+}
+
+message MediaDeleteResponse{
+    enum State{
+     DELETED = 0;
+     FAILED = 1;
+     UNKNOWN = 2;
+    }
+ State state = 1;
+ string detail = 2;
+}

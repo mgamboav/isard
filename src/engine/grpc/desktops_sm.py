@@ -1,28 +1,12 @@
-''' DOMAIN NEXT ACTIONS '''
-import rethinkdb as r
-
-try:
-    from database import rdb
-    # ~ from grpc_actions import GrpcActions
-except:
-    from engine.grpc.database import rdb
-    # ~ from engine.grpc.grpc_actions import GrpcActions
-
-class MachineError(Exception):
-    pass
+''' DOMAINS STATE MACHINE '''
     
-class StateInvalidError(MachineError):
-    pass
-    
-class DomainActions():
+class DesktopsSM():
     def __init__(self):
         self.states  = ['STOPPED','STARTED','PAUSED','DELETED','FAILED','UNKNOWN']
         self.actions = ['STOP','START','PAUSE','RESUME','DELETE','UPDATE','TEMPLATE']
         self.transitions = {}
         
         self.define_machine()
-        #~ import pprint
-        #~ pprint.pprint(self.transitions)
                                 
     def add_transition(self,init_state,action,end_state,expected=True):
         assert init_state in self.states
@@ -61,22 +45,9 @@ class DomainActions():
         if state in self.transitions.keys():
             return self.transitions[state].keys()
         raise StateInvalidError
-        
-    ''' UPDATING DATABASE. NOT USED '''            
-    #~ def for_desktop(self,desktop_id,state):
-        #~ state = state.capitalize()
-        #~ if state in self.actions.keys():
-            #~ try:
-                #~ with rdb() as conn:
-                    #~ r.table('domains').get(desktop_id).update({'next_actions':self.desktop_actions['state']}).run(conn)
-                #~ return self.desktop_actions['state']
-            #~ except:
-                #~ raise
-        #~ else:
-            #~ try:
-                #~ with rdb() as conn:
-                    #~ r.table('domains').get(desktop_id).update({'next_actions':[]}).run(conn)
-                #~ return []
-            #~ except:
-                #~ raise         
 
+class DesktopsSMError(Exception):
+    pass
+    
+class StateInvalidError(DesktopsSMError):
+    pass

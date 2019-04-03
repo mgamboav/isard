@@ -29,7 +29,7 @@ from engine.grpc.database import rdb
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
 
-from engine.grpc.domain_actions import DomainActions
+from engine.grpc.desktops_sm import DesktopsSM, StateInvalidError
 from engine.grpc.helpers import get_viewer
 
     
@@ -43,7 +43,7 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
     def __init__(self, app):
         self.server_port = 46001
         # ~ self.grpc = GrpcActions(self.manager)
-        self.domain_actions = DomainActions()
+        self.desktops_sm = DesktopsSM()
         
 
     def DesktopList(self, request, context):
@@ -67,7 +67,7 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
                 context.set_details(request.desktop_id+'  not found in database.')
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 return desktops_pb2.DesktopStartResponse()                     
-            desktop['next_actions']=self.domain_actions.for_desktop(request.desktop_id,desktop['status'])
+            desktop['next_actions']=self.desktops_sm.get_next_actions(request.desktop_id,desktop['status'].upper())
             return desktops_pb2.DesktopGetResponse(desktop=desktop)
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
@@ -107,23 +107,13 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
-                # ~ with rdb() as conn:
-                    # ~ c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
-                    # ~ state=c.next(MIN_TIMEOUT)
-                    # ~ next_actions = self.domain_actions.for_desktop(request.desktop_id,state['status'])
-                    # ~ viewer={'hostname':state['new_val']['viewer']['hostname'],
-                            # ~ 'hostname_external':state['new_val']['viewer']['hostname_external'],
-                            #'port':int(state['new_val']['viewer']['port']),
-                            #'port_tls':int(state['new_val']['viewer']['tlsport']),
-                            # ~ 'port_spice':int(state['new_val']['viewer']['port_spice']),
-                            # ~ 'port_spice_ssl':int(state['new_val']['viewer']['port_spice_ssl']),
-                            # ~ 'port_vnc':int(state['new_val']['viewer']['port_vnc']),
-                            # ~ 'port_vnc_websocket':int(state['new_val']['viewer']['port_vnc_websocket']),
-                            # ~ 'passwd':state['new_val']['viewer']['passwd'],
-                            # ~ 'client_addr':state['new_val']['viewer']['client_addr'] if state['new_val']['viewer']['client_addr'] else '',
-                            # ~ 'client_since':state['new_val']['viewer']['client_since'] if state['new_val']['viewer']['client_since'] else 0.0}
-                # ~ return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
-                return desktops_pb2.DesktopStartResponse()
+                with rdb() as conn:
+                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
+                    state=c.next(MIN_TIMEOUT)
+                next_actions = self.desktops_sm.get_next_actions(request.desktop_id,state['status'].upper())
+                viewer=get_viewer(state['new_val']['viewer'])
+                return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
+                # ~ return desktops_pb2.DesktopStartResponse()
         # ~ except ReqlTimeoutError:
             # ~ context.set_details('Not able to start the domain '+request.desktop_id)
             # ~ context.set_code(grpc.StatusCode.INTERNAL)             
