@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package engineinfo;
+package engine;
 
 //import "google/protobuf/empty.proto"; 
 //import "google/protobuf/any.proto";
  
-service EngineInfo{
+service Engine{
  rpc EngineIsAlive(EngineIsAliveRequest) returns (EngineIsAliveResponse) {}
  rpc EngineStatus(EngineStatusRequest) returns (EngineStatusResponse) {}
 }

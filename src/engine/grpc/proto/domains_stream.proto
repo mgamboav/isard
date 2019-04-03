@@ -5,8 +5,8 @@ package changes;
 //import "google/protobuf/empty.proto"; 
 //import "google/protobuf/any.proto";
  
-service Changes{
- rpc DomainChanges(DomainChangesRequest) returns (DomainChangesResponse) {}
+service DomainsStream{
+ rpc Changes(DomainsStreamRequest) returns (stream DomainsStreamResponse) {}
 }
 
 message Viewer{
@@ -21,9 +21,9 @@ message Viewer{
  float client_since=11;
 }
 
-message DomainChangesRequest{}
+message DomainsStreamRequest{}
 
-message DomainChangesResponse{
+message DomainsStreamResponse{
   string domain_id = 1;
     enum State{
      STARTED = 0;
@@ -33,5 +33,8 @@ message DomainChangesResponse{
      PAUSED = 4;
     }
  State state = 2;
- Viewer viewer =3;
+ string detail = 3; 
+ string kind = 4;
+ repeated string next_actions = 5; 
+ Viewer viewer = 6;
 }

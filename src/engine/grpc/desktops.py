@@ -30,6 +30,7 @@ from engine.grpc.database import rdb
 
 
 from engine.grpc.domain_actions import DomainActions
+from engine.grpc.helpers import get_viewer
 
     
 MIN_TIMEOUT = 5  # Start/Stop/delete
@@ -159,17 +160,7 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             return desktops_pb2.DesktopStartResponse()
             
         ''' get viewer for desktop_id '''
-        viewer={'hostname':domain['viewer']['hostname'],
-                'hostname_external':domain['viewer']['hostname_external'],
-                # ~ 'port':int(domain['viewer']['port']),
-                # ~ 'port_tls':int(domain['viewer']['tlsport']),
-                'port_spice':int(domain['viewer']['port_spice']),
-                'port_spice_ssl':int(domain['viewer']['port_spice_ssl']),
-                'port_vnc':int(domain['viewer']['port_vnc']),
-                'port_vnc_websocket':int(domain['viewer']['port_vnc_websocket']),
-                'passwd':domain['viewer']['passwd'],
-                'client_addr':domain['viewer']['client_addr'] if domain['viewer']['client_addr'] else '',
-                'client_since':domain['viewer']['client_since'] if domain['viewer']['client_since'] else 0.0}
+        viewer=get_viewer(domain['viewer'])
         return desktops_pb2.DesktopViewerResponse(state=domain['status'].upper(),viewer=viewer)
              
     def DesktopStop(self, request, context):

@@ -2,8 +2,8 @@ import grpc
 import time
 import hashlib
 
-from engine.grpc.proto import engineinfo_pb2
-from engine.grpc.proto import engineinfo_pb2_grpc
+from engine.grpc.proto import engine_pb2
+from engine.grpc.proto import engine_pb2_grpc
     
 from concurrent import futures
 
@@ -35,7 +35,7 @@ from engine.grpc.domain_actions import DomainActions
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
  
-class EngineInfoServicer(engineinfo_pb2_grpc.EngineInfoServicer):
+class EngineServicer(engine_pb2_grpc.EngineServicer):
     """
     gRPC server for Engine Service
     """
@@ -46,8 +46,8 @@ class EngineInfoServicer(engineinfo_pb2_grpc.EngineInfoServicer):
         self.domain_actions = DomainActions()
         
     def EngineIsAlive(self, request, context):
-        return engineinfo_pb2.EngineIsAliveResponse(is_alive = self.grpc.engine_info()['is_alive'])
+        return engine_pb2.EngineIsAliveResponse(is_alive = self.grpc.engine_info()['is_alive'])
         
     def EngineStatus(self, request, context):
-        return engineinfo_pb2.EngineStatuseResponse(self.grpc.engine_info())
+        return engine_pb2.EngineStatuseResponse(self.grpc.engine_info())
         
