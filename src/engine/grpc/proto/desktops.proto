@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package engine;
+package desktops;
 
 //import "google/protobuf/empty.proto"; 
 import "google/protobuf/any.proto";
  
-service Engine{
+service Desktops{
  rpc DesktopGet(DesktopGetRequest) returns (DesktopGetResponse) {}
- rpc DesktopList(Empty) returns (DesktopListResponse) {}
+ rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
  rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
  rpc DesktopViewer(DesktopViewerRequest) returns (DesktopViewerResponse) {}
  rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
@@ -15,21 +15,8 @@ service Engine{
  rpc DesktopFromTemplate(DesktopFromTemplateRequest) returns (DesktopFromTemplateResponse) {}
  rpc DesktopFromMedia(DesktopFromMediaRequest) returns (DesktopFromMediaResponse) {}
  rpc DesktopUpdate(DesktopUpdateRequest) returns (DesktopUpdateResponse) {}
- 
- rpc TemplateGet(TemplateGetRequest) returns (TemplateGetResponse) {}
- rpc TemplateList(Empty) returns (TemplateListResponse) {}
- rpc TemplateDelete(TemplateDeleteRequest) returns (TemplateDeleteResponse) {}
- rpc TemplateUpdate(TemplateUpdateRequest) returns (TemplateUpdateResponse) {}
- rpc TemplateFromDesktop(TemplateFromDesktopRequest) returns (TemplateFromDesktopResponse) {}
- 
- rpc BaseGet(BaseGetRequest) returns (BaseGetResponse) {}
- rpc BaseList(Empty) returns (BaseListResponse) {}
- 
- rpc EngineIsAlive(Empty) returns (EngineIsAliveResponse) {}
- rpc EngineStatus(Empty) returns (EngineStatusResponse) {}
-}
 
-message Empty{}
+}
 
 message HardwareNew{
  int32 vcpus=1;
@@ -92,6 +79,8 @@ message DesktopGetResponse{
   repeated google.protobuf.Any desktop = 1;
 }
 
+message DesktopListRequest{}
+
 message DesktopListResponse{
  repeated string desktops=1;
 }
@@ -102,15 +91,17 @@ message DesktopStartRequest{
 
 message DesktopStartResponse{
     enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
-     PAUSED = 4;
+     STOPPED = 0;
+     STARTED = 1;
+     PAUSED = 2;
+     DELETED = 3;
+     FAILED = 4;
+     UNKNOWN = 5;
     }
  State state = 1;
  string detail = 2;
  Viewer viewer = 3;
+ repeated string next_actions = 4;
 }
 
 message DesktopViewerRequest{
@@ -118,16 +109,8 @@ message DesktopViewerRequest{
 }
 
 message DesktopViewerResponse{
-    enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
-     PAUSED = 4;
-    }
- State state = 1;
- string detail = 2;
- Viewer viewer = 3;
+ string detail = 1;
+ Viewer viewer = 2;
 }
 
 message DesktopStopRequest{
@@ -136,13 +119,16 @@ message DesktopStopRequest{
 
 message DesktopStopResponse{
     enum State{
-     STARTED = 0;
-     STOPPED = 1;
-     FAILED = 2;
-     UNKNOWN = 3;
+     STOPPED = 0;
+     STARTED = 1;
+     PAUSED = 2;
+     DELETED = 3;
+     FAILED = 4;
+     UNKNOWN = 5;
     }
  State state = 1;
  string detail = 2;
+ repeated string next_actions = 3;
 }
 
 message DesktopDeleteRequest{
@@ -173,6 +159,7 @@ message DesktopFromTemplateResponse{
     }
  State state = 1;
  string detail = 2;
+ repeated string next_actions = 3;
 }
 
 message DesktopFromMediaRequest{
@@ -204,98 +191,4 @@ message DesktopUpdateResponse{
     }
  State state = 1;
  string detail = 2;
-}
-
-    // TEMPLATE //
-
-message TemplateGetRequest{
- string template_id=1;
-}
-
-message TemplateGetResponse{
-  repeated google.protobuf.Any template = 1;
-}
-
-message TemplateListResponse{
- repeated string templates = 1;
-}
-
-message TemplateDeleteRequest{
- string template_id = 1;
-}
-
-message TemplateDeleteResponse{
-    enum State{
-     DELETED = 0;
-     FAILED = 1;
-     UNKNOWN = 2;
-    }
- State state = 1;
- string detail = 2;
-}
-
-message TemplateUpdateRequest{
- string template_id=1;
- HardwareUpdate hardware=2;
-}
-
-message TemplateUpdateResponse{
-    enum State{
-     STOPPED= 0;
-     FAILED = 1;
-     UNKNOWN = 2;
-    }
- State state = 1;
- string detail = 2;
-}
-
-message TemplateFromDesktopRequest{
- string desktop_id=1;
- string template_id=2;
- HardwareDerived hardware=3;
-}
-
-message TemplateFromDesktopResponse{
-    enum State{
-     STOPPED= 0;
-     FAILED = 1;
-     UNKNOWN = 2;
-    }
- State state = 1;
- string detail = 2;
-}
-
-
-    // BASE //
-
-message BaseGetRequest{
- string base_id=1;
-}
-
-message BaseGetResponse{
-  repeated google.protobuf.Any base = 1;
-}
-
-message BaseListResponse{
- repeated string bases=1;
-}
-
-    // ENGINE //
-
-message EngineIsAliveResponse{
- bool is_alive = 1;
-}
-
-message EngineStatusResponse{
- bool is_alive = 1;
- bool background_is_alive = 2;
- bool broom_thread_is_alive = 3;
- bool changes_domains_thread_is_alive = 4;
- bool changes_hyps_thread_is_alive = 5;
- bool download_changes_thread_is_alive = 6;
- bool event_thread_is_alive = 7;
- repeated string disk_operations_thread = 8;
- repeated string long_operations_thread = 9;
- repeated string working_threads = 10;
- repeated string status_threads = 11;
 }

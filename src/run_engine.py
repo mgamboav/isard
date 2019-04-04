@@ -1,6 +1,7 @@
 from gevent.wsgi import WSGIServer
 
-import logging
+import time
+from engine.services.log import logs
 
 from flask import Flask
 from logging.handlers import RotatingFileHandler
@@ -12,44 +13,45 @@ check_tables_populated()
 from engine.services import db
 from engine.models.manager_hypervisors import ManagerHypervisors
 
-from engine.grpc.engine_server import EngineServicer
+from engine.grpc.grpc_server import GrpcServer
 
-
-
-# ~ def run(app):
-    # ~ http_server = WSGIServer(('0.0.0.0', 5555), app)
-    # ~ http_server.serve_forever()
-
-# if app.debug:
-#     from werkzeug.debug import DebuggedApplication
-#     app.wsgi_app = DebuggedApplication( app.wsgi_app, True )
+class App(object):
+    def __init():
+        None
 
 if __name__ == "__main__":
-
-
-
-
-    app = Flask(__name__)
-
+    app = App()
+    ''' Manager Hypervisors '''
     app.m = ManagerHypervisors()
-    app.db = db
+    print('ManagerHypervisors started...')
 
-    app.grpc = EngineServicer(app)
-    app.grpc.start_server(app)
+    ''' GRPC api '''
+    app.grpc = GrpcServer(app)
+    app.grpc.start_server()
+    print('GRPC started...')
     
-    # ~ app.grpc = start_server()
+    ''' Loop as nothing is blocking '''
+    try:
+        while True:
+            time.sleep(60*60*60)
+    except KeyboardInterrupt:
+        app.grpc.stop_server()
 
-    # remove default logging for get/post messages
-    werk = logging.getLogger('werkzeug')
-    werk.setLevel(logging.ERROR)
-
-    # add log handler
-    handler = RotatingFileHandler('api.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(logging.INFO)
-    app.logger.addHandler(handler)
-
-    # register blueprints
-    from engine.api import api as api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix='')  # url_prefix /api?
-
-    run(app)
+        app.m.stop_threads()
+        while True:
+            app.m.update_info_threads_engine()
+            if len(app.m.threads_info_main['alive']) == 0 and len(app.m.threads_info_hyps['alive']) == 0:
+                action = {}
+                action['type'] = 'stop'
+                app.m.q.background.put(action)
+                break
+            time.sleep(0.5)
+        while True:
+            if app.m.t_background.is_alive():
+                time.sleep(0.2)
+            else:
+                delattr(app, 'm')
+                break
+        
+        
+        print('\nEngine stopped by keyboard interrupt ...\n')

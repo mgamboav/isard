@@ -25,6 +25,10 @@ LOG_LEVEL_NUM = wlog.getLevelName(LOG_LEVEL)
 wlog.basicConfig(format=LOG_FORMAT,datefmt=LOG_DATE_FORMAT,level=LOG_LEVEL_NUM)
 
 
+import grpc
+from engine.grpc.proto import engineinfo_pb2
+from engine.grpc.proto import engineinfo_pb2_grpc
+
 '''
 PASSWORDS MANAGER
 '''
@@ -371,26 +375,35 @@ class Wizard():
             return False
 
     def valid_engine(self):
-        from ..lib.load_config import load_config
-        dict=load_config()['DEFAULT_HYPERVISORS']    
-        valid_engine=self.valid_server('isard-engine:5555' if 'isard-hypervisor' in dict.keys() else 'localhost:5555')
-        # ~ if valid_engine:
-            # ~ try:
-                # ~ status = r.db('isard').table('hypervisors_pools').get('default').pluck('download_changes').run()['download_changes']
-                # ~ if status != 'Started': return False
-            # ~ except Exception as e:
-                # ~ print(e)
-                # ~ return False
-        if valid_engine:
-            if 'isard-hypervisor' in dict.keys():
-                url='http://isard-engine'
-                web_port=5555
-            else:
-                url='http://localhost'
-                web_port=5555                
-            r.db('isard').table('config').get(1).update({'engine':{'api':{'url':url,'web_port':web_port,'token':'fosdem'}}}).run()
-            
-        return valid_engine
+        #~ from ..lib.load_config import load_config
+        #~ dict=load_config()['DEFAULT_HYPERVISORS']   
+
+        try:
+            channel = grpc.insecure_channel(
+                            '{}:{}'.format('localhost', 46001))
+            stub = engineinfo_pb2_grpc.EngineInfoStub(channel)
+            response = stub.EngineIsAlive(engineinfo_pb2.EngineIsAliveRequest())
+            #~ wlog.info('we have grpc response'+str(response))
+            return True
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+
+        
+        #~ valid_engine=self.valid_server('isard-engine:5555' if 'isard-hypervisor' in dict.keys() else 'localhost:5555')
+        #~ if valid_engine:
+            #~ if 'isard-hypervisor' in dict.keys():
+                #~ url='http://isard-engine'
+                #~ web_port=5555
+            #~ else:
+                #~ url='http://localhost'
+                #~ web_port=5555                
+            #~ r.db('isard').table('config').get(1).update({'engine':{'api':{'url':url,'web_port':web_port,'token':'fosdem'}}}).run()
+        #~ return valid_engine
 
     def valid_hypervisor(self,remote_addr=False):
         try:
