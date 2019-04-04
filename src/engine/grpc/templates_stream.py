@@ -19,9 +19,9 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
-from engine.grpc.database import rdb
+from engine.grpc.lib.database import rdb
 
-from engine.grpc.templates_sm import TemplatesSM, StateInvalidError
+from engine.grpc.statemachines.templates_sm import TemplatesSM, StateInvalidError
  
 class TemplatesStreamServicer(templates_stream_pb2_grpc.TemplatesStreamServicer):
     """

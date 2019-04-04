@@ -19,9 +19,9 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
-from engine.grpc.database import rdb
+from engine.grpc.lib.database import rdb
 
-from engine.grpc.media_sm import MediaSM, StateInvalidError
+from engine.grpc.statemachines.media_sm import MediaSM, StateInvalidError
  
 class MediaStreamServicer(media_stream_pb2_grpc.MediaStreamServicer):
     """

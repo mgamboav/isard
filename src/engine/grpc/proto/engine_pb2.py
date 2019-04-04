@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='engine',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1e\x65ngine/grpc/proto/engine.proto\x12\x06\x65ngine\"\x16\n\x14\x45ngineIsAliveRequest\")\n\x15\x45ngineIsAliveResponse\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"\x15\n\x13\x45ngineStatusRequest\"\xed\x02\n\x14\x45ngineStatusResponse\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\x12\x1b\n\x13\x62\x61\x63kground_is_alive\x18\x02 \x01(\x08\x12\x1d\n\x15\x62room_thread_is_alive\x18\x03 \x01(\x08\x12\'\n\x1f\x63hanges_domains_thread_is_alive\x18\x04 \x01(\x08\x12$\n\x1c\x63hanges_hyps_thread_is_alive\x18\x05 \x01(\x08\x12(\n download_changes_thread_is_alive\x18\x06 \x01(\x08\x12\x1d\n\x15\x65vent_thread_is_alive\x18\x07 \x01(\x08\x12\x1e\n\x16\x64isk_operations_thread\x18\x08 \x03(\t\x12\x1e\n\x16long_operations_thread\x18\t \x03(\t\x12\x17\n\x0fworking_threads\x18\n \x03(\t\x12\x16\n\x0estatus_threads\x18\x0b \x03(\t2\xa5\x01\n\x06\x45ngine\x12N\n\rEngineIsAlive\x12\x1c.engine.EngineIsAliveRequest\x1a\x1d.engine.EngineIsAliveResponse\"\x00\x12K\n\x0c\x45ngineStatus\x12\x1b.engine.EngineStatusRequest\x1a\x1c.engine.EngineStatusResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x1e\x65ngine/grpc/proto/engine.proto\x12\x06\x65ngine\"\x16\n\x14\x45ngineIsAliveRequest\")\n\x15\x45ngineIsAliveResponse\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\"\x15\n\x13\x45ngineStatusRequest\"\xef\x02\n\x14\x45ngineStatusResponse\x12\x10\n\x08is_alive\x18\x01 \x01(\x08\x12\x1b\n\x13\x62\x61\x63kground_is_alive\x18\x02 \x01(\x08\x12\x1d\n\x15\x62room_thread_is_alive\x18\x03 \x01(\x08\x12\'\n\x1f\x63hanges_domains_thread_is_alive\x18\x04 \x01(\x08\x12$\n\x1c\x63hanges_hyps_thread_is_alive\x18\x05 \x01(\x08\x12(\n download_changes_thread_is_alive\x18\x06 \x01(\x08\x12\x1d\n\x15\x65vent_thread_is_alive\x18\x07 \x01(\x08\x12\x1f\n\x17\x64isk_operations_threads\x18\x08 \x03(\t\x12\x1f\n\x17long_operations_threads\x18\t \x03(\t\x12\x17\n\x0fworking_threads\x18\n \x03(\t\x12\x16\n\x0estatus_threads\x18\x0b \x03(\t2\xa5\x01\n\x06\x45ngine\x12N\n\rEngineIsAlive\x12\x1c.engine.EngineIsAliveRequest\x1a\x1d.engine.EngineIsAliveResponse\"\x00\x12K\n\x0c\x45ngineStatus\x12\x1b.engine.EngineStatusRequest\x1a\x1c.engine.EngineStatusResponse\"\x00\x62\x06proto3')
 )
 
 
@@ -161,14 +161,14 @@ _ENGINESTATUSRESPONSE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='disk_operations_thread', full_name='engine.EngineStatusResponse.disk_operations_thread', index=7,
+      name='disk_operations_threads', full_name='engine.EngineStatusResponse.disk_operations_threads', index=7,
       number=8, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='long_operations_thread', full_name='engine.EngineStatusResponse.long_operations_thread', index=8,
+      name='long_operations_threads', full_name='engine.EngineStatusResponse.long_operations_threads', index=8,
       number=9, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -201,7 +201,7 @@ _ENGINESTATUSRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=133,
-  serialized_end=498,
+  serialized_end=500,
 )
 
 DESCRIPTOR.message_types_by_name['EngineIsAliveRequest'] = _ENGINEISALIVEREQUEST
@@ -246,8 +246,8 @@ _ENGINE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=501,
-  serialized_end=666,
+  serialized_start=503,
+  serialized_end=668,
   methods=[
   _descriptor.MethodDescriptor(
     name='EngineIsAlive',

@@ -20,11 +20,11 @@ from rethinkdb.errors import (
     ReqlTimeoutError,
     ReqlUserError)
 
-from engine.grpc.database import rdb
+from engine.grpc.lib.database import rdb
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
 
-from engine.grpc.media_sm import MediaSM, StateInvalidError
+from engine.grpc.statemachines.media_sm import MediaSM, StateInvalidError
 
     
 MIN_TIMEOUT = 5  # Start/Stop/delete

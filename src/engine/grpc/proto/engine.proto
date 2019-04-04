@@ -28,8 +28,8 @@ message EngineStatusResponse{
  bool changes_hyps_thread_is_alive = 5;
  bool download_changes_thread_is_alive = 6;
  bool event_thread_is_alive = 7;
- repeated string disk_operations_thread = 8;
- repeated string long_operations_thread = 9;
+ repeated string disk_operations_threads = 8;
+ repeated string long_operations_threads = 9;
  repeated string working_threads = 10;
  repeated string status_threads = 11;
 }

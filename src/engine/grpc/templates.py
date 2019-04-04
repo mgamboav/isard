@@ -19,11 +19,11 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
-from engine.grpc.database import rdb
+from engine.grpc.lib.database import rdb
 
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
-from engine.grpc.desktops_sm import DesktopsSM, StateInvalidError
+from engine.grpc.statemachines.desktops_sm import DesktopsSM, StateInvalidError
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...

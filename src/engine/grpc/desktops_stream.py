@@ -19,10 +19,10 @@ from rethinkdb.errors import (
     ReqlServerCompileError,
     ReqlTimeoutError,
     ReqlUserError)
-from engine.grpc.database import rdb
+from engine.grpc.lib.database import rdb
 
-from engine.grpc.desktops_sm import DesktopsSM, StateInvalidError
-from engine.grpc.helpers import get_viewer
+from engine.grpc.statemachines.desktops_sm import DesktopsSM, StateInvalidError
+from engine.grpc.lib.helpers import get_viewer
 
 
 class DesktopsStreamServicer(desktops_stream_pb2_grpc.DesktopsStreamServicer):
