@@ -88,7 +88,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopList(desktops_pb2.Empty())
+            response = self.desktops_stub.DesktopList(desktops_pb2.DesktopListRequest())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -188,7 +188,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.TemplateList(desktops_pb2.Empty())
+            response = self.templates_stub.TemplateList(templates_pb2.TemplateListResponse())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -232,7 +232,7 @@ class EngineClient(object):
         except ReqlNonExistenceError:
             return False       
         except Exception as e:
-            print('2: '+str(e))
+            print(str(e))
             context.set_details('Unable to access database.')
             return False           
         desktop = { 'name': message['desktop_id'].replace('_',' '),  ## PASS PARAMETER!
@@ -375,16 +375,21 @@ class EngineClient(object):
 
 curr_client = EngineClient()
 
-import time
+import time, pprint
+
+while not curr_client.engine_is_alive():
+    print('not alive')
+    time.sleep(.5)
+
 ''' CHANGES '''
-# ~ threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
+threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 # ~ while True: time.sleep(9999)
 
 #~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
 # ~ print(curr_client.engine_is_alive())
-print(curr_client.engine_status())
+# ~ print(curr_client.engine_status())
 
 ''' NEW DESKTOP CREATION '''
 # ~ templates = curr_client.template_list()
@@ -418,7 +423,39 @@ print(curr_client.engine_status())
 # ~ for i in range(0,20):
     # ~ curr_client.desktop_delete('_admin_pepinillo_'+str(i))
     # ~ print('deleting desktop')
+
+''' THREADED CREATE DELETE '''
+# ~ import concurrent.futures
+
+# ~ desktops = curr_client.desktop_list()
+# ~ templates = curr_client.template_list()
+# ~ t=templates[0]
+# ~ with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    # ~ creations =[]
+    # ~ for i in range(0,100):
+        # ~ creations.append({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
+    # ~ future_to_desktops = {executor.submit(curr_client.desktop_from_template, message): message for message in creations}
+    # ~ for future in concurrent.futures.as_completed(future_to_desktops):
+        # ~ url = future_to_desktops[future]
+        # ~ try:
+            # ~ data = future.result()
+        # ~ except Exception as exc:
+            # ~ print(str(exc))
+        # ~ else:
+            # ~ print(str(data))
     
+    # ~ deletes = ['_admin_pepinillo_'+str(i) for i in range(0,100)]
+    # ~ future_to_deletes = {executor.submit(curr_client.desktop_delete, id): id for id in deletes}
+    # ~ for future in concurrent.futures.as_completed(future_to_deletes):
+        # ~ url = future_to_deletes[future]
+        # ~ try:
+            # ~ data = future.result()
+        # ~ except Exception as exc:
+            # ~ print(str(exc))
+        # ~ else:
+            # ~ print(str(data))    
+    
+
 '''delete'''
 # ~ desktops = curr_client.desktop_list()
 # ~ print(desktops)
@@ -433,10 +470,13 @@ print(curr_client.engine_status())
 # ~ curr_client.desktop_get('_admin_downloaded_zxspectrum')
 
 '''start/stop'''
-# ~ while True:
-    # ~ curr_client.desktop_start('_admin_downloaded_zxspectrum')
-    # ~ # time.sleep(1)
-    # ~ curr_client.desktop_stop('_admin_downloaded_zxspectrum')
+# ~ desktops = curr_client.desktop_list()
+# ~ if len(desktops) == 0:
+    # ~ print('No desktops to do the start/stop test')
+# ~ else:
+    # ~ while True:
+        # ~ curr_client.desktop_start(desktops[0])
+        # ~ curr_client.desktop_stop(desktops[0])
 
 
 # ~ curr_client.domain_delete('_admin_downloaded_tetros')
@@ -444,3 +484,62 @@ print(curr_client.engine_status())
 
 # ~ message = {'domain_id':'el id de nou domain','template_id':'el id de plantilla a derivar'}
 # ~ curr_client.domain_create_from_id(message)
+
+
+''' MIX '''
+# ~ desktops = curr_client.desktop_list()
+# ~ if len(desktops) == 0:
+    # ~ print('No desktops to do the start/stop test')
+# ~ else:
+    # ~ while True:
+        # ~ curr_client.desktop_start(desktops[0])
+        # ~ pprint.pprint(print(curr_client.engine_status()))
+        # ~ curr_client.desktop_stop(desktops[0])
+        # ~ pprint.pprint(print(curr_client.engine_status()))
+        
+
+''' TEST COMPLERT '''
+import concurrent.futures
+
+n=20
+desktops = curr_client.desktop_list()
+templates = curr_client.template_list()
+print('Starting tests...')
+print('Initial desktops: '+str(len(desktops)))
+print('Initial templates: '+str(len(templates)))
+print('1 - Start all desktops')
+for i in range(0,len(desktops)):
+    curr_client.desktop_start(desktops[i])
+print('2 - Stop all desktops')
+for i in range(0,len(desktops)):
+    curr_client.desktop_stop(desktops[i])
+print('3 - Creating and deleting '+str(n)+' desktops')
+t=templates[0]
+with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    creations =[]
+    for i in range(0,n):
+        creations.append({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
+    future_to_desktops = {executor.submit(curr_client.desktop_from_template, message): message for message in creations}
+    for future in concurrent.futures.as_completed(future_to_desktops):
+        url = future_to_desktops[future]
+        try:
+            data = future.result()
+        except Exception as exc:
+            print(str(exc))
+        else:
+            None
+    
+    if len(curr_client.desktop_list())-len(desktops) != n:
+        print(' XXXXX ERROR, desktops not created')
+    deletes = ['_admin_pepinillo_'+str(i) for i in range(0,n)]
+    future_to_deletes = {executor.submit(curr_client.desktop_delete, id): id for id in deletes}
+    for future in concurrent.futures.as_completed(future_to_deletes):
+        url = future_to_deletes[future]
+        try:
+            data = future.result()
+        except Exception as exc:
+            print(str(exc))
+        else:
+            None 
+    if len(curr_client.desktop_list())-len(desktops) != 0:
+        print(' XXXXX ERROR, desktops not deleted')    

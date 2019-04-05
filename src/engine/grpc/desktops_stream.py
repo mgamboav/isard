@@ -40,34 +40,42 @@ class DesktopsStreamServicer(desktops_stream_pb2_grpc.DesktopsStreamServicer):
                     if c['new_val'] is None:
                         yield desktops_stream_pb2.DesktopsStreamResponse( desktop_id=c['old_val']['id'],
                                                                         state='DELETED',
-                                                                        detail=c['old_val']['detail'],
+                                                                        detail=c['old_val']['detail'] if 'detail' in c['old_val'].keys() else '',
                                                                         next_actions=[])
                         continue
                     ''' NEW '''
                     if c['old_val'] is None:
                         yield desktops_stream_pb2.DesktopsStreamResponse( desktop_id=c['new_val']['id'],
                                                                         state='NEW',
-                                                                        detail=c['new_val']['detail'],
+                                                                        detail=c['new_val']['detail'] if 'detail' in c['new_val'].keys() else '',
                                                                         next_actions=[])
                         continue
                     
                     ''' Is it a valid state? '''
                     if c['new_val']['status'].upper() not in self.desktops_sm.get_states(): continue
+
+                    new_state=c['new_val']['status'].upper()                    
                     
-                    ''' Is it a detail or viewer update? '''
-                    if c['old_val']['status'] == c['new_val']['status']:
-                        continue
-                    
-                    new_state=c['new_val']['status'].upper()
-                    
-                    ''' If it is an started state return also the viewer '''
+                    ''' I the viewer event comes from libvirt after the domain is updated to started
+                        we could have a problem '''
                     if new_state == 'STARTED':
+                        if 'viewer' not in c['new_val'].keys(): continue
+                        ''' Sometimes could happen with some domains at first event'''
+                        if c['new_val']['viewer']['hostname'] is False: continue
                         yield desktops_stream_pb2.DesktopsStreamResponse( desktop_id=c['new_val']['id'],
                                                                         state=new_state,
                                                                         detail=c['new_val']['detail'],
                                                                         next_actions=self.desktops_sm.get_next_actions(new_state),
-                                                                        viewer=get_viewer(c['new_val']['viewer']))
+                                                                        viewer=get_viewer(c['new_val']['viewer']))                        
                     else:
+                        ''' Is it a detail or viewer update? '''
+                        if c['old_val']['status'] == c['new_val']['status']:
+                            continue
+                        ''' It could happen that at maximum start/stop speed the domain
+                            sends an Starting event but there are updates yet to come to
+                            the Stopped domain (remove the viewer??) '''
+                        if c['old_val']['status'] == 'Starting' and c['new_val']['status'] == 'Stopped':
+                            continue
                         yield desktops_stream_pb2.DesktopsStreamResponse( desktop_id=c['new_val']['id'],
                                                                         state=new_state,
                                                                         detail=c['new_val']['detail'],
