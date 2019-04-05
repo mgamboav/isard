@@ -59,3 +59,6 @@ csv/
 install/.wizard
 
 known_hosts
+
+# Go config
+config.toml
