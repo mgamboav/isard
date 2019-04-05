@@ -26,8 +26,8 @@ wlog.basicConfig(format=LOG_FORMAT,datefmt=LOG_DATE_FORMAT,level=LOG_LEVEL_NUM)
 
 
 import grpc
-from engine.grpc.proto import engineinfo_pb2
-from engine.grpc.proto import engineinfo_pb2_grpc
+from engine.grpc.proto import engine_pb2
+from engine.grpc.proto import engine_pb2_grpc
 
 '''
 PASSWORDS MANAGER
@@ -381,8 +381,8 @@ class Wizard():
         try:
             channel = grpc.insecure_channel(
                             '{}:{}'.format('localhost', 46001))
-            stub = engineinfo_pb2_grpc.EngineInfoStub(channel)
-            response = stub.EngineIsAlive(engineinfo_pb2.EngineIsAliveRequest())
+            stub = engine_pb2_grpc.EngineStub(channel)
+            response = stub.EngineIsAlive(engine_pb2.EngineIsAliveRequest())
             #~ wlog.info('we have grpc response'+str(response))
             return True
         except grpc.RpcError as e:
