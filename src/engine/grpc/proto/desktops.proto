@@ -100,8 +100,8 @@ message DesktopStartResponse{
     }
  State state = 1;
  string detail = 2;
- repeated string next_actions = 3; 
- Viewer viewer = 4;
+ Viewer viewer = 3;
+ repeated string next_actions = 4;
 }
 
 message DesktopViewerRequest{

@@ -107,25 +107,22 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
-                c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
-                state=c.next(MIN_TIMEOUT)
-            next_actions = self.desktops_sm.get_next_actions(state['new_val']['status'].upper())
-            # ~ if 'viewer' not in state['new_val'].keys():
-                # ~ print('viewer not found')
-                # ~ return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),next_actions=next_actions)
-            viewer=get_viewer(state['new_val']['viewer'])
-            return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),next_actions=next_actions,viewer=viewer)
+                with rdb() as conn:
+                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
+                    state=c.next(MIN_TIMEOUT)
+                next_actions = self.desktops_sm.get_next_actions(request.desktop_id,state['status'].upper())
+                viewer=get_viewer(state['new_val']['viewer'])
+                return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
                 # ~ return desktops_pb2.DesktopStartResponse()
-        except ReqlTimeoutError:
-            context.set_details('Not able to start the domain '+request.desktop_id)
-            context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStartResponse()  
+        # ~ except ReqlTimeoutError:
+            # ~ context.set_details('Not able to start the domain '+request.desktop_id)
+            # ~ context.set_code(grpc.StatusCode.INTERNAL)             
+            # ~ return desktops_pb2.DesktopStartResponse()  
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' domain not found')
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktops_pb2.DesktopStartResponse()             
         except Exception as e:
-            print(e)
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktops_pb2.DesktopStartResponse()
@@ -185,21 +182,21 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Stopping'}).run(conn)
-                c = r.table('domains').get_all(r.args(['Stopped']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
-                state=c.next(MIN_TIMEOUT)
-            next_actions = self.desktops_sm.get_next_actions(state['new_val']['status'].upper())
-            return desktops_pb2.DesktopStopResponse(state=state['new_val']['status'].upper(), next_actions=next_actions)
-                # ~ return desktops_pb2.DesktopStopResponse()
-        except ReqlTimeoutError:
-            context.set_details('Not able to stop the domain')
-            context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStopResponse() 
+                # ~ with rdb() as conn:
+                    # ~ c = r.table('domains').get_all(r.args(['Stopped']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
+                    # ~ state=c.next(MIN_TIMEOUT)
+                    # ~ next_actions = self.domain_actions.for_desktop(request.desktop_id,state['new_val']['status'])
+                # ~ return desktops_pb2.DesktopStopResponse(state=state['new_val']['status'].upper(), next_actions=next_actions)
+                return desktops_pb2.DesktopStopResponse()
+        # ~ except ReqlTimeoutError:
+            # ~ context.set_details('Not able to stop the domain')
+            # ~ context.set_code(grpc.StatusCode.INTERNAL)             
+            # ~ return desktops_pb2.DesktopStopResponse() 
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' domain not found')
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktops_pb2.DesktopStopResponse()                        
         except Exception as e:
-            print(e)
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktops_pb2.DesktopStopResponse()
@@ -258,7 +255,7 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
-            print('1 '+str(e))
+            # ~ print('1 '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktops_pb2.DesktopFromTemplateResponse()
@@ -278,7 +275,7 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return desktops_pb2.DesktopFromTemplateResponse()         
         except Exception as e:
-            print('2: '+str(e))
+            # ~ print('2: '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktops_pb2.DesktopFromTemplateResponse()
@@ -312,12 +309,10 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').insert(desktop).run(conn)
-                c = r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
-                state = c.next(MAX_TIMEOUT)
-                next_actions = self.desktops_sm.get_next_actions(state['new_val']['status'].upper())
-                return desktops_pb2.DesktopFromTemplateResponse(state=state['new_val']['status'].upper(), 
-                                                                detail=state['new_val']['detail'],
-                                                                next_actions=next_actions)
+                c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
+                c.next(MAX_TIMEOUT)
+                next_actions = action[state['new_val']['status'].capitalize()]
+                return desktops_pb2.DesktopFromTemplateResponse(state='STOPPED', next_actions=next_actions)
         except ReqlTimeoutError:
             context.set_details('Unable to create the domain '+request.desktop_id)
             context.set_code(grpc.StatusCode.INTERNAL)             
