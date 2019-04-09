@@ -59,12 +59,12 @@ service Isard {
   }
 
   // DesktopStart starts a desktop by ID
-  // rpc DesktopStart (DesktopStartRequest) returns (DesktopStartResponse) {
-  //   option (google.api.http) = {
-  //     post: "/v1/desktop/{id}/start"
-  //     body: "*"
-  //   };
-  // }
+  rpc DesktopStart (DesktopStartRequest) returns (DesktopStartResponse) {
+    option (google.api.http) = {
+      post: "/v1/desktop/{id}/start"
+      body: "*"
+    };
+  }
 }
 
 // Permissions are the permissions of a resource
@@ -81,10 +81,6 @@ message Permissions {
   // users are the users that have access to the resource
   repeated string users = 4;
 }
-
-// // DomainStatus are the different statuses that a domain can be on
-// enum DomainStatus {
-// }
 
 // DomainOptions are the different options that a domain can hae
 message DomainOptions {
@@ -105,6 +101,16 @@ message DomainOptions {
   bool server = 2;
 }
 
+// DesktopState are all the different states that a desktop can be on
+enum DesktopState {
+  STOPPED = 0;
+  STARTED = 1;
+  PAUSED = 2;
+  DELETED = 3;
+  FAILED = 4;
+  UNKNOWN = 5;
+}
+
 message Desktop {
   // id is the unique identifier of the domain. It's formed by "_{username}_{desktopName}"
   string id = 1;
@@ -115,9 +121,8 @@ message Desktop {
   // description is the user description of the desktop
   string description = 3;
 
-  // status is the current status of the desktop
-  // DomainStatus status = 6;
-  string status = 6;
+  // state is the current state of the desktop
+  DesktopState state = 6;
 
   // detail shows messages in case there's an error doing an operation with the desktop
   string detail = 7;
@@ -143,7 +148,6 @@ message LoginLocalResponse {
   string tkn = 1;
 }
 
-
 message UserDesktopsGetRequest {
   string api = 1;
 
@@ -162,4 +166,7 @@ message DesktopStartRequest {
   string id = 2;
 }
 
-message DesktopStartResponse {}
+message DesktopStartResponse {
+  DesktopState state = 1;
+  repeated string next_actions = 2;
+}

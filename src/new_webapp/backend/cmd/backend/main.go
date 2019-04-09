@@ -61,6 +61,7 @@ func main() {
 	cfg.Init()
 	log.Init()
 	db.Init()
+	engine.Init()
 
 	lis, err := net.Listen("tcp", ":1312")
 	if err != nil {

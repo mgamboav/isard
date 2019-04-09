@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Engine cleanup
+rm proto/third_party/engine/desktop/desktop.pb.go
+
 protoc -I . \
   -I $GOPATH/src \
   -I proto/third_party \
@@ -41,3 +44,11 @@ rm -rf src/proto
 mv proto src
 
 cd ../backend
+
+# Engine
+protoc -I . \
+  -I $GOPATH/src \
+  -I proto/third_party \
+  --grpc-gateway_out=logtostderr=true:. \
+  --go_out=plugins=grpc:. \
+  proto/third_party/engine/desktop/desktop.proto

@@ -37,8 +37,8 @@ type Desktop struct {
 	// Description is the user description of the desktop
 	Description string `rethinkdb:"description"`
 
-	// Status is the current status of the desktop
-	Status string `rethinkdb:"status"`
+	// State is the current state of the desktop
+	State string `rethinkdb:"status"`
 
 	// Detail shows the messages in case there's an error doing an operation with the desktop
 	Detail string `rethinkdb:"detail"`
@@ -51,6 +51,30 @@ type Desktop struct {
 
 	// Options are the options of the desktop
 	Options DomainOptions `rethinkdb:"options"`
+
+	// NextActions are the actions that the desktop can do (start, stop...) they're provided by the engine
+	NextActions []string `rethinkdb:"-"`
+}
+
+// GetDesktop returns a specific desktop by it's ID
+func GetDesktop(id string) (*Desktop, error) {
+	res, err := r.Table("domains").Get(id).Run(db.Session)
+	if err != nil {
+		return &Desktop{}, fmt.Errorf("error querying the DB: %v", err)
+	}
+	defer res.Close()
+
+	var d Desktop
+	err = res.One(&d)
+	if err != nil {
+		if err == r.ErrEmptyResult {
+			return &Desktop{}, fmt.Errorf("desktop not found")
+		}
+
+		return &Desktop{}, fmt.Errorf("error getting the desktop from the DB: %v", err)
+	}
+
+	return &d, nil
 }
 
 // GetUserDesktops returns all the desktops of an user

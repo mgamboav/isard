@@ -72,7 +72,7 @@ func TestUserDesktopsGet(t *testing.T) {
 				"name":        "Debian",
 				"description": "This is a Debian desktop",
 				"icon":        "debian",
-				"status":      "Stopped",
+				"status":      "STOPPED",
 				"detail":      "everything works",
 				"user":        "nefix",
 				"os":          "linux",
@@ -89,7 +89,7 @@ func TestUserDesktopsGet(t *testing.T) {
 				"name":        "NixOS",
 				"description": "This is a NixOS desktop",
 				"icon":        "debian",
-				"status":      "Failed",
+				"status":      "FAILED",
 				"detail":      "no space left in the disk",
 				"user":        "nefix",
 				"os":          "linux",
@@ -107,13 +107,16 @@ func TestUserDesktopsGet(t *testing.T) {
 			Id: "nefix",
 		}
 
+		ctx, err := grpc.CheckAuth(ctx)
+		assert.Nil(err)
+
 		expectedRsp := &isard.UserDesktopsGetResponse{
 			Desktops: []*isard.Desktop{
 				&isard.Desktop{
 					Id:          "_nefix_Debian",
 					Name:        "Debian",
 					Description: "This is a Debian desktop",
-					Status:      "Stopped",
+					State:       isard.Desktop_STOPPED,
 					Detail:      "everything works",
 					User:        "nefix",
 					Os:          "linux",
@@ -129,7 +132,7 @@ func TestUserDesktopsGet(t *testing.T) {
 					Id:          "_nefix_NixOS",
 					Name:        "NixOS",
 					Description: "This is a NixOS desktop",
-					Status:      "Failed",
+					State:       isard.Desktop_FAILED,
 					Detail:      "no space left in the disk",
 					User:        "nefix",
 					Os:          "linux",
@@ -149,46 +152,15 @@ func TestUserDesktopsGet(t *testing.T) {
 		assert.Nil(err)
 	})
 
-	t.Run("should return an error if no metadata is provided", func(t *testing.T) {
-		ctx := context.Background()
-
-		req := &isard.UserDesktopsGetRequest{
-			Id: "nefix",
-		}
-
-		expectedErr := status.Error(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
-
-		i := grpc.IsardServer{}
-		rsp, err := i.UserDesktopsGet(ctx, req)
-
-		assert.Equal(&isard.UserDesktopsGetResponse{}, rsp)
-		assert.Equal(expectedErr, err)
-	})
-
-	t.Run("should return an error if the token header isn't provided", func(t *testing.T) {
-		ctx := context.Background()
-		md := metadata.New(map[string]string{})
-		ctx = metadata.NewIncomingContext(ctx, md)
-
-		req := &isard.UserDesktopsGetRequest{
-			Id: "nefix",
-		}
-
-		expectedErr := status.Error(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
-
-		i := grpc.IsardServer{}
-		rsp, err := i.UserDesktopsGet(ctx, req)
-
-		assert.Equal(&isard.UserDesktopsGetResponse{}, rsp)
-		assert.Equal(expectedErr, err)
-	})
-
 	t.Run("should return an error if the user can't access the desktops", func(t *testing.T) {
 		ctx := context.Background()
 		md := metadata.New(map[string]string{
 			"tkn": tkn,
 		})
 		ctx = metadata.NewIncomingContext(ctx, md)
+
+		ctx, err := grpc.CheckAuth(ctx)
+		assert.Nil(err)
 
 		req := &isard.UserDesktopsGetRequest{
 			Id: "usr",
@@ -224,6 +196,9 @@ func TestUserDesktopsGet(t *testing.T) {
 		})
 		ctx = metadata.NewIncomingContext(ctx, md)
 
+		ctx, err := grpc.CheckAuth(ctx)
+		assert.Nil(err)
+
 		req := &isard.UserDesktopsGetRequest{
 			Id: "nefix",
 		}
@@ -236,4 +211,7 @@ func TestUserDesktopsGet(t *testing.T) {
 		assert.Equal(&isard.UserDesktopsGetResponse{}, rsp)
 		assert.Equal(expectedErr, err)
 	})
+}
+
+func TestStartDesktop(t *testing.T) {
 }

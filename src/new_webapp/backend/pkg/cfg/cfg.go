@@ -69,4 +69,9 @@ func SetDefaults() {
 		"level": "warn",
 		"file":  "backend.log",
 	})
+
+	Config.SetDefault("engine", map[string]interface{}{
+		"host": "localhost",
+		"port": 54100,
+	})
 }

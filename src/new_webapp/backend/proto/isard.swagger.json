@@ -23,6 +23,39 @@
     "application/json"
   ],
   "paths": {
+    "/v1/desktop/{id}/start": {
+      "post": {
+        "summary": "DesktopStart starts a desktop by ID",
+        "operationId": "DesktopStart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/isardDesktopStartResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/isardDesktopStartRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Isard"
+        ]
+      }
+    },
     "/v1/login/local": {
       "post": {
         "summary": "LoginLocal logs in the user using the local database and returns the token",
@@ -118,9 +151,9 @@
           "type": "string",
           "title": "description is the user description of the desktop"
         },
-        "status": {
-          "type": "string",
-          "title": "status is the current status of the desktop\nDomainStatus status = 6;"
+        "state": {
+          "$ref": "#/definitions/isardDesktopState",
+          "title": "state is the current state of the desktop"
         },
         "detail": {
           "type": "string",
@@ -139,6 +172,44 @@
           "title": "options are the options of the desktop"
         }
       }
+    },
+    "isardDesktopStartRequest": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "isardDesktopStartResponse": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/isardDesktopState"
+        },
+        "next_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "isardDesktopState": {
+      "type": "string",
+      "enum": [
+        "STOPPED",
+        "STARTED",
+        "PAUSED",
+        "DELETED",
+        "FAILED",
+        "UNKNOWN"
+      ],
+      "default": "STOPPED",
+      "title": "DesktopState are all the different states that a desktop can be on"
     },
     "isardDomainOptions": {
       "type": "object",
