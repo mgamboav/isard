@@ -5,15 +5,174 @@ package desktop;
 import "google/protobuf/any.proto";
  
 service Desktop {
-    rpc Get(GetRequest) returns (GetResponse) {}
     rpc List(ListRequest) returns (ListResponse) {}
-    rpc Start(StartRequest) returns (StartResponse) {}
-    rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
-    rpc Stop(StopRequest) returns (StopResponse) {}
-    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
-    rpc FromTemplate(FromTemplateRequest) returns (FromTemplateResponse) {}
-    rpc FromMedia(FromMediaRequest) returns (FromMediaResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc CreateFromTemplate(CreateFromTemplateRequest) returns (CreateFromTemplateResponse) {}
+    rpc CreateFromMedia(CreateFromMediaRequest) returns (CreateFromMediaResponse) {}
     rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc Start(StartRequest) returns (StartResponse) {}
+    rpc Stop(StopRequest) returns (StopResponse) {}
+    rpc State(StateRequest) returns (StateResponse) {}
+    rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
+}
+    
+message ListRequest {}
+
+message ListResponse {
+    repeated string desktops = 1;
+}
+
+message GetRequest {
+    string desktop_id = 1;
+}
+
+message GetResponse {
+    repeated google.protobuf.Any desktop = 1;
+}
+
+message CreateFromTemplateRequest {
+    string desktop_id = 1;
+    string template_id = 2;
+    HardwareDerived hardware = 3;
+}
+
+message CreateFromTemplateResponse {
+    enum State {
+        STOPPED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+    repeated string next_actions = 3;
+}
+
+message CreateFromMediaRequest {
+    string desktop_id = 1;
+    string virt_install_id = 2;
+    HardwareNew hardware = 3;
+}
+
+message CreateFromMediaResponse {
+    enum State {
+        STOPPED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+}
+
+message UpdateRequest {
+    string desktop_id = 1;
+    HardwareUpdate hardware = 2;
+}
+
+message UpdateResponse {
+    enum State {
+        STOPPED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+}
+
+message DeleteRequest {
+    string desktop_id = 1;
+}
+
+message DeleteResponse {
+    enum State {
+        DELETED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+}
+
+message StartRequest {
+    string desktop_id = 1;
+}
+
+message StartResponse {
+    enum State {
+        STOPPED = 0;
+        STARTED = 1;
+        PAUSED = 2;
+        DELETED = 3;
+        FAILED = 4;
+        UNKNOWN = 5;
+    }
+
+    State state = 1;
+    string detail = 2;
+    Viewer viewer = 3;
+    repeated string next_actions = 4;
+}
+
+message StopRequest {
+    string desktop_id = 1;
+}
+
+message StopResponse {
+    enum State {
+        STOPPED = 0;
+        STARTED = 1;
+        PAUSED = 2;
+        DELETED = 3;
+        FAILED = 4;
+        UNKNOWN = 5;
+    }
+
+    State state = 1;
+    string detail = 2;
+    repeated string next_actions = 3;
+}
+
+message StateRequest {
+    string desktop_id = 1;
+}
+
+message StateResponse {
+    enum State {
+        STOPPED = 0;
+        STARTED = 1;
+        PAUSED = 2;
+        DELETED = 3;
+        FAILED = 4;
+        UNKNOWN = 5;
+    }
+
+    State state = 1;
+    repeated string next_actions = 2;
+}
+
+message ViewerRequest {
+    string desktop_id = 1;
+}
+
+message ViewerResponse {
+    string detail = 1;
+    Viewer viewer = 2;
+}
+
+message Viewer {
+    string hostname = 1;
+    string hostname_external = 2;
+    int32 port_spice = 5;
+    int32 port_spice_ssl = 6;
+    int32 port_vnc = 7;
+    int32 port_vnc_websocket = 8;
+    string passwd = 9;
+    string client_addr = 10;
+    float client_since = 11;
 }
 
 message HardwareNew {
@@ -53,144 +212,4 @@ message HardwareUpdate {
     repeated string interfaces = 6;
     repeated string isos = 8;
     repeated string floppies = 9;
-}
-    
-message Viewer {
-    string hostname = 1;
-    string hostname_external = 2;
-    int32 port_spice = 5;
-    int32 port_spice_ssl = 6;
-    int32 port_vnc = 7;
-    int32 port_vnc_websocket = 8;
-    string passwd = 9;
-    string client_addr = 10;
-    float client_since = 11;
-}
-    
-message GetRequest {
-    string desktop_id = 1;
-}
-
-message GetResponse {
-    repeated google.protobuf.Any desktop = 1;
-}
-
-message ListRequest {}
-
-message ListResponse {
-    repeated string desktops = 1;
-}
-
-message StartRequest{
- string desktop_id=1;
-}
-
-message StartResponse {
-    enum State {
-        STOPPED = 0;
-        STARTED = 1;
-        PAUSED = 2;
-        DELETED = 3;
-        FAILED = 4;
-        UNKNOWN = 5;
-    }
-
-    State state = 1;
-    string detail = 2;
-    Viewer viewer = 3;
-    repeated string next_actions = 4;
-}
-
-message ViewerRequest {
-    string desktop_id = 1;
-}
-
-message ViewerResponse {
-    string detail = 1;
-    Viewer viewer = 2;
-}
-
-message StopRequest {
-    string desktop_id = 1;
-}
-
-message StopResponse {
-    enum State {
-        STOPPED = 0;
-        STARTED = 1;
-        PAUSED = 2;
-        DELETED = 3;
-        FAILED = 4;
-        UNKNOWN = 5;
-    }
-
-    State state = 1;
-    string detail = 2;
-    repeated string next_actions = 3;
-}
-
-message DeleteRequest {
-    string desktop_id = 1;
-}
-
-message DeleteResponse {
-    enum State {
-        DELETED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
-    }
-
-    State state = 1;
-    string detail = 2;
-}
-
-message FromTemplateRequest {
-    string desktop_id = 1;
-    string template_id = 2;
-    HardwareDerived hardware = 3;
-}
-
-message FromTemplateResponse {
-    enum State {
-        STOPPED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
-    }
-
-    State state = 1;
-    string detail = 2;
-    repeated string next_actions = 3;
-}
-
-message FromMediaRequest {
-    string desktop_id = 1;
-    string virt_install_id = 2;
-    HardwareNew hardware = 3;
-}
-
-message FromMediaResponse {
-    enum State {
-        STOPPED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
-    }
-
-    State state = 1;
-    string detail = 2;
-}
-
-message UpdateRequest {
-    string desktop_id = 1;
-    HardwareUpdate hardware = 2;
-}
-
-message UpdateResponse {
-    enum State {
-        STOPPED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
-    }
-
-    State state = 1;
-    string detail = 2;
 }
