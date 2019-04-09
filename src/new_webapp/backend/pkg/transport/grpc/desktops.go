@@ -21,29 +21,32 @@ package grpc
 import (
 	"context"
 
-	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/auth"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/engine"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/models"
 	isard "github.com/isard-vdi/isard/src/new_webapp/backend/proto"
 
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
+// parseState returns the Desktop state from a string
+func parseState(strState string) isard.Desktop_State {
+	state := isard.Desktop_State(isard.Desktop_State_value[strState])
+
+	// if the state isn't found, the map is going to return 0, which is the stopped status
+	if state == 0 {
+		if strState != isard.Desktop_State_name[0] {
+			state = isard.Desktop_UNKNOWN
+		}
+	}
+
+	return state
+}
+
 // UserDesktopsGet returns a list with all the desktops of an user
 func (i *IsardServer) UserDesktopsGet(ctx context.Context, req *isard.UserDesktopsGetRequest) (*isard.UserDesktopsGetResponse, error) {
-	if md, ok := metadata.FromIncomingContext(ctx); ok {
-		if len(md["tkn"]) > 0 {
-			tkn := auth.Token(md["tkn"][0])
-
-			if !tkn.CanAccess(req.Id) {
-				return &isard.UserDesktopsGetResponse{}, status.Error(codes.PermissionDenied, "you can't access this resource")
-			}
-		} else {
-			return &isard.UserDesktopsGetResponse{}, status.Error(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
-		}
-	} else {
-		return &isard.UserDesktopsGetResponse{}, status.Error(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
+	if err := canAccess(ctx, req.Id); err != nil {
+		return &isard.UserDesktopsGetResponse{}, err
 	}
 
 	d, err := models.GetUserDesktops(req.Id)
@@ -58,7 +61,7 @@ func (i *IsardServer) UserDesktopsGet(ctx context.Context, req *isard.UserDeskto
 			Id:          desktop.ID,
 			Name:        desktop.Name,
 			Description: desktop.Description,
-			Status:      desktop.Status,
+			State:       parseState(desktop.State),
 			Detail:      desktop.Detail,
 			User:        desktop.User,
 			Os:          desktop.OS,
@@ -73,4 +76,29 @@ func (i *IsardServer) UserDesktopsGet(ctx context.Context, req *isard.UserDeskto
 	}
 
 	return rsp, nil
+}
+
+// DesktopStart starts a desktop
+func (i *IsardServer) DesktopStart(ctx context.Context, req *isard.DesktopStartRequest) (*isard.DesktopStartResponse, error) {
+	d, err := models.GetDesktop(req.Id)
+	if err != nil {
+		if err.Error() == "desktop not found" {
+			return &isard.DesktopStartResponse{}, status.Errorf(codes.NotFound, "error starting %s: %v", req.Id, err)
+		}
+
+		return &isard.DesktopStartResponse{}, status.Errorf(codes.Unknown, "error starting %s: %v", req.Id, err)
+	}
+
+	if err := canAccess(ctx, d.User); err != nil {
+		return &isard.DesktopStartResponse{}, err
+	}
+
+	if err := engine.Cli.DesktopStart(d); err != nil {
+		return &isard.DesktopStartResponse{}, status.Errorf(codes.Unknown, "error starting %s: %v", req.Id, err)
+	}
+
+	return &isard.DesktopStartResponse{
+		State:       d.State,
+		NextActions: d.NextActions,
+	}, nil
 }

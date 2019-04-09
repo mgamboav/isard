@@ -28,20 +28,38 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// ContextKey is a key in the context
+type ContextKey string
+
+// TokenContextKey is the key that contains the token
+const TokenContextKey ContextKey = "tkn"
+
 // CheckAuth checks if the user is authenticated
-func CheckAuth(ctx context.Context) error {
+func CheckAuth(ctx context.Context) (context.Context, error) {
 	if md, ok := metadata.FromIncomingContext(ctx); ok {
 		if len(md["tkn"]) > 0 {
 			tkn := auth.Token(md["tkn"][0])
 			if !tkn.Validate() {
-				return status.Errorf(codes.InvalidArgument, "invalid token")
+				return ctx, status.Errorf(codes.InvalidArgument, "invalid token")
 			}
 
-			return nil
+			ctx = context.WithValue(ctx, TokenContextKey, tkn)
+			return ctx, nil
 		}
 	}
 
-	return status.Errorf(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
+	return ctx, status.Errorf(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
+}
+
+// canAccess checks if an user can access to a specific resource
+func canAccess(ctx context.Context, id string) error {
+	tkn := ctx.Value(TokenContextKey).(auth.Token)
+
+	if !tkn.CanAccess(id) {
+		return status.Error(codes.PermissionDenied, "you can't access this resource")
+	}
+
+	return nil
 }
 
 // IsardServer is the implementation of the gRPC Isard service

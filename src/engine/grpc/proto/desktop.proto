@@ -1,0 +1,215 @@
+syntax = "proto3";
+
+package desktop;
+
+import "google/protobuf/any.proto";
+ 
+service Desktop {
+    rpc List(ListRequest) returns (ListResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc CreateFromTemplate(CreateFromTemplateRequest) returns (CreateFromTemplateResponse) {}
+    rpc CreateFromMedia(CreateFromMediaRequest) returns (CreateFromMediaResponse) {}
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc Start(StartRequest) returns (StartResponse) {}
+    rpc Stop(StopRequest) returns (StopResponse) {}
+    rpc State(StateRequest) returns (StateResponse) {}
+    rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
+}
+    
+message ListRequest {}
+
+message ListResponse {
+    repeated string desktops = 1;
+}
+
+message GetRequest {
+    string desktop_id = 1;
+}
+
+message GetResponse {
+    repeated google.protobuf.Any desktop = 1;
+}
+
+message CreateFromTemplateRequest {
+    string desktop_id = 1;
+    string template_id = 2;
+    HardwareDerived hardware = 3;
+}
+
+message CreateFromTemplateResponse {
+    enum State {
+        STOPPED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+    repeated string next_actions = 3;
+}
+
+message CreateFromMediaRequest {
+    string desktop_id = 1;
+    string virt_install_id = 2;
+    HardwareNew hardware = 3;
+}
+
+message CreateFromMediaResponse {
+    enum State {
+        STOPPED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+}
+
+message UpdateRequest {
+    string desktop_id = 1;
+    HardwareUpdate hardware = 2;
+}
+
+message UpdateResponse {
+    enum State {
+        STOPPED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+}
+
+message DeleteRequest {
+    string desktop_id = 1;
+}
+
+message DeleteResponse {
+    enum State {
+        DELETED = 0;
+        FAILED = 1;
+        UNKNOWN = 2;
+    }
+
+    State state = 1;
+    string detail = 2;
+}
+
+message StartRequest {
+    string desktop_id = 1;
+}
+
+message StartResponse {
+    enum State {
+        STOPPED = 0;
+        STARTED = 1;
+        PAUSED = 2;
+        DELETED = 3;
+        FAILED = 4;
+        UNKNOWN = 5;
+    }
+
+    State state = 1;
+    string detail = 2;
+    Viewer viewer = 3;
+    repeated string next_actions = 4;
+}
+
+message StopRequest {
+    string desktop_id = 1;
+}
+
+message StopResponse {
+    enum State {
+        STOPPED = 0;
+        STARTED = 1;
+        PAUSED = 2;
+        DELETED = 3;
+        FAILED = 4;
+        UNKNOWN = 5;
+    }
+
+    State state = 1;
+    string detail = 2;
+    repeated string next_actions = 3;
+}
+
+message StateRequest {
+    string desktop_id = 1;
+}
+
+message StateResponse {
+    enum State {
+        STOPPED = 0;
+        STARTED = 1;
+        PAUSED = 2;
+        DELETED = 3;
+        FAILED = 4;
+        UNKNOWN = 5;
+    }
+
+    State state = 1;
+    repeated string next_actions = 2;
+}
+
+message ViewerRequest {
+    string desktop_id = 1;
+}
+
+message ViewerResponse {
+    string detail = 1;
+    Viewer viewer = 2;
+}
+
+message Viewer {
+    string hostname = 1;
+    string hostname_external = 2;
+    int32 port_spice = 5;
+    int32 port_spice_ssl = 6;
+    int32 port_vnc = 7;
+    int32 port_vnc_websocket = 8;
+    string passwd = 9;
+    string client_addr = 10;
+    float client_since = 11;
+}
+
+message HardwareNew {
+    int32 vcpus = 1;
+    int32 memory = 2;
+    string boot_disk_rpath = 3;
+    string boot_disk_bus = 4;
+    int32  boot_disk_size = 5; 
+    repeated string videos = 6;
+    repeated string graphics = 7;
+    repeated string boots = 8;
+    repeated string interfaces = 9;
+    repeated string isos = 10;
+    repeated string floppies = 11;
+}
+
+message HardwareDerived {
+    int32 vcpus = 1;
+    int32 memory = 2;
+    string boot_disk_rpath = 3;
+    string boot_disk_bus = 4; 
+    repeated string videos = 5;
+    repeated string graphics = 6;
+    repeated string boots = 7;
+    repeated string interfaces = 8;
+    repeated string isos = 9;
+    repeated string floppies = 10;
+}
+
+message HardwareUpdate {
+    int32 vcpus = 1;
+    int32 memory = 2;
+    string boot_disk_bus = 7; 
+    repeated string videos = 3;
+    repeated string graphics= 4 ;
+    repeated string boots = 5;
+    repeated string interfaces = 6;
+    repeated string isos = 8;
+    repeated string floppies = 9;
+}

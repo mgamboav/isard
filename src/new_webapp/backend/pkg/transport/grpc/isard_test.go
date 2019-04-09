@@ -58,9 +58,10 @@ func TestCheckAuth(t *testing.T) {
 		})
 		ctx = metadata.NewIncomingContext(ctx, md)
 
-		err = grpc.CheckAuth(ctx)
-
+		ctx, err = grpc.CheckAuth(ctx)
 		assert.Nil(err)
+
+		assert.Equal(tknStr, ctx.Value(grpc.TokenContextKey).(auth.Token).String())
 	})
 
 	t.Run("should return an error if no metadata is provided", func(t *testing.T) {
@@ -68,7 +69,7 @@ func TestCheckAuth(t *testing.T) {
 
 		expectedErr := status.Error(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
 
-		err := grpc.CheckAuth(ctx)
+		_, err := grpc.CheckAuth(ctx)
 
 		assert.Equal(expectedErr, err)
 	})
@@ -80,7 +81,7 @@ func TestCheckAuth(t *testing.T) {
 
 		expectedErr := status.Error(codes.Unauthenticated, "gRPC calls need the token sent through the metadata")
 
-		err := grpc.CheckAuth(ctx)
+		_, err := grpc.CheckAuth(ctx)
 
 		assert.Equal(expectedErr, err)
 	})
@@ -94,7 +95,7 @@ func TestCheckAuth(t *testing.T) {
 
 		expectedErr := status.Error(codes.InvalidArgument, "invalid token")
 
-		err := grpc.CheckAuth(ctx)
+		_, err := grpc.CheckAuth(ctx)
 
 		assert.Equal(expectedErr, err)
 	})

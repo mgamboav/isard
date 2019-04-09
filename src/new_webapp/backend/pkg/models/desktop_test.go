@@ -29,6 +29,79 @@ import (
 	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
 
+func TestGetDesktop(t *testing.T) {
+	assert := assert.New(t)
+	var emptyDesktop = &models.Desktop{}
+
+	t.Run("should return the desktop", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{
+			map[string]interface{}{
+				"id":          "_nefix_NixOS",
+				"name":        "NixOS",
+				"description": "This is a NixOS desktop",
+				"status":      "Failed",
+				"detail":      "no space left in the disk",
+				"user":        "nefix",
+				"os":          "linux",
+			},
+		}, nil)
+		db.Session = mock
+
+		expectedDesktop := &models.Desktop{
+			ID:          "_nefix_NixOS",
+			Name:        "NixOS",
+			Description: "This is a NixOS desktop",
+			State:       "Failed",
+			Detail:      "no space left in the disk",
+			User:        "nefix",
+			OS:          "linux",
+		}
+
+		d, err := models.GetDesktop("_nefix_NixOS")
+		assert.Nil(err)
+		assert.Equal(expectedDesktop, d)
+	})
+
+	t.Run("should return an error if there's an error querying the DB", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{}, errors.New("testing error"))
+		db.Session = mock
+
+		d, err := models.GetDesktop("_nefix_NixOS")
+		assert.EqualError(err, "error querying the DB: testing error")
+		assert.Equal(emptyDesktop, d)
+
+		mock.AssertExpectations(t)
+	})
+
+	t.Run("should return an error if the desktop isn't found", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{}, nil)
+		db.Session = mock
+
+		d, err := models.GetDesktop("_nefix_NixOS")
+		assert.EqualError(err, "desktop not found")
+		assert.Equal(emptyDesktop, d)
+
+		mock.AssertExpectations(t)
+	})
+
+	t.Run("should return an error if there's an error getting the desktop from the DB", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{
+			0,
+		}, nil)
+		db.Session = mock
+
+		d, err := models.GetDesktop("_nefix_NixOS")
+		assert.EqualError(err, "error getting the desktop from the DB: rethinkdb: could not decode type int into Go value of type models.Desktop")
+		assert.Equal(emptyDesktop, d)
+
+		mock.AssertExpectations(t)
+	})
+}
+
 func TestGetUserDesktops(t *testing.T) {
 	assert := assert.New(t)
 	emptyDesktops := []*models.Desktop{}
@@ -71,7 +144,7 @@ func TestGetUserDesktops(t *testing.T) {
 				ID:          "_nefix_Debian",
 				Name:        "Debian",
 				Description: "This is a Debian desktop",
-				Status:      "Stopped",
+				State:       "Stopped",
 				Detail:      "everything works",
 				User:        "nefix",
 				OS:          "linux",
@@ -81,7 +154,7 @@ func TestGetUserDesktops(t *testing.T) {
 				ID:          "_nefix_NixOS",
 				Name:        "NixOS",
 				Description: "This is a NixOS desktop",
-				Status:      "Failed",
+				State:       "Failed",
 				Detail:      "no space left in the disk",
 				User:        "nefix",
 				OS:          "linux",
