@@ -52,6 +52,11 @@ HYP_STATUS_NOT_ALIVE = -10
 
 MAX_GET_KVM_RETRIES = 3
 
+def libvirt_callback(userdata, err):
+    pass
+    
+libvirt.registerErrorHandler(f=libvirt_callback, ctx=None)  
+
 class hyp(object):
     """
     operates with hypervisor
@@ -965,3 +970,4 @@ class hyp(object):
         if domain_stats:
             data["cpu_usage"] = domain_stats.get('cpu_load')
         return data
+        

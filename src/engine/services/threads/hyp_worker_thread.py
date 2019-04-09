@@ -10,6 +10,7 @@ import time
 
 from time import sleep
 
+import sys,libvirt
 from libvirt import VIR_DOMAIN_START_PAUSED, libvirtError
 
 from engine.models.hyp import hyp
@@ -20,6 +21,8 @@ from engine.services.log import logs
 from engine.services.threads.threads import TIMEOUT_QUEUES, launch_action_disk, RETRIES_HYP_IS_ALIVE, \
     TIMEOUT_BETWEEN_RETRIES_HYP_IS_ALIVE, launch_delete_media, launch_killall_curl
 from engine.models.domain_xml import XML_SNIPPET_CDROM, XML_SNIPPET_DISK_VIRTIO, XML_SNIPPET_DISK_CUSTOM
+
+ 
 
 class HypWorkerThread(threading.Thread):
     def __init__(self, name, hyp_id, queue_actions, queue_master=None):
@@ -131,14 +134,16 @@ class HypWorkerThread(threading.Thread):
                     logs.workers.debug('xml to start some lines...: {}'.format(action['xml'][30:100]))
                     try:
                         self.h.conn.createXML(action['xml'])
+                        # ~ self.h.create_xml(action['xml'])
                         # wait to event started to save state in database
                         #update_domain_status('Started', action['id_domain'], hyp_id=self.hyp_id, detail='Domain has started in worker thread')
                         logs.workers.debug('STARTED domain {}: createdXML action in hypervisor {} has been sent'.format(
                             action['id_domain'], host))
                     except libvirtError as e:
                         update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id,
-                                             detail=("Hypervisor can not create domain with libvirt exception: " + str(e)))
+                                             detail=(report_libvirt_error()))
                         logs.workers.debug('exception in starting domain {}: '.format(e))
+                        
                     except Exception as e:
                         update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id, detail=("Exception when starting domain: " + str(e)))
                         logs.workers.debug('exception in starting domain {}: '.format(e))
@@ -268,3 +273,26 @@ class HypWorkerThread(threading.Thread):
                     # ~ sleep(0.2)
 
 
+def report_libvirt_error():
+    """Call virGetLastError function to get the last error information."""
+    err = libvirt.virGetLastError()
+    # ~ print('Error code:    '+str(err[0]), file=sys.stderr)
+    # ~ print('Error domain:  '+str(err[1]), file=sys.stderr)
+    # ~ print('Error message: '+err[2], file=sys.stderr)
+    # ~ print('Error level:   '+str(err[3]), file=sys.stderr)
+    # ~ if err[4] != None:
+        # ~ print('Error string1: '+err[4], file=sys.stderr)
+    # ~ else:
+        # ~ print('Error string1:', file=sys.stderr)
+    # ~ if err[5] != None:
+        # ~ print('Error string2: '+err[5], file=sys.stderr)
+    # ~ else:
+        # ~ print('Error string2:', file=sys.stderr)
+    # ~ if err[6] != None:
+        # ~ print('Error string3: '+err[6], file=sys.stderr)
+    # ~ else:
+        # ~ print('Error string3:', file=sys.stderr)
+    # ~ print('Error int1:    '+str(err[7]), file=sys.stderr)
+    # ~ print('Error int2:    '+str(err[8]), file=sys.stderr)
+    return err[2]
+ 

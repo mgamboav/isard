@@ -383,7 +383,7 @@ while not curr_client.engine_is_alive():
 
 ''' CHANGES '''
 threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
-# ~ while True: time.sleep(9999)
+while True: time.sleep(9999)
 
 #~ curr_client.domain_changes()
 
@@ -499,47 +499,47 @@ threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
         
 
 ''' TEST COMPLERT '''
-import concurrent.futures
+# ~ import concurrent.futures
 
-n=20
-desktops = curr_client.desktop_list()
-templates = curr_client.template_list()
-print('Starting tests...')
-print('Initial desktops: '+str(len(desktops)))
-print('Initial templates: '+str(len(templates)))
-print('1 - Start all desktops')
-for i in range(0,len(desktops)):
-    curr_client.desktop_start(desktops[i])
-print('2 - Stop all desktops')
-for i in range(0,len(desktops)):
-    curr_client.desktop_stop(desktops[i])
-print('3 - Creating and deleting '+str(n)+' desktops')
-t=templates[0]
-with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-    creations =[]
-    for i in range(0,n):
-        creations.append({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
-    future_to_desktops = {executor.submit(curr_client.desktop_from_template, message): message for message in creations}
-    for future in concurrent.futures.as_completed(future_to_desktops):
-        url = future_to_desktops[future]
-        try:
-            data = future.result()
-        except Exception as exc:
-            print(str(exc))
-        else:
-            None
+# ~ n=20
+# ~ desktops = curr_client.desktop_list()
+# ~ templates = curr_client.template_list()
+# ~ print('Starting tests...')
+# ~ print('Initial desktops: '+str(len(desktops)))
+# ~ print('Initial templates: '+str(len(templates)))
+# ~ print('1 - Start all desktops')
+# ~ for i in range(0,len(desktops)):
+    # ~ curr_client.desktop_start(desktops[i])
+# ~ print('2 - Stop all desktops')
+# ~ for i in range(0,len(desktops)):
+    # ~ curr_client.desktop_stop(desktops[i])
+# ~ print('3 - Creating and deleting '+str(n)+' desktops')
+# ~ t=templates[0]
+# ~ with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    # ~ creations =[]
+    # ~ for i in range(0,n):
+        # ~ creations.append({'desktop_id':'_admin_pepinillo_'+str(i),'template_id':t})
+    # ~ future_to_desktops = {executor.submit(curr_client.desktop_from_template, message): message for message in creations}
+    # ~ for future in concurrent.futures.as_completed(future_to_desktops):
+        # ~ url = future_to_desktops[future]
+        # ~ try:
+            # ~ data = future.result()
+        # ~ except Exception as exc:
+            # ~ print(str(exc))
+        # ~ else:
+            # ~ None
     
-    if len(curr_client.desktop_list())-len(desktops) != n:
-        print(' XXXXX ERROR, desktops not created')
-    deletes = ['_admin_pepinillo_'+str(i) for i in range(0,n)]
-    future_to_deletes = {executor.submit(curr_client.desktop_delete, id): id for id in deletes}
-    for future in concurrent.futures.as_completed(future_to_deletes):
-        url = future_to_deletes[future]
-        try:
-            data = future.result()
-        except Exception as exc:
-            print(str(exc))
-        else:
-            None 
-    if len(curr_client.desktop_list())-len(desktops) != 0:
-        print(' XXXXX ERROR, desktops not deleted')    
+    # ~ if len(curr_client.desktop_list())-len(desktops) != n:
+        # ~ print(' XXXXX ERROR, desktops not created')
+    # ~ deletes = ['_admin_pepinillo_'+str(i) for i in range(0,n)]
+    # ~ future_to_deletes = {executor.submit(curr_client.desktop_delete, id): id for id in deletes}
+    # ~ for future in concurrent.futures.as_completed(future_to_deletes):
+        # ~ url = future_to_deletes[future]
+        # ~ try:
+            # ~ data = future.result()
+        # ~ except Exception as exc:
+            # ~ print(str(exc))
+        # ~ else:
+            # ~ None 
+    # ~ if len(curr_client.desktop_list())-len(desktops) != 0:
+        # ~ print(' XXXXX ERROR, desktops not deleted')    
