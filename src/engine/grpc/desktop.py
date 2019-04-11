@@ -1,5 +1,5 @@
 import grpc
-import time
+import time, sys
 import hashlib
 
 from engine.grpc.proto import desktop_pb2
@@ -55,6 +55,9 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
                 desktops = [d['id'] for d in desktops]
             return desktop_pb2.ListResponse(desktops=desktops)
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            log.error(exc_type, fname, exc_tb.tb_lineno)			
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.ListResponse()  
