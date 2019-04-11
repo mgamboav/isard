@@ -18,8 +18,8 @@ class TemplatesStreamStub(object):
     """
     self.Changes = channel.unary_stream(
         '/templates_stream.TemplatesStream/Changes',
-        request_serializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.TemplatesStreamRequest.SerializeToString,
-        response_deserializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.TemplatesStreamResponse.FromString,
+        request_serializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.Request.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.Response.FromString,
         )
 
 
@@ -41,8 +41,8 @@ def add_TemplatesStreamServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'Changes': grpc.unary_stream_rpc_method_handler(
           servicer.Changes,
-          request_deserializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.TemplatesStreamRequest.FromString,
-          response_serializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.TemplatesStreamResponse.SerializeToString,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.Request.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_templates__stream__pb2.Response.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

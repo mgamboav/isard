@@ -18,8 +18,8 @@ class DesktopsStreamStub(object):
     """
     self.Changes = channel.unary_stream(
         '/desktops_stream.DesktopsStream/Changes',
-        request_serializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.DesktopsStreamRequest.SerializeToString,
-        response_deserializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.DesktopsStreamResponse.FromString,
+        request_serializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.Request.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.Response.FromString,
         )
 
 
@@ -41,8 +41,8 @@ def add_DesktopsStreamServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'Changes': grpc.unary_stream_rpc_method_handler(
           servicer.Changes,
-          request_deserializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.DesktopsStreamRequest.FromString,
-          response_serializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.DesktopsStreamResponse.SerializeToString,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.Request.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_desktops__stream__pb2.Response.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

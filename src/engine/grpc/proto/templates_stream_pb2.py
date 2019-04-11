@@ -19,14 +19,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='templates_stream',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n(engine/grpc/proto/templates_stream.proto\x12\x10templates_stream\"\x18\n\x16TemplatesStreamRequest\"\x80\x02\n\x17TemplatesStreamResponse\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\x12>\n\x05state\x18\x02 \x01(\x0e\x32/.templates_stream.TemplatesStreamResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x03 \x01(\t\x12\x14\n\x0cnext_actions\x18\x04 \x03(\t\x12\x0c\n\x04kind\x18\x05 \x01(\t\"\\\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\x12\x07\n\x03NEW\x10\x06\x32u\n\x0fTemplatesStream\x12\x62\n\x07\x43hanges\x12(.templates_stream.TemplatesStreamRequest\x1a).templates_stream.TemplatesStreamResponse\"\x00\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n(engine/grpc/proto/templates_stream.proto\x12\x10templates_stream\"\t\n\x07Request\"\xe2\x01\n\x08Response\x12\x13\n\x0btemplate_id\x18\x01 \x01(\t\x12/\n\x05state\x18\x02 \x01(\x0e\x32 .templates_stream.Response.State\x12\x0e\n\x06\x64\x65tail\x18\x03 \x01(\t\x12\x14\n\x0cnext_actions\x18\x04 \x03(\t\x12\x0c\n\x04kind\x18\x05 \x01(\t\"\\\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\x12\x07\n\x03NEW\x10\x06\x32W\n\x0fTemplatesStream\x12\x44\n\x07\x43hanges\x12\x19.templates_stream.Request\x1a\x1a.templates_stream.Response\"\x00\x30\x01\x62\x06proto3')
 )
 
 
 
-_TEMPLATESSTREAMRESPONSE_STATE = _descriptor.EnumDescriptor(
+_RESPONSE_STATE = _descriptor.EnumDescriptor(
   name='State',
-  full_name='templates_stream.TemplatesStreamResponse.State',
+  full_name='templates_stream.Response.State',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -61,15 +61,15 @@ _TEMPLATESSTREAMRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=253,
-  serialized_end=345,
+  serialized_start=208,
+  serialized_end=300,
 )
-_sym_db.RegisterEnumDescriptor(_TEMPLATESSTREAMRESPONSE_STATE)
+_sym_db.RegisterEnumDescriptor(_RESPONSE_STATE)
 
 
-_TEMPLATESSTREAMREQUEST = _descriptor.Descriptor(
-  name='TemplatesStreamRequest',
-  full_name='templates_stream.TemplatesStreamRequest',
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='templates_stream.Request',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -87,47 +87,47 @@ _TEMPLATESSTREAMREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=62,
-  serialized_end=86,
+  serialized_end=71,
 )
 
 
-_TEMPLATESSTREAMRESPONSE = _descriptor.Descriptor(
-  name='TemplatesStreamResponse',
-  full_name='templates_stream.TemplatesStreamResponse',
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='templates_stream.Response',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='template_id', full_name='templates_stream.TemplatesStreamResponse.template_id', index=0,
+      name='template_id', full_name='templates_stream.Response.template_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='state', full_name='templates_stream.TemplatesStreamResponse.state', index=1,
+      name='state', full_name='templates_stream.Response.state', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='detail', full_name='templates_stream.TemplatesStreamResponse.detail', index=2,
+      name='detail', full_name='templates_stream.Response.detail', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_actions', full_name='templates_stream.TemplatesStreamResponse.next_actions', index=3,
+      name='next_actions', full_name='templates_stream.Response.next_actions', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='kind', full_name='templates_stream.TemplatesStreamResponse.kind', index=4,
+      name='kind', full_name='templates_stream.Response.kind', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -138,7 +138,7 @@ _TEMPLATESSTREAMRESPONSE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _TEMPLATESSTREAMRESPONSE_STATE,
+    _RESPONSE_STATE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -146,29 +146,29 @@ _TEMPLATESSTREAMRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=89,
-  serialized_end=345,
+  serialized_start=74,
+  serialized_end=300,
 )
 
-_TEMPLATESSTREAMRESPONSE.fields_by_name['state'].enum_type = _TEMPLATESSTREAMRESPONSE_STATE
-_TEMPLATESSTREAMRESPONSE_STATE.containing_type = _TEMPLATESSTREAMRESPONSE
-DESCRIPTOR.message_types_by_name['TemplatesStreamRequest'] = _TEMPLATESSTREAMREQUEST
-DESCRIPTOR.message_types_by_name['TemplatesStreamResponse'] = _TEMPLATESSTREAMRESPONSE
+_RESPONSE.fields_by_name['state'].enum_type = _RESPONSE_STATE
+_RESPONSE_STATE.containing_type = _RESPONSE
+DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-TemplatesStreamRequest = _reflection.GeneratedProtocolMessageType('TemplatesStreamRequest', (_message.Message,), dict(
-  DESCRIPTOR = _TEMPLATESSTREAMREQUEST,
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
+  DESCRIPTOR = _REQUEST,
   __module__ = 'engine.grpc.proto.templates_stream_pb2'
-  # @@protoc_insertion_point(class_scope:templates_stream.TemplatesStreamRequest)
+  # @@protoc_insertion_point(class_scope:templates_stream.Request)
   ))
-_sym_db.RegisterMessage(TemplatesStreamRequest)
+_sym_db.RegisterMessage(Request)
 
-TemplatesStreamResponse = _reflection.GeneratedProtocolMessageType('TemplatesStreamResponse', (_message.Message,), dict(
-  DESCRIPTOR = _TEMPLATESSTREAMRESPONSE,
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
+  DESCRIPTOR = _RESPONSE,
   __module__ = 'engine.grpc.proto.templates_stream_pb2'
-  # @@protoc_insertion_point(class_scope:templates_stream.TemplatesStreamResponse)
+  # @@protoc_insertion_point(class_scope:templates_stream.Response)
   ))
-_sym_db.RegisterMessage(TemplatesStreamResponse)
+_sym_db.RegisterMessage(Response)
 
 
 
@@ -178,16 +178,16 @@ _TEMPLATESSTREAM = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=347,
-  serialized_end=464,
+  serialized_start=302,
+  serialized_end=389,
   methods=[
   _descriptor.MethodDescriptor(
     name='Changes',
     full_name='templates_stream.TemplatesStream.Changes',
     index=0,
     containing_service=None,
-    input_type=_TEMPLATESSTREAMREQUEST,
-    output_type=_TEMPLATESSTREAMRESPONSE,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
     serialized_options=None,
   ),
 ])

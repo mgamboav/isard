@@ -6,12 +6,12 @@ package templates_stream;
 //import "google/protobuf/any.proto";
  
 service TemplatesStream{
- rpc Changes(TemplatesStreamRequest) returns (stream TemplatesStreamResponse) {}
+ rpc Changes(Request) returns (stream Response) {}
 }
 
-message TemplatesStreamRequest{}
+message Request{}
 
-message TemplatesStreamResponse{
+message Response{
   string template_id = 1;
     enum State{
      STOPPED = 0;

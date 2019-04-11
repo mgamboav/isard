@@ -19,14 +19,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='desktops_stream',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\'engine/grpc/proto/desktops_stream.proto\x12\x0f\x64\x65sktops_stream\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\x17\n\x15\x44\x65sktopsStreamRequest\"\x97\x02\n\x16\x44\x65sktopsStreamResponse\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12<\n\x05state\x18\x02 \x01(\x0e\x32-.desktops_stream.DesktopsStreamResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x03 \x01(\t\x12\x14\n\x0cnext_actions\x18\x04 \x03(\t\x12\'\n\x06viewer\x18\x05 \x01(\x0b\x32\x17.desktops_stream.Viewer\"\\\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\x12\x07\n\x03NEW\x10\x06\x32p\n\x0e\x44\x65sktopsStream\x12^\n\x07\x43hanges\x12&.desktops_stream.DesktopsStreamRequest\x1a\'.desktops_stream.DesktopsStreamResponse\"\x00\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\'engine/grpc/proto/desktops_stream.proto\x12\x0f\x64\x65sktops_stream\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\t\n\x07Request\"\xfb\x01\n\x08Response\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12.\n\x05state\x18\x02 \x01(\x0e\x32\x1f.desktops_stream.Response.State\x12\x0e\n\x06\x64\x65tail\x18\x03 \x01(\t\x12\x14\n\x0cnext_actions\x18\x04 \x03(\t\x12\'\n\x06viewer\x18\x05 \x01(\x0b\x32\x17.desktops_stream.Viewer\"\\\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\x12\x07\n\x03NEW\x10\x06\x32T\n\x0e\x44\x65sktopsStream\x12\x42\n\x07\x43hanges\x12\x18.desktops_stream.Request\x1a\x19.desktops_stream.Response\"\x00\x30\x01\x62\x06proto3')
 )
 
 
 
-_DESKTOPSSTREAMRESPONSE_STATE = _descriptor.EnumDescriptor(
+_RESPONSE_STATE = _descriptor.EnumDescriptor(
   name='State',
-  full_name='desktops_stream.DesktopsStreamResponse.State',
+  full_name='desktops_stream.Response.State',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -61,10 +61,10 @@ _DESKTOPSSTREAMRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=478,
-  serialized_end=570,
+  serialized_start=436,
+  serialized_end=528,
 )
-_sym_db.RegisterEnumDescriptor(_DESKTOPSSTREAMRESPONSE_STATE)
+_sym_db.RegisterEnumDescriptor(_RESPONSE_STATE)
 
 
 _VIEWER = _descriptor.Descriptor(
@@ -154,9 +154,9 @@ _VIEWER = _descriptor.Descriptor(
 )
 
 
-_DESKTOPSSTREAMREQUEST = _descriptor.Descriptor(
-  name='DesktopsStreamRequest',
-  full_name='desktops_stream.DesktopsStreamRequest',
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='desktops_stream.Request',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -174,47 +174,47 @@ _DESKTOPSSTREAMREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=265,
-  serialized_end=288,
+  serialized_end=274,
 )
 
 
-_DESKTOPSSTREAMRESPONSE = _descriptor.Descriptor(
-  name='DesktopsStreamResponse',
-  full_name='desktops_stream.DesktopsStreamResponse',
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='desktops_stream.Response',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='desktop_id', full_name='desktops_stream.DesktopsStreamResponse.desktop_id', index=0,
+      name='desktop_id', full_name='desktops_stream.Response.desktop_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='state', full_name='desktops_stream.DesktopsStreamResponse.state', index=1,
+      name='state', full_name='desktops_stream.Response.state', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='detail', full_name='desktops_stream.DesktopsStreamResponse.detail', index=2,
+      name='detail', full_name='desktops_stream.Response.detail', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_actions', full_name='desktops_stream.DesktopsStreamResponse.next_actions', index=3,
+      name='next_actions', full_name='desktops_stream.Response.next_actions', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='viewer', full_name='desktops_stream.DesktopsStreamResponse.viewer', index=4,
+      name='viewer', full_name='desktops_stream.Response.viewer', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -225,7 +225,7 @@ _DESKTOPSSTREAMRESPONSE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _DESKTOPSSTREAMRESPONSE_STATE,
+    _RESPONSE_STATE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -233,16 +233,16 @@ _DESKTOPSSTREAMRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=291,
-  serialized_end=570,
+  serialized_start=277,
+  serialized_end=528,
 )
 
-_DESKTOPSSTREAMRESPONSE.fields_by_name['state'].enum_type = _DESKTOPSSTREAMRESPONSE_STATE
-_DESKTOPSSTREAMRESPONSE.fields_by_name['viewer'].message_type = _VIEWER
-_DESKTOPSSTREAMRESPONSE_STATE.containing_type = _DESKTOPSSTREAMRESPONSE
+_RESPONSE.fields_by_name['state'].enum_type = _RESPONSE_STATE
+_RESPONSE.fields_by_name['viewer'].message_type = _VIEWER
+_RESPONSE_STATE.containing_type = _RESPONSE
 DESCRIPTOR.message_types_by_name['Viewer'] = _VIEWER
-DESCRIPTOR.message_types_by_name['DesktopsStreamRequest'] = _DESKTOPSSTREAMREQUEST
-DESCRIPTOR.message_types_by_name['DesktopsStreamResponse'] = _DESKTOPSSTREAMRESPONSE
+DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Viewer = _reflection.GeneratedProtocolMessageType('Viewer', (_message.Message,), dict(
@@ -252,19 +252,19 @@ Viewer = _reflection.GeneratedProtocolMessageType('Viewer', (_message.Message,),
   ))
 _sym_db.RegisterMessage(Viewer)
 
-DesktopsStreamRequest = _reflection.GeneratedProtocolMessageType('DesktopsStreamRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DESKTOPSSTREAMREQUEST,
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
+  DESCRIPTOR = _REQUEST,
   __module__ = 'engine.grpc.proto.desktops_stream_pb2'
-  # @@protoc_insertion_point(class_scope:desktops_stream.DesktopsStreamRequest)
+  # @@protoc_insertion_point(class_scope:desktops_stream.Request)
   ))
-_sym_db.RegisterMessage(DesktopsStreamRequest)
+_sym_db.RegisterMessage(Request)
 
-DesktopsStreamResponse = _reflection.GeneratedProtocolMessageType('DesktopsStreamResponse', (_message.Message,), dict(
-  DESCRIPTOR = _DESKTOPSSTREAMRESPONSE,
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
+  DESCRIPTOR = _RESPONSE,
   __module__ = 'engine.grpc.proto.desktops_stream_pb2'
-  # @@protoc_insertion_point(class_scope:desktops_stream.DesktopsStreamResponse)
+  # @@protoc_insertion_point(class_scope:desktops_stream.Response)
   ))
-_sym_db.RegisterMessage(DesktopsStreamResponse)
+_sym_db.RegisterMessage(Response)
 
 
 
@@ -274,16 +274,16 @@ _DESKTOPSSTREAM = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=572,
-  serialized_end=684,
+  serialized_start=530,
+  serialized_end=614,
   methods=[
   _descriptor.MethodDescriptor(
     name='Changes',
     full_name='desktops_stream.DesktopsStream.Changes',
     index=0,
     containing_service=None,
-    input_type=_DESKTOPSSTREAMREQUEST,
-    output_type=_DESKTOPSSTREAMRESPONSE,
+    input_type=_REQUEST,
+    output_type=_RESPONSE,
     serialized_options=None,
   ),
 ])

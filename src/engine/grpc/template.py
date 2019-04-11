@@ -1,6 +1,6 @@
 import grpc
-from engine.grpc.proto import templates_pb2
-from engine.grpc.proto import templates_pb2_grpc
+from engine.grpc.proto import template_pb2
+from engine.grpc.proto import template_pb2_grpc
 
 import rethinkdb as r
 from rethinkdb.errors import (
@@ -28,7 +28,7 @@ from engine.grpc.statemachines.desktops_sm import DesktopsSM, StateInvalidError
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
 
-class TemplatesServicer(templates_pb2_grpc.TemplatesServicer):
+class TemplateServicer(template_pb2_grpc.TemplateServicer):
     """
     gRPC server for Templates Service
     """
@@ -37,43 +37,43 @@ class TemplatesServicer(templates_pb2_grpc.TemplatesServicer):
         self.desktops_sm = DesktopsSM()
     
 
-    def TemplateList(self, request, context):
+    def List(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 templates = list(r.table('domains').filter(r.row['kind'].match("template")).pluck('id').run(conn))
                 templates = [t['id'] for t in templates]
-            return templates_pb2.TemplateListResponse(templates=templates)
+            return template_pb2.ListResponse(templates=templates)
         except Exception as e:
             print(e)
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return templates_pb2.TemplateListResponse()  
+            return template_pb2.ListResponse()  
 
-    def TemplatesGet(self, request, context):
+    def Get(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 template = r.table('domains').get(request.template_id).run(conn)
             if len(template) == 0:
-                context.set_details(request.template_id+'  not found in database.')
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                return templates_pb2.TemplateStartResponse()                     
+                context.set_details(request.template_id+'  template not found in database.')
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                return template_pb2.StartResponse()                     
             # ~ desktop['next_actions']=self.domain_actions.for_desktop(request.template_id,desktop['status'])
-            return templates_pb2.TemplateGetResponse(template=template)
+            return template_pb2.GetResponse(template=template)
         except ReqlNonExistenceError:
-            context.set_details(request.template_id+' not found in database.')
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            return templates_pb2.TemplateStartResponse()             
+            context.set_details(request.template_id+' template not found in database.')
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            return template_pb2.StartResponse()             
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return templates_pb2.TemplateStartResponse() 
+            return template_pb2.StartResponse() 
             
-    def TemplateFromDesktop(self, request, context):
+    def CreateFromDesktop(self, request, context):
         return self.TemplateAndBaseFromDesktop('template', request, context)
         
-    def BaseFromDesktop(self, request, context):
+    def CreateBaseFromDesktop(self, request, context):
         return self.TemplateAndBaseFromDesktop('base', request, context)
                 
     def TemplateAndBaseFromDesktop(self, kind, request, context):
@@ -83,32 +83,32 @@ class TemplatesServicer(templates_pb2_grpc.TemplatesServicer):
                 template = r.table('domains').get(request.template_id).pluck('id').run(conn)
             context.set_details(request.template_id+' already exists in system.')
             context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-            return templates_pb2.TemplateFromDesktopResponse()                
+            return template_pb2.CreateFromDesktopResponse()                
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return templates_pb2.TemplateFromDesktopResponse()
+            return template_pb2.CreateFromDesktopResponse()
         try:
             with rdb() as conn:
                 desktop = r.table('domains').get(request.desktop_id).without('history_domain').run(conn)
             if desktop['status'] not in ['Stopped']: 
                 context.set_details(request.desktop_id+' it is not stopped.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return templates_pb2.TemplateFromDesktopResponse()
+                return template_pb2.CreateFromDesktopResponse()
             elif desktop['kind'] != 'desktop':
                 context.set_details(request.desktop_id+' it is not a desktop.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return templates_pb2.TemplateFromDesktopResponse()                
+                return template_pb2.CreateFromDesktopResponse()                
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return templates_pb2.TemplateFromDesktopResponse()         
+            return template_pb2.CreateFromDesktopResponse()         
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return templates_pb2.TemplateFromDesktopResponse()
+            return template_pb2.CreateFromDesktopResponse()
         
         ''' OPTIONAL HARDWARE VALUES | GET FROM DESKTOP '''
         hardware = {}
@@ -143,14 +143,14 @@ class TemplatesServicer(templates_pb2_grpc.TemplatesServicer):
                 c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
                 c.next(MAX_TIMEOUT)
                 next_actions = action[state['new_val']['status'].capitalize()]
-                return templates_pb2.TemplateFromDesktopResponse(state='STOPPED', next_actions=next_actions)
+                return template_pb2.CreateFromDesktopResponse(state='STOPPED', next_actions=next_actions)
         except ReqlTimeoutError:
             context.set_details('Unable to create the domain '+request.template_id)
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return templates_pb2.TemplateFromDesktopResponse()            
+            return template_pb2.CreateFromDesktopResponse()            
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return templates_pb2.TemplateFromDesktopResponse()
+            return template_pb2.CreateFromDesktopResponse()
 
 

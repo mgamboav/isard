@@ -6,7 +6,7 @@ package desktops_stream;
 //import "google/protobuf/any.proto";
  
 service DesktopsStream{
- rpc Changes(DesktopsStreamRequest) returns (stream DesktopsStreamResponse) {}
+ rpc Changes(Request) returns (stream Response) {}
 }
 
 message Viewer{
@@ -21,9 +21,9 @@ message Viewer{
  float client_since=11;
 }
 
-message DesktopsStreamRequest{}
+message Request{}
 
-message DesktopsStreamResponse{
+message Response{
   string desktop_id = 1;
     enum State{
      STOPPED = 0;
