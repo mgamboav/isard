@@ -1,3 +1,6 @@
+import sys,os 
+from engine.services.log import *
+
 import rethinkdb as r
 from rethinkdb.errors import (
     ReqlAuthError,
@@ -37,21 +40,21 @@ class populateDB(object):
     def __init__(self): #,dreg):
         ''' Default install password for admin user is pirineus '''
         self.default_passwd = '$2b$12$Ug4MeDl3UAdq6Y8Lg07ghuN/UEnxPYjTnt4KUajeYyi8RzXkGdaCm'
-        
+
     def database(self):
         try:
             with rdb() as conn:
-                if not r.db_list().contains(self.cfg['RETHINKDB_DB']).run(conn):
-                    log.warning('Database {} not found, creating new one.'.format(self.cfg['RETHINKDB_DB']))
-                    r.db_create(self.cfg['RETHINKDB_DB']).run()
-                    return 1
-                log.info('Database {} found.'.format(self.cfg['RETHINKDB_DB']))
-                return 2
+                if not r.db_list().contains(CFG['RETHINKDB_DB']).run(conn):
+                    log.warning('Database {} not found, creating new one.'.format(CFG['RETHINKDB_DB']))
+                    r.db_create(CFG['RETHINKDB_DB']).run(conn)
+                    return True
+                log.info('Database {} found.'.format(CFG['RETHINKDB_DB']))
+                return True
         except Exception as e:
-            #~ exc_type, exc_obj, exc_tb = sys.exc_info()
-            #~ fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            #~ log.error(exc_type, fname, exc_tb.tb_lineno)
-            log.error('Can not connect to rethinkdb database! Is it running on HOST:'+self.cfg['RETHINKDB_HOST']+' PORT:'+self.cfg['RETHINKDB_PORT']+' DB:'+self.cfg['RETHINKDB_DB']+' ??')
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)
+            log.error('Can not connect to rethinkdb database! Is it running on HOST:'+CFG['RETHINKDB_HOST']+' PORT:'+CFG['RETHINKDB_PORT']+' DB:'+CFG['RETHINKDB_DB']+' ??')
             return False
 
 
@@ -62,11 +65,11 @@ class populateDB(object):
         dbtables=r.table_list().run()
         newtables=['roles','categories','groups','users','vouchers',
                 'hypervisors','hypervisors_pools','interfaces',
-                'graphics','videos','disks','domains','domains_status','domains_status_history',
-                'virt_builder','virt_install','builders','media',
-                'boots','hypervisors_events','hypervisors_status','hypervisors_status_history',
-                'disk_operations','hosts_viewers','places','disposables','eval_results',
-                'scheduler_jobs','backups','config','engine']
+                'graphics','videos','domains','domains_status',
+                'media',
+                'hypervisors_events','hypervisors_status',
+                'disk_operations','hosts_viewers','places','eval_results',
+                'config','engine']
         tables_to_create=list(set(newtables) - set(dbtables))
         d = {k:v for v,k in enumerate(newtables)}
         tables_to_create.sort(key=d.get)

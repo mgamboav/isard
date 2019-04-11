@@ -1,16 +1,18 @@
-from gevent.wsgi import WSGIServer
+# ~ from gevent.wsgi import WSGIServer
 
 import time
 from engine.services.log import logs
 
-from flask import Flask
+# ~ from flask import Flask
 from logging.handlers import RotatingFileHandler
 
 
-from engine.services.lib.functions import check_tables_populated
-check_tables_populated()
+# ~ from engine.grpc.lib.database import populateDB
+# ~ db = populateDB()
+# ~ print(db.database())
 
-from engine.services import db
+
+# ~ from engine.services import db
 from engine.models.manager_hypervisors import ManagerHypervisors
 
 from engine.grpc.grpc_server import GrpcServer

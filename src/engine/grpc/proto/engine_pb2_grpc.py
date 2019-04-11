@@ -16,15 +16,20 @@ class EngineStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.EngineIsAlive = channel.unary_unary(
-        '/engine.Engine/EngineIsAlive',
-        request_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineIsAliveRequest.SerializeToString,
-        response_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineIsAliveResponse.FromString,
+    self.IsAlive = channel.unary_unary(
+        '/engine.Engine/IsAlive',
+        request_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.IsAliveRequest.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.IsAliveResponse.FromString,
         )
-    self.EngineStatus = channel.unary_unary(
-        '/engine.Engine/EngineStatus',
-        request_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineStatusRequest.SerializeToString,
-        response_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineStatusResponse.FromString,
+    self.Status = channel.unary_unary(
+        '/engine.Engine/Status',
+        request_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.StatusRequest.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.StatusResponse.FromString,
+        )
+    self.Config = channel.unary_unary(
+        '/engine.Engine/Config',
+        request_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.ConfigRequest.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.ConfigResponse.FromString,
         )
 
 
@@ -34,14 +39,21 @@ class EngineServicer(object):
 
   """
 
-  def EngineIsAlive(self, request, context):
+  def IsAlive(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def EngineStatus(self, request, context):
+  def Status(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Config(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -51,15 +63,20 @@ class EngineServicer(object):
 
 def add_EngineServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'EngineIsAlive': grpc.unary_unary_rpc_method_handler(
-          servicer.EngineIsAlive,
-          request_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineIsAliveRequest.FromString,
-          response_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineIsAliveResponse.SerializeToString,
+      'IsAlive': grpc.unary_unary_rpc_method_handler(
+          servicer.IsAlive,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.IsAliveRequest.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.IsAliveResponse.SerializeToString,
       ),
-      'EngineStatus': grpc.unary_unary_rpc_method_handler(
-          servicer.EngineStatus,
-          request_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineStatusRequest.FromString,
-          response_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.EngineStatusResponse.SerializeToString,
+      'Status': grpc.unary_unary_rpc_method_handler(
+          servicer.Status,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.StatusRequest.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.StatusResponse.SerializeToString,
+      ),
+      'Config': grpc.unary_unary_rpc_method_handler(
+          servicer.Config,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_engine__pb2.ConfigRequest.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_engine__pb2.ConfigResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
