@@ -41,7 +41,7 @@ class EngineClient(object):
  
     def __init__(self):
         self.host = 'localhost'
-        self.server_port = 46001
+        self.server_port = 1313
  
         # instantiate a communication channel
         self.channel = grpc.insecure_channel(

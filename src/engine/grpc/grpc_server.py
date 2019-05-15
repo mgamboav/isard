@@ -24,7 +24,7 @@ from engine.grpc.engine import EngineServicer
 class GrpcServer(object):
     def __init__(self, app):
         self.app = app
-        self.server_port = 46001
+        self.server_port = 1313
         self.engine_grpc_server = None
         
     def start_server(self):
