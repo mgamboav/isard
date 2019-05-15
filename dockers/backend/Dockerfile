@@ -10,7 +10,8 @@ RUN GO111MODULE=on CGO_ENABLED=0 go build -a -installsuffix cgo -ldflags '-s -w'
 FROM alpine:3.8 as production-stage
 
 COPY --from=build-stage /app/backend /backend
+RUN mkdir /var/log/isard
 
-VOLUME [ "/etc/isard" ]
+VOLUME [ "/etc/isard", "/var/log/isard" ]
 
 CMD [ "/backend" ]
