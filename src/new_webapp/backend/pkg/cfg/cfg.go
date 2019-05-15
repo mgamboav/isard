@@ -67,7 +67,7 @@ func SetDefaults() {
 
 	Config.SetDefault("log", map[string]interface{}{
 		"level": "warn",
-		"file":  "backend.log",
+		"file":  "/var/log/isard/backend.log",
 	})
 
 	Config.SetDefault("engine", map[string]interface{}{
