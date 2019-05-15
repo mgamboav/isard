@@ -48,8 +48,10 @@ describe('login', () => {
     // TODO: Check call parameters
     expect(state.isard.loginLocal).toHaveBeenCalled()
     expect(commit).toHaveBeenCalledWith('updateTkn', 'token')
+    expect(commit).toHaveBeenCalledWith('updateUsr', 'egoldman')
     expect(commit).toHaveBeenCalledWith('loginErr', '')
     expect(getCookie('tkn')).toBe('token')
+    expect(getCookie('usr')).toBe('egoldman')
   })
 
   it("updates the login error state if there's an error during the authentication", () => {
@@ -115,7 +117,7 @@ describe('getDesktops', () => {
         }, {})
       })
     },
-    user: 'nefix',
+    usr: 'nefix',
     desktops: [],
     getDesktopsErr: ''
   }

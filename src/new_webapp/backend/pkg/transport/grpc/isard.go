@@ -53,9 +53,8 @@ func CheckAuth(ctx context.Context) (context.Context, error) {
 
 // canAccess checks if an user can access to a specific resource
 func canAccess(ctx context.Context, id string) error {
-	tkn := ctx.Value(TokenContextKey).(auth.Token)
-
-	if !tkn.CanAccess(id) {
+	tkn, ok := ctx.Value(TokenContextKey).(auth.Token)
+	if !ok || !tkn.CanAccess(id) {
 		return status.Error(codes.PermissionDenied, "you can't access this resource")
 	}
 

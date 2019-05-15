@@ -20,6 +20,7 @@ package grpc
 
 import (
 	"context"
+	"strings"
 
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/engine"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/models"
@@ -30,13 +31,13 @@ import (
 )
 
 // parseState returns the Desktop state from a string
-func parseState(strState string) isard.Desktop_State {
-	state := isard.Desktop_State(isard.Desktop_State_value[strState])
+func parseState(strState string) isard.DesktopState {
+	state := isard.DesktopState(isard.DesktopState_value[strings.ToUpper(strState)])
 
 	// if the state isn't found, the map is going to return 0, which is the stopped status
 	if state == 0 {
-		if strState != isard.Desktop_State_name[0] {
-			state = isard.Desktop_UNKNOWN
+		if strState != isard.DesktopState_name[0] {
+			state = isard.DesktopState_UNKNOWN
 		}
 	}
 
@@ -98,7 +99,7 @@ func (i *IsardServer) DesktopStart(ctx context.Context, req *isard.DesktopStartR
 	}
 
 	return &isard.DesktopStartResponse{
-		State:       d.State,
+		State:       parseState(d.State),
 		NextActions: d.NextActions,
 	}, nil
 }

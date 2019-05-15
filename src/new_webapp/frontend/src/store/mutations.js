@@ -2,7 +2,7 @@ export default {
   updateTkn (state, tkn) {
     state.tkn = tkn
   },
-  updateUser (state, usr) {
+  updateUsr (state, usr) {
     state.usr = usr
   },
   loginErr (state, err) {

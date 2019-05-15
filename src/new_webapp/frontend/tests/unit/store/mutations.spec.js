@@ -10,12 +10,12 @@ describe('updateTkn', () => {
   })
 })
 
-describe('updateUser', () => {
+describe('updateUsr', () => {
   it('updates the user correctly', () => {
     const state = {
       usr: ''
     }
-    mutations.updateUser(state, 'nefix')
+    mutations.updateUsr(state, 'nefix')
     expect(state.usr).toBe('nefix')
   })
 })

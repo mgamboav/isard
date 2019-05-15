@@ -31,16 +31,16 @@ func TestParseState(t *testing.T) {
 
 	t.Run("should return the correct state", func(t *testing.T) {
 		state := parseState("STARTED")
-		assert.Equal(isard.Desktop_STARTED, state)
+		assert.Equal(isard.DesktopState_STARTED, state)
 	})
 
 	t.Run("should return the correct state if the state is STOPPED (0)", func(t *testing.T) {
 		state := parseState("STOPPED")
-		assert.Equal(isard.Desktop_STOPPED, state)
+		assert.Equal(isard.DesktopState_STOPPED, state)
 	})
 
 	t.Run("should return unknown if the state is not vaild", func(t *testing.T) {
 		state := parseState("invalid state")
-		assert.Equal(isard.Desktop_UNKNOWN, state)
+		assert.Equal(isard.DesktopState_UNKNOWN, state)
 	})
 }

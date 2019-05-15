@@ -25,6 +25,7 @@ import (
 
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/cfg"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/db"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/engine"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/log"
 	isardGRPC "github.com/isard-vdi/isard/src/new_webapp/backend/pkg/transport/grpc"
 	isard "github.com/isard-vdi/isard/src/new_webapp/backend/proto"
@@ -40,7 +41,9 @@ import (
 func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	// don't check for the token if it's a login method
 	if info.FullMethod != "/isard.Isard/LoginLocal" {
-		if err := isardGRPC.CheckAuth(ctx); err != nil {
+		var err error
+		ctx, err = isardGRPC.CheckAuth(ctx)
+		if err != nil {
 			return nil, err
 		}
 	}
@@ -50,7 +53,8 @@ func unaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServ
 
 // streamInterceptor intercepts the gRPC Stream calls and does actions with them before continuing (or returning an error)
 func streamInterceptor(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-	if err := isardGRPC.CheckAuth(stream.Context()); err != nil {
+	_, err := isardGRPC.CheckAuth(stream.Context())
+	if err != nil {
 		return err
 	}
 

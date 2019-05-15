@@ -16,6 +16,7 @@ var protoc$gen$swagger_options_annotations_pb = require('@/proto/third_party/pro
 goog.exportSymbol('proto.isard.Desktop', null, global);
 goog.exportSymbol('proto.isard.DesktopStartRequest', null, global);
 goog.exportSymbol('proto.isard.DesktopStartResponse', null, global);
+goog.exportSymbol('proto.isard.DesktopState', null, global);
 goog.exportSymbol('proto.isard.DomainOptions', null, global);
 goog.exportSymbol('proto.isard.DomainOptions.Viewers', null, global);
 goog.exportSymbol('proto.isard.DomainOptions.Viewers.Spice', null, global);
@@ -839,7 +840,7 @@ proto.isard.Desktop.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, ""),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     description: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    status: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    state: jspb.Message.getFieldWithDefault(msg, 6, 0),
     detail: jspb.Message.getFieldWithDefault(msg, 7, ""),
     user: jspb.Message.getFieldWithDefault(msg, 11, ""),
     os: jspb.Message.getFieldWithDefault(msg, 14, ""),
@@ -893,8 +894,8 @@ proto.isard.Desktop.deserializeBinaryFromReader = function(msg, reader) {
       msg.setDescription(value);
       break;
     case 6:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setStatus(value);
+      var value = /** @type {!proto.isard.DesktopState} */ (reader.readEnum());
+      msg.setState(value);
       break;
     case 7:
       var value = /** @type {string} */ (reader.readString());
@@ -963,9 +964,9 @@ proto.isard.Desktop.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getStatus();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getState();
+  if (f !== 0.0) {
+    writer.writeEnum(
       6,
       f
     );
@@ -1048,17 +1049,17 @@ proto.isard.Desktop.prototype.setDescription = function(value) {
 
 
 /**
- * optional string status = 6;
- * @return {string}
+ * optional DesktopState state = 6;
+ * @return {!proto.isard.DesktopState}
  */
-proto.isard.Desktop.prototype.getStatus = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+proto.isard.Desktop.prototype.getState = function() {
+  return /** @type {!proto.isard.DesktopState} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
-/** @param {string} value */
-proto.isard.Desktop.prototype.setStatus = function(value) {
-  jspb.Message.setProto3StringField(this, 6, value);
+/** @param {!proto.isard.DesktopState} value */
+proto.isard.Desktop.prototype.setState = function(value) {
+  jspb.Message.setProto3EnumField(this, 6, value);
 };
 
 
@@ -2020,12 +2021,19 @@ proto.isard.DesktopStartRequest.prototype.setId = function(value) {
  * @constructor
  */
 proto.isard.DesktopStartResponse = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.isard.DesktopStartResponse.repeatedFields_, null);
 };
 goog.inherits(proto.isard.DesktopStartResponse, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   proto.isard.DesktopStartResponse.displayName = 'proto.isard.DesktopStartResponse';
 }
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.isard.DesktopStartResponse.repeatedFields_ = [2];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2055,7 +2063,8 @@ proto.isard.DesktopStartResponse.prototype.toObject = function(opt_includeInstan
  */
 proto.isard.DesktopStartResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    state: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    nextActionsList: jspb.Message.getRepeatedField(msg, 2)
   };
 
   if (includeInstance) {
@@ -2092,6 +2101,14 @@ proto.isard.DesktopStartResponse.deserializeBinaryFromReader = function(msg, rea
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {!proto.isard.DesktopState} */ (reader.readEnum());
+      msg.setState(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addNextActions(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2121,7 +2138,77 @@ proto.isard.DesktopStartResponse.prototype.serializeBinary = function() {
  */
 proto.isard.DesktopStartResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getState();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+  f = message.getNextActionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
 };
 
+
+/**
+ * optional DesktopState state = 1;
+ * @return {!proto.isard.DesktopState}
+ */
+proto.isard.DesktopStartResponse.prototype.getState = function() {
+  return /** @type {!proto.isard.DesktopState} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {!proto.isard.DesktopState} value */
+proto.isard.DesktopStartResponse.prototype.setState = function(value) {
+  jspb.Message.setProto3EnumField(this, 1, value);
+};
+
+
+/**
+ * repeated string next_actions = 2;
+ * @return {!Array<string>}
+ */
+proto.isard.DesktopStartResponse.prototype.getNextActionsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/** @param {!Array<string>} value */
+proto.isard.DesktopStartResponse.prototype.setNextActionsList = function(value) {
+  jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {!string} value
+ * @param {number=} opt_index
+ */
+proto.isard.DesktopStartResponse.prototype.addNextActions = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+proto.isard.DesktopStartResponse.prototype.clearNextActionsList = function() {
+  this.setNextActionsList([]);
+};
+
+
+/**
+ * @enum {number}
+ */
+proto.isard.DesktopState = {
+  STOPPED: 0,
+  STARTED: 1,
+  PAUSED: 2,
+  DELETED: 3,
+  FAILED: 4,
+  UNKNOWN: 5
+};
 
 goog.object.extend(exports, proto.isard);

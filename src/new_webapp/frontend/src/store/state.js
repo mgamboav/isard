@@ -6,7 +6,7 @@ export default {
   api: 'v1.0',
   isard: new proto.IsardClient('http://localhost:1024', null, null),
   tkn: getCookie('tkn'),
-  usr: '',
+  usr: getCookie('usr'),
   loginErr: '',
   desktops: [],
   getDesktopsErr: ''

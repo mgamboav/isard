@@ -23,150 +23,150 @@ import "google/api/annotations.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 
 option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
-  info: {
-    title: "IsardVDI API";
-    version: "1.0";
-    contact: {
-      name: "IsardVDI";
-      url: "https://github.com/isard-vdi/isard";
-      email: "info@isardvdi.com";
+    info: {
+        title: "IsardVDI API";
+        version: "1.0";
+        contact: {
+            name: "IsardVDI";
+            url: "https://github.com/isard-vdi/isard";
+            email: "info@isardvdi.com";
+        };
+        license: {
+            name: "AGPL v3.0";
+            url: "https://github.com/isard-vdi/isard/blob/master/LICENSE";
+        };
     };
-    license: {
-      name: "AGPL v3.0";
-      url: "https://github.com/isard-vdi/isard/blob/master/LICENSE";
-    };
-  };
-  schemes: HTTPS;
-  consumes: "application/json";
-  produces: "application/json";
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
 };
 
 // Service to manage Isard
 service Isard {
-  // LoginLocal logs in the user using the local database and returns the token
-  rpc LoginLocal (LoginLocalRequest) returns (LoginLocalResponse) {
-    option (google.api.http) = {
-      post: "/v1/login/local"
-      body: "*"
-    };
-  }
+    // LoginLocal logs in the user using the local database and returns the token
+    rpc LoginLocal (LoginLocalRequest) returns (LoginLocalResponse) {
+        option (google.api.http) = {
+            post: "/v1/login/local"
+            body: "*"
+        };
+    }
 
-  // UserDesktopsGet returns a list with all the desktops of an user
-  rpc UserDesktopsGet (UserDesktopsGetRequest) returns (UserDesktopsGetResponse) {
-    option (google.api.http) = {
-      get: "/v1/user/{id}/desktops"
-    };
-  }
+    // UserDesktopsGet returns a list with all the desktops of an user
+    rpc UserDesktopsGet (UserDesktopsGetRequest) returns (UserDesktopsGetResponse) {
+        option (google.api.http) = {
+            get: "/v1/user/{id}/desktops"
+        };
+    }
 
-  // DesktopStart starts a desktop by ID
-  rpc DesktopStart (DesktopStartRequest) returns (DesktopStartResponse) {
-    option (google.api.http) = {
-      post: "/v1/desktop/{id}/start"
-      body: "*"
-    };
-  }
+    // DesktopStart starts a desktop by ID
+    rpc DesktopStart (DesktopStartRequest) returns (DesktopStartResponse) {
+        option (google.api.http) = {
+            post: "/v1/desktop/{id}/start"
+            body: "*"
+        };
+    }
 }
 
 // Permissions are the permissions of a resource
 message Permissions {
-  // public specifies if everyone has access the resource. If it's set to true, it's going to ignore the other fields
-  bool public = 1;
+    // public specifies if everyone has access the resource. If it's set to true, it's going to ignore the other fields
+    bool public = 1;
 
-  // roles are the roles that have access to the resource
-  repeated string roles = 2;
+    // roles are the roles that have access to the resource
+    repeated string roles = 2;
 
-  // categories are the categories that have access to the resource
-  repeated string categories = 3;
+    // categories are the categories that have access to the resource
+    repeated string categories = 3;
 
-  // users are the users that have access to the resource
-  repeated string users = 4;
+    // users are the users that have access to the resource
+    repeated string users = 4;
 }
 
 // DomainOptions are the different options that a domain can hae
 message DomainOptions {
-  // Viewers are the options related with the viewers
-  message Viewers {
-    // Spice are the options related with the Spice viewer
-    message Spice {
-      // fullscreen sets if the desktop is going to be opened in fullscreen
-      bool fullscreen = 1;
+    // Viewers are the options related with the viewers
+    message Viewers {
+        // Spice are the options related with the Spice viewer
+        message Spice {
+            // fullscreen sets if the desktop is going to be opened in fullscreen
+            bool fullscreen = 1;
+        }
+
+        Spice spice = 1;
     }
 
-    Spice spice = 1;
-  }
+    Viewers viewers = 1;
 
-  Viewers viewers = 1;
-
-  // server sets if the desktop is going to be stopped by the automatic jobs
-  bool server = 2;
+    // server sets if the desktop is going to be stopped by the automatic jobs
+    bool server = 2;
 }
 
 // DesktopState are all the different states that a desktop can be on
 enum DesktopState {
-  STOPPED = 0;
-  STARTED = 1;
-  PAUSED = 2;
-  DELETED = 3;
-  FAILED = 4;
-  UNKNOWN = 5;
+    STOPPED = 0;
+    STARTED = 1;
+    PAUSED = 2;
+    DELETED = 3;
+    FAILED = 4;
+    UNKNOWN = 5;
 }
 
 message Desktop {
-  // id is the unique identifier of the domain. It's formed by "_{username}_{desktopName}"
-  string id = 1;
+    // id is the unique identifier of the domain. It's formed by "_{username}_{desktopName}"
+    string id = 1;
 
-  // name is the name of the desktop
-  string name = 2;
+    // name is the name of the desktop
+    string name = 2;
 
-  // description is the user description of the desktop
-  string description = 3;
+    // description is the user description of the desktop
+    string description = 3;
 
-  // state is the current state of the desktop
-  DesktopState state = 6;
+    // state is the current state of the desktop
+    DesktopState state = 6;
 
-  // detail shows messages in case there's an error doing an operation with the desktop
-  string detail = 7;
+    // detail shows messages in case there's an error doing an operation with the desktop
+    string detail = 7;
 
-  // user is the user that owns the desktop
-  string user = 11;
+    // user is the user that owns the desktop
+    string user = 11;
 
-  // os is the Operative System of the desktop
-  string os = 14;
+    // os is the Operative System of the desktop
+    string os = 14;
 
-  // options are the options of the desktop
-  DomainOptions options = 18;
+    // options are the options of the desktop
+    DomainOptions options = 18;
 }
 
 message LoginLocalRequest {
-  string api = 1;
+    string api = 1;
 
-  string usr = 2;
-  string pwd = 3;
+    string usr = 2;
+    string pwd = 3;
 }
 
 message LoginLocalResponse {
-  string tkn = 1;
+    string tkn = 1;
 }
 
 message UserDesktopsGetRequest {
-  string api = 1;
+    string api = 1;
 
-  string id = 2;
+    string id = 2;
 }
 
 message UserDesktopsGetResponse {
-  string api = 1;
+    string api = 1;
 
-  repeated Desktop desktops = 2;
+    repeated Desktop desktops = 2;
 }
 
 message DesktopStartRequest {
-  string api = 1;
+    string api = 1;
 
-  string id = 2;
+    string id = 2;
 }
 
 message DesktopStartResponse {
-  DesktopState state = 1;
-  repeated string next_actions = 2;
+    DesktopState state = 1;
+    repeated string next_actions = 2;
 }

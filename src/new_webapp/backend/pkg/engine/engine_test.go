@@ -21,24 +21,31 @@ package engine_test
 import (
 	"testing"
 
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/cfg"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/engine"
+	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/utils/tests"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestInit(t *testing.T) {
 	assert := assert.New(t)
 
-	port, err := tests.GetFreePort()
-	assert.Nil(err)
-
 	t.Run("should initialize the client if everything works as expected", func(t *testing.T) {
+		port, err := tests.GetFreePort()
+		assert.Nil(err)
+
+		cfg.Config = viper.New()
+		cfg.SetDefaults()
+		cfg.Config.Set("engine.port", port)
+
 		engine.Init()
 
 		assert.NotNil(engine.Cli.Desktop)
 	})
 
 	t.Run("should exit if there's an error initializing the engine client", func(t *testing.T) {
-
+		tests.AssertExits(t, engine.Init)
 	})
 }

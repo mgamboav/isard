@@ -78,6 +78,12 @@ func TestCanAccess(t *testing.T) {
 		assert.Nil(canAccess(ctx, "nefix"))
 	})
 
+	t.Run("should return an error if the user is unauthenticated", func(t *testing.T) {
+		ctx := context.Background()
+
+		assert.Equal(canAccess(ctx, "notnefix"), status.Error(codes.PermissionDenied, "you can't access this resource"))
+	})
+
 	t.Run("should return an error if the user can't access the resource", func(t *testing.T) {
 		ctx := context.Background()
 		md := metadata.New(map[string]string{

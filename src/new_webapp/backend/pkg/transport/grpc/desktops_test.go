@@ -29,7 +29,6 @@ import (
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/db"
 	"github.com/isard-vdi/isard/src/new_webapp/backend/pkg/transport/grpc"
 	isard "github.com/isard-vdi/isard/src/new_webapp/backend/proto"
-	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
@@ -37,6 +36,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
 
 func TestUserDesktopsGet(t *testing.T) {
@@ -71,7 +71,6 @@ func TestUserDesktopsGet(t *testing.T) {
 				"id":          "_nefix_Debian",
 				"name":        "Debian",
 				"description": "This is a Debian desktop",
-				"icon":        "debian",
 				"status":      "STOPPED",
 				"detail":      "everything works",
 				"user":        "nefix",
@@ -88,7 +87,6 @@ func TestUserDesktopsGet(t *testing.T) {
 				"id":          "_nefix_NixOS",
 				"name":        "NixOS",
 				"description": "This is a NixOS desktop",
-				"icon":        "debian",
 				"status":      "FAILED",
 				"detail":      "no space left in the disk",
 				"user":        "nefix",
@@ -116,7 +114,7 @@ func TestUserDesktopsGet(t *testing.T) {
 					Id:          "_nefix_Debian",
 					Name:        "Debian",
 					Description: "This is a Debian desktop",
-					State:       isard.Desktop_STOPPED,
+					State:       isard.DesktopState_STOPPED,
 					Detail:      "everything works",
 					User:        "nefix",
 					Os:          "linux",
@@ -132,7 +130,7 @@ func TestUserDesktopsGet(t *testing.T) {
 					Id:          "_nefix_NixOS",
 					Name:        "NixOS",
 					Description: "This is a NixOS desktop",
-					State:       isard.Desktop_FAILED,
+					State:       isard.DesktopState_FAILED,
 					Detail:      "no space left in the disk",
 					User:        "nefix",
 					Os:          "linux",
@@ -214,4 +212,143 @@ func TestUserDesktopsGet(t *testing.T) {
 }
 
 func TestStartDesktop(t *testing.T) {
+	assert := assert.New(t)
+	cfg.Config = viper.New()
+	cfg.Config.Set("tokens.secret", "Ⓐ")
+
+	tkn, err := jwt.NewWithClaims(jwt.SigningMethodHS512, &auth.TokenClaims{
+		Usr: "nefix",
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(
+				5 * time.Minute,
+			).Unix(),
+		},
+	}).SignedString([]byte(cfg.Config.GetString("tokens.secret")))
+	assert.Nil(err)
+
+	t.Run("should start the desktop correctly", func(t *testing.T) {
+	})
+
+	t.Run("should return an error if the desktop isn't found", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{}, nil)
+		db.Session = mock
+
+		ctx := context.Background()
+		req := &isard.DesktopStartRequest{
+			Id: "_nefix_NixOS",
+		}
+
+		expectedRsp := &isard.DesktopStartResponse{}
+		expectedErr := status.Errorf(codes.NotFound, "error starting _nefix_NixOS: desktop not found")
+
+		i := grpc.IsardServer{}
+		rsp, err := i.DesktopStart(ctx, req)
+
+		assert.Equal(expectedRsp, rsp)
+		assert.Equal(expectedErr, err)
+	})
+
+	t.Run("should return an error if there's an error getting the desktop from the DB", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{}, errors.New("testing error"))
+		db.Session = mock
+
+		ctx := context.Background()
+		req := &isard.DesktopStartRequest{
+			Id: "_nefix_NixOS",
+		}
+
+		expectedRsp := &isard.DesktopStartResponse{}
+		expectedErr := status.Errorf(codes.Unknown, "error starting _nefix_NixOS: error querying the DB: testing error")
+
+		i := grpc.IsardServer{}
+		rsp, err := i.DesktopStart(ctx, req)
+
+		assert.Equal(expectedRsp, rsp)
+		assert.Equal(expectedErr, err)
+	})
+
+	t.Run("should return an error if the user can't start the desktop (permission denied)", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{
+			map[string]interface{}{
+				"id":          "_nefix_NixOS",
+				"name":        "NixOS",
+				"description": "This is a NixOS desktop",
+				"status":      "FAILED",
+				"detail":      "no space left in the disk",
+				"user":        "notnefix",
+				"os":          "linux",
+			},
+		}, nil)
+		mock.On(r.Table("users").Get("nefix")).Return([]interface{}{
+			map[string]interface{}{
+				"id":       "nefix",
+				"kind":     "local",
+				"role":     "user",
+				"password": "$2y$12$8hrQ1UNC2/Y371/uodP/7.L7UAb5B9HjXrndrP5qUHDSuy7P29qVi",
+			},
+		}, nil)
+		db.Session = mock
+
+		ctx := context.Background()
+		md := metadata.New(map[string]string{
+			"tkn": tkn,
+		})
+		ctx = metadata.NewIncomingContext(ctx, md)
+
+		req := &isard.DesktopStartRequest{
+			Id: "_nefix_NixOS",
+		}
+
+		expectedRsp := &isard.DesktopStartResponse{}
+		expectedErr := status.Errorf(codes.PermissionDenied, "you can't access this resource")
+
+		i := grpc.IsardServer{}
+		rsp, err := i.DesktopStart(ctx, req)
+
+		assert.Equal(expectedRsp, rsp)
+		assert.Equal(expectedErr, err)
+	})
+
+	t.Run("should return an error if there's an error starting the desktop", func(t *testing.T) {
+		mock := r.NewMock()
+		mock.On(r.Table("domains").Get("_nefix_NixOS")).Return([]interface{}{
+			map[string]interface{}{
+				"id":          "_nefix_NixOS",
+				"name":        "NixOS",
+				"description": "This is a NixOS desktop",
+				"status":      "FAILED",
+				"detail":      "no space left in the disk",
+				"user":        "nefix",
+				"os":          "linux",
+			},
+		}, nil)
+		mock.On(r.Table("users").Get("nefix")).Return([]interface{}{
+			map[string]interface{}{
+				"id":       "nefix",
+				"kind":     "local",
+				"role":     "user",
+				"password": "$2y$12$8hrQ1UNC2/Y371/uodP/7.L7UAb5B9HjXrndrP5qUHDSuy7P29qVi",
+			},
+		}, nil)
+		db.Session = mock
+
+		ctx := context.Background()
+		ctx = context.WithValue(ctx, grpc.TokenContextKey, tkn)
+
+		req := &isard.DesktopStartRequest{
+			Id: "_nefix_NixOS",
+		}
+
+		expectedRsp := &isard.DesktopStartResponse{}
+		expectedErr := status.Errorf(codes.Unknown, "error starting _nefix_NixOS: testing error")
+
+		i := grpc.IsardServer{}
+		rsp, err := i.DesktopStart(ctx, req)
+
+		assert.Equal(expectedRsp, rsp)
+		assert.Equal(expectedErr, err)
+	})
 }

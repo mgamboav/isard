@@ -23,3 +23,25 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@mixin font($font-family, $font-file) {
+  @font-face {
+    font-family: $font-family;
+    src: url($font-file);
+  }
+}
+
+@include font('Roboto', './assets/fonts/Roboto-Regular.ttf');
+@include font('Roboto Bold', './assets/fonts/Roboto-Bold.ttf');
+
+h1, h2, h3, h4, h5, h6 {
+  // Visual
+  font-family: 'Roboto Bold', sans-serif;
+}
+
+p {
+  // Visual
+  font-family: 'Roboto', sans-serif;
+}
+</style>

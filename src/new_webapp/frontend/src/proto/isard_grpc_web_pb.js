@@ -187,5 +187,61 @@ proto.isard.IsardPromiseClient.prototype.userDesktopsGet =
   });
 };
 
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.isard.DesktopStartRequest,
+ *   !proto.isard.DesktopStartResponse>}
+ */
+const methodInfo_Isard_DesktopStart = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.isard.DesktopStartResponse,
+  /** @param {!proto.isard.DesktopStartRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.isard.DesktopStartResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.isard.DesktopStartRequest} request The
+ *     request proto
+ * @param {!Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.isard.DesktopStartResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.isard.DesktopStartResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.isard.IsardClient.prototype.desktopStart =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/isard.Isard/DesktopStart',
+      request,
+      metadata,
+      methodInfo_Isard_DesktopStart,
+      callback);
+};
+
+
+/**
+ * @param {!proto.isard.DesktopStartRequest} request The
+ *     request proto
+ * @param {!Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.isard.DesktopStartResponse>}
+ *     The XHR Node Readable Stream
+ */
+proto.isard.IsardPromiseClient.prototype.desktopStart =
+    function(request, metadata) {
+  return new Promise((resolve, reject) => {
+    this.delegateClient_.desktopStart(
+      request, metadata, (error, response) => {
+        error ? reject(error) : resolve(response);
+      });
+  });
+};
+
 export default proto.isard
 
