@@ -60,18 +60,18 @@ func SetDefaults() {
 	})
 
 	Config.SetDefault("db", map[string]interface{}{
-		"host": "localhost",
+		"host": "isard-database",
 		"port": 28015,
 		"name": "isard",
 	})
 
 	Config.SetDefault("log", map[string]interface{}{
 		"level": "warn",
-		"file":  "backend.log",
+		"file":  "/var/log/isard/backend.log",
 	})
 
 	Config.SetDefault("engine", map[string]interface{}{
-		"host": "localhost",
+		"host": "isard-app",
 		"port": 1313,
 	})
 }
