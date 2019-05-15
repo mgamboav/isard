@@ -63,7 +63,16 @@ services:
     depends_on:
       - isard-database
       - isard-hypervisor
-
+      
+  isard-backend:
+    container_name: isard-backend
+    networks:
+      - isard_network
+    image: isard/backend:1
+    restart: unless-stopped
+    depends_on:
+      - isard-app
+      
 volumes:
   sshkeys:
 

@@ -25,9 +25,9 @@ LOG_LEVEL_NUM = wlog.getLevelName(LOG_LEVEL)
 wlog.basicConfig(format=LOG_FORMAT,datefmt=LOG_DATE_FORMAT,level=LOG_LEVEL_NUM)
 
 
-import grpc
-from engine.grpc.proto import engineinfo_pb2
-from engine.grpc.proto import engineinfo_pb2_grpc
+#import grpc
+#from engine.grpc.proto import engineinfo_pb2
+#from engine.grpc.proto import engineinfo_pb2_grpc
 
 '''
 PASSWORDS MANAGER
