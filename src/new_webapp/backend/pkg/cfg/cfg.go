@@ -60,7 +60,7 @@ func SetDefaults() {
 	})
 
 	Config.SetDefault("db", map[string]interface{}{
-		"host": "localhost",
+		"host": "isard-database",
 		"port": 28015,
 		"name": "isard",
 	})
@@ -71,7 +71,7 @@ func SetDefaults() {
 	})
 
 	Config.SetDefault("engine", map[string]interface{}{
-		"host": "localhost",
+		"host": "isard-app",
 		"port": 1313,
 	})
 }

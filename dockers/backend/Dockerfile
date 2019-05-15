@@ -11,7 +11,6 @@ FROM alpine:3.8 as production-stage
 
 COPY --from=build-stage /app/backend /backend
 
-VOLUME /etc/isard
-VOLUME /backend.log
+VOLUME [ "/etc/isard" ]
 
 CMD [ "/backend" ]
