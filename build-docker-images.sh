@@ -37,6 +37,7 @@ images=(
 	nginx
 	hypervisor
 	app
+	backend
 )
 
 # Build all the images and tag them correctly

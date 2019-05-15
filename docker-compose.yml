@@ -72,7 +72,21 @@ services:
     restart: unless-stopped
     depends_on:
       - isard-app
-      
+      - isard-grpc-proxy
+    volumes:
+      - "./config:/etc/isard"
+      - "./logs:/var/log/isard"
+
+  isard-grpc-proxy:
+    container_name: isard-grpc-proxy
+    networks:
+      - isard_network
+    image: jfyne/docker-grpcwebproxy
+    restart: unless-stopped
+    depends_on:
+      - isard-nginx
+    command: /grpcwebproxy --backend_addr=isard-backend:1312 --run_tls_server=false
+
 volumes:
   sshkeys:
 
