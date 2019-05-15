@@ -72,6 +72,6 @@ func SetDefaults() {
 
 	Config.SetDefault("engine", map[string]interface{}{
 		"host": "localhost",
-		"port": 54100,
+		"port": 1313,
 	})
 }
