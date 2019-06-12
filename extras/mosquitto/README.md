@@ -26,7 +26,7 @@ You should configure the mqtt plug with:
 - HOSTNAME: The same as the hypervisor it will be monitoring that you set up in Hypervisors menu
 - MQTT Broquer: Accessible IP/DNS of this container (usually the same as IsardVDI)
 - MQTT Client ID: The same as the hypervisor it will be monitoring that you set up in Hypervisors menu
-- MQTT Root Topic: /hypers/{hostname}
+- MQTT Root Topic: /isard/hypers/{hostname}
 
 You should then see the power consumption in your grafana hypervisors dashboard
 
