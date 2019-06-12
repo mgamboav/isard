@@ -1,4 +1,4 @@
-# Mosquitto - Power management IoT
+# IsardVDI - Mosquitto - Power management IoT
 
 This is an optional (but cool) extra that will bring up a mosquitto container plugged to your IsardVDI grafana container and app
 
