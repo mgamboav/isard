@@ -117,6 +117,7 @@ from .views import MediaViews
 from .views import AllowedsViews
 from .views import ProfileViews
 from .views import AboutViews
+from .views import PxeViews
 
 from .admin.views import AdminViews
 from .admin.views import AdminUsersViews
