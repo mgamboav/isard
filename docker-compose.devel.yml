@@ -1,0 +1,65 @@
+version: "3.5"
+services:
+  isard-database:
+    container_name: isard-database-devel
+    ports:
+      - "8081:8080"
+      - "28015:28015"
+
+  isard-nginx:
+    container_name: isard-nginx-devel
+    build:
+      target: development
+
+  isard-hypervisor:
+    container_name: isard-hypervisor-devel
+    ports:
+      - "2022:22"
+
+  isard-app:
+    container_name: isard-app-devel
+    volumes:
+      - "./src:/isard"
+    ports:
+      - "5000:5000"
+      - "5555:5555"
+    build:
+      target: development
+
+  isard-backend:
+    image: hello-world
+    container_name: isard-backend-devel
+    volumes:
+      - "./src/new_webapp/backend:/app"
+      - "~/.cache/isard-devel/backend:/go/pkg/mod"
+    ports:
+      - "1312:1312"
+    build:
+      target: development
+
+  isard-frontend:
+    container_name: isard-frontend-devel
+    volumes:
+      - "./src/new_webapp/frontend:/app"
+      - "~/.cache/isard-devel/frontend:/app/node_modules"
+    networks:
+      - isard_network
+    ports:
+      - "8080:8080"
+    image: node:lts-alpine
+    depends_on:
+      - isard-backend
+    working_dir: "/app"
+    command: "sh -c 'yarn && yarn run serve'"
+    environment:
+      - NODE_ENV=development
+
+  isard-grpcwebproxy:
+    container_name: isard-grpcwebproxy-devel
+    logging:
+      driver: "json-file"
+
+networks:
+  isard_network:
+    external: false
+    name: isard_network

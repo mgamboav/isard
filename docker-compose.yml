@@ -9,8 +9,6 @@ services:
       - isard_network
     image: rethinkdb
     restart: unless-stopped
-    logging:
-        driver: none
 
   isard-nginx:
     container_name: isard-nginx
@@ -23,10 +21,15 @@ services:
       - "443:443"
     networks:
       - isard_network
-    image: isard/nginx:1
+    image: isard/nginx:${TAG}
+    build:
+      context: .
+      dockerfile: dockers/nginx/Dockerfile
+      #target: production
     restart: unless-stopped
     depends_on:
       - isard-app
+      - isard-grpcwebproxy
 
   isard-hypervisor:
     container_name: isard-hypervisor
@@ -40,10 +43,13 @@ services:
       - "55900-55999:55900-55999"
     networks:
       - isard_network
-    image: isard/hypervisor:1
+    image: isard/hypervisor:${TAG}
+    build:
+      context: .
+      dockerfile: dockers/hypervisor/Dockerfile
     privileged: true
     restart: unless-stopped
-        
+
   isard-app:
     container_name: isard-app
     volumes:
@@ -58,34 +64,43 @@ services:
       - "isard-engine:127.0.0.1"
     networks:
       - isard_network
-    image: isard/app:1
+    image: isard/app:${TAG}
+    build:
+      context: .
+      dockerfile: dockers/app/Dockerfile
+      #target: production
     restart: unless-stopped
     depends_on:
       - isard-database
       - isard-hypervisor
-      
+
   isard-backend:
     container_name: isard-backend
+    volumes:
+      - "/opt/isard/config:/etc/isard"
+      - "/opt/isard/logs:/var/log/isard"
     networks:
       - isard_network
-    image: isard/backend:1
+    image: isard/backend:${TAG}
+    build:
+      context: .
+      dockerfile: dockers/backend/Dockerfile
+      #target: production
     restart: unless-stopped
     depends_on:
       - isard-app
-      - isard-grpc-proxy
-    volumes:
-      - "./config:/etc/isard"
-      - "./logs:/var/log/isard"
 
-  isard-grpc-proxy:
-    container_name: isard-grpc-proxy
+  isard-grpcwebproxy:
+    container_name: isard-grpcwebproxy
     networks:
       - isard_network
     image: jfyne/docker-grpcwebproxy
     restart: unless-stopped
     depends_on:
-      - isard-nginx
+      - isard-backend
     command: /grpcwebproxy --backend_addr=isard-backend:1312 --run_tls_server=false
+    logging:
+      driver: none
 
 volumes:
   sshkeys:
