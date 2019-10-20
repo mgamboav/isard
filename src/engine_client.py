@@ -377,10 +377,10 @@ curr_client = EngineClient()
 
 import time
 ''' CHANGES '''
-# ~ threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
-# ~ while True: time.sleep(9999)
+threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
+while True: time.sleep(9999)
 
-#~ curr_client.domain_changes()
+curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
 # ~ print(curr_client.engine_is_alive())

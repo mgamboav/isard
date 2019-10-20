@@ -5,9 +5,12 @@ services:
     ports:
       - "8081:8080"
       - "28015:28015"
+    restart: "no"
 
   isard-nginx:
     container_name: isard-nginx-devel
+    volumes:
+      - "./dockers/nginx/nginx.conf:/etc/nginx/nginx.conf"    
     build:
       target: development
 
