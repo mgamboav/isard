@@ -1,6 +1,6 @@
 ''' DOMAINS STATE MACHINE '''
     
-class DesktopsSM():
+class DesktopSM():
     def __init__(self):
         self.states  = ['STOPPED','STARTED','PAUSED','DELETED','FAILED','UNKNOWN']
         self.actions = ['STOP','START','PAUSE','RESUME','DELETE','UPDATE','TEMPLATE']
@@ -46,8 +46,9 @@ class DesktopsSM():
             return self.transitions[state].keys()
         raise StateInvalidError
 
-class DesktopsSMError(Exception):
+class DesktopSMError(Exception):
     pass
     
-class StateInvalidError(DesktopsSMError):
+class StateInvalidError(DesktopSMError):
+    # raise InvalidArgument
     pass

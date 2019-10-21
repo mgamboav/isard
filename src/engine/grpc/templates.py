@@ -23,7 +23,7 @@ from engine.grpc.lib.database import rdb
 
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
-from engine.grpc.statemachines.desktops_sm import DesktopsSM, StateInvalidError
+from engine.grpc.statemachines.desktop_sm import DesktopSM, StateInvalidError
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
@@ -34,7 +34,7 @@ class TemplatesServicer(templates_pb2_grpc.TemplatesServicer):
     """
     def __init__(self, app):
         # ~ self.grpc = GrpcActions(self.manager)
-        self.desktops_sm = DesktopsSM()
+        self.desktop_sm = DesktopSM()
     
 
     def TemplateList(self, request, context):

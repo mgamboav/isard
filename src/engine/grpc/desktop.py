@@ -2,8 +2,8 @@ import grpc
 import time
 import hashlib
 
-from engine.grpc.proto import desktops_pb2
-from engine.grpc.proto import desktops_pb2_grpc
+from engine.grpc.proto import desktop_pb2
+from engine.grpc.proto import desktop_pb2_grpc
     
 from concurrent import futures
 
@@ -29,21 +29,21 @@ from engine.grpc.lib.database import rdb
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
 
-from engine.grpc.statemachines.desktops_sm import DesktopsSM, StateInvalidError
+from engine.grpc.statemachines.desktop_sm import DesktopSM, StateInvalidError
 from engine.grpc.lib.helpers import get_viewer
 
     
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
  
-class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
+class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
     """
     gRPC server for Templates Service
     """
     def __init__(self, app):
         self.server_port = 46001
         # ~ self.grpc = GrpcActions(self.manager)
-        self.desktops_sm = DesktopsSM()
+        self.desktop_sm = DesktopSM()
         
 
     def DesktopList(self, request, context):
@@ -52,11 +52,11 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             with rdb() as conn:
                 desktops = list(r.table('domains').get_all('desktop', index='kind').pluck('id').run(conn))
                 desktops = [d['id'] for d in desktops]
-            return desktops_pb2.DesktopListResponse(desktops=desktops)
+            return desktop_pb2.DesktopListResponse(desktops=desktops)
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopListResponse()  
+            return desktop_pb2.DesktopListResponse()  
 
     def DesktopGet(self, request, context):
         ''' Checks '''
@@ -66,41 +66,45 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             if len(desktop) == 0:
                 context.set_details(request.desktop_id+'  not found in database.')
                 context.set_code(grpc.StatusCode.UNKNOWN)
-                return desktops_pb2.DesktopStartResponse()                     
-            desktop['next_actions']=self.desktops_sm.get_next_actions(request.desktop_id,desktop['status'].upper())
-            return desktops_pb2.DesktopGetResponse(desktop=desktop)
+                return desktop_pb2.DesktopStartResponse()                     
+            desktop['next_actions']=self.desktop_sm.get_next_actions(request.desktop_id,desktop['status'].upper())
+            return desktop_pb2.DesktopGetResponse(desktop=desktop)
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktops_pb2.DesktopStartResponse()             
+            return desktop_pb2.DesktopStartResponse()             
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopStartResponse() 
+            return desktop_pb2.DesktopStartResponse() 
                               
     def DesktopStart(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.desktop_id).pluck('status','kind').run(conn)
-            next_actions = self.desktops_sm.get_next_actions(domain['status'].upper())
+            next_actions = self.desktop_sm.get_next_actions(domain['status'].upper())
             if 'START' not in next_actions:    
             # ~ if domain['status'] not in ['Stopped','Failed']: 
-                context.set_details(request.desktop_id+' is '+domain['status']' and can\'t be started from this state.')
+                context.set_details(request.desktop_id+' is '+domain['status']+' and can\'t be started from this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopStartResponse()
+                return desktop_pb2.DesktopStartResponse()
             elif domain['kind'] != 'desktop':
                 context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
-                return desktops_pb2.DesktopStartResponse()
+                return desktop_pb2.DesktopStartResponse()
+        except StateInvalidError:
+            context.set_details('State '+domain['status'].upper()+' unknown')
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            return desktop_pb2.DesktopStartResponse()           
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktops_pb2.DesktopStartResponse()            
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            return desktop_pb2.DesktopStartResponse()            
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopStartResponse()
+            return desktop_pb2.DesktopStartResponse()
             
         ''' Start desktop_id '''
         try:
@@ -112,74 +116,74 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
                 with rdb() as conn:
                     c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
                     state=c.next(MIN_TIMEOUT)
-                next_actions = self.desktops_sm.get_next_actions(request.desktop_id,state['status'].upper())
+                next_actions = self.desktop_sm.get_next_actions(request.desktop_id,state['status'].upper())
                 viewer=get_viewer(state['new_val']['viewer'])
-                return desktops_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
-                # ~ return desktops_pb2.DesktopStartResponse()
-        # ~ except ReqlTimeoutError:
-            # ~ context.set_details('Not able to start the domain '+request.desktop_id)
+                return desktop_pb2.DesktopStartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
+                # ~ return desktop_pb2.DesktopStartResponse()
+        except ReqlTimeoutError:
+            context.set_details('Not able to start the domain '+request.desktop_id)
+            context.set_code(grpc.StatusCode.DEADLINE_EXCEEDED)             
+            return desktop_pb2.DesktopStartResponse()  
+        # ~ except ReqlNonExistenceError:
+            # ~ context.set_details(request.desktop_id+' domain not found')
             # ~ context.set_code(grpc.StatusCode.INTERNAL)             
-            # ~ return desktops_pb2.DesktopStartResponse()  
-        except ReqlNonExistenceError:
-            context.set_details(request.desktop_id+' domain not found')
-            context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStartResponse()             
+            # ~ return desktop_pb2.DesktopStartResponse()             
         except Exception as e:
             context.set_details(str(e))
-            context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStartResponse()
+            context.set_code(grpc.StatusCode.UNKNOWN)             
+            return desktop_pb2.DesktopStartResponse()
 
     def DesktopViewer(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.desktop_id).pluck('status','kind','viewer').run(conn)
-            next_actions = self.desktops_sm.get_next_actions(domain['status'].upper())
+            next_actions = self.desktop_sm.get_next_actions(domain['status'].upper())
             if 'STOP' not in next_actions:                  
             # ~ if domain['status'] not in ['Started']: 
-                context.set_details(request.desktop_id+' is '+domain['status']' and can\'t have viewer in this state.')
+                context.set_details(request.desktop_id+' is '+domain['status']+' and can\'t have viewer in this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopStartResponse()
+                return desktop_pb2.DesktopStartResponse()
             elif domain['kind'] != 'desktop':
                 context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
-                return desktops_pb2.DesktopStartResponse()
+                return desktop_pb2.DesktopStartResponse()
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktops_pb2.DesktopStartResponse()            
+            return desktop_pb2.DesktopStartResponse()            
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopStartResponse()
+            return desktop_pb2.DesktopStartResponse()
             
         ''' get viewer for desktop_id '''
         viewer=get_viewer(domain['viewer'])
-        return desktops_pb2.DesktopViewerResponse(state=domain['status'].upper(),viewer=viewer)
+        return desktop_pb2.DesktopViewerResponse(state=domain['status'].upper(),viewer=viewer)
              
     def DesktopStop(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.desktop_id).pluck('status','kind').run(conn)
-            next_actions = self.desktops_sm.get_next_actions(domain['status'].upper())
+            next_actions = self.desktop_sm.get_next_actions(domain['status'].upper())
             if 'STOP' not in next_actions:                  
             # ~ if domain['status'] not in ['Started']: 
-                context.set_details(request.desktop_id+' is '+domain['status']' and can\'t be stopped from this state.')
+                context.set_details(request.desktop_id+' is '+domain['status']+' and can\'t be stopped from this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopStopResponse()
+                return desktop_pb2.DesktopStopResponse()
             elif domain['kind'] != 'desktop':
                 context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopStopResponse()                
+                return desktop_pb2.DesktopStopResponse()                
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktops_pb2.DesktopStopResponse()         
+            return desktop_pb2.DesktopStopResponse()         
         except Exception as e:
             context.set_details('Unable to access database!')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopStopResponse()
+            return desktop_pb2.DesktopStopResponse()
             
         ''' Stop desktop_id '''
         try:
@@ -192,20 +196,20 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
                     # ~ c = r.table('domains').get_all(r.args(['Stopped']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
                     # ~ state=c.next(MIN_TIMEOUT)
                     # ~ next_actions = self.domain_actions.for_desktop(request.desktop_id,state['new_val']['status'])
-                # ~ return desktops_pb2.DesktopStopResponse(state=state['new_val']['status'].upper(), next_actions=next_actions)
-                return desktops_pb2.DesktopStopResponse()
+                # ~ return desktop_pb2.DesktopStopResponse(state=state['new_val']['status'].upper(), next_actions=next_actions)
+                return desktop_pb2.DesktopStopResponse()
         # ~ except ReqlTimeoutError:
             # ~ context.set_details('Not able to stop the domain')
             # ~ context.set_code(grpc.StatusCode.INTERNAL)             
-            # ~ return desktops_pb2.DesktopStopResponse() 
+            # ~ return desktop_pb2.DesktopStopResponse() 
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' domain not found.')
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStopResponse()                        
+            return desktop_pb2.DesktopStopResponse()                        
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopStopResponse()
+            return desktop_pb2.DesktopStopResponse()
 
     def DesktopDelete(self, request, context):
         ''' Checks '''
@@ -215,19 +219,19 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             if desktop['status'] in ['Started','Starting']: 
                 context.set_details('It is started.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopDeleteResponse()
+                return desktop_pb2.DesktopDeleteResponse()
             elif desktop['kind'] != 'desktop':
                 context.set_details('It is not a desktop.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopDeleteResponse()                
+                return desktop_pb2.DesktopDeleteResponse()                
         except ReqlNonExistenceError:
             context.set_details(desktop_id+'  not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktops_pb2.DesktopDeleteResponse()         
+            return desktop_pb2.DesktopDeleteResponse()         
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopDeleteResponse()
+            return desktop_pb2.DesktopDeleteResponse()
         
         ''' Delete desktop_id '''
         try:
@@ -239,15 +243,15 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
                 with rdb() as conn:
                     c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':None}).run(conn) 
                     c.next(MIN_TIMEOUT)
-                return desktops_pb2.DesktopDeleteResponse(state='DELETED')
+                return desktop_pb2.DesktopDeleteResponse(state='DELETED')
         except ReqlTimeoutError:
             context.set_details('Unable to delete the domain '+request.desktop_id)
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopDeleteResponse()            
+            return desktop_pb2.DesktopDeleteResponse()            
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopDeleteResponse()
+            return desktop_pb2.DesktopDeleteResponse()
 
 
     def DesktopFromTemplate(self, request, context):
@@ -257,34 +261,34 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
                 desktop = r.table('domains').get(request.desktop_id).pluck('id').run(conn)
             context.set_details(request.desktop_id+' already exists in system.')
             context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-            return desktops_pb2.DesktopFromTemplateResponse()                
+            return desktop_pb2.DesktopFromTemplateResponse()                
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
             # ~ print('1 '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopFromTemplateResponse()
+            return desktop_pb2.DesktopFromTemplateResponse()
         try:
             with rdb() as conn:
                 template = r.table('domains').get(request.template_id).without('history_domain').run(conn)
             if template['status'] not in ['Stopped']: 
                 context.set_details(request.template_id+' it is not stopped.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopFromTemplateResponse()
+                return desktop_pb2.DesktopFromTemplateResponse()
             elif template['kind'] == 'desktop':
                 context.set_details(request.template_id+' it is not a template.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktops_pb2.DesktopFromTemplateResponse()                
+                return desktop_pb2.DesktopFromTemplateResponse()                
         except ReqlNonExistenceError:
             context.set_details(request.template_id+' not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktops_pb2.DesktopFromTemplateResponse()         
+            return desktop_pb2.DesktopFromTemplateResponse()         
         except Exception as e:
             # ~ print('2: '+str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktops_pb2.DesktopFromTemplateResponse()
+            return desktop_pb2.DesktopFromTemplateResponse()
         
         ''' OPTIONAL HARDWARE VALUES | GET FROM TEMPLATE '''
         hardware = {}
@@ -318,12 +322,12 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
                 c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
                 c.next(MAX_TIMEOUT)
                 next_actions = action[state['new_val']['status'].capitalize()]
-                return desktops_pb2.DesktopFromTemplateResponse(state='STOPPED', next_actions=next_actions)
+                return desktop_pb2.DesktopFromTemplateResponse(state='STOPPED', next_actions=next_actions)
         except ReqlTimeoutError:
             context.set_details('Unable to create the domain '+request.desktop_id)
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopFromTemplateResponse()            
+            return desktop_pb2.DesktopFromTemplateResponse()            
         except Exception as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return desktops_pb2.DesktopFromTemplateResponse()
+            return desktop_pb2.DesktopFromTemplateResponse()

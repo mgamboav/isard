@@ -18,13 +18,14 @@ service Desktop {
 }
 
 enum Action {
-	STOP = 0;
-	START = 1;
-	PAUSE = 2;
-	RESUME = 3;
-	DELETE = 4;
-	UPDATE = 5;
-	TEMPLATE = 6;
+    UNKNOWN = 0;
+    STOP = 1;
+    START = 2;
+    PAUSE = 3;
+    RESUME = 4;
+    DELETE = 5;
+    UPDATE = 6;
+    TEMPLATE = 7;
 }
 
 message ListRequest {}

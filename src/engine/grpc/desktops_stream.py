@@ -21,7 +21,7 @@ from rethinkdb.errors import (
     ReqlUserError)
 from engine.grpc.lib.database import rdb
 
-from engine.grpc.statemachines.desktops_sm import DesktopsSM, StateInvalidError
+from engine.grpc.statemachines.desktop_sm import DesktopSM, StateInvalidError
 from engine.grpc.lib.helpers import get_viewer
 
 
@@ -30,7 +30,7 @@ class DesktopsStreamServicer(desktops_stream_pb2_grpc.DesktopsStreamServicer):
     gRPC server for Domain Changes stream Service
     """
     def __init__(self, app):
-        self.desktops_sm = DesktopsSM()
+        self.desktop_sm = DesktopSM()
         
     def Changes(self, request_iterator, context):
         try:
@@ -52,7 +52,7 @@ class DesktopsStreamServicer(desktops_stream_pb2_grpc.DesktopsStreamServicer):
                         continue
                     
                     ''' Is it a valid state? '''
-                    if c['new_val']['status'].upper() not in self.desktops_sm.get_states(): continue
+                    if c['new_val']['status'].upper() not in self.desktop_sm.get_states(): continue
                     
                     ''' Is it a detail or viewer update? '''
                     if c['old_val']['status'] == c['new_val']['status']:
@@ -65,13 +65,13 @@ class DesktopsStreamServicer(desktops_stream_pb2_grpc.DesktopsStreamServicer):
                         yield desktops_stream_pb2.DesktopsStreamResponse( desktop_id=c['new_val']['id'],
                                                                         state=new_state,
                                                                         detail=c['new_val']['detail'],
-                                                                        next_actions=self.desktops_sm.get_next_actions(new_state),
+                                                                        next_actions=self.desktop_sm.get_next_actions(new_state),
                                                                         viewer=get_viewer(c['new_val']['viewer']))
                     else:
                         yield desktops_stream_pb2.DesktopsStreamResponse( desktop_id=c['new_val']['id'],
                                                                         state=new_state,
                                                                         detail=c['new_val']['detail'],
-                                                                        next_actions=self.desktops_sm.get_next_actions(new_state))  
+                                                                        next_actions=self.desktop_sm.get_next_actions(new_state))  
         except StateInvalidError:
             context.set_details('State invalid: ')
             context.set_code(grpc.StatusCode.INTERNAL)               
