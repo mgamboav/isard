@@ -1,8 +1,8 @@
 import threading
 import grpc
 
-from engine.grpc.proto import desktops_pb2
-from engine.grpc.proto import desktops_pb2_grpc
+from engine.grpc.proto import desktop_pb2
+from engine.grpc.proto import desktop_pb2_grpc
 from engine.grpc.proto import desktops_stream_pb2
 from engine.grpc.proto import desktops_stream_pb2_grpc
 from engine.grpc.proto import templates_pb2
@@ -48,7 +48,7 @@ class EngineClient(object):
                         '{}:{}'.format(self.host, self.server_port))
  
         # bind the client to the server channel
-        self.desktops_stub = desktops_pb2_grpc.DesktopsStub(self.channel)
+        self.desktop_stub = desktop_pb2_grpc.DesktopStub(self.channel)
         self.desktops_stream_stub = desktops_stream_pb2_grpc.DesktopsStreamStub(self.channel)
         self.templates_stub = templates_pb2_grpc.TemplatesStub(self.channel)
         self.templates_stream_stub = templates_stream_pb2_grpc.TemplatesStreamStub(self.channel)
@@ -69,7 +69,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopGet(desktops_pb2.DesktopGetRequest(desktop_id=message))
+            response = self.desktop_stub.DesktopGet(desktop_pb2.DesktopGetRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -77,7 +77,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStartResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
@@ -88,7 +88,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopList(desktops_pb2.Empty())
+            response = self.desktop_stub.DesktopList(desktop_pb2.Empty())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -96,7 +96,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStartResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
@@ -107,7 +107,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopStart(desktops_pb2.DesktopStartRequest(desktop_id=message))
+            response = self.desktop_stub.DesktopStart(desktop_pb2.DesktopStartRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -115,7 +115,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStartResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
@@ -128,7 +128,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopViewer(desktops_pb2.DesktopViewerRequest(desktop_id=message))
+            response = self.desktop_stub.DesktopViewer(desktop_pb2.DesktopViewerRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -136,7 +136,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStopResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
@@ -148,7 +148,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopStop(desktops_pb2.DesktopStopRequest(desktop_id=message))
+            response = self.desktop_stub.DesktopStop(desktop_pb2.DesktopStopRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -156,7 +156,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStopResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
@@ -168,7 +168,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.DesktopDelete(desktops_pb2.DesktopDeleteRequest(desktop_id=message))
+            response = self.desktop_stub.DesktopDelete(desktop_pb2.DesktopDeleteRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -176,7 +176,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStopResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
@@ -188,7 +188,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktops_stub.TemplateList(desktops_pb2.Empty())
+            response = self.desktop_stub.TemplateList(desktop_pb2.Empty())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -196,7 +196,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStartResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
@@ -210,9 +210,9 @@ class EngineClient(object):
         """
         try:
             if 'hardware' in message.keys():
-                response = self.desktops_stub.DesktopFromTemplate(desktops_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id'], hardware=message['hardware']))
+                response = self.desktop_stub.DesktopFromTemplate(desktop_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id'], hardware=message['hardware']))
             else:
-                response = self.desktops_stub.DesktopFromTemplate(desktops_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
+                response = self.desktop_stub.DesktopFromTemplate(desktop_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
         except grpc.RpcError as e:
             ## Should be deleted as it failed?##
             print(e.details())
@@ -221,7 +221,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopFromTemplateResponse.State.STOPPED:
+        #~ if response.state == desktop_pb2.DesktopFromTemplateResponse.State.STOPPED:
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
@@ -275,9 +275,9 @@ class EngineClient(object):
         """
         try:
             if 'hardware' in message.keys():
-                response = self.desktops_stub.TemplateFromDesktop(desktops_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id'], hardware=message['hardware']))
+                response = self.desktop_stub.TemplateFromDesktop(desktop_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id'], hardware=message['hardware']))
             else:
-                response = self.desktops_stub.TemplateFromDesktop(desktops_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
+                response = self.desktop_stub.TemplateFromDesktop(desktop_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
         except grpc.RpcError as e:
             ## Should be deleted as it failed?##
             print(e.details())
@@ -286,7 +286,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopFromTemplateResponse.State.STOPPED:
+        #~ if response.state == desktop_pb2.DesktopFromTemplateResponse.State.STOPPED:
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
@@ -347,7 +347,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStartResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
@@ -366,7 +366,7 @@ class EngineClient(object):
             if grpc.StatusCode.INTERNAL == e.code():
                 print('The error is internal')
             return False
-        #~ if response.state == desktops_pb2.DesktopStartResponse.State.STARTED:
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
@@ -378,9 +378,9 @@ curr_client = EngineClient()
 import time
 ''' CHANGES '''
 threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
-while True: time.sleep(9999)
+# ~ while True: time.sleep(9999)
 
-curr_client.domain_changes()
+# ~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
 # ~ print(curr_client.engine_is_alive())
@@ -427,16 +427,16 @@ print(curr_client.engine_status())
 # ~ print(desktops)
 
 '''list'''
-# ~ desktops = curr_client.desktop_list()
-# ~ print(desktops)
-# ~ print(curr_client.desktop_get(desktops[0]))
-# ~ curr_client.desktop_get('_admin_downloaded_zxspectrum')
+desktops = curr_client.desktop_list()
+print(desktops)
+print(curr_client.desktop_get(desktops[0]))
+curr_client.desktop_get('_admin_downloaded_zxspectrum')
 
 '''start/stop'''
-# ~ while True:
-    # ~ curr_client.desktop_start('_admin_downloaded_zxspectrum')
-    # ~ # time.sleep(1)
-    # ~ curr_client.desktop_stop('_admin_downloaded_zxspectrum')
+while True:
+    curr_client.desktop_start('_admin_downloaded_zxspectrum')
+    # time.sleep(1)
+    curr_client.desktop_stop('_admin_downloaded_zxspectrum')
 
 
 # ~ curr_client.domain_delete('_admin_downloaded_tetros')

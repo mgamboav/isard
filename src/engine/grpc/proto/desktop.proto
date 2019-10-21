@@ -16,7 +16,17 @@ service Desktop {
     rpc State(StateRequest) returns (StateResponse) {}
     rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
 }
-    
+
+enum Action {
+	STOP = 0;
+	START = 1;
+	PAUSE = 2;
+	RESUME = 3;
+	DELETE = 4;
+	UPDATE = 5;
+	TEMPLATE = 6;
+}
+
 message ListRequest {}
 
 message ListResponse {
@@ -46,7 +56,7 @@ message CreateFromTemplateResponse {
 
     State state = 1;
     string detail = 2;
-    repeated string next_actions = 3;
+    repeated Action next_actions = 3;
 }
 
 message CreateFromMediaRequest {
@@ -64,6 +74,7 @@ message CreateFromMediaResponse {
 
     State state = 1;
     string detail = 2;
+    repeated Action next_actions = 3;
 }
 
 message UpdateRequest {
@@ -80,6 +91,7 @@ message UpdateResponse {
 
     State state = 1;
     string detail = 2;
+    repeated Action next_actions = 3;
 }
 
 message DeleteRequest {
@@ -95,6 +107,7 @@ message DeleteResponse {
 
     State state = 1;
     string detail = 2;
+    repeated Action next_actions = 3;
 }
 
 message StartRequest {
@@ -114,7 +127,7 @@ message StartResponse {
     State state = 1;
     string detail = 2;
     Viewer viewer = 3;
-    repeated string next_actions = 4;
+    repeated Action next_actions = 4;
 }
 
 message StopRequest {
@@ -133,7 +146,7 @@ message StopResponse {
 
     State state = 1;
     string detail = 2;
-    repeated string next_actions = 3;
+    repeated Action next_actions = 3;
 }
 
 message StateRequest {
@@ -151,7 +164,7 @@ message StateResponse {
     }
 
     State state = 1;
-    repeated string next_actions = 2;
+    repeated Action next_actions = 2;
 }
 
 message ViewerRequest {
@@ -161,6 +174,7 @@ message ViewerRequest {
 message ViewerResponse {
     string detail = 1;
     Viewer viewer = 2;
+    repeated Action next_actions = 3;
 }
 
 message Viewer {

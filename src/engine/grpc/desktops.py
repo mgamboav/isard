@@ -83,12 +83,14 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.desktop_id).pluck('status','kind').run(conn)
-            if domain['status'] not in ['Stopped','Failed']: 
-                context.set_details('It is not in stopped or failed status')
+            next_actions = self.desktops_sm.get_next_actions(domain['status'].upper())
+            if 'START' not in next_actions:    
+            # ~ if domain['status'] not in ['Stopped','Failed']: 
+                context.set_details(request.desktop_id+' is '+domain['status']' and can\'t be started from this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
                 return desktops_pb2.DesktopStartResponse()
             elif domain['kind'] != 'desktop':
-                context.set_details('You don\'t want to start a template.')
+                context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
                 return desktops_pb2.DesktopStartResponse()
         except ReqlNonExistenceError:
@@ -132,12 +134,14 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.desktop_id).pluck('status','kind','viewer').run(conn)
-            if domain['status'] not in ['Started']: 
-                context.set_details('It is not in started status')
+            next_actions = self.desktops_sm.get_next_actions(domain['status'].upper())
+            if 'STOP' not in next_actions:                  
+            # ~ if domain['status'] not in ['Started']: 
+                context.set_details(request.desktop_id+' is '+domain['status']' and can\'t have viewer in this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
                 return desktops_pb2.DesktopStartResponse()
             elif domain['kind'] != 'desktop':
-                context.set_details('You don\'t want to view a template.')
+                context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
                 return desktops_pb2.DesktopStartResponse()
         except ReqlNonExistenceError:
@@ -158,12 +162,14 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
         try:
             with rdb() as conn:
                 domain = r.table('domains').get(request.desktop_id).pluck('status','kind').run(conn)
-            if domain['status'] not in ['Started']: 
-                context.set_details(request.desktop_id+' it is not started.')
+            next_actions = self.desktops_sm.get_next_actions(domain['status'].upper())
+            if 'STOP' not in next_actions:                  
+            # ~ if domain['status'] not in ['Started']: 
+                context.set_details(request.desktop_id+' is '+domain['status']' and can\'t be stopped from this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
                 return desktops_pb2.DesktopStopResponse()
             elif domain['kind'] != 'desktop':
-                context.set_details(request.desktop_id+' it is not a desktop.')
+                context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
                 return desktops_pb2.DesktopStopResponse()                
         except ReqlNonExistenceError:
@@ -193,7 +199,7 @@ class DesktopsServicer(desktops_pb2_grpc.DesktopsServicer):
             # ~ context.set_code(grpc.StatusCode.INTERNAL)             
             # ~ return desktops_pb2.DesktopStopResponse() 
         except ReqlNonExistenceError:
-            context.set_details(request.desktop_id+' domain not found')
+            context.set_details(request.desktop_id+' domain not found.')
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktops_pb2.DesktopStopResponse()                        
         except Exception as e:
