@@ -24,15 +24,15 @@ class DesktopStub(object):
         request_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.GetRequest.SerializeToString,
         response_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.GetResponse.FromString,
         )
-    self.CreateFromTemplate = channel.unary_unary(
-        '/desktop.Desktop/CreateFromTemplate',
-        request_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromTemplateRequest.SerializeToString,
-        response_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromTemplateResponse.FromString,
+    self.FromTemplate = channel.unary_unary(
+        '/desktop.Desktop/FromTemplate',
+        request_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromTemplateRequest.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromTemplateResponse.FromString,
         )
-    self.CreateFromMedia = channel.unary_unary(
-        '/desktop.Desktop/CreateFromMedia',
-        request_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromMediaRequest.SerializeToString,
-        response_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromMediaResponse.FromString,
+    self.FromMedia = channel.unary_unary(
+        '/desktop.Desktop/FromMedia',
+        request_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromMediaRequest.SerializeToString,
+        response_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromMediaResponse.FromString,
         )
     self.Update = channel.unary_unary(
         '/desktop.Desktop/Update',
@@ -84,14 +84,14 @@ class DesktopServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def CreateFromTemplate(self, request, context):
+  def FromTemplate(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def CreateFromMedia(self, request, context):
+  def FromMedia(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -153,15 +153,15 @@ def add_DesktopServicer_to_server(servicer, server):
           request_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.GetRequest.FromString,
           response_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.GetResponse.SerializeToString,
       ),
-      'CreateFromTemplate': grpc.unary_unary_rpc_method_handler(
-          servicer.CreateFromTemplate,
-          request_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromTemplateRequest.FromString,
-          response_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromTemplateResponse.SerializeToString,
+      'FromTemplate': grpc.unary_unary_rpc_method_handler(
+          servicer.FromTemplate,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromTemplateRequest.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromTemplateResponse.SerializeToString,
       ),
-      'CreateFromMedia': grpc.unary_unary_rpc_method_handler(
-          servicer.CreateFromMedia,
-          request_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromMediaRequest.FromString,
-          response_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.CreateFromMediaResponse.SerializeToString,
+      'FromMedia': grpc.unary_unary_rpc_method_handler(
+          servicer.FromMedia,
+          request_deserializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromMediaRequest.FromString,
+          response_serializer=engine_dot_grpc_dot_proto_dot_desktop__pb2.FromMediaResponse.SerializeToString,
       ),
       'Update': grpc.unary_unary_rpc_method_handler(
           servicer.Update,

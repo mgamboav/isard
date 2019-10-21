@@ -1,19 +1,16 @@
 syntax = "proto3";
 
-package templates;
+package template;
 
 //import "google/protobuf/empty.proto"; 
 import "google/protobuf/any.proto";
  
-service Templates{
- rpc TemplateGet(TemplateGetRequest) returns (TemplateGetResponse) {}
- rpc TemplateList(TemplateListRequest) returns (TemplateListResponse) {}
- rpc TemplateDelete(TemplateDeleteRequest) returns (TemplateDeleteResponse) {}
- rpc TemplateUpdate(TemplateUpdateRequest) returns (TemplateUpdateResponse) {}
- rpc TemplateFromDesktop(TemplateFromDesktopRequest) returns (TemplateFromDesktopResponse) {}
- 
- rpc BaseGet(BaseGetRequest) returns (BaseGetResponse) {}
- rpc BaseList(BaseListRequest) returns (BaseListResponse) {}
+service Template{
+ rpc Get(GetRequest) returns (GetResponse) {}
+ rpc List(ListRequest) returns (ListResponse) {}
+ rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+ rpc Update(UpdateRequest) returns (UpdateResponse) {}
+ rpc FromDesktop(FromDesktopRequest) returns (FromDesktopResponse) {}
 }
 
 message HardwareNew{
@@ -54,41 +51,27 @@ message HardwareUpdate{
  repeated string isos=8;
  repeated string floppies=9;
 }
-    
-message Viewer{
- string hostname=1;
- string hostname_external=2;
- int32 port_spice=5;
- int32 port_spice_ssl=6;
- int32 port_vnc=7;
- int32 port_vnc_websocket=8;
- string passwd=9;
- string client_addr=10;
- float client_since=11;
-}
-    
 
-    // TEMPLATE //
 
-message TemplateGetRequest{
+message GetRequest{
  string template_id=1;
 }
 
-message TemplateGetResponse{
+message GetResponse{
   repeated google.protobuf.Any template = 1;
 }
 
-message TemplateListRequest{}
+message ListRequest{}
 
-message TemplateListResponse{
+message ListResponse{
  repeated string templates = 1;
 }
 
-message TemplateDeleteRequest{
+message DeleteRequest{
  string template_id = 1;
 }
 
-message TemplateDeleteResponse{
+message DeleteResponse{
     enum State{
      DELETED = 0;
      FAILED = 1;
@@ -98,12 +81,12 @@ message TemplateDeleteResponse{
  string detail = 2;
 }
 
-message TemplateUpdateRequest{
+message UpdateRequest{
  string template_id=1;
  HardwareUpdate hardware=2;
 }
 
-message TemplateUpdateResponse{
+message UpdateResponse{
     enum State{
      STOPPED= 0;
      FAILED = 1;
@@ -113,14 +96,14 @@ message TemplateUpdateResponse{
  string detail = 2;
 }
 
-message TemplateFromDesktopRequest{
+message FromDesktopRequest{
  string desktop_id=1;
  string template_id=2;
  HardwareDerived hardware=3;
  repeated string next_actions = 4;
 }
 
-message TemplateFromDesktopResponse{
+message FromDesktopResponse{
     enum State{
      STOPPED= 0;
      FAILED = 1;
@@ -128,22 +111,5 @@ message TemplateFromDesktopResponse{
     }
  State state = 1;
  string detail = 2;
-}
-
-
-    // BASE //
-
-message BaseGetRequest{
- string base_id=1;
-}
-
-message BaseGetResponse{
-  repeated google.protobuf.Any base = 1;
-}
-
-message BaseListRequest{}
-
-message BaseListResponse{
- repeated string bases=1;
 }
 

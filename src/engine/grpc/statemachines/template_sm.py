@@ -1,6 +1,6 @@
 ''' TEMPLATES & BASES STATE MACHINE '''
     
-class TemplatesSM():
+class TemplateSM():
     def __init__(self):
         self.states  = ['STOPPED','DELETED','FAILED']
         self.actions = ['DELETE','UPDATE','DESKTOP']
@@ -36,8 +36,8 @@ class TemplatesSM():
             return self.transitions[state].keys()
         raise StateInvalidError
 
-class TemplatesSMError(Exception):
+class TemplateSMError(Exception):
     pass
     
-class StateInvalidError(TemplatesSMError):
+class StateInvalidError(TemplateSMError):
     pass

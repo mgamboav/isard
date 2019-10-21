@@ -5,10 +5,15 @@ from engine.grpc.proto import desktop_pb2
 from engine.grpc.proto import desktop_pb2_grpc
 from engine.grpc.proto import desktops_stream_pb2
 from engine.grpc.proto import desktops_stream_pb2_grpc
-from engine.grpc.proto import templates_pb2
-from engine.grpc.proto import templates_pb2_grpc
+from engine.grpc.proto import template_pb2
+from engine.grpc.proto import template_pb2_grpc
 from engine.grpc.proto import templates_stream_pb2
 from engine.grpc.proto import templates_stream_pb2_grpc
+from engine.grpc.proto import template_pb2
+from engine.grpc.proto import base_pb2_grpc
+from engine.grpc.proto import bases_stream_pb2
+from engine.grpc.proto import bases_stream_pb2_grpc
+from engine.grpc.proto import media_pb2
 from engine.grpc.proto import media_pb2_grpc
 from engine.grpc.proto import media_stream_pb2_grpc
 from engine.grpc.proto import engine_pb2
@@ -50,8 +55,10 @@ class EngineClient(object):
         # bind the client to the server channel
         self.desktop_stub = desktop_pb2_grpc.DesktopStub(self.channel)
         self.desktops_stream_stub = desktops_stream_pb2_grpc.DesktopsStreamStub(self.channel)
-        self.templates_stub = templates_pb2_grpc.TemplatesStub(self.channel)
+        self.template_stub = template_pb2_grpc.TemplateStub(self.channel)
         self.templates_stream_stub = templates_stream_pb2_grpc.TemplatesStreamStub(self.channel)
+        self.base_stub = base_pb2_grpc.BaseStub(self.channel)
+        self.bases_stream_stub = bases_stream_pb2_grpc.BasesStreamStub(self.channel)
         self.media_stub = media_pb2_grpc.MediaStub(self.channel)
         self.media_stream_stub = media_stream_pb2_grpc.MediaStreamStub(self.channel)
         self.engine_stub = engine_pb2_grpc.EngineStub(self.channel)
@@ -69,7 +76,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.DesktopGet(desktop_pb2.DesktopGetRequest(desktop_id=message))
+            response = self.desktop_stub.Get(desktop_pb2.GetRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -83,12 +90,13 @@ class EngineClient(object):
             #~ print(response.state)
         return response.desktop
 
+# ~ 
     def desktop_list(self):
         """
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.DesktopList(desktop_pb2.Empty())
+            response = self.desktop_stub.List(desktop_pb2.ListRequest())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -107,7 +115,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.DesktopStart(desktop_pb2.DesktopStartRequest(desktop_id=message))
+            response = self.desktop_stub.Start(desktop_pb2.StartRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -128,7 +136,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.DesktopViewer(desktop_pb2.DesktopViewerRequest(desktop_id=message))
+            response = self.desktop_stub.Viewer(desktop_pb2.ViewerRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -148,7 +156,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.DesktopStop(desktop_pb2.DesktopStopRequest(desktop_id=message))
+            response = self.desktop_stub.Stop(desktop_pb2.StopRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -168,7 +176,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.DesktopDelete(desktop_pb2.DesktopDeleteRequest(desktop_id=message))
+            response = self.desktop_stub.Delete(desktop_pb2.DeleteRequest(desktop_id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -183,24 +191,24 @@ class EngineClient(object):
         print(response.state)
         return True
 
-    def template_list(self):
-        """
-        Client function to call the rpc
-        """
-        try:
-            response = self.desktop_stub.TemplateList(desktop_pb2.Empty())
-        except grpc.RpcError as e:
-            print(e.details())
-            print(e.code().name)
-            print(e.code().value)
-            if grpc.StatusCode.INTERNAL == e.code():
-                print('The error is internal')
-            return False
-        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
-            #~ print(message+' was started')
-        #~ else:
-            #~ print(response.state)
-        return response.templates
+    # ~ def template_list(self):
+        # ~ """
+        # ~ Client function to call the rpc
+        # ~ """
+        # ~ try:
+            # ~ response = self.desktop_stub.TemplateList(desktop_pb2.Empty())
+        # ~ except grpc.RpcError as e:
+            # ~ print(e.details())
+            # ~ print(e.code().name)
+            # ~ print(e.code().value)
+            # ~ if grpc.StatusCode.INTERNAL == e.code():
+                # ~ print('The error is internal')
+            # ~ return False
+				#~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
+					#~ print(message+' was started')
+				#~ else:
+					#~ print(response.state)
+        # ~ return response.templates
                         
     def desktop_from_template(self,message):
         """
@@ -210,9 +218,9 @@ class EngineClient(object):
         """
         try:
             if 'hardware' in message.keys():
-                response = self.desktop_stub.DesktopFromTemplate(desktop_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id'], hardware=message['hardware']))
+                response = self.desktop_stub.FromTemplate(desktop_pb2.FromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id'], hardware=message['hardware']))
             else:
-                response = self.desktop_stub.DesktopFromTemplate(desktop_pb2.DesktopFromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
+                response = self.desktop_stub.FromTemplate(desktop_pb2.FromTemplateRequest(desktop_id=message['desktop_id'], template_id=message['template_id']))
         except grpc.RpcError as e:
             ## Should be deleted as it failed?##
             print(e.details())
@@ -375,16 +383,16 @@ class EngineClient(object):
 
 curr_client = EngineClient()
 
-import time
-''' CHANGES '''
-threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
+# ~ import time
+# ~ ''' CHANGES '''
+# ~ threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 # ~ while True: time.sleep(9999)
 
 # ~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
 # ~ print(curr_client.engine_is_alive())
-print(curr_client.engine_status())
+# ~ print(curr_client.engine_status())
 
 ''' NEW DESKTOP CREATION '''
 # ~ templates = curr_client.template_list()
@@ -429,6 +437,7 @@ print(curr_client.engine_status())
 '''list'''
 desktops = curr_client.desktop_list()
 print(desktops)
+exit(1)
 print(curr_client.desktop_get(desktops[0]))
 curr_client.desktop_get('_admin_downloaded_zxspectrum')
 

@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='desktop',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1f\x65ngine/grpc/proto/desktop.proto\x12\x07\x64\x65sktop\x1a\x19google/protobuf/any.proto\"\r\n\x0bListRequest\" \n\x0cListResponse\x12\x10\n\x08\x64\x65sktops\x18\x01 \x03(\t\" \n\nGetRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"4\n\x0bGetResponse\x12%\n\x07\x64\x65sktop\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\"p\n\x19\x43reateFromTemplateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12*\n\x08hardware\x18\x03 \x01(\x0b\x32\x18.desktop.HardwareDerived\"\xbc\x01\n\x1a\x43reateFromTemplateResponse\x12\x38\n\x05state\x18\x01 \x01(\x0e\x32).desktop.CreateFromTemplateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"m\n\x16\x43reateFromMediaRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12&\n\x08hardware\x18\x03 \x01(\x0b\x32\x14.desktop.HardwareNew\"\xb6\x01\n\x17\x43reateFromMediaResponse\x12\x35\n\x05state\x18\x01 \x01(\x0e\x32&.desktop.CreateFromMediaResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"N\n\rUpdateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12)\n\x08hardware\x18\x02 \x01(\x0b\x32\x17.desktop.HardwareUpdate\"\xa4\x01\n\x0eUpdateResponse\x12,\n\x05state\x18\x01 \x01(\x0e\x32\x1d.desktop.UpdateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"#\n\rDeleteRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xa4\x01\n\x0e\x44\x65leteResponse\x12,\n\x05state\x18\x01 \x01(\x0e\x32\x1d.desktop.DeleteResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07\x44\x45LETED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"\"\n\x0cStartRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xe9\x01\n\rStartResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.desktop.StartResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x1f\n\x06viewer\x18\x03 \x01(\x0b\x32\x0f.desktop.Viewer\x12%\n\x0cnext_actions\x18\x04 \x03(\x0e\x32\x0f.desktop.Action\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"!\n\x0bStopRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xc6\x01\n\x0cStopResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.desktop.StopResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"\"\n\x0cStateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xb8\x01\n\rStateResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.desktop.StateResponse.State\x12%\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0f.desktop.Action\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"#\n\rViewerRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"h\n\x0eViewerResponse\x12\x0e\n\x06\x64\x65tail\x18\x01 \x01(\t\x12\x1f\n\x06viewer\x18\x02 \x01(\x0b\x32\x0f.desktop.Viewer\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\xd9\x01\n\x0bHardwareNew\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x16\n\x0e\x62oot_disk_size\x18\x05 \x01(\x05\x12\x0e\n\x06videos\x18\x06 \x03(\t\x12\x10\n\x08graphics\x18\x07 \x03(\t\x12\r\n\x05\x62oots\x18\x08 \x03(\t\x12\x12\n\ninterfaces\x18\t \x03(\t\x12\x0c\n\x04isos\x18\n \x03(\t\x12\x10\n\x08\x66loppies\x18\x0b \x03(\t\"\xc5\x01\n\x0fHardwareDerived\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x0e\n\x06videos\x18\x05 \x03(\t\x12\x10\n\x08graphics\x18\x06 \x03(\t\x12\r\n\x05\x62oots\x18\x07 \x03(\t\x12\x12\n\ninterfaces\x18\x08 \x03(\t\x12\x0c\n\x04isos\x18\t \x03(\t\x12\x10\n\x08\x66loppies\x18\n \x03(\t\"\xab\x01\n\x0eHardwareUpdate\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x15\n\rboot_disk_bus\x18\x07 \x01(\t\x12\x0e\n\x06videos\x18\x03 \x03(\t\x12\x10\n\x08graphics\x18\x04 \x03(\t\x12\r\n\x05\x62oots\x18\x05 \x03(\t\x12\x12\n\ninterfaces\x18\x06 \x03(\t\x12\x0c\n\x04isos\x18\x08 \x03(\t\x12\x10\n\x08\x66loppies\x18\t \x03(\t*g\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04STOP\x10\x01\x12\t\n\x05START\x10\x02\x12\t\n\x05PAUSE\x10\x03\x12\n\n\x06RESUME\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\n\n\x06UPDATE\x10\x06\x12\x0c\n\x08TEMPLATE\x10\x07\x32\x8f\x05\n\x07\x44\x65sktop\x12\x35\n\x04List\x12\x14.desktop.ListRequest\x1a\x15.desktop.ListResponse\"\x00\x12\x32\n\x03Get\x12\x13.desktop.GetRequest\x1a\x14.desktop.GetResponse\"\x00\x12_\n\x12\x43reateFromTemplate\x12\".desktop.CreateFromTemplateRequest\x1a#.desktop.CreateFromTemplateResponse\"\x00\x12V\n\x0f\x43reateFromMedia\x12\x1f.desktop.CreateFromMediaRequest\x1a .desktop.CreateFromMediaResponse\"\x00\x12;\n\x06Update\x12\x16.desktop.UpdateRequest\x1a\x17.desktop.UpdateResponse\"\x00\x12;\n\x06\x44\x65lete\x12\x16.desktop.DeleteRequest\x1a\x17.desktop.DeleteResponse\"\x00\x12\x38\n\x05Start\x12\x15.desktop.StartRequest\x1a\x16.desktop.StartResponse\"\x00\x12\x35\n\x04Stop\x12\x14.desktop.StopRequest\x1a\x15.desktop.StopResponse\"\x00\x12\x38\n\x05State\x12\x15.desktop.StateRequest\x1a\x16.desktop.StateResponse\"\x00\x12;\n\x06Viewer\x12\x16.desktop.ViewerRequest\x1a\x17.desktop.ViewerResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x1f\x65ngine/grpc/proto/desktop.proto\x12\x07\x64\x65sktop\x1a\x19google/protobuf/any.proto\"\r\n\x0bListRequest\" \n\x0cListResponse\x12\x10\n\x08\x64\x65sktops\x18\x01 \x03(\t\" \n\nGetRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"4\n\x0bGetResponse\x12%\n\x07\x64\x65sktop\x18\x01 \x03(\x0b\x32\x14.google.protobuf.Any\"j\n\x13\x46romTemplateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12*\n\x08hardware\x18\x03 \x01(\x0b\x32\x18.desktop.HardwareDerived\"\xb0\x01\n\x14\x46romTemplateResponse\x12\x32\n\x05state\x18\x01 \x01(\x0e\x32#.desktop.FromTemplateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"g\n\x10\x46romMediaRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12&\n\x08hardware\x18\x03 \x01(\x0b\x32\x14.desktop.HardwareNew\"\xaa\x01\n\x11\x46romMediaResponse\x12/\n\x05state\x18\x01 \x01(\x0e\x32 .desktop.FromMediaResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"N\n\rUpdateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\x12)\n\x08hardware\x18\x02 \x01(\x0b\x32\x17.desktop.HardwareUpdate\"\xa4\x01\n\x0eUpdateResponse\x12,\n\x05state\x18\x01 \x01(\x0e\x32\x1d.desktop.UpdateResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"#\n\rDeleteRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xa4\x01\n\x0e\x44\x65leteResponse\x12,\n\x05state\x18\x01 \x01(\x0e\x32\x1d.desktop.DeleteResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"-\n\x05State\x12\x0b\n\x07\x44\x45LETED\x10\x00\x12\n\n\x06\x46\x41ILED\x10\x01\x12\x0b\n\x07UNKNOWN\x10\x02\"\"\n\x0cStartRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xe9\x01\n\rStartResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.desktop.StartResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12\x1f\n\x06viewer\x18\x03 \x01(\x0b\x32\x0f.desktop.Viewer\x12%\n\x0cnext_actions\x18\x04 \x03(\x0e\x32\x0f.desktop.Action\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"!\n\x0bStopRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xc6\x01\n\x0cStopResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.desktop.StopResponse.State\x12\x0e\n\x06\x64\x65tail\x18\x02 \x01(\t\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"\"\n\x0cStateRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"\xb8\x01\n\rStateResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.desktop.StateResponse.State\x12%\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0f.desktop.Action\"S\n\x05State\x12\x0b\n\x07STOPPED\x10\x00\x12\x0b\n\x07STARTED\x10\x01\x12\n\n\x06PAUSED\x10\x02\x12\x0b\n\x07\x44\x45LETED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"#\n\rViewerRequest\x12\x12\n\ndesktop_id\x18\x01 \x01(\t\"h\n\x0eViewerResponse\x12\x0e\n\x06\x64\x65tail\x18\x01 \x01(\t\x12\x1f\n\x06viewer\x18\x02 \x01(\x0b\x32\x0f.desktop.Viewer\x12%\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0f.desktop.Action\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"\xd9\x01\n\x0bHardwareNew\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x16\n\x0e\x62oot_disk_size\x18\x05 \x01(\x05\x12\x0e\n\x06videos\x18\x06 \x03(\t\x12\x10\n\x08graphics\x18\x07 \x03(\t\x12\r\n\x05\x62oots\x18\x08 \x03(\t\x12\x12\n\ninterfaces\x18\t \x03(\t\x12\x0c\n\x04isos\x18\n \x03(\t\x12\x10\n\x08\x66loppies\x18\x0b \x03(\t\"\xc5\x01\n\x0fHardwareDerived\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x0e\n\x06videos\x18\x05 \x03(\t\x12\x10\n\x08graphics\x18\x06 \x03(\t\x12\r\n\x05\x62oots\x18\x07 \x03(\t\x12\x12\n\ninterfaces\x18\x08 \x03(\t\x12\x0c\n\x04isos\x18\t \x03(\t\x12\x10\n\x08\x66loppies\x18\n \x03(\t\"\xab\x01\n\x0eHardwareUpdate\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x15\n\rboot_disk_bus\x18\x07 \x01(\t\x12\x0e\n\x06videos\x18\x03 \x03(\t\x12\x10\n\x08graphics\x18\x04 \x03(\t\x12\r\n\x05\x62oots\x18\x05 \x03(\t\x12\x12\n\ninterfaces\x18\x06 \x03(\t\x12\x0c\n\x04isos\x18\x08 \x03(\t\x12\x10\n\x08\x66loppies\x18\t \x03(\t*g\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04STOP\x10\x01\x12\t\n\x05START\x10\x02\x12\t\n\x05PAUSE\x10\x03\x12\n\n\x06RESUME\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\n\n\x06UPDATE\x10\x06\x12\x0c\n\x08TEMPLATE\x10\x07\x32\xeb\x04\n\x07\x44\x65sktop\x12\x35\n\x04List\x12\x14.desktop.ListRequest\x1a\x15.desktop.ListResponse\"\x00\x12\x32\n\x03Get\x12\x13.desktop.GetRequest\x1a\x14.desktop.GetResponse\"\x00\x12M\n\x0c\x46romTemplate\x12\x1c.desktop.FromTemplateRequest\x1a\x1d.desktop.FromTemplateResponse\"\x00\x12\x44\n\tFromMedia\x12\x19.desktop.FromMediaRequest\x1a\x1a.desktop.FromMediaResponse\"\x00\x12;\n\x06Update\x12\x16.desktop.UpdateRequest\x1a\x17.desktop.UpdateResponse\"\x00\x12;\n\x06\x44\x65lete\x12\x16.desktop.DeleteRequest\x1a\x17.desktop.DeleteResponse\"\x00\x12\x38\n\x05Start\x12\x15.desktop.StartRequest\x1a\x16.desktop.StartResponse\"\x00\x12\x35\n\x04Stop\x12\x14.desktop.StopRequest\x1a\x15.desktop.StopResponse\"\x00\x12\x38\n\x05State\x12\x15.desktop.StateRequest\x1a\x16.desktop.StateResponse\"\x00\x12;\n\x06Viewer\x12\x16.desktop.ViewerRequest\x1a\x17.desktop.ViewerResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
 
@@ -67,8 +67,8 @@ _ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2933,
-  serialized_end=3036,
+  serialized_start=2897,
+  serialized_end=3000,
 )
 _sym_db.RegisterEnumDescriptor(_ACTION)
 
@@ -83,9 +83,9 @@ UPDATE = 6
 TEMPLATE = 7
 
 
-_CREATEFROMTEMPLATERESPONSE_STATE = _descriptor.EnumDescriptor(
+_FROMTEMPLATERESPONSE_STATE = _descriptor.EnumDescriptor(
   name='State',
-  full_name='desktop.CreateFromTemplateResponse.State',
+  full_name='desktop.FromTemplateResponse.State',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -104,14 +104,14 @@ _CREATEFROMTEMPLATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=466,
-  serialized_end=511,
+  serialized_start=448,
+  serialized_end=493,
 )
-_sym_db.RegisterEnumDescriptor(_CREATEFROMTEMPLATERESPONSE_STATE)
+_sym_db.RegisterEnumDescriptor(_FROMTEMPLATERESPONSE_STATE)
 
-_CREATEFROMMEDIARESPONSE_STATE = _descriptor.EnumDescriptor(
+_FROMMEDIARESPONSE_STATE = _descriptor.EnumDescriptor(
   name='State',
-  full_name='desktop.CreateFromMediaResponse.State',
+  full_name='desktop.FromMediaResponse.State',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -130,10 +130,10 @@ _CREATEFROMMEDIARESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=466,
-  serialized_end=511,
+  serialized_start=448,
+  serialized_end=493,
 )
-_sym_db.RegisterEnumDescriptor(_CREATEFROMMEDIARESPONSE_STATE)
+_sym_db.RegisterEnumDescriptor(_FROMMEDIARESPONSE_STATE)
 
 _UPDATERESPONSE_STATE = _descriptor.EnumDescriptor(
   name='State',
@@ -156,8 +156,8 @@ _UPDATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=466,
-  serialized_end=511,
+  serialized_start=448,
+  serialized_end=493,
 )
 _sym_db.RegisterEnumDescriptor(_UPDATERESPONSE_STATE)
 
@@ -182,8 +182,8 @@ _DELETERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1213,
-  serialized_end=1258,
+  serialized_start=1177,
+  serialized_end=1222,
 )
 _sym_db.RegisterEnumDescriptor(_DELETERESPONSE_STATE)
 
@@ -220,8 +220,8 @@ _STARTRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1447,
-  serialized_end=1530,
+  serialized_start=1411,
+  serialized_end=1494,
 )
 _sym_db.RegisterEnumDescriptor(_STARTRESPONSE_STATE)
 
@@ -258,8 +258,8 @@ _STOPRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1447,
-  serialized_end=1530,
+  serialized_start=1411,
+  serialized_end=1494,
 )
 _sym_db.RegisterEnumDescriptor(_STOPRESPONSE_STATE)
 
@@ -296,8 +296,8 @@ _STATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1447,
-  serialized_end=1530,
+  serialized_start=1411,
+  serialized_end=1494,
 )
 _sym_db.RegisterEnumDescriptor(_STATERESPONSE_STATE)
 
@@ -419,29 +419,29 @@ _GETRESPONSE = _descriptor.Descriptor(
 )
 
 
-_CREATEFROMTEMPLATEREQUEST = _descriptor.Descriptor(
-  name='CreateFromTemplateRequest',
-  full_name='desktop.CreateFromTemplateRequest',
+_FROMTEMPLATEREQUEST = _descriptor.Descriptor(
+  name='FromTemplateRequest',
+  full_name='desktop.FromTemplateRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='desktop_id', full_name='desktop.CreateFromTemplateRequest.desktop_id', index=0,
+      name='desktop_id', full_name='desktop.FromTemplateRequest.desktop_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='template_id', full_name='desktop.CreateFromTemplateRequest.template_id', index=1,
+      name='template_id', full_name='desktop.FromTemplateRequest.template_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='hardware', full_name='desktop.CreateFromTemplateRequest.hardware', index=2,
+      name='hardware', full_name='desktop.FromTemplateRequest.hardware', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -460,33 +460,33 @@ _CREATEFROMTEMPLATEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=208,
-  serialized_end=320,
+  serialized_end=314,
 )
 
 
-_CREATEFROMTEMPLATERESPONSE = _descriptor.Descriptor(
-  name='CreateFromTemplateResponse',
-  full_name='desktop.CreateFromTemplateResponse',
+_FROMTEMPLATERESPONSE = _descriptor.Descriptor(
+  name='FromTemplateResponse',
+  full_name='desktop.FromTemplateResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='state', full_name='desktop.CreateFromTemplateResponse.state', index=0,
+      name='state', full_name='desktop.FromTemplateResponse.state', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='detail', full_name='desktop.CreateFromTemplateResponse.detail', index=1,
+      name='detail', full_name='desktop.FromTemplateResponse.detail', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_actions', full_name='desktop.CreateFromTemplateResponse.next_actions', index=2,
+      name='next_actions', full_name='desktop.FromTemplateResponse.next_actions', index=2,
       number=3, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -497,7 +497,7 @@ _CREATEFROMTEMPLATERESPONSE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _CREATEFROMTEMPLATERESPONSE_STATE,
+    _FROMTEMPLATERESPONSE_STATE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -505,34 +505,34 @@ _CREATEFROMTEMPLATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=323,
-  serialized_end=511,
+  serialized_start=317,
+  serialized_end=493,
 )
 
 
-_CREATEFROMMEDIAREQUEST = _descriptor.Descriptor(
-  name='CreateFromMediaRequest',
-  full_name='desktop.CreateFromMediaRequest',
+_FROMMEDIAREQUEST = _descriptor.Descriptor(
+  name='FromMediaRequest',
+  full_name='desktop.FromMediaRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='desktop_id', full_name='desktop.CreateFromMediaRequest.desktop_id', index=0,
+      name='desktop_id', full_name='desktop.FromMediaRequest.desktop_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='virt_install_id', full_name='desktop.CreateFromMediaRequest.virt_install_id', index=1,
+      name='virt_install_id', full_name='desktop.FromMediaRequest.virt_install_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='hardware', full_name='desktop.CreateFromMediaRequest.hardware', index=2,
+      name='hardware', full_name='desktop.FromMediaRequest.hardware', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -550,34 +550,34 @@ _CREATEFROMMEDIAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=513,
-  serialized_end=622,
+  serialized_start=495,
+  serialized_end=598,
 )
 
 
-_CREATEFROMMEDIARESPONSE = _descriptor.Descriptor(
-  name='CreateFromMediaResponse',
-  full_name='desktop.CreateFromMediaResponse',
+_FROMMEDIARESPONSE = _descriptor.Descriptor(
+  name='FromMediaResponse',
+  full_name='desktop.FromMediaResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='state', full_name='desktop.CreateFromMediaResponse.state', index=0,
+      name='state', full_name='desktop.FromMediaResponse.state', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='detail', full_name='desktop.CreateFromMediaResponse.detail', index=1,
+      name='detail', full_name='desktop.FromMediaResponse.detail', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='next_actions', full_name='desktop.CreateFromMediaResponse.next_actions', index=2,
+      name='next_actions', full_name='desktop.FromMediaResponse.next_actions', index=2,
       number=3, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -588,7 +588,7 @@ _CREATEFROMMEDIARESPONSE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _CREATEFROMMEDIARESPONSE_STATE,
+    _FROMMEDIARESPONSE_STATE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -596,8 +596,8 @@ _CREATEFROMMEDIARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=625,
-  serialized_end=807,
+  serialized_start=601,
+  serialized_end=771,
 )
 
 
@@ -634,8 +634,8 @@ _UPDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=809,
-  serialized_end=887,
+  serialized_start=773,
+  serialized_end=851,
 )
 
 
@@ -680,8 +680,8 @@ _UPDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=890,
-  serialized_end=1054,
+  serialized_start=854,
+  serialized_end=1018,
 )
 
 
@@ -711,8 +711,8 @@ _DELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1056,
-  serialized_end=1091,
+  serialized_start=1020,
+  serialized_end=1055,
 )
 
 
@@ -757,8 +757,8 @@ _DELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1094,
-  serialized_end=1258,
+  serialized_start=1058,
+  serialized_end=1222,
 )
 
 
@@ -788,8 +788,8 @@ _STARTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1260,
-  serialized_end=1294,
+  serialized_start=1224,
+  serialized_end=1258,
 )
 
 
@@ -841,8 +841,8 @@ _STARTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1297,
-  serialized_end=1530,
+  serialized_start=1261,
+  serialized_end=1494,
 )
 
 
@@ -872,8 +872,8 @@ _STOPREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1532,
-  serialized_end=1565,
+  serialized_start=1496,
+  serialized_end=1529,
 )
 
 
@@ -918,8 +918,8 @@ _STOPRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1568,
-  serialized_end=1766,
+  serialized_start=1532,
+  serialized_end=1730,
 )
 
 
@@ -949,8 +949,8 @@ _STATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1768,
-  serialized_end=1802,
+  serialized_start=1732,
+  serialized_end=1766,
 )
 
 
@@ -988,8 +988,8 @@ _STATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1805,
-  serialized_end=1989,
+  serialized_start=1769,
+  serialized_end=1953,
 )
 
 
@@ -1019,8 +1019,8 @@ _VIEWERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1991,
-  serialized_end=2026,
+  serialized_start=1955,
+  serialized_end=1990,
 )
 
 
@@ -1064,8 +1064,8 @@ _VIEWERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2028,
-  serialized_end=2132,
+  serialized_start=1992,
+  serialized_end=2096,
 )
 
 
@@ -1151,8 +1151,8 @@ _VIEWER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2135,
-  serialized_end=2337,
+  serialized_start=2099,
+  serialized_end=2301,
 )
 
 
@@ -1252,8 +1252,8 @@ _HARDWARENEW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2340,
-  serialized_end=2557,
+  serialized_start=2304,
+  serialized_end=2521,
 )
 
 
@@ -1346,8 +1346,8 @@ _HARDWAREDERIVED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2560,
-  serialized_end=2757,
+  serialized_start=2524,
+  serialized_end=2721,
 )
 
 
@@ -1433,19 +1433,19 @@ _HARDWAREUPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2760,
-  serialized_end=2931,
+  serialized_start=2724,
+  serialized_end=2895,
 )
 
 _GETRESPONSE.fields_by_name['desktop'].message_type = google_dot_protobuf_dot_any__pb2._ANY
-_CREATEFROMTEMPLATEREQUEST.fields_by_name['hardware'].message_type = _HARDWAREDERIVED
-_CREATEFROMTEMPLATERESPONSE.fields_by_name['state'].enum_type = _CREATEFROMTEMPLATERESPONSE_STATE
-_CREATEFROMTEMPLATERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
-_CREATEFROMTEMPLATERESPONSE_STATE.containing_type = _CREATEFROMTEMPLATERESPONSE
-_CREATEFROMMEDIAREQUEST.fields_by_name['hardware'].message_type = _HARDWARENEW
-_CREATEFROMMEDIARESPONSE.fields_by_name['state'].enum_type = _CREATEFROMMEDIARESPONSE_STATE
-_CREATEFROMMEDIARESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
-_CREATEFROMMEDIARESPONSE_STATE.containing_type = _CREATEFROMMEDIARESPONSE
+_FROMTEMPLATEREQUEST.fields_by_name['hardware'].message_type = _HARDWAREDERIVED
+_FROMTEMPLATERESPONSE.fields_by_name['state'].enum_type = _FROMTEMPLATERESPONSE_STATE
+_FROMTEMPLATERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_FROMTEMPLATERESPONSE_STATE.containing_type = _FROMTEMPLATERESPONSE
+_FROMMEDIAREQUEST.fields_by_name['hardware'].message_type = _HARDWARENEW
+_FROMMEDIARESPONSE.fields_by_name['state'].enum_type = _FROMMEDIARESPONSE_STATE
+_FROMMEDIARESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_FROMMEDIARESPONSE_STATE.containing_type = _FROMMEDIARESPONSE
 _UPDATEREQUEST.fields_by_name['hardware'].message_type = _HARDWAREUPDATE
 _UPDATERESPONSE.fields_by_name['state'].enum_type = _UPDATERESPONSE_STATE
 _UPDATERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
@@ -1469,10 +1469,10 @@ DESCRIPTOR.message_types_by_name['ListRequest'] = _LISTREQUEST
 DESCRIPTOR.message_types_by_name['ListResponse'] = _LISTRESPONSE
 DESCRIPTOR.message_types_by_name['GetRequest'] = _GETREQUEST
 DESCRIPTOR.message_types_by_name['GetResponse'] = _GETRESPONSE
-DESCRIPTOR.message_types_by_name['CreateFromTemplateRequest'] = _CREATEFROMTEMPLATEREQUEST
-DESCRIPTOR.message_types_by_name['CreateFromTemplateResponse'] = _CREATEFROMTEMPLATERESPONSE
-DESCRIPTOR.message_types_by_name['CreateFromMediaRequest'] = _CREATEFROMMEDIAREQUEST
-DESCRIPTOR.message_types_by_name['CreateFromMediaResponse'] = _CREATEFROMMEDIARESPONSE
+DESCRIPTOR.message_types_by_name['FromTemplateRequest'] = _FROMTEMPLATEREQUEST
+DESCRIPTOR.message_types_by_name['FromTemplateResponse'] = _FROMTEMPLATERESPONSE
+DESCRIPTOR.message_types_by_name['FromMediaRequest'] = _FROMMEDIAREQUEST
+DESCRIPTOR.message_types_by_name['FromMediaResponse'] = _FROMMEDIARESPONSE
 DESCRIPTOR.message_types_by_name['UpdateRequest'] = _UPDATEREQUEST
 DESCRIPTOR.message_types_by_name['UpdateResponse'] = _UPDATERESPONSE
 DESCRIPTOR.message_types_by_name['DeleteRequest'] = _DELETEREQUEST
@@ -1520,33 +1520,33 @@ GetResponse = _reflection.GeneratedProtocolMessageType('GetResponse', (_message.
   })
 _sym_db.RegisterMessage(GetResponse)
 
-CreateFromTemplateRequest = _reflection.GeneratedProtocolMessageType('CreateFromTemplateRequest', (_message.Message,), {
-  'DESCRIPTOR' : _CREATEFROMTEMPLATEREQUEST,
+FromTemplateRequest = _reflection.GeneratedProtocolMessageType('FromTemplateRequest', (_message.Message,), {
+  'DESCRIPTOR' : _FROMTEMPLATEREQUEST,
   '__module__' : 'engine.grpc.proto.desktop_pb2'
-  # @@protoc_insertion_point(class_scope:desktop.CreateFromTemplateRequest)
+  # @@protoc_insertion_point(class_scope:desktop.FromTemplateRequest)
   })
-_sym_db.RegisterMessage(CreateFromTemplateRequest)
+_sym_db.RegisterMessage(FromTemplateRequest)
 
-CreateFromTemplateResponse = _reflection.GeneratedProtocolMessageType('CreateFromTemplateResponse', (_message.Message,), {
-  'DESCRIPTOR' : _CREATEFROMTEMPLATERESPONSE,
+FromTemplateResponse = _reflection.GeneratedProtocolMessageType('FromTemplateResponse', (_message.Message,), {
+  'DESCRIPTOR' : _FROMTEMPLATERESPONSE,
   '__module__' : 'engine.grpc.proto.desktop_pb2'
-  # @@protoc_insertion_point(class_scope:desktop.CreateFromTemplateResponse)
+  # @@protoc_insertion_point(class_scope:desktop.FromTemplateResponse)
   })
-_sym_db.RegisterMessage(CreateFromTemplateResponse)
+_sym_db.RegisterMessage(FromTemplateResponse)
 
-CreateFromMediaRequest = _reflection.GeneratedProtocolMessageType('CreateFromMediaRequest', (_message.Message,), {
-  'DESCRIPTOR' : _CREATEFROMMEDIAREQUEST,
+FromMediaRequest = _reflection.GeneratedProtocolMessageType('FromMediaRequest', (_message.Message,), {
+  'DESCRIPTOR' : _FROMMEDIAREQUEST,
   '__module__' : 'engine.grpc.proto.desktop_pb2'
-  # @@protoc_insertion_point(class_scope:desktop.CreateFromMediaRequest)
+  # @@protoc_insertion_point(class_scope:desktop.FromMediaRequest)
   })
-_sym_db.RegisterMessage(CreateFromMediaRequest)
+_sym_db.RegisterMessage(FromMediaRequest)
 
-CreateFromMediaResponse = _reflection.GeneratedProtocolMessageType('CreateFromMediaResponse', (_message.Message,), {
-  'DESCRIPTOR' : _CREATEFROMMEDIARESPONSE,
+FromMediaResponse = _reflection.GeneratedProtocolMessageType('FromMediaResponse', (_message.Message,), {
+  'DESCRIPTOR' : _FROMMEDIARESPONSE,
   '__module__' : 'engine.grpc.proto.desktop_pb2'
-  # @@protoc_insertion_point(class_scope:desktop.CreateFromMediaResponse)
+  # @@protoc_insertion_point(class_scope:desktop.FromMediaResponse)
   })
-_sym_db.RegisterMessage(CreateFromMediaResponse)
+_sym_db.RegisterMessage(FromMediaResponse)
 
 UpdateRequest = _reflection.GeneratedProtocolMessageType('UpdateRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEREQUEST,
@@ -1668,8 +1668,8 @@ _DESKTOP = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=3039,
-  serialized_end=3694,
+  serialized_start=3003,
+  serialized_end=3622,
   methods=[
   _descriptor.MethodDescriptor(
     name='List',
@@ -1690,21 +1690,21 @@ _DESKTOP = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
-    name='CreateFromTemplate',
-    full_name='desktop.Desktop.CreateFromTemplate',
+    name='FromTemplate',
+    full_name='desktop.Desktop.FromTemplate',
     index=2,
     containing_service=None,
-    input_type=_CREATEFROMTEMPLATEREQUEST,
-    output_type=_CREATEFROMTEMPLATERESPONSE,
+    input_type=_FROMTEMPLATEREQUEST,
+    output_type=_FROMTEMPLATERESPONSE,
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
-    name='CreateFromMedia',
-    full_name='desktop.Desktop.CreateFromMedia',
+    name='FromMedia',
+    full_name='desktop.Desktop.FromMedia',
     index=3,
     containing_service=None,
-    input_type=_CREATEFROMMEDIAREQUEST,
-    output_type=_CREATEFROMMEDIARESPONSE,
+    input_type=_FROMMEDIAREQUEST,
+    output_type=_FROMMEDIARESPONSE,
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(

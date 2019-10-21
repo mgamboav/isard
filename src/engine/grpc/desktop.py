@@ -46,19 +46,19 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         self.desktop_sm = DesktopSM()
         
 
-    def DesktopList(self, request, context):
+    def List(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
                 desktops = list(r.table('domains').get_all('desktop', index='kind').pluck('id').run(conn))
                 desktops = [d['id'] for d in desktops]
-            return desktop_pb2.DesktopListResponse(desktops=desktops)
+            return desktop_pb2.ListResponse(desktops=desktops)
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktop_pb2.DesktopListResponse()  
+            return desktop_pb2.ListResponse()  
 
-    def DesktopGet(self, request, context):
+    def Get(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
@@ -78,7 +78,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.DesktopStartResponse() 
                               
-    def DesktopStart(self, request, context):
+    def Start(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
@@ -133,7 +133,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)             
             return desktop_pb2.DesktopStartResponse()
 
-    def DesktopViewer(self, request, context):
+    def Viewer(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
@@ -161,7 +161,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         viewer=get_viewer(domain['viewer'])
         return desktop_pb2.DesktopViewerResponse(state=domain['status'].upper(),viewer=viewer)
              
-    def DesktopStop(self, request, context):
+    def Stop(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
@@ -211,7 +211,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktop_pb2.DesktopStopResponse()
 
-    def DesktopDelete(self, request, context):
+    def Delete(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:
@@ -254,7 +254,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             return desktop_pb2.DesktopDeleteResponse()
 
 
-    def DesktopFromTemplate(self, request, context):
+    def FromTemplate(self, request, context):
         ''' Checks '''
         try:
             with rdb() as conn:

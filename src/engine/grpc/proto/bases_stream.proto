@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package templates_stream;
+package bases_stream;
 
 //import "google/protobuf/empty.proto"; 
 //import "google/protobuf/any.proto";
  
-service TemplatesStream{
+service BasesStream{
  rpc Changes(StreamRequest) returns (stream StreamResponse) {}
 }
 
 message StreamRequest{}
 
 message StreamResponse{
-  string template_id = 1;
+  string base_id = 1;
     enum State{
      STOPPED = 0;
      STARTED = 1;
