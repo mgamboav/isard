@@ -1,4 +1,5 @@
-FROM isard/alpine-pandas:1.0.0
+#### PRODUCTION
+FROM isard/alpine-pandas:1.0.0 AS production
 MAINTAINER isard <info@isard.com>
 
 RUN pip3 uninstall pandas pytz python-dateutil six -y
@@ -41,5 +42,6 @@ RUN mkdir -p /var/log/supervisor
 COPY dockers/hypervisor/supervisord.conf /etc/supervisord.conf
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
+#### DEVELOPMENT
 
-
+FROM production AS development

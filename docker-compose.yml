@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: dockers/nginx/Dockerfile
-      #target: production
+      target: production
     restart: unless-stopped
     depends_on:
       - isard-app
@@ -68,7 +68,7 @@ services:
     build:
       context: .
       dockerfile: dockers/app/Dockerfile
-      #target: production
+      target: production
     restart: unless-stopped
     depends_on:
       - isard-database
