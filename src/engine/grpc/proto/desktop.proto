@@ -52,9 +52,9 @@ message FromTemplateRequest {
 
 message FromTemplateResponse {
     enum State {
-        STOPPED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
     }
 
     State state = 1;
@@ -70,9 +70,9 @@ message FromMediaRequest {
 
 message FromMediaResponse {
     enum State {
-        STOPPED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
     }
 
     State state = 1;
@@ -87,9 +87,9 @@ message UpdateRequest {
 
 message UpdateResponse {
     enum State {
-        STOPPED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
     }
 
     State state = 1;
@@ -103,9 +103,9 @@ message DeleteRequest {
 
 message DeleteResponse {
     enum State {
-        DELETED = 0;
-        FAILED = 1;
-        UNKNOWN = 2;
+        UNKNOWN = 0;
+        DELETED = 1;
+        FAILED = 2;
     }
 
     State state = 1;
@@ -139,12 +139,12 @@ message StopRequest {
 
 message StopResponse {
     enum State {
-        STOPPED = 0;
-        STARTED = 1;
-        PAUSED = 2;
-        DELETED = 3;
-        FAILED = 4;
-        UNKNOWN = 5;
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
     }
 
     State state = 1;
@@ -158,16 +158,46 @@ message StateRequest {
 
 message StateResponse {
     enum State {
-        STOPPED = 0;
-        STARTED = 1;
-        PAUSED = 2;
-        DELETED = 3;
-        FAILED = 4;
-        UNKNOWN = 5;
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
     }
 
     State state = 1;
     repeated Action next_actions = 2;
+}
+
+message NextActionsRequest {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+
+    State state = 1;
+};
+
+message NextActionsResponse {
+    // TODO: Specify NextActions in each thing
+    enum Action {
+        UNKNOWN = 0;
+        DELETE = 1;
+        STOP = 2;
+        START = 3;
+        PAUSE = 4;
+        RESUME = 5;
+        UPDATE = 6;
+        TEMPLATE = 7;
+        VIEWER = 8;
+    }
+
+    repeated Action next_actions = 1;
 }
 
 message ViewerRequest {

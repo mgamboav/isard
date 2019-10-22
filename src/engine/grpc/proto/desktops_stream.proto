@@ -37,7 +37,8 @@ message DesktopsStreamResponse{
  State state = 2;
  string detail = 3; 
  repeated string next_actions = 4; 
-  oneof viewer_oneof {
-    Viewer viewer = 5;
-  } 
+//  oneof viewer_oneof {
+//    Viewer viewer = 5;
+//  } 
+     Viewer viewer = 5;
 }

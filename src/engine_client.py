@@ -68,6 +68,7 @@ class EngineClient(object):
         try:
             for c in self.desktops_stream_stub.Changes(desktops_stream_pb2.DesktopsStreamRequest()):
                 print(c.state)
+                print(c.viewer)
         except KeyboardInterrupt:            
             return 
             
@@ -204,10 +205,10 @@ class EngineClient(object):
             # ~ if grpc.StatusCode.INTERNAL == e.code():
                 # ~ print('The error is internal')
             # ~ return False
-				#~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
-					#~ print(message+' was started')
-				#~ else:
-					#~ print(response.state)
+                #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
+                    #~ print(message+' was started')
+                #~ else:
+                    #~ print(response.state)
         # ~ return response.templates
                         
     def desktop_from_template(self,message):
@@ -383,10 +384,10 @@ class EngineClient(object):
 
 curr_client = EngineClient()
 
-# ~ import time
+import time
 # ~ ''' CHANGES '''
-# ~ threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
-# ~ while True: time.sleep(9999)
+threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
+while True: time.sleep(9999)
 
 # ~ curr_client.domain_changes()
 
@@ -435,9 +436,9 @@ curr_client = EngineClient()
 # ~ print(desktops)
 
 '''list'''
-desktops = curr_client.desktop_list()
-print(desktops)
-print(curr_client.desktop_get(desktops[0]))
+# ~ desktops = curr_client.desktop_list()
+# ~ print(desktops)
+# ~ print(curr_client.desktop_get(desktops[0]))
 # ~ print(curr_client.desktop_get('_admin_downloaded_zxspectrum'))
 
 # ~ '''start/stop'''
