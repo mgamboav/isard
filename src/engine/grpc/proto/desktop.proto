@@ -39,7 +39,9 @@ message GetRequest {
 }
 
 message GetResponse {
-    repeated google.protobuf.Any desktop = 1;
+    string desktop = 1;
+    repeated Action next_actions = 2;
+//    repeated google.protobuf.Any desktop = 1;
 }
 
 message FromTemplateRequest {

@@ -1,6 +1,7 @@
 import grpc
 import time
 import hashlib
+import json
 
 from engine.grpc.proto import desktop_pb2
 from engine.grpc.proto import desktop_pb2_grpc
@@ -47,7 +48,6 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         
 
     def List(self, request, context):
-        ''' Checks '''
         try:
             with rdb() as conn:
                 desktops = list(r.table('domains').get_all('desktop', index='kind').pluck('id').run(conn))
@@ -59,24 +59,24 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             return desktop_pb2.ListResponse()  
 
     def Get(self, request, context):
-        ''' Checks '''
         try:
             with rdb() as conn:
                 desktop = r.table('domains').get(request.desktop_id).run(conn)
             if len(desktop) == 0:
                 context.set_details(request.desktop_id+'  not found in database.')
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                return desktop_pb2.DesktopStartResponse()                     
-            desktop['next_actions']=self.desktop_sm.get_next_actions(request.desktop_id,desktop['status'].upper())
-            return desktop_pb2.DesktopGetResponse(desktop=desktop)
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                return desktop_pb2.GetResponse()                     
+            next_actions=self.desktop_sm.get_next_actions(desktop['status'].upper())
+            return desktop_pb2.GetResponse(desktop=json.dumps(desktop), next_actions=next_actions)   ##json.dumps(list(desktop)) This returns root keys only
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
-            context.set_code(grpc.StatusCode.UNKNOWN)
-            return desktop_pb2.DesktopStartResponse()             
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            return desktop_pb2.GetResponse()             
         except Exception as e:
+            print(str(e))
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktop_pb2.DesktopStartResponse() 
+            return desktop_pb2.GetResponse() 
                               
     def Start(self, request, context):
         ''' Checks '''
@@ -88,23 +88,23 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             # ~ if domain['status'] not in ['Stopped','Failed']: 
                 context.set_details(request.desktop_id+' is '+domain['status']+' and can\'t be started from this state.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return desktop_pb2.DesktopStartResponse()
+                return desktop_pb2.StartResponse()
             elif domain['kind'] != 'desktop':
                 context.set_details(request.desktop_id+' is a '+domain['kind']+'.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                   
-                return desktop_pb2.DesktopStartResponse()
+                return desktop_pb2.StartResponse()
         except StateInvalidError:
             context.set_details('State '+domain['status'].upper()+' unknown')
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            return desktop_pb2.DesktopStartResponse()           
+            return desktop_pb2.StartResponse()           
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
             context.set_code(grpc.StatusCode.NOT_FOUND)
-            return desktop_pb2.DesktopStartResponse()            
+            return desktop_pb2.StartResponse()            
         except Exception as e:
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktop_pb2.DesktopStartResponse()
+            return desktop_pb2.StartResponse()
             
         ''' Start desktop_id '''
         try:

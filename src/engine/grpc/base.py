@@ -20,7 +20,9 @@ from rethinkdb.errors import (
     ReqlTimeoutError,
     ReqlUserError)
 from engine.grpc.lib.database import rdb
-from engine.grpc.template import TemplateServicer
+
+# ~ from engine.grpc.template import TemplateServicer
+
 # ~ .TemplateAndBaseFromDesktop as TemplateAndBaseFromDesktop
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
@@ -71,8 +73,8 @@ class BaseServicer(base_pb2_grpc.BaseServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return base_pb2.GetResponse() 
             
-    def FromDesktop(self, request, context):
-        return TemplateAndBaseFromDesktop('base', request, context)
+    # ~ def FromDesktop(self, request, context):
+        # ~ return TemplateAndBaseFromDesktop('base', request, context)
                 
     # ~ def TemplateAndBaseFromDesktop(self, kind, request, context):
         # ~ ''' Checks '''

@@ -437,15 +437,14 @@ curr_client = EngineClient()
 '''list'''
 desktops = curr_client.desktop_list()
 print(desktops)
-exit(1)
 print(curr_client.desktop_get(desktops[0]))
-curr_client.desktop_get('_admin_downloaded_zxspectrum')
+# ~ print(curr_client.desktop_get('_admin_downloaded_zxspectrum'))
 
-'''start/stop'''
-while True:
-    curr_client.desktop_start('_admin_downloaded_zxspectrum')
-    # time.sleep(1)
-    curr_client.desktop_stop('_admin_downloaded_zxspectrum')
+# ~ '''start/stop'''
+# ~ while True:
+    # ~ curr_client.desktop_start('_admin_downloaded_zxspectrum')
+    # ~ # time.sleep(1)
+    # ~ curr_client.desktop_stop('_admin_downloaded_zxspectrum')
 
 
 # ~ curr_client.domain_delete('_admin_downloaded_tetros')
