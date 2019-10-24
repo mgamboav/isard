@@ -4,6 +4,9 @@ from concurrent import futures
 
 from engine.grpc.proto import desktop_pb2, desktop_pb2_grpc
 
+from engine.grpc.proto import engine_pb2
+from engine.grpc.proto import engine_pb2_grpc
+
 class RPCDestopServerTest(unittest.TestCase):
     from engine.grpc.desktop import DesktopServicer
     server_class = DesktopServicer
@@ -20,7 +23,24 @@ class RPCDestopServerTest(unittest.TestCase):
     def tearDown(self):
         self.server.stop(None)
 
+    def test_00engine(self):
+        with grpc.insecure_channel(f'localhost:{self.port}') as channel:
+            stub = engine_pb2_grpc.EngineStub(channel)
+            response = stub.EngineIsAlive(engine_pb2.EngineIsAliveRequest())
 
+        self.assertEqual(response.is_alive, True)
+        self.assertEqual(response.background_is_alive, True)
+        self.assertEqual(response.changes_domains_thread_is_alive, True)
+        self.assertEqual(response.changes_hyps_thread_is_alive, True)
+        self.assertEqual(response.changes_hyps_thread_is_alive, True)
+        self.assertEqual(response.event_thread_is_alive, True)
+        
+    def test_01get(self):
+        with grpc.insecure_channel(f'localhost:{self.port}') as channel:
+            stub = desktop_pb2_grpc.DesktopStub(channel)
+            response = stub.Get(desktop_pb2.ListRequest())
+        # ~ print(response.desktops)
+        self.assertEqual(response.desktops, ['_admin_downloaded_slax93', '_admin_downloaded_tetros', '_admin_asdfasdfas', '_admin_downloaded_zxspectrum'])
 
 
     def test_list(self):
