@@ -25,9 +25,12 @@ LOG_LEVEL_NUM = wlog.getLevelName(LOG_LEVEL)
 wlog.basicConfig(format=LOG_FORMAT,datefmt=LOG_DATE_FORMAT,level=LOG_LEVEL_NUM)
 
 
-# ~ import grpc
-# ~ from ...engine.grpc.proto import engineinfo_pb2
-# ~ from ...engine.grpc.proto import engineinfo_pb2_grpc
+import grpc
+import sys
+sys.path.append("...")
+
+from engine.grpc.proto import engine_pb2
+from engine.grpc.proto import engine_pb2_grpc
 
 '''
 PASSWORDS MANAGER
@@ -375,35 +378,42 @@ class Wizard():
             return False
 
     def valid_engine(self):
-        from ..lib.load_config import load_config
-        dict=load_config()['DEFAULT_HYPERVISORS']   
+        # ~ from ..lib.load_config import load_config
+        # ~ dict=load_config()['DEFAULT_HYPERVISORS']   
 
-        # ~ try:
-            # ~ channel = grpc.insecure_channel(
-                            # ~ '{}:{}'.format('localhost', 46001))
-            # ~ stub = engineinfo_pb2_grpc.EngineInfoStub(channel)
-            # ~ response = stub.EngineIsAlive(engineinfo_pb2.EngineIsAliveRequest())
-            # ~ #~ wlog.info('we have grpc response'+str(response))
-            # ~ return True
-        # ~ except grpc.RpcError as e:
-            # ~ print(e.details())
-            # ~ print(e.code().name)
-            # ~ print(e.code().value)
-            # ~ if grpc.StatusCode.INTERNAL == e.code():
-                # ~ print('The error is internal')
-            # ~ return False
+        try:
+            with grpc.insecure_channel(
+                            '{}:{}'.format('localhost', 1313)) as channel:
+                stub = engine_pb2_grpc.EngineStub(channel)
+                response = stub.EngineStatus(engine_pb2.EngineStatusRequest())
+            wlog.info('We have grpc response: \n'+str(response))
+            if response.is_alive:
+                if response.background_is_alive and \
+                        response.changes_domains_thread_is_alive and \
+                        response.changes_hyps_thread_is_alive and \
+                        response.changes_hyps_thread_is_alive and \
+                        response.event_thread_is_alive:
+                    return True
+            
+        except grpc.RpcError as e:
+            wlog.error(e.details())
+            wlog.error(e.code().name)
+            wlog.error(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                wlog.error('Internal error')
+        return False
 
         
-        valid_engine=self.valid_server('isard-engine:5555' if 'isard-hypervisor' in dict.keys() else 'localhost:5555')
-        if valid_engine:
-            if 'isard-hypervisor' in dict.keys():
-                url='http://isard-engine'
-                web_port=5555
-            else:
-                url='http://localhost'
-                web_port=5555                
-            r.db('isard').table('config').get(1).update({'engine':{'api':{'url':url,'web_port':web_port,'token':'fosdem'}}}).run()
-        return valid_engine
+        # ~ valid_engine=self.valid_server('isard-engine:5555' if 'isard-hypervisor' in dict.keys() else 'localhost:5555')
+        # ~ if valid_engine:
+            # ~ if 'isard-hypervisor' in dict.keys():
+                # ~ url='http://isard-engine'
+                # ~ web_port=5555
+            # ~ else:
+                # ~ url='http://localhost'
+                # ~ web_port=5555                
+            # ~ r.db('isard').table('config').get(1).update({'engine':{'api':{'url':url,'web_port':web_port,'token':'fosdem'}}}).run()
+        # ~ return valid_engine
 
     def valid_hypervisor(self,remote_addr=False):
         try:

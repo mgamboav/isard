@@ -119,12 +119,12 @@ message StartRequest {
 
 message StartResponse {
     enum State {
-        STOPPED = 0;
-        STARTED = 1;
-        PAUSED = 2;
-        DELETED = 3;
-        FAILED = 4;
-        UNKNOWN = 5;
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
     }
 
     State state = 1;
