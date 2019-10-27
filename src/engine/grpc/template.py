@@ -1,4 +1,9 @@
 import grpc
+
+
+import sys,os
+from engine.services.log import logs
+
 from engine.grpc.proto import template_pb2
 from engine.grpc.proto import template_pb2_grpc
 
@@ -23,7 +28,8 @@ from engine.grpc.lib.database import rdb
 
 # ~ from engine.grpc.grpc_actions import GrpcActions
 
-from engine.grpc.statemachines.template_sm import TemplateSM, StateInvalidError
+from engine.grpc.statemachines.desktop_sm import DesktopSM, StateInvalidError
+# ~ from engine.grpc.statemachines.template_sm import TemplateSM, StateInvalidError
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
@@ -34,7 +40,8 @@ class TemplateServicer(template_pb2_grpc.TemplateServicer):
     """
     def __init__(self, app):
         # ~ self.grpc = GrpcActions(self.manager)
-        self.template_sm = TemplateSM()
+        self.desktop_sm = DesktopSM()
+        # ~ self.template_sm = TemplateSM()
     
 
     def List(self, request, context):
@@ -78,37 +85,49 @@ class TemplateServicer(template_pb2_grpc.TemplateServicer):
                 
     def TemplateAndBaseFromDesktop(self, kind, request, context):
         ''' Checks '''
+        if request.template_id == '':
+            context.set_details('Missing template_id in call to templating from desktop: '+request.desktop_id)
+            context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
+            return template_pb2.FromDesktopResponse() 
         try:
             with rdb() as conn:
                 template = r.table('domains').get(request.template_id).pluck('id').run(conn)
             context.set_details(request.template_id+' already exists in system.')
             context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-            return template_pb2.TemplateFromDesktopResponse()                
+            return template_pb2.FromDesktopResponse()                
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'FromDesktop error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return template_pb2.TemplateFromDesktopResponse()
+            return template_pb2.FromDesktopResponse()
         try:
             with rdb() as conn:
                 desktop = r.table('domains').get(request.desktop_id).without('history_domain').run(conn)
             if desktop['status'] not in ['Stopped']: 
                 context.set_details(request.desktop_id+' it is not stopped.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return template_pb2.TemplateFromDesktopResponse()
+                return template_pb2.FromDesktopResponse()
             elif desktop['kind'] != 'desktop':
                 context.set_details(request.desktop_id+' it is not a desktop.')
                 context.set_code(grpc.StatusCode.FAILED_PRECONDITION)                
-                return template_pb2.TemplateFromDesktopResponse()                
+                return template_pb2.FromDesktopResponse()                
         except ReqlNonExistenceError:
             context.set_details(request.desktop_id+' not found in database.')
             context.set_code(grpc.StatusCode.UNKNOWN)
-            return template_pb2.TemplateFromDesktopResponse()         
+            return template_pb2.FromDesktopResponse()         
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'FromDesktop error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return template_pb2.TemplateFromDesktopResponse()
+            return template_pb2.FromDesktopResponse()
         
         ''' OPTIONAL HARDWARE VALUES | GET FROM DESKTOP '''
         hardware = {}
@@ -139,18 +158,30 @@ class TemplateServicer(template_pb2_grpc.TemplateServicer):
             # ~ self.grpc.add_template_from_desktop(request.desktop_id)
             ''' DATABASE '''
             with rdb() as conn:
+                # ~ logs.grpc.error(request.desktop_id)
+                # ~ logs.grpc.error(request.template_id)
+                # ~ logs.grpc.error(create_dict)
                 r.table('domains').get(request.desktop_id).update({'create_dict':create_dict,'status':'CreatingTemplate'}).run(conn)
+                # ~ r.table('domains').get(request.desktop_id).update({'create_dict':create_dict}).run(conn)
                 c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
-                c.next(MAX_TIMEOUT)
-                next_actions = action[state['new_val']['status'].capitalize()]
-                return template_pb2.TemplateFromDesktopResponse(state='STOPPED', next_actions=next_actions)
+                state=c.next(MAX_TIMEOUT)
+                if r.table('domains').get(request.template_id).run(conn) is None:
+                    context.set_details('Disk for template already exists')
+                    context.set_code(grpc.StatusCode.FAILED_PRECONDITION)             
+                    return template_pb2.FromDesktopResponse()            
+            next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
+            return template_pb2.FromDesktopResponse(state='STOPPED', next_actions=next_actions)
         except ReqlTimeoutError:
             context.set_details('Unable to create the domain '+request.template_id)
-            context.set_code(grpc.StatusCode.INTERNAL)             
-            return template_pb2.TemplateFromDesktopResponse()            
+            context.set_code(grpc.StatusCode.DEADLINE_EXCEEDED)             
+            return template_pb2.FromDesktopResponse()            
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'FromDesktop error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
-            return template_pb2.TemplateFromDesktopResponse()
+            return template_pb2.FromDesktopResponse()
 
 

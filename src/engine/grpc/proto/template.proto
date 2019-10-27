@@ -13,6 +13,18 @@ service Template{
  rpc FromDesktop(FromDesktopRequest) returns (FromDesktopResponse) {}
 }
 
+
+enum Action {
+    UNKNOWN = 0;
+    STOP = 1;
+    START = 2;
+    PAUSE = 3;
+    RESUME = 4;
+    DELETE = 5;
+    UPDATE = 6;
+    TEMPLATE = 7;
+}
+
 message HardwareNew{
  int32 vcpus=1;
  int32 memory=2;
@@ -73,9 +85,9 @@ message DeleteRequest{
 
 message DeleteResponse{
     enum State{
-     DELETED = 0;
-     FAILED = 1;
-     UNKNOWN = 2;
+		UNKNOWN = 0;
+		DELETED = 1;
+		FAILED = 2;
     }
  State state = 1;
  string detail = 2;
@@ -88,9 +100,9 @@ message UpdateRequest{
 
 message UpdateResponse{
     enum State{
-     STOPPED= 0;
-     FAILED = 1;
-     UNKNOWN = 2;
+		UNKNOWN = 0;
+		STOPPED = 1;
+		FAILED = 2;
     }
  State state = 1;
  string detail = 2;
@@ -100,16 +112,16 @@ message FromDesktopRequest{
  string desktop_id=1;
  string template_id=2;
  HardwareDerived hardware=3;
- repeated string next_actions = 4;
 }
 
 message FromDesktopResponse{
     enum State{
-     STOPPED= 0;
-     FAILED = 1;
-     UNKNOWN = 2;
+		UNKNOWN = 0;
+		STOPPED = 1;
+		FAILED = 2;
     }
- State state = 1;
- string detail = 2;
+	State state = 1;
+	string detail = 2;
+	repeated Action next_actions = 3; 
 }
 

@@ -3,6 +3,9 @@ import time
 import hashlib
 import json
 
+import sys,os
+from engine.services.log import logs
+
 from engine.grpc.proto import desktop_pb2
 from engine.grpc.proto import desktop_pb2_grpc
     
@@ -54,6 +57,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
                 desktops = [d['id'] for d in desktops]
             return desktop_pb2.ListResponse(desktops=desktops)
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'List error: \n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.ListResponse()  
@@ -73,7 +80,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             return desktop_pb2.GetResponse()             
         except Exception as e:
-            print(str(e))
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.GetResponse() 
@@ -102,6 +112,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.NOT_FOUND)
             return desktop_pb2.StartResponse()            
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Start error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.StartResponse()
@@ -113,14 +127,14 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
-                with rdb() as conn:
-                    c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
-                    state=c.next(MIN_TIMEOUT)
-                next_actions = self.desktop_sm.get_next_actions(request.desktop_id,state['status'].upper())
-                viewer=get_viewer(state['new_val']['viewer'])
-                return desktop_pb2.StartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
-                # ~ return desktop_pb2.StartResponse(state='STARTED',viewer=viewer,next_actions=next_actions)
-                # ~ return desktop_pb2.StartResponse()
+                # ~ with rdb() as conn:
+                c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
+                state=c.next(MIN_TIMEOUT)
+            next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
+            viewer=get_viewer(state['new_val']['viewer'])
+            return desktop_pb2.StartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
+            # ~ return desktop_pb2.StartResponse(state='STARTED',viewer=viewer,next_actions=next_actions)
+            # ~ return desktop_pb2.StartResponse()
         except ReqlTimeoutError:
             context.set_details('Not able to start the domain '+request.desktop_id)
             context.set_code(grpc.StatusCode.DEADLINE_EXCEEDED)             
@@ -130,6 +144,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             # ~ context.set_code(grpc.StatusCode.INTERNAL)             
             # ~ return desktop_pb2.StartResponse()             
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Start error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.UNKNOWN)             
             return desktop_pb2.StartResponse()
@@ -154,6 +172,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return desktop_pb2.StartResponse()            
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Viewer error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.StartResponse()
@@ -182,6 +204,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return desktop_pb2.StopResponse()         
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Stop error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database!')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.StopResponse()
@@ -196,7 +222,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
                 with rdb() as conn:
                     c = r.table('domains').get_all(r.args(['Stopped','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status').changes().run(conn)
                     state=c.next(MIN_TIMEOUT)
-                next_actions = self.desktop_sm.get_next_actions(request.desktop_id,state['status'].upper())
+                next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
                 return desktop_pb2.StopResponse(state=state['new_val']['status'].upper(),next_actions=next_actions)
 
 
@@ -216,6 +242,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktop_pb2.StopResponse()                        
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Stop error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktop_pb2.StopResponse()
@@ -238,6 +268,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return desktop_pb2.DeleteResponse()         
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'Delete error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.DeleteResponse()
@@ -274,7 +308,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         except ReqlNonExistenceError:
             pass        
         except Exception as e:
-            # ~ print('1 '+str(e))
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'FromTemplate error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.FromTemplateResponse()
@@ -294,7 +331,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)
             return desktop_pb2.FromTemplateResponse()         
         except Exception as e:
-            # ~ print('2: '+str(e))
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'FromTemplate error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
             context.set_details('Unable to access database.')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.FromTemplateResponse()
@@ -337,6 +377,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktop_pb2.FromTemplateResponse()            
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            logs.grpc.error(f'FromTemplate error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                        
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INTERNAL)             
             return desktop_pb2.FromTemplateResponse()

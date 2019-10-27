@@ -386,8 +386,8 @@ curr_client = EngineClient()
 
 import time
 # ~ ''' CHANGES '''
-threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
-while True: time.sleep(9999)
+#threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
+#while True: time.sleep(9999)
 
 # ~ curr_client.domain_changes()
 
@@ -413,9 +413,9 @@ while True: time.sleep(9999)
 # ~ curr_client.template_from_desktop({'desktop_id':d,'template_id':'_admin_vamoooooasdfs','hardware':hardware})
 
 ''' TEST VIEWER '''
-# ~ curr_client.desktop_stop('_admin_renew')
-# ~ curr_client.desktop_start('_admin_renew')
-# ~ curr_client.desktop_viewer('_admin_renew')
+curr_client.desktop_stop('_admin_downloaded_tetros')
+curr_client.desktop_start('_admin_downloaded_tetros')
+curr_client.desktop_viewer('_admin_downloaded_tetros')
 
 ''' BULK CREATE DELETE '''
 # ~ desktops = curr_client.desktop_list()

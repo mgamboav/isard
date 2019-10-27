@@ -79,7 +79,8 @@ class Logs (object):
                              'eval',
                              'hmlog',
                              'main',
-                             'broom']
+                             'broom',
+                             'grpc']
         for n in self.names_for_loggers:
             self.create_logger(n)
 
