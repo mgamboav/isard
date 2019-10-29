@@ -30,7 +30,7 @@ from rethinkdb.errors import (
     ReqlUserError)
 
 from engine.grpc.lib.database import rdb
-# ~ from engine.grpc.grpc_actions import GrpcActions
+from engine.grpc.lib.grpc_actions import GrpcActions
 
 
 from engine.grpc.statemachines.desktop_sm import DesktopSM, StateInvalidError
@@ -47,6 +47,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
     def __init__(self, app):
         self.server_port = 46001
         # ~ self.grpc = GrpcActions(self.manager)
+        self.engine_actions = GrpcActions(app.m)
         self.desktop_sm = DesktopSM()
         
 
@@ -124,6 +125,9 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         try:
             ''' DIRECT TO ENGINE '''
             # ~ self.grpc.start_domain_from_id(request.desktop_id)
+            print('STARTING FROM ENGINE')
+            print(self.engine_actions.start_domain_from_id(request.desktop_id))
+            print('XXXXXXXXXXXXXXXXXXXX')
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
@@ -216,6 +220,9 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         try:
             ''' DIRECT TO ENGINE '''
             # ~ self.grpc.stop_domain_from_id(request.desktop_id)
+            print('STOPPING FROM ENGINE')
+            print(self.engine_actions.stop_domain_from_id(request.desktop_id))
+            print('XXXXXXXXXXXXXXXXXXXX')
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Stopping'}).run(conn)

@@ -4,6 +4,7 @@ package template;
 
 //import "google/protobuf/empty.proto"; 
 import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
  
 service Template{
  rpc Get(GetRequest) returns (GetResponse) {}
@@ -112,6 +113,7 @@ message FromDesktopRequest{
  string desktop_id=1;
  string template_id=2;
  HardwareDerived hardware=3;
+ string extra_fields_json = 4;
 }
 
 message FromDesktopResponse{

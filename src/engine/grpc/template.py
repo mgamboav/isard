@@ -1,7 +1,7 @@
 import grpc
 
 
-import sys,os
+import sys,os,json
 from engine.services.log import logs
 
 from engine.grpc.proto import template_pb2
@@ -158,9 +158,6 @@ class TemplateServicer(template_pb2_grpc.TemplateServicer):
             # ~ self.grpc.add_template_from_desktop(request.desktop_id)
             ''' DATABASE '''
             with rdb() as conn:
-                # ~ logs.grpc.error(request.desktop_id)
-                # ~ logs.grpc.error(request.template_id)
-                # ~ logs.grpc.error(create_dict)
                 r.table('domains').get(request.desktop_id).update({'create_dict':create_dict,'status':'CreatingTemplate'}).run(conn)
                 # ~ r.table('domains').get(request.desktop_id).update({'create_dict':create_dict}).run(conn)
                 c=r.table('domains').get(request.desktop_id).changes().filter({'new_val':{'status':'Stopped'}}).run(conn) 
@@ -169,6 +166,9 @@ class TemplateServicer(template_pb2_grpc.TemplateServicer):
                     context.set_details('Disk for template already exists')
                     context.set_code(grpc.StatusCode.FAILED_PRECONDITION)             
                     return template_pb2.FromDesktopResponse()            
+            extra_fields = json.loads(request.extra_fields_json)
+            if extra_fields is not '':
+                r.table('domains').get(request.template_id).update(extra_fields).run(conn)
             next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
             return template_pb2.FromDesktopResponse(state='STOPPED', next_actions=next_actions)
         except ReqlTimeoutError:
