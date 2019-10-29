@@ -36,6 +36,7 @@ from engine.grpc.lib.grpc_actions import GrpcActions
 from engine.grpc.statemachines.desktop_sm import DesktopSM, StateInvalidError
 from engine.grpc.lib.helpers import get_viewer
 
+# ~ from engine.services.threads.eq_hyp_worker import eq_hyp_worker
     
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
@@ -127,11 +128,14 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             # ~ self.grpc.start_domain_from_id(request.desktop_id)
             print('STARTING FROM ENGINE')
             print(self.engine_actions.start_domain_from_id(request.desktop_id))
+        
+                    
             print('XXXXXXXXXXXXXXXXXXXX')
+            return desktop_pb2.StartResponse(state='STARTED',viewer={},next_actions=[2,3])
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
-                # ~ with rdb() as conn:
+                # with rdb() as conn:
                 c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
                 state=c.next(MIN_TIMEOUT)
             next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
@@ -222,7 +226,10 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             # ~ self.grpc.stop_domain_from_id(request.desktop_id)
             print('STOPPING FROM ENGINE')
             print(self.engine_actions.stop_domain_from_id(request.desktop_id))
+        
+                    
             print('XXXXXXXXXXXXXXXXXXXX')
+            return desktop_pb2.StopResponse(state='STOPPED',next_actions=[2,3])
             ''' DATABASE '''
             with rdb() as conn:
                 r.table('domains').get(request.desktop_id).update({'status':'Stopping'}).run(conn)

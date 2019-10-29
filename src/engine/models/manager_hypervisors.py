@@ -4,6 +4,8 @@
 # License: AGPLv3
 # coding=utf-8
 
+from engine.models.enqueuer import EventQueue
+
 import queue
 import threading
 from datetime import datetime
@@ -274,6 +276,8 @@ class ManagerHypervisors(object):
 
                     # launch worker thread
                     self.manager.t_workers[hyp_id], self.manager.q.workers[hyp_id] = launch_thread_worker(hyp_id)
+                    
+                    self.manager.eqhyp = EventQueue()
 
                     # LAUNCH status thread
                     if self.manager.with_status_threads is True:

@@ -413,8 +413,9 @@ import time
 # ~ curr_client.template_from_desktop({'desktop_id':d,'template_id':'_admin_vamoooooasdfs','hardware':hardware})
 
 ''' TEST VIEWER '''
-curr_client.desktop_start('_admin_downloaded_tetros')
-curr_client.desktop_stop('_admin_downloaded_tetros')
+
+print(curr_client.desktop_start('_admin_downloaded_tetros'))
+print(curr_client.desktop_stop('_admin_downloaded_tetros'))
 # ~ curr_client.desktop_viewer('_admin_downloaded_tetros')
 
 ''' BULK CREATE DELETE '''

@@ -27,6 +27,10 @@ from engine.services.lib.qcow import create_cmds_disk_from_base, create_cmds_del
     get_host_disk_operations_from_path, create_cmd_disk_from_scratch
 from engine.services.log import *
 
+
+from engine.services.threads.eq_hyp_worker import eq_hyp_worker
+
+
 DEFAULT_HOST_MODE = 'host-passthrough'
 
 class GrpcActions(object):
@@ -212,7 +216,23 @@ class GrpcActions(object):
                     update_table_field('domains',id_domain,'xml_to_start',xml)
                     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 
-                self.manager.q.workers[next_hyp].put({'type': 'start_domain', 'xml': xml, 'id_domain': id_domain})
+
+
+
+                # ~ self.manager.q.workers[next_hyp].put({'type': 'start_domain', 'xml': xml, 'id_domain': id_domain})
+                # ~ func = self.manager.eqhyp.enqueue(eq_hyp_worker,[next_hyp,{'type':'start_domain','id_domain':id_domain,'xml':xml}])
+                func = self.manager.eqhyp.enqueue(eq_hyp_worker,[next_hyp,self.manager,{'type':'start_domain','id_domain':id_domain,'xml':xml}])
+
+                try:
+                    return func()
+                except ValueError as e:
+                    print("Result exception: " + str(e))
+                except Exception as e:
+                    print("Result exception: " + str(e))                
+                
+                
+                
+                
             else:
                 log.error('get next hypervisor in pool {} failed'.format(pool_id))
                 failed = True
@@ -261,7 +281,8 @@ class GrpcActions(object):
                                  hyp_id=None,
                                  detail='hypervisor where domain {} is started not finded'.format(id))
         else:
-            self.stop_domain(id, hyp_id)
+            return self.stop_domain(id, hyp_id)
+                
 
     def stop_domain(self, id_domain, hyp_id, delete_after_stopped=False):
         update_domain_status(status='Stopping',
@@ -274,8 +295,16 @@ class GrpcActions(object):
                   'id_domain': id_domain,
                   'delete_after_stopped': delete_after_stopped}
 
-        self.manager.q.workers[hyp_id].put(action)
-        return True
+        # ~ self.manager.q.workers[hyp_id].put(action)
+        
+        func = self.manager.eqhyp.enqueue(eq_hyp_worker,[hyp_id,self.manager,{'type':'stop_domain','id_domain':id_domain}])
+        try:
+            return func()
+        except ValueError as e:
+            print("Result exception: " + str(e))
+        except Exception as e:
+            print("Result exception: " + str(e))          
+        # ~ return True
 
 
 

@@ -283,7 +283,7 @@ def  launch_action_create_template_disk(action, hostname, user, port):
 
 
 def launch_thread_worker(hyp_id, queue_master=None):
-    log.debug('launching thread wordker for hypervisor: {}'.format(hyp_id))
+    log.debug('launching thread worker for hypervisor: {}'.format(hyp_id))
     q = queue.Queue()
     # t = threading.Thread(name='worker_'+hyp_id,target=hyp_worker_thread, args=(hyp_id,q,queue_master))
     t = HypWorkerThread(name='worker_' + hyp_id,
@@ -294,7 +294,7 @@ def launch_thread_worker(hyp_id, queue_master=None):
     t.start()
     return t, q
 
-
+    
 def launch_try_hyps(dict_hyps, enabled_thread=True):
     # launch TryHypConnectionThread for all hyps
     threads_try = {}
