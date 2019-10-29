@@ -415,6 +415,7 @@ import time
 ''' TEST VIEWER '''
 
 print(curr_client.desktop_start('_admin_downloaded_tetros'))
+time.sleep(3)
 print(curr_client.desktop_stop('_admin_downloaded_tetros'))
 # ~ curr_client.desktop_viewer('_admin_downloaded_tetros')
 

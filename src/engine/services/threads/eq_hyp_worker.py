@@ -35,6 +35,7 @@ from engine.services.db import get_hyp_hostname_from_id
 from engine.models.hyp import hyp
 from engine.services.log import logs
 import time
+from libvirt import libvirtError
 
 
 
@@ -65,13 +66,13 @@ def eq_hyp_worker(hyp_id, manager, action):
             return True
         except libvirtError as e:
             print(e)
-            update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id,
-                                 detail=("Hypervisor can not create domain with libvirt exception: " + str(e)))
+            # ~ update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id,
+                                 # ~ detail=("Hypervisor can not create domain with libvirt exception: " + str(e)))
             logs.workers.debug('exception in starting domain {}: '.format(e))
             return False
         except Exception as e:
             print(e)
-            update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id, detail=("Exception when starting domain: " + str(e)))
+            # ~ update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id, detail=("Exception when starting domain: " + str(e)))
             logs.workers.debug('exception in starting domain {}: '.format(e))
             return False
 
@@ -83,19 +84,19 @@ def eq_hyp_worker(hyp_id, manager, action):
             h.conn.lookupByName(action['id_domain']).destroy()
 
             logs.workers.debug('STOPPED domain {}'.format(action['id_domain']))
+            return True
+            # ~ check_if_delete = action.get('delete_after_stopped',False)
 
-            check_if_delete = action.get('delete_after_stopped',False)
-
-            if check_if_delete is True:
-                update_domain_status('Stopped', action['id_domain'], hyp_id='')
-                update_domain_status('Deleting', action['id_domain'], hyp_id='')
-            else:
-                update_domain_status('Stopped', action['id_domain'], hyp_id='')
+            # ~ if check_if_delete is True:
+                # ~ update_domain_status('Stopped', action['id_domain'], hyp_id='')
+                # ~ update_domain_status('Deleting', action['id_domain'], hyp_id='')
+            # ~ else:
+                # ~ update_domain_status('Stopped', action['id_domain'], hyp_id='')
             return False
 
 
         except Exception as e:
-            update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id, detail=str(e))
+            # ~ update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id, detail=str(e))
             logs.workers.debug('exception in stopping domain {}: '.format(e))
             return False
 
