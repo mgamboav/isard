@@ -28,6 +28,7 @@ from engine.grpc.engine import EngineServicer
 class GrpcServer(object):
     def __init__(self, app):
         self.app = app
+        self.app.loop.call_soon_threadsafe(self.app.qq.put_nowait, {'process':'ordered','action':'is_inside_grpc_server.py','domain':'_admin_tetros'})
         self.server_port = 1313
         self.engine_grpc_server = None
         
