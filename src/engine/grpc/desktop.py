@@ -50,6 +50,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         # ~ self.grpc = GrpcActions(self.manager)
         self.engine_actions = GrpcActions(app.m)
         self.desktop_sm = DesktopSM()
+        self.app = app
         
 
     def List(self, request, context):
@@ -128,6 +129,7 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             # ~ self.grpc.start_domain_from_id(request.desktop_id)
             print('STARTING FROM ENGINE')
             result = self.engine_actions.start_domain_from_id(request.desktop_id)
+            self.app.loop.call_soon_threadsafe(self.app.qq.put_nowait, {'process':'parallel','action':'start_domain_inside_desktop.py','domain':'_admin_tetros'})
             if result is not False:
                 return desktop_pb2.StartResponse(state='STARTED', \
                                         viewer=result,
