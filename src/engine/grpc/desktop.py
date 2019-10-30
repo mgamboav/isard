@@ -127,30 +127,11 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             ''' DIRECT TO ENGINE '''
             # ~ self.grpc.start_domain_from_id(request.desktop_id)
             print('STARTING FROM ENGINE')
-            print(self.engine_actions.start_domain_from_id(request.desktop_id))
-        
-                    
-            print('XXXXXXXXXXXXXXXXXXXX')
-            return desktop_pb2.StartResponse(state='STARTED',viewer={},next_actions=[2,3])
-            ''' DATABASE '''
-            with rdb() as conn:
-                r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
-                # with rdb() as conn:
-                c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
-                state=c.next(MIN_TIMEOUT)
-            next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
-            viewer=get_viewer(state['new_val']['viewer'])
-            return desktop_pb2.StartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
-            # ~ return desktop_pb2.StartResponse(state='STARTED',viewer=viewer,next_actions=next_actions)
-            # ~ return desktop_pb2.StartResponse()
-        except ReqlTimeoutError:
-            context.set_details('Not able to start the domain '+request.desktop_id)
-            context.set_code(grpc.StatusCode.DEADLINE_EXCEEDED)             
-            return desktop_pb2.StartResponse()  
-        # ~ except ReqlNonExistenceError:
-            # ~ context.set_details(request.desktop_id+' domain not found')
-            # ~ context.set_code(grpc.StatusCode.INTERNAL)             
-            # ~ return desktop_pb2.StartResponse()             
+            result = self.engine_actions.start_domain_from_id(request.desktop_id)
+            if result is not False:
+                return desktop_pb2.StartResponse(state='STARTED', \
+                                        viewer=result,
+                                        next_actions=self.desktop_sm.get_next_actions('STARTED'))
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -159,6 +140,35 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.UNKNOWN)             
             return desktop_pb2.StartResponse()
+            
+                                                
+            # ~ ''' DATABASE '''
+            # ~ with rdb() as conn:
+                # ~ r.table('domains').get(request.desktop_id).update({'status':'Starting'}).run(conn)
+                # ~ # with rdb() as conn:
+                # ~ c = r.table('domains').get_all(r.args(['Started','Failed']),index='status').filter({'id':request.desktop_id}).pluck('status','viewer').changes().run(conn)
+                # ~ state=c.next(MIN_TIMEOUT)
+            # ~ next_actions = self.desktop_sm.get_next_actions(state['new_val']['status'].upper())
+            # ~ viewer=get_viewer(state['new_val']['viewer'])
+            # ~ return desktop_pb2.StartResponse(state=state['new_val']['status'].upper(),viewer=viewer,next_actions=next_actions)
+            # ~ # return desktop_pb2.StartResponse(state='STARTED',viewer=viewer,next_actions=next_actions)
+            # ~ # return desktop_pb2.StartResponse()
+        # ~ except ReqlTimeoutError:
+            # ~ context.set_details('Not able to start the domain '+request.desktop_id)
+            # ~ context.set_code(grpc.StatusCode.DEADLINE_EXCEEDED)             
+            # ~ return desktop_pb2.StartResponse()  
+        # ~ # except ReqlNonExistenceError:
+            # ~ # context.set_details(request.desktop_id+' domain not found')
+            # ~ # context.set_code(grpc.StatusCode.INTERNAL)             
+            # ~ # return desktop_pb2.StartResponse()             
+        # ~ except Exception as e:
+            # ~ exc_type, exc_obj, exc_tb = sys.exc_info()
+            # ~ fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ logs.grpc.error(f'Start error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+
+            # ~ context.set_details(str(e))
+            # ~ context.set_code(grpc.StatusCode.UNKNOWN)             
+            # ~ return desktop_pb2.StartResponse()
 
     def Viewer(self, request, context):
         ''' Checks '''

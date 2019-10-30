@@ -277,6 +277,7 @@ class ManagerHypervisors(object):
                     # launch worker thread
                     self.manager.t_workers[hyp_id], self.manager.q.workers[hyp_id] = launch_thread_worker(hyp_id)
                     
+                    # ~ self.manager.t_workers[hyp_id].d = {'hostname':'pepinillo'} #dict_hyps_ready
                     self.manager.eqhyp = EventQueue()
 
                     # LAUNCH status thread

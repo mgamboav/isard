@@ -412,11 +412,32 @@ import time
 # ~ hardware = {'vcpus':3}
 # ~ curr_client.template_from_desktop({'desktop_id':d,'template_id':'_admin_vamoooooasdfs','hardware':hardware})
 
-''' TEST VIEWER '''
 
-print(curr_client.desktop_start('_admin_downloaded_tetros'))
-time.sleep(3)
-print(curr_client.desktop_stop('_admin_downloaded_tetros'))
+''' LOKER START/STOP THREAD '''
+j=20
+while j<=20:
+    i=1
+    while i<=10:
+        threading.Thread(target=curr_client.desktop_start, args=('_admin_tetros'+str(i),), daemon=False).start()
+        i=i+1
+    # ~ time.sleep(10)
+
+    i=1
+    while i<=10:
+        threading.Thread(target=curr_client.desktop_stop, args=('_admin_tetros'+str(i),), daemon=False).start()
+        i=i+1
+        
+    j=j+1
+    
+    # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_downloaded_tetros',), daemon=False).start()
+    # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_downloaded_zxspectrum',), daemon=False).start()
+
+    # ~ threading.Thread(target=curr_client.desktop_stop, args=('_admin_downloaded_tetros',), daemon=False).start()
+    # ~ threading.Thread(target=curr_client.desktop_stop, args=('_admin_downloaded_zxspectrum',), daemon=False).start()
+
+''' TEST VIEWER '''        
+# ~ print(curr_client.desktop_start('_admin_downloaded_tetros'))
+# ~ print(curr_client.desktop_stop('_admin_downloaded_tetros'))
 # ~ curr_client.desktop_viewer('_admin_downloaded_tetros')
 
 ''' BULK CREATE DELETE '''

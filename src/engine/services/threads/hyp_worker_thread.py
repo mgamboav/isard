@@ -21,6 +21,9 @@ from engine.services.threads.threads import TIMEOUT_QUEUES, launch_action_disk, 
     TIMEOUT_BETWEEN_RETRIES_HYP_IS_ALIVE, launch_delete_media, launch_killall_curl
 from engine.models.domain_xml import XML_SNIPPET_CDROM, XML_SNIPPET_DISK_VIRTIO, XML_SNIPPET_DISK_CUSTOM
 
+
+from engine.services.db import get_hyp
+
 class HypWorkerThread(threading.Thread):
     def __init__(self, name, hyp_id, queue_actions, queue_master=None):
         threading.Thread.__init__(self)
@@ -37,6 +40,7 @@ class HypWorkerThread(threading.Thread):
         port = int(port)
         self.hostname = host
         self.h = hyp(self.hostname, user=user, port=port)
+        self.d = get_hyp(self.hostname)
         # self.h.get_kvm_mod()
         # self.h.get_hyp_info()
 

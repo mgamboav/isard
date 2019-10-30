@@ -92,6 +92,60 @@ def get_ferrary(id):
     return results['ferrary']
 
 
+def get_viewer_dict(hyp_dict,
+                                        spice=False,
+                                        spice_tls=False,
+                                        vnc=False,
+                                        vnc_websocket=False,
+                                        passwd=False):
+    #
+    # dict_event = {'domain':dom.name(),
+    #               'hyp_id':hyp_id,
+    #                'event':domEventToString(event),
+    #               'detail':domDetailToString(event, detail),
+    #                 'when':now}
+
+
+    hostname = False
+    hostname_external = False
+    if 'viewer_hostname' in hyp_dict.keys():
+        if len(hyp_dict['viewer_hostname']) > 0:
+            hostname = hyp_dict['viewer_hostname']
+        else:
+            hostname = hyp_dict['hostname']
+    else:
+        hostname = hyp_dict['hostname']
+
+    if 'viewer_nat_hostname' in hyp_dict.keys():
+        if len(hyp_dict['viewer_nat_hostname']) > 0:
+            hostname_external = hyp_dict['viewer_nat_hostname']
+        else:
+            hostname_external = False
+    else:
+        hostname_external = False
+
+    dict_viewer = {}
+    if hostname is not None:
+        dict_viewer['hostname'] = hostname
+    else:
+        dict_viewer['hostname'] = False
+
+    dict_viewer['hostname_external'] = hostname_external
+    dict_viewer['tlsport'] = spice_tls
+    dict_viewer['port'] = spice
+    dict_viewer['port_spice'] = spice
+    dict_viewer['port_spice_ssl'] = spice_tls
+    dict_viewer['port_vnc'] = vnc
+    dict_viewer['port_vnc_websocket'] = vnc_websocket
+    if passwd is not False:
+        dict_viewer['passwd'] = passwd
+
+    # event spice graph update these fields
+    dict_viewer['client_addr'] = False
+    dict_viewer['client_since'] = False
+
+    return dict_viewer
+
 def update_domain_viewer_started_values(id, hyp_id=False,
                                         spice=False,
                                         spice_tls=False,

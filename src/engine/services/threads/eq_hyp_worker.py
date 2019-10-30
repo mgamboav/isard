@@ -31,8 +31,9 @@
         # ~ self.queue_actions = queue_actions
         # ~ self.queue_master = queue_master
 
-from engine.services.db import get_hyp_hostname_from_id
+from engine.services.db import get_hyp_hostname_from_id, get_viewer_dict
 from engine.models.hyp import hyp
+from engine.models.domain_xml import DomainXML
 from engine.services.log import logs
 import time
 from libvirt import libvirtError
@@ -43,9 +44,9 @@ from libvirt import libvirtError
 def eq_hyp_worker(hyp_id, manager, action):
 # ~ def eq_hyp_worker(hyp_id, action):
     # do={type:'start_domain','xml':'xml','id_domain'='prova'}
-    print('manager')
-    print('eq_hyp_worker: '+hyp_id)
-    print('eq_hyp_worker: '+str(action['type']))
+    # ~ print('manager')
+    # ~ print('eq_hyp_worker: '+hyp_id)
+    # ~ print('eq_hyp_worker: '+str(action['type']))
     # ~ action = self.queue_actions.get(timeout=TIMEOUT_QUEUES)
 
     # ~ logs.workers.debug('received action in working thread {}'.format(action['type']))
@@ -57,13 +58,25 @@ def eq_hyp_worker(hyp_id, manager, action):
             # ~ h = hyp(host, user=user, port=int(port))  
             # ~ time.sleep(10)
             h = manager.t_workers[hyp_id].h         
-            h.conn.createXML(action['xml'])
+            domain = h.conn.createXML(action['xml'])
+            if domain == None:
+                return False
+
+            xml_started = domain.XMLDesc()
+            domain_parser = DomainXML(domain.XMLDesc())
+            spice, spice_tls, vnc, vnc_websocket = domain_parser.get_graphics_port()
+            # ~ print('HERE COMES:')
+            # ~ print(manager.t_workers[hyp_id].d)
+            # ~ print('END ------')
+            viewer_dict = get_viewer_dict(hyp_dict=manager.t_workers[hyp_id].d,
+                                                spice=spice, spice_tls=spice_tls,
+                                                vnc = vnc,vnc_websocket=vnc_websocket)          
             
             # wait to event started to save state in database
             #update_domain_status('Started', action['id_domain'], hyp_id=self.hyp_id, detail='Domain has started in worker thread')
-            logs.workers.debug('STARTED domain {}: createdXML action in hypervisor {} has been sent'.format(
-                action['id_domain'], host))
-            return True
+            # ~ logs.workers.debug('STARTED domain {}: createdXML action in hypervisor {} has been sent'.format(
+                # ~ action['id_domain'], host))
+            return viewer_dict
         except libvirtError as e:
             print(e)
             # ~ update_domain_status('Failed', action['id_domain'], hyp_id=self.hyp_id,

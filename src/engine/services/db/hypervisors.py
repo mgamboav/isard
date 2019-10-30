@@ -52,7 +52,7 @@ def get_hyps_ready_to_start():
 
     l = list(rtable. \
              filter({'enabled': True, 'status': 'ReadyToStart'}). \
-             pluck('id', 'hostname', 'hypervisors_pools'). \
+             pluck('id', 'hostname', 'hypervisors_pools', 'viewer_hostname', 'viewer_nat_hostname'). \
              run(r_conn))
     close_rethink_connection(r_conn)
 
@@ -275,7 +275,12 @@ def update_uri_hyp(hyp_id, uri):
 #     close_rethink_connection(r_conn)
 #     return l
 
-
+def get_hyp(id):
+    r_conn = new_rethink_connection()
+    l = r.table('hypervisors').get(id).run(r_conn)
+    close_rethink_connection(r_conn)
+    return l
+    
 def get_hyp_hostname_from_id(id):
     r_conn = new_rethink_connection()
     l = r.table('hypervisors').get(id).pluck('hostname', 'port', 'user').run(r_conn)

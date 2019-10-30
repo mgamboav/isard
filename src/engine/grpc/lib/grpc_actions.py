@@ -233,23 +233,23 @@ class GrpcActions(object):
                 
                 
                 
-            else:
-                log.error('get next hypervisor in pool {} failed'.format(pool_id))
-                failed = True
-        else:
-            log.error('pool_id {} does not exists??'.format(pool_id))
-            failed = True
+            # ~ else:
+                # ~ log.error('get next hypervisor in pool {} failed'.format(pool_id))
+                # ~ failed = True
+        # ~ else:
+            # ~ log.error('pool_id {} does not exists??'.format(pool_id))
+            # ~ failed = True
 
-        if failed is True:
-            update_domain_status(status='Failed',
-                                 id_domain=id_domain,
-                                 hyp_id=next_hyp,
-                                 detail='desktop not started: no hypervisors online in pool {}'.format(pool_id))
+        # ~ if failed is True:
+            # ~ update_domain_status(status='Failed',
+                                 # ~ id_domain=id_domain,
+                                 # ~ hyp_id=next_hyp,
+                                 # ~ detail='desktop not started: no hypervisors online in pool {}'.format(pool_id))
 
-            log.error('desktop not started: no hypervisors online in pool {}'.format(pool_id))
-            return False
-        else:
-            return next_hyp
+            # ~ log.error('desktop not started: no hypervisors online in pool {}'.format(pool_id))
+            # ~ return False
+        # ~ else:
+            # ~ return next_hyp
 
     def destroy_domain_from_id(self, id):
         pass
