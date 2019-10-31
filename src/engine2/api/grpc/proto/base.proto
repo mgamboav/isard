@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package base;
+
+//import "google/protobuf/empty.proto"; 
+import "google/protobuf/any.proto";
+ 
+service Base{
+ rpc Get(GetRequest) returns (GetResponse) {}
+ rpc List(ListRequest) returns (ListResponse) {}
+}
+
+message GetRequest{
+ string base_id=1;
+}
+
+message GetResponse{
+  repeated google.protobuf.Any base = 1;
+}
+
+message ListRequest{}
+
+message ListResponse{
+ repeated string bases=1;
+}
+
