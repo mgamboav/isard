@@ -2,16 +2,12 @@
 FROM isard/alpine-pandas:latest AS production
 MAINTAINER isard <info@isard.com>
 
-RUN apk add --no-cache bash yarn py3-libvirt py3-paramiko py3-lxml py3-pexpect py3-openssl py3-bcrypt py3-gevent py3-flask py3-netaddr py3-requests curl openssh-client
+RUN apk add --no-cache bash py3-libvirt py3-paramiko py3-lxml py3-pexpect py3-openssl py3-bcrypt py3-gevent py3-netaddr py3-requests curl openssh-client py3-psycopg2
 
 COPY dockers/app/requirements.pip3 /requirements.pip3
-RUN pip3 install --no-cache-dir -r requirements.pip3
-
-## GRPC
 RUN apk add --no-cache --virtual .build_deps build-base python3-dev
-RUN pip3 install grpcio grpcio-tools
+RUN pip3 install --no-cache-dir -r requirements.pip3
 RUN apk del .build_deps
-
 
 RUN mkdir -p /root/.ssh
 RUN echo "Host isard-hypervisor \
@@ -39,7 +35,7 @@ FROM production AS development
 RUN apk add --no-cache git py3-xmltodict
 
 RUN pip3 install ipython pytest
-RUN apk add --no-cache vim openssh
+RUN apk add --no-cache vim nano openssh
 
 
 #COPY dockers/app/certs_devel.sh /certs.sh

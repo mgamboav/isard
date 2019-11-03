@@ -1,13 +1,23 @@
 version: "3.5"
 services:
   isard-database:
-    container_name: isard-database-devel
+    image: postgres
+    container_name: "isard-database-devel"
+    environment:
+      - POSTGRES_USER=isardvdi
+      - POSTGRES_PASSWORD=isardvdi
+      - POSTGRES_DB=engine
     ports:
-      - "8081:8080"
-      - "28015:28015"
+      - "5432:5432"
+    volumes:
+      - "/opt/isard/database:/data"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - isard_network
     restart: "no"
 
   isard-nginx:
+    image: hello-world
     container_name: isard-nginx-devel
     volumes:
       - "./dockers/nginx/nginx.conf:/etc/nginx/nginx.conf"    
@@ -18,7 +28,7 @@ services:
     restart: "no"
 
   isard-hypervisor:
-    #image: hello-world
+    image: hello-world
     container_name: isard-hypervisor-devel
     ports:
       - "2022:22"
@@ -53,6 +63,7 @@ services:
       target: development
 
   isard-frontend:
+    image: hello-world
     container_name: isard-frontend-devel
     volumes:
       - "./src/new_webapp/frontend:/app"

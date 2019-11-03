@@ -1,9 +1,9 @@
 import grpc
-import time
+import time, sys, os
 
 from api.grpc.proto import desktop_pb2
 from api.grpc.proto import desktop_pb2_grpc
-import engine.engine_exceptions
+from engine.exceptions import NotFoundError
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
@@ -21,16 +21,16 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         try:
             state, desktop, next_actions = self.engine.DesktopGet(request.desktop_id)
             return desktop_pb2.GetResponse(state=state, desktop=desktop, next_actions=next_actions)
-        except NonExistenceError:
-            context.set_details(request.desktop_id+' not found in database.')
-            context.set_code(grpc.StatusCode.NOT_FOUND)
-            return desktop_pb2.GetResponse()             
+        # ~ except NonExistenceError:
+            # ~ context.set_details(request.desktop_id+' not found in database.')
+            # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
+            # ~ return desktop_pb2.GetResponse()             
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             
-            context.set_details('Unable to access database.')
+            context.set_details(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.GetResponse() 
 
