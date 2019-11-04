@@ -3,6 +3,7 @@ import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
+import json
 Base = declarative_base()
 
 desktop_boots = sa.Table('desktop_boots', Base.metadata,
@@ -132,6 +133,9 @@ class Video(Base):
         self.heads = heads
         self.ram = ram
         self.vram = vram
+
+    def __repr__(self):
+        return json.dumps({'id':self.id,'model':self.model})
         
 class Boot(Base):
     __tablename__ = "boot"

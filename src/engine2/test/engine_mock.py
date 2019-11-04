@@ -5,12 +5,14 @@ import random,time,string
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from db.desktop import *
 
 class EngineMock():
     def __init__(self):
         self.desktop_sm = DesktopSM()
         self.db = create_engine('postgresql://isardvdi:isardvdi@isard-database:5432/engine')
         self.dbsession = sessionmaker(bind=self.db)
+        self.session = self.dbsession()
         self.mem = MemoryMock()
         self.db_desktops = {}
         viewer = {  'hostname': 'mock.local',
@@ -31,7 +33,17 @@ class EngineMock():
 
     def _rdn_id(self):
         return '_'+_rnd_string(8)+'_'+_rnd_string(2)+'_'+_rnd_string(10)+'_'++_rnd_string(4)+'_'
-                                        
+
+    def DesktopListVideos(self):
+        ''' From running dict '''
+        videos = self.session.query(Video).all()
+        # ~ video_list = [v for v in videos]
+        
+        # ~ del video_list['_sa_instance_state']
+        # ~ video_list = [v._asdict() for v in videos]
+        return videos
+        raise NotFoundError('videos not found in system')
+                                                
     def DesktopGet(self,desktop_id):
         ''' From running dict '''
         desktop = self.db.select('desktops',desktop_id)

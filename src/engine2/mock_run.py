@@ -8,8 +8,10 @@ alembicArgs = [
     '--raiseerr',
     'downgrade', '-1',
 ]
-alembic.config.main(argv=alembicArgs)
-
+try:
+    alembic.config.main(argv=alembicArgs)
+except:
+    pass
 alembicArgs = [
     '--raiseerr',
     'upgrade', 'head',

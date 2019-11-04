@@ -70,6 +70,11 @@ class DesktopStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerResponse.FromString,
         )
+    self.ListVideos = channel.unary_unary(
+        '/desktop.Desktop/ListVideos',
+        request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosResponse.FromString,
+        )
 
 
 class DesktopServicer(object):
@@ -154,6 +159,13 @@ class DesktopServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ListVideos(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_DesktopServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -211,6 +223,11 @@ def add_DesktopServicer_to_server(servicer, server):
           servicer.Viewer,
           request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerResponse.SerializeToString,
+      ),
+      'ListVideos': grpc.unary_unary_rpc_method_handler(
+          servicer.ListVideos,
+          request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

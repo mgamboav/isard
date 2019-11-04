@@ -16,6 +16,25 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         self.server_port = 46001
         self.engine = engine
 
+    def ListVideos(self, request, context):
+        ''' Gets desktop videos in system with all data '''
+        try:
+            videos = self.engine.DesktopListVideos()
+            print(videos)
+            return desktop_pb2.ListVideosResponse(videos=videos)
+        # ~ except NonExistenceError:
+            # ~ context.set_details(request.desktop_id+' not found in database.')
+            # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
+            # ~ return desktop_pb2.GetResponse()             
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
+            context.set_details(f'ListVideos error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return desktop_pb2.ListVideosResponse() 
+            
     def Get(self, request, context):
         ''' Gets desktop_id with all data '''
         try:

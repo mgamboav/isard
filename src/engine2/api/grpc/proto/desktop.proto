@@ -16,6 +16,8 @@ service Desktop {
     rpc Start(StartRequest) returns (StartResponse) {}
     rpc Stop(StopRequest) returns (StopResponse) {}
     rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
+    
+    rpc ListVideos(ListVideosRequest) returns (ListVideosResponse) {}
 }
 
 enum Action {
@@ -198,6 +200,20 @@ message ViewerRequest {
 message ViewerResponse {
     Viewer viewer = 1;
     repeated Action next_actions = 2;
+}
+
+message ListVideosRequest {
+}
+
+message ListVideosResponse {
+    message Video {
+        string id = 1;
+        string model = 2;
+        int32 heads = 3;
+        int32 ram = 4;
+        int32 vram = 5;
+    }
+    repeated Video videos = 1;
 }
 
 message Viewer {

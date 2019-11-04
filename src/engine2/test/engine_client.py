@@ -115,6 +115,25 @@ class EngineClient(object):
         # ~ print(response.viewer)
         return True
 
+    def desktop_videos(self):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.desktop_stub.ListVideos(desktop_pb2.ListVideosRequest())
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        return videos
+        
     def desktop_viewer(self, message):
         """
         Client function to call the rpc
@@ -372,6 +391,7 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
+print(curr_client.desktop_videos())
 # ~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
@@ -397,20 +417,20 @@ import time
 
 
 ''' LOKER START/STOP THREAD '''
-j=20
-while j<=20:
-    i=1
-    while i<=10:
-        threading.Thread(target=curr_client.desktop_start, args=('_admin_tetros'+str(i),), daemon=False).start()
-        i=i+1
+# ~ j=20
+# ~ while j<=20:
+    # ~ i=1
+    # ~ while i<=10:
+        # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_tetros'+str(i),), daemon=False).start()
+        # ~ i=i+1
     # ~ time.sleep(10)
 
-    i=1
-    while i<=10:
-        threading.Thread(target=curr_client.desktop_stop, args=('_admin_tetros'+str(i),), daemon=False).start()
-        i=i+1
+    # ~ i=1
+    # ~ while i<=10:
+        # ~ threading.Thread(target=curr_client.desktop_stop, args=('_admin_tetros'+str(i),), daemon=False).start()
+        # ~ i=i+1
         
-    j=j+1
+    # ~ j=j+1
     
     # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_downloaded_tetros',), daemon=False).start()
     # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_downloaded_zxspectrum',), daemon=False).start()
