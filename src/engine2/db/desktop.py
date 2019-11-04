@@ -1,39 +1,43 @@
 # ~ from sqlalchemy import Table, Column, sa.String, sa.Integer
 import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref
+
+Base = declarative_base()
 
 desktop_boots = sa.Table('desktop_boots', Base.metadata,
-    sa.Column('desktop_id', sa.Integer, sa.ForeignKey('desktop.id')),
-    sa.Column('boot_id', sa.String, sa.ForeignKey('boot.id'))
+    sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
+    sa.Column('boot_id', sa.String, sa.ForeignKey('boot.id')),
     sa.Column('order', sa.Integer)
 )
 
 desktop_disks = sa.Table('desktop_disks', Base.metadata,
-    sa.Column('desktop_id', sa.Integer, sa.ForeignKey('desktop.id')),
-    sa.Column('disk_id', sa.Integer, sa.ForeignKey('disk.id'))
+    sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
+    sa.Column('disk_id', sa.Integer, sa.ForeignKey('disk.id')),
     sa.Column('order', sa.Integer)
 )
 
 desktop_isos = sa.Table('desktop_isos', Base.metadata,
-    sa.Column('desktop_id', sa.Integer, sa.ForeignKey('desktop.id')),
-    sa.Column('iso_id', sa.String, sa.ForeignKey('isos.id'))
+    sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
+    sa.Column('iso_id', sa.String, sa.ForeignKey('iso.id')),
     sa.Column('order', sa.Integer)
 )
 
 desktop_floppies = sa.Table('desktop_floppies', Base.metadata,
-    sa.Column('desktop_id', sa.Integer, sa.ForeignKey('desktop.id')),
-    sa.Column('floppy_id', sa.String, sa.ForeignKey('floppy.id'))
+    sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
+    sa.Column('floppy_id', sa.String, sa.ForeignKey('floppy.id')),
     sa.Column('order', sa.Integer)
 )
 
 desktop_interfaces = sa.Table('desktop_interfaces', Base.metadata,
-    sa.Column('desktop_id', sa.Integer, sa.ForeignKey('desktop.id')),
-    sa.Column('interface_id', sa.String, sa.ForeignKey('interface.id'))
+    sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
+    sa.Column('interface_id', sa.String, sa.ForeignKey('interface.id')),
     sa.Column('order', sa.Integer)
 )
 
 desktop_graphics = sa.Table('desktop_graphics', Base.metadata,
-    sa.Column('desktop_id', sa.Integer, sa.ForeignKey('desktop.id')),
-    sa.Column('graphic_id', sa.String, sa.ForeignKey('graphic.id'))
+    sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
+    sa.Column('graphic_id', sa.String, sa.ForeignKey('graphic.id')),
     sa.Column('order', sa.Integer)
 )
 
@@ -77,13 +81,13 @@ class Desktop(Base):
     memory = sa.Column(sa.Integer)
 
     def __init__(self, id):
-        self.id = id	
+        self.id = id    
 
-	
+    
 class Disk(Base):
-	__tablename__ = 'disk'
-	
-	id = sa.Column(sa.Integer, primary_key=True)
+    __tablename__ = 'disk'
+    
+    id = sa.Column(sa.Integer, primary_key=True)
     desktop = relationship(
         "Desktops",
         secondary=desktop_disks,
@@ -97,25 +101,25 @@ class Disk(Base):
     format = relationship("DiskFormat")
     
 class DiskBus(Base):
-	__tablename__ = "disk_bus"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "disk_bus"
+    id = sa.Column(sa.String, primary_key=True)
 
 class DiskFormat(Base):
-	__tablename__ = "disk_format"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "disk_format"
+    id = sa.Column(sa.String, primary_key=True)
 
 class Video(Base):
-	__tablename__ = "video"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "video"
+    id = sa.Column(sa.String, primary_key=True)
 
-	ram = sa.Column(sa.Integer)
-	vram = sa.Column(sa.Integer)
-	model = sa.Column(sa.String)
-	heads = sa.Column(sa.Integer)
-	
+    ram = sa.Column(sa.Integer)
+    vram = sa.Column(sa.Integer)
+    model = sa.Column(sa.String)
+    heads = sa.Column(sa.Integer)
+    
 class Boot(Base):
-	__tablename__ = "boot"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "boot"
+    id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
         "Desktops",
         secondary=desktop_boots,
@@ -123,8 +127,8 @@ class Boot(Base):
     )
 
 class Iso(Base):
-	__tablename__ = "iso"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "iso"
+    id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
         "Desktops",
         secondary=desktop_isos,
@@ -132,8 +136,8 @@ class Iso(Base):
     )
 
 class Floppy(Base):
-	__tablename__ = "floppy"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "floppy"
+    id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
         "Desktops",
         secondary=desktop_floppies,
@@ -141,22 +145,22 @@ class Floppy(Base):
     )
         
 class Interface(Base):
-	__tablename__ = "interface"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "interface"
+    id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
         "Desktops",
         secondary=desktop_interfaces,
         backref="interface"
     )
-	
-	ifname = sa.Column(sa.String)
-	model = sa.Column(sa.String)
-	net = sa.Column(sa.String)
-	type = sa.Column(sa.String)
+    
+    ifname = sa.Column(sa.String)
+    model = sa.Column(sa.String)
+    net = sa.Column(sa.String)
+    type = sa.Column(sa.String)
 
 class Graphic(Base):
-	__tablename__ = "graphic"
-	id = sa.Column(sa.String, primary_key=True)
+    __tablename__ = "graphic"
+    id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
         "Desktops",
         secondary=desktop_graphics,

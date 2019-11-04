@@ -16,6 +16,19 @@ services:
       - isard_network
     restart: "no"
 
+  pgAdmin:
+    restart: "no"
+    image: dpage/pgadmin4
+    ports:
+      - "8000:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 1234@admin.com
+      PGADMIN_DEFAULT_PASSWORD: isardvdi
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - isard_network
+      
   isard-nginx:
     image: hello-world
     container_name: isard-nginx-devel
@@ -89,3 +102,6 @@ networks:
   isard_network:
     external: false
     name: isard_network
+
+volumes:
+  pgadmin:

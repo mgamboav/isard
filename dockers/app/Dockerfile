@@ -5,6 +5,7 @@ MAINTAINER isard <info@isard.com>
 
 # Needed in hypervisor connection scripts
 RUN apk add --no-cache bash curl openssh-client
+RUN apk add --no-cache py3-psycopg2
 
 # Removed in new version. Kept here only to reference
 #py3-libvirt py3-paramiko py3-lxml py3-pexpect py3-openssl py3-bcrypt py3-gevent py3-netaddr py3-requests curl openssh-client py3-psycopg2

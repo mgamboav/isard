@@ -9,10 +9,10 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from desktop import *
+from db.desktop import Base
 
 Session = sessionmaker()
-Base = declarative_base()
+# ~ Base = declarative_base()
 
 # revision identifiers, used by Alembic.
 revision = 'a170884f4b4e'
@@ -22,24 +22,12 @@ depends_on = None
 
 
 def upgrade():
+    # ~ Base.metadata.create_all(engine)
     bind = op.get_bind()
-
     Base.metadata.create_all(bind=bind)
-
     session = Session(bind=bind)
-    # ~ session._model_changes = False  # if you are using Flask-SQLAlchemy, this works around a bug
-
-    # ~ f1 = Foo(name='f1')
-    # ~ f2 = Foo(name='f2')
-    # ~ b1 = Bar(name='b1')
-    # ~ b2 = Bar(name='b2')
-
-    # ~ f1.bars = [b1, b2]
-    # ~ b2.foos.append(f2)
-
-    # ~ session.add_all([f1, f2, b1, b2])
     session.commit()
 
 
 def downgrade():
-    pass
+	Base.metadata.drop_all(engine)
