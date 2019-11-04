@@ -205,14 +205,15 @@ message ViewerResponse {
 message ListVideosRequest {
 }
 
+message Video {
+    string id = 1;
+    string model = 2;
+    int32 heads = 3;
+    int32 ram = 4;
+    int32 vram = 5;
+}
+    
 message ListVideosResponse {
-    message Video {
-        string id = 1;
-        string model = 2;
-        int32 heads = 3;
-        int32 ram = 4;
-        int32 vram = 5;
-    }
     repeated Video videos = 1;
 }
 

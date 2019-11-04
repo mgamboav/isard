@@ -2,6 +2,7 @@
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.inspection import inspect as _inspect
 
 import json
 Base = declarative_base()
@@ -134,6 +135,14 @@ class Video(Base):
         self.ram = ram
         self.vram = vram
 
+    def to_dict(self):
+        """Returns model as dict of properties.
+        Note:
+            Removes SQLAlchemy fields included in self.__dict__
+        """
+        column_names = _inspect(self.__class__).columns.keys()
+        return {k: self.__dict__[k] for k in column_names}
+        
     def __repr__(self):
         return json.dumps({'id':self.id,'model':self.model})
         

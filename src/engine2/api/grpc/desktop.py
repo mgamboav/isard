@@ -20,12 +20,9 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         ''' Gets desktop videos in system with all data '''
         try:
             videos = self.engine.DesktopListVideos()
-            print(videos)
-            return desktop_pb2.ListVideosResponse(videos=videos)
-        # ~ except NonExistenceError:
-            # ~ context.set_details(request.desktop_id+' not found in database.')
-            # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
-            # ~ return desktop_pb2.GetResponse()             
+            videos_pb = [desktop_pb2.Video(**v.to_dict()) for v in videos]
+
+            return desktop_pb2.ListVideosResponse(videos=videos_pb)            
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

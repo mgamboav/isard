@@ -132,7 +132,7 @@ class EngineClient(object):
             #~ print(message+' was stopped')
         #~ else:
             #~ print(response.state)
-        return videos
+        return response
         
     def desktop_viewer(self, message):
         """
