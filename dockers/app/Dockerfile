@@ -40,7 +40,7 @@ CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 FROM production AS development
 RUN apk add --no-cache git vim nano openssh 
 #py3-xmltodict
-
+RUN apk add --no-cache build-base python3-dev
 RUN pip3 install ipython pytest grpcio-tools
 
 
