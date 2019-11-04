@@ -1,11 +1,13 @@
 # ~ from sqlalchemy import Table, Column, sa.String, sa.Integer
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
+# ~ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.inspection import inspect as _inspect
 
+from db.base_mixin import BaseMixin as Base
+
 import json
-Base = declarative_base()
+# ~ Base = declarative_base()
 
 desktop_boots = sa.Table('desktop_boots', Base.metadata,
     sa.Column('desktop_id', sa.String, sa.ForeignKey('desktop.id')),
@@ -135,13 +137,13 @@ class Video(Base):
         self.ram = ram
         self.vram = vram
 
-    def to_dict(self):
-        """Returns model as dict of properties.
-        Note:
-            Removes SQLAlchemy fields included in self.__dict__
-        """
-        column_names = _inspect(self.__class__).columns.keys()
-        return {k: self.__dict__[k] for k in column_names}
+    # ~ def to_dict(self):
+        # ~ """Returns model as dict of properties.
+        # ~ Note:
+            # ~ Removes SQLAlchemy fields included in self.__dict__
+        # ~ """
+        # ~ column_names = _inspect(self.__class__).columns.keys()
+        # ~ return {k: self.__dict__[k] for k in column_names}
         
     def __repr__(self):
         return json.dumps({'id':self.id,'model':self.model})

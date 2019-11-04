@@ -70,10 +70,15 @@ class DesktopStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerResponse.FromString,
         )
-    self.ListVideos = channel.unary_unary(
-        '/desktop.Desktop/ListVideos',
-        request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosResponse.FromString,
+    self.VideoList = channel.unary_unary(
+        '/desktop.Desktop/VideoList',
+        request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.VideoListRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.VideoListResponse.FromString,
+        )
+    self.BootList = channel.unary_unary(
+        '/desktop.Desktop/BootList',
+        request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListResponse.FromString,
         )
 
 
@@ -159,7 +164,14 @@ class DesktopServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def ListVideos(self, request, context):
+  def VideoList(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def BootList(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -224,10 +236,15 @@ def add_DesktopServicer_to_server(servicer, server):
           request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ViewerResponse.SerializeToString,
       ),
-      'ListVideos': grpc.unary_unary_rpc_method_handler(
-          servicer.ListVideos,
-          request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.ListVideosResponse.SerializeToString,
+      'VideoList': grpc.unary_unary_rpc_method_handler(
+          servicer.VideoList,
+          request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.VideoListRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.VideoListResponse.SerializeToString,
+      ),
+      'BootList': grpc.unary_unary_rpc_method_handler(
+          servicer.BootList,
+          request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

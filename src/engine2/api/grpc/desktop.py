@@ -5,9 +5,12 @@ from api.grpc.proto import desktop_pb2
 from api.grpc.proto import desktop_pb2_grpc
 from engine.exceptions import NotFoundError
 
+import logging
+log = logging.getLogger(__name__)
+
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
- 
+
 class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
     """
     gRPC service for Desktops
@@ -16,21 +19,34 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
         self.server_port = 46001
         self.engine = engine
 
-    def ListVideos(self, request, context):
+    def VideoList(self, request, context):
         ''' Gets desktop videos in system with all data '''
         try:
-            videos = self.engine.DesktopListVideos()
-            videos_pb = [desktop_pb2.Video(**v.to_dict()) for v in videos]
+            videos_pb = self.engine.desktop.video_list(pb=True)
+            return desktop_pb2.VideoListResponse(videos=videos_pb)            
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            log.error(f'VideoList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
+            context.set_details(f'VideoList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return desktop_pb2.VideoListResponse() 
 
-            return desktop_pb2.ListVideosResponse(videos=videos_pb)            
+    def BootList(self, request, context):
+        ''' Gets desktop videos in system with all data '''
+        try:
+            boots_pb = self.engine.desktop.boot_list(pb=True)
+            return desktop_pb2.BootListResponse(boots=boots_pb)            
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             
-            context.set_details(f'ListVideos error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            context.set_details(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktop_pb2.ListVideosResponse() 
+            return desktop_pb2.BootListResponse() 
+
             
     def Get(self, request, context):
         ''' Gets desktop_id with all data '''

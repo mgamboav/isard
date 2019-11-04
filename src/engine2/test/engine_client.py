@@ -120,7 +120,7 @@ class EngineClient(object):
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.ListVideos(desktop_pb2.ListVideosRequest())
+            response = self.desktop_stub.VideoList(desktop_pb2.VideoListRequest())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -133,7 +133,26 @@ class EngineClient(object):
         #~ else:
             #~ print(response.state)
         return response
-        
+
+    def desktop_boots(self):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.desktop_stub.BootList(desktop_pb2.BootListRequest())
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        return response
+                
     def desktop_viewer(self, message):
         """
         Client function to call the rpc
@@ -392,6 +411,7 @@ import time
 #while True: time.sleep(9999)
 
 print(curr_client.desktop_videos())
+print(curr_client.desktop_boots())
 # ~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
