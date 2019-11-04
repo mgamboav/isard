@@ -3,6 +3,18 @@ from engine import Engine
 
 import time
 
+import alembic.config
+alembicArgs = [
+    '--raiseerr',
+    'downgrade', '-1',
+]
+alembic.config.main(argv=alembicArgs)
+
+alembicArgs = [
+    '--raiseerr',
+    'upgrade', 'head',
+]
+alembic.config.main(argv=alembicArgs)
 
 engine = Engine()
 

@@ -47,35 +47,36 @@ class Desktop(Base):
     id = sa.Column(sa.String, primary_key=True)
 
     boots = relationship(
-        "Boots",
+        "Boot",
         secondary=desktop_boots,
-        back_populates="desktop"
+        # ~ back_populates="desktop"
     )
     disks = relationship(
-        "Disks",
+        "Disk",
         secondary=desktop_disks,
-        back_populates="desktop"
+        # ~ back_populates="desktop"
     )
     isos = relationship(
-        "Isos",
+        "Iso",
         secondary=desktop_isos,
-        back_populates="desktop"
+        # ~ back_populates="desktop"
     )
     floppies = relationship(
-        "Floppies",
+        "Floppy",
         secondary=desktop_floppies,
-        back_populates="desktop"
+        # ~ back_populates="desktop"
     )    
     graphics = relationship(
-        "Graphics",
+        "Graphic",
         secondary=desktop_graphics,
-        back_populates="desktop"
+        # ~ back_populates="desktop"
     )   
     interfaces = relationship(
-        "Interfaces",
+        "Interface",
         secondary=desktop_interfaces,
-        back_populates="desktop"
+        # ~ back_populates="desktop"
     )    
+    video_id = sa.Column(sa.String, sa.ForeignKey('video.id'))
     video = relationship("Video")
     vcpu = sa.Column(sa.Integer)
     memory = sa.Column(sa.Integer)
@@ -89,25 +90,33 @@ class Disk(Base):
     
     id = sa.Column(sa.Integer, primary_key=True)
     desktop = relationship(
-        "Desktops",
+        "Desktop",
         secondary=desktop_disks,
-        backref="disk"
+        # ~ backref="disk"
     )
     
     rpath = sa.Column(sa.String)
+    bus_id = sa.Column(sa.String, sa.ForeignKey('disk_bus.id'))
     bus = relationship("DiskBus")
     dev = sa.Column(sa.String)
     size = sa.Column(sa.Integer)
+    format_id = sa.Column(sa.String, sa.ForeignKey('disk_format.id'))
     format = relationship("DiskFormat")
     
 class DiskBus(Base):
     __tablename__ = "disk_bus"
     id = sa.Column(sa.String, primary_key=True)
 
+    def __init__(self, id):
+        self.id = id
+
 class DiskFormat(Base):
     __tablename__ = "disk_format"
     id = sa.Column(sa.String, primary_key=True)
 
+    def __init__(self, id):
+        self.id = id
+        
 class Video(Base):
     __tablename__ = "video"
     id = sa.Column(sa.String, primary_key=True)
@@ -116,21 +125,30 @@ class Video(Base):
     vram = sa.Column(sa.Integer)
     model = sa.Column(sa.String)
     heads = sa.Column(sa.Integer)
-    
+
+    def __init__(self, id, model, heads, ram, vram):
+        self.id = id
+        self.model = model
+        self.heads = heads
+        self.ram = ram
+        self.vram = vram
+        
 class Boot(Base):
     __tablename__ = "boot"
     id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
-        "Desktops",
+        "Desktop",
         secondary=desktop_boots,
         backref="boot"
     )
-
+    def __init__(self, id):
+        self.id = id
+        
 class Iso(Base):
     __tablename__ = "iso"
     id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
-        "Desktops",
+        "Desktop",
         secondary=desktop_isos,
         backref="iso"
     )
@@ -139,7 +157,7 @@ class Floppy(Base):
     __tablename__ = "floppy"
     id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
-        "Desktops",
+        "Desktop",
         secondary=desktop_floppies,
         backref="floppy"
     )
@@ -148,7 +166,7 @@ class Interface(Base):
     __tablename__ = "interface"
     id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
-        "Desktops",
+        "Desktop",
         secondary=desktop_interfaces,
         backref="interface"
     )
@@ -158,13 +176,23 @@ class Interface(Base):
     net = sa.Column(sa.String)
     type = sa.Column(sa.String)
 
+    def __init__(self, id, ifname, model, net, type):
+        self.id = id
+        self.ifname = ifname
+        self.model = model
+        self.net = net
+        self.type = type
+        
 class Graphic(Base):
     __tablename__ = "graphic"
     id = sa.Column(sa.String, primary_key=True)
     desktop = relationship(
-        "Desktops",
+        "Desktop",
         secondary=desktop_graphics,
         backref="graphic"
     )
     protocol = sa.Column(sa.String)
     
+    def __init__(self, id, protocol):
+        self.id = id
+        self.protocol = protocol

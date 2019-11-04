@@ -1,17 +1,20 @@
 from api.grpc.grpc_server import GrpcServer
 from test.engine_mock import EngineMock as Engine
-from db.schema import create_schema
 import time
 
 
 import alembic.config
 alembicArgs = [
     '--raiseerr',
-    'upgrade', 'head',
+    'downgrade', '-1',
 ]
 alembic.config.main(argv=alembicArgs)
 
-exit(1)
+alembicArgs = [
+    '--raiseerr',
+    'upgrade', 'head',
+]
+alembic.config.main(argv=alembicArgs)
 
 engine = Engine()
 
