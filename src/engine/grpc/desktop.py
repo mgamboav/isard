@@ -4,7 +4,7 @@ import hashlib
 import json
 
 import sys,os
-from engine.services.log import logs
+#from engine.services.log import logs
 
 from engine.grpc.proto import desktop_pb2
 from engine.grpc.proto import desktop_pb2_grpc
