@@ -2,9 +2,12 @@
 #      Alberto Larraz Dalmases
 #      Josep Maria Viñolas Auquer
 # License: AGPLv3
-from engine2.common.exceptions import UnAcceptedValueConnectionHypParameters
 
 import libvirt
+
+from engine2.common.exceptions import UnAcceptedValueConnectionHypParameters
+
+
 
 class Hyp(object):
     """Operates with libvirt hypervisor
@@ -25,17 +28,11 @@ class Hyp(object):
         Raises:
             UnAcceptedValueConnectionHypParameters: if port or hostname are invalid"""
 
-        if 1 < port < pow(2, 16):
-            port = int(port)
-        else:
-            log.error("port to connect hypervisor {} is not valid: {port}")
-            raise UnAcceptedValueConnectionHypParameters("Port innvalid, must be between 1 and 2^16: {port}")
+        self.verify_parameters_ssh(port,hostname,username)
+        self.port = port
+        self.hostname = hostname
+        self.username = username
 
-        if (type(port) == int) and port > 1 and port < pow(2, 16):
-            log.error("port to connect hypervisor {} is not valid: {port}")
-            raise UnAcceptedValueConnectionHypParameters("Port innvalid: {port}")
-
-        self.port = int(port)
 
     def verify_parameters_ssh(self,port,hostname,username):
         if type(port) is not int:
@@ -43,7 +40,7 @@ class Hyp(object):
         if type(address) is not str:
             raise UnAcceptedValueConnectionHypParameters("Hostname for ssh connection must be string")
         if type(username) is not str:
-            raise UnAcceptedValueConnectionHypParameters("Usename for ssh connection must be string")
+            raise UnAcceptedValueConnectionHypParameters("Username for ssh connection must be string")
 
         #port between 1 and 2^16
         if 1 < port < pow(2, 16):
