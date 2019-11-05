@@ -118,7 +118,23 @@ class DesktopMock(object):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-                                                                                                            
+
+    # ~ def from_template(self, desktop_id, template_id, hardware, pb=False):
+        # ~ ''' '''
+        # ~ try:
+            # ~ boots = [Boot(b) for b in hardware['boots']
+            # ~ result = self.session.query(Interface).all()
+            # ~ if pb:
+                # ~ return [desktop_pb2.Interface(**i.to_dict()) for i in interfaces]
+            # ~ interfaces_dict = {}
+            # ~ for interface in [i.to_dict() for i in interfaces]:
+                # ~ id = interface.pop('id')
+                # ~ interfaces_dict[id] = interface
+            # ~ return interfaces_dict
+        # ~ except Exception as e:
+            # ~ exc_type, exc_obj, exc_tb = sys.exc_info()
+            # ~ fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')                                                                                              
     # ~ def DesktopGet(self,desktop_id):
         # ~ ''' From running dict '''
         # ~ desktop = self.db.select('desktops',desktop_id)

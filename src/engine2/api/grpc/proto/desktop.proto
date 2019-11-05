@@ -19,6 +19,7 @@ service Desktop {
     
     rpc VideoList(VideoListRequest) returns (VideoListResponse) {}
     rpc BootList(BootListRequest) returns (BootListResponse) {}
+    rpc InterfaceList(InterfaceListRequest) returns (InterfaceListResponse) {}
 }
 
 enum Action {
@@ -227,6 +228,21 @@ message Boot {
     
 message BootListResponse {
     repeated Boot boots = 1;
+}
+
+message InterfaceListRequest {
+}
+
+message Interface {
+    string id = 1;
+    string ifname = 2;
+    string model = 3;
+    string net = 4;
+    string type = 5;
+}
+    
+message InterfaceListResponse {
+    repeated Interface interfaces = 1;
 }
 
 message Viewer {

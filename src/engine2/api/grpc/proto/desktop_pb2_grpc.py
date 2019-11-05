@@ -80,6 +80,11 @@ class DesktopStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListResponse.FromString,
         )
+    self.InterfaceList = channel.unary_unary(
+        '/desktop.Desktop/InterfaceList',
+        request_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.InterfaceListRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.InterfaceListResponse.FromString,
+        )
 
 
 class DesktopServicer(object):
@@ -178,6 +183,13 @@ class DesktopServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def InterfaceList(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_DesktopServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -245,6 +257,11 @@ def add_DesktopServicer_to_server(servicer, server):
           servicer.BootList,
           request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.BootListResponse.SerializeToString,
+      ),
+      'InterfaceList': grpc.unary_unary_rpc_method_handler(
+          servicer.InterfaceList,
+          request_deserializer=api_dot_grpc_dot_proto_dot_desktop__pb2.InterfaceListRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_desktop__pb2.InterfaceListResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
