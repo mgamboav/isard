@@ -9,7 +9,7 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from db.desktop import Base, Desktop, Boot, Interface, Graphic, Video, DiskBus, DiskFormat
+from models.desktop import Base, Desktop, Boot, Interface, Graphic, Video, DiskBus, DiskFormat
 # Iso, Floppy
 
 Session = sessionmaker()
@@ -40,11 +40,11 @@ def upgrade():
     session.bulk_save_objects(disk_buses)
     session.bulk_save_objects(disk_formats)    
     
-     id, boots=['disk'], disks=None, isos=None, floppies=None, graphics=['spice'], interfaces=['default'], video=['qxl'], vcpu=1, memory=1024 ):
-    d_boots = [session.query(Boot).get('disk'),session.query(Boot).get('pxe')]
-    d_disks = [session.query(Disk)
-    desktop = Desktop(id='_admin_tetros'), d_boots, d_disks
-    session.add(desktop)    
+     # ~ id, boots=['disk'], disks=None, isos=None, floppies=None, graphics=['spice'], interfaces=['default'], video=['qxl'], vcpu=1, memory=1024 ):
+    # ~ d_boots = [session.query(Boot).get('disk'),session.query(Boot).get('pxe')]
+    # ~ d_disks = [session.query(Disk)
+    # ~ desktop = Desktop(id='_admin_tetros'), d_boots, d_disks
+    # ~ session.add(desktop)    
     session.commit()
 
 

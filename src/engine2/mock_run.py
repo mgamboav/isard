@@ -1,5 +1,5 @@
 from api.grpc.grpc_server import GrpcServer
-from test.engine_mock import EngineMock as Engine
+from test.grpc.engine_mock import EngineMock as Engine
 import time
 
 

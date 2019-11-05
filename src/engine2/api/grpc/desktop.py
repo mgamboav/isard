@@ -3,7 +3,7 @@ import time, sys, os
 
 from api.grpc.proto import desktop_pb2
 from api.grpc.proto import desktop_pb2_grpc
-from engine.exceptions import NotFoundError
+from common.exceptions.engine import NotFoundError
 
 import logging
 log = logging.getLogger(__name__)

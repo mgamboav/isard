@@ -4,7 +4,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.inspection import inspect as _inspect
 
-from db.base_mixin import BaseMixin as Base
+from models.base_mixin import BaseMixin as Base
 
 import json
 # ~ Base = declarative_base()
