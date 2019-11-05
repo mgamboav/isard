@@ -85,9 +85,21 @@ class Desktop(Base):
     vcpu = sa.Column(sa.Integer)
     memory = sa.Column(sa.Integer)
 
-    def __init__(self, id):
+    def __init__(self, id, boots=['disk'], disks=None, isos=None, floppies=None, graphics=['spice'], interfaces=['default'], video=['qxl'], vcpu=1, memory=1024 ):
         self.id = id    
+        self.boots = self.session.query(Boot).get(boots[0])
+        if self.disks is None:
+            disk = Disk(id=id)
+        else:
+            pass
+        self.graphics = Graphic(graphics[0])
+        self.interfaces = Interface(interfaces[0])
+        self.video = video
+        self.vcpu = vcpu
+        self.memory = memory
+            
 
+    
     
 class Disk(Base):
     __tablename__ = 'disk'
@@ -106,7 +118,15 @@ class Disk(Base):
     size = sa.Column(sa.Integer)
     format_id = sa.Column(sa.String, sa.ForeignKey('disk_format.id'))
     format = relationship("DiskFormat")
-    
+
+    def __init__(self, id, rpath=".",bus="virtio", dev="vda", size=5, format="qcow2"):
+        self.id = id
+        self.rpath = rpath
+        self.bus = bus
+        self.dev = dev
+        self.size = size
+        self.format = format
+            
 class DiskBus(Base):
     __tablename__ = "disk_bus"
     id = sa.Column(sa.String, primary_key=True)
