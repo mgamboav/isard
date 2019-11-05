@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package template;
+
+//import "google/protobuf/empty.proto"; 
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+ 
+service Template{
+ rpc Get(GetRequest) returns (GetResponse) {}
+ rpc List(ListRequest) returns (ListResponse) {}
+ rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+ rpc Update(UpdateRequest) returns (UpdateResponse) {}
+ rpc FromDesktop(FromDesktopRequest) returns (FromDesktopResponse) {}
+}
+
+
+enum Action {
+    UNKNOWN = 0;
+    STOP = 1;
+    START = 2;
+    PAUSE = 3;
+    RESUME = 4;
+    DELETE = 5;
+    UPDATE = 6;
+    TEMPLATE = 7;
+}
+
+message HardwareNew{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_rpath=3;
+ string boot_disk_bus=4;
+ int32  boot_disk_size=5; 
+ repeated string videos=6;
+ repeated string graphics=7;
+ repeated string boots=8;
+ repeated string interfaces=9;
+ repeated string isos=10;
+ repeated string floppies=11;
+}
+
+message HardwareDerived{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_rpath=3;
+ string boot_disk_bus=4; 
+ repeated string videos=5;
+ repeated string graphics=6;
+ repeated string boots=7;
+ repeated string interfaces=8;
+ repeated string isos=9;
+ repeated string floppies=10;
+}
+
+message HardwareUpdate{
+ int32 vcpus=1;
+ int32 memory=2;
+ string boot_disk_bus=7; 
+ repeated string videos=3;
+ repeated string graphics=4;
+ repeated string boots=5;
+ repeated string interfaces=6;
+ repeated string isos=8;
+ repeated string floppies=9;
+}
+
+
+message GetRequest{
+ string template_id=1;
+}
+
+message GetResponse{
+  repeated google.protobuf.Any template = 1;
+}
+
+message ListRequest{}
+
+message ListResponse{
+ repeated string templates = 1;
+}
+
+message DeleteRequest{
+ string template_id = 1;
+}
+
+message DeleteResponse{
+    enum State{
+		UNKNOWN = 0;
+		DELETED = 1;
+		FAILED = 2;
+    }
+ State state = 1;
+ string detail = 2;
+}
+
+message UpdateRequest{
+ string template_id=1;
+ HardwareUpdate hardware=2;
+}
+
+message UpdateResponse{
+    enum State{
+		UNKNOWN = 0;
+		STOPPED = 1;
+		FAILED = 2;
+    }
+ State state = 1;
+ string detail = 2;
+}
+
+message FromDesktopRequest{
+ string desktop_id=1;
+ string template_id=2;
+ HardwareDerived hardware=3;
+ string extra_fields_json = 4;
+}
+
+message FromDesktopResponse{
+    enum State{
+		UNKNOWN = 0;
+		STOPPED = 1;
+		FAILED = 2;
+    }
+	State state = 1;
+	string detail = 2;
+	repeated Action next_actions = 3; 
+}
+

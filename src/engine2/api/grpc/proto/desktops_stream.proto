@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package desktops_stream;
+
+//import "google/protobuf/empty.proto"; 
+//import "google/protobuf/any.proto";
+ 
+service DesktopsStream{
+ rpc Changes(DesktopsStreamRequest) returns (stream DesktopsStreamResponse) {}
+}
+
+message Viewer{
+ string hostname=1;
+ string hostname_external=2;
+ int32 port_spice=5;
+ int32 port_spice_ssl=6;
+ int32 port_vnc=7;
+ int32 port_vnc_websocket=8;
+ string passwd=9;
+ string client_addr=10;
+ float client_since=11;
+}
+
+message DesktopsStreamRequest{}
+
+message DesktopsStreamResponse{
+  string desktop_id = 1;
+    enum State{
+     STOPPED = 0;
+     STARTED = 1;
+     PAUSED = 2;
+     DELETED = 3;
+     FAILED = 4;
+     UNKNOWN = 5;
+     NEW = 6;
+    }
+ State state = 2;
+ string detail = 3; 
+ repeated string next_actions = 4; 
+//  oneof viewer_oneof {
+//    Viewer viewer = 5;
+//  } 
+     Viewer viewer = 5;
+}

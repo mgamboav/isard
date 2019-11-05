@@ -1,43 +1,26 @@
 import threading
 import grpc
 
-from engine.grpc.proto import desktop_pb2
-from engine.grpc.proto import desktop_pb2_grpc
-from engine.grpc.proto import desktops_stream_pb2
-from engine.grpc.proto import desktops_stream_pb2_grpc
-from engine.grpc.proto import template_pb2
-from engine.grpc.proto import template_pb2_grpc
-from engine.grpc.proto import templates_stream_pb2
-from engine.grpc.proto import templates_stream_pb2_grpc
-from engine.grpc.proto import template_pb2
-from engine.grpc.proto import base_pb2_grpc
-from engine.grpc.proto import bases_stream_pb2
-from engine.grpc.proto import bases_stream_pb2_grpc
-from engine.grpc.proto import media_pb2
-from engine.grpc.proto import media_pb2_grpc
-from engine.grpc.proto import media_stream_pb2_grpc
-from engine.grpc.proto import engine_pb2
-from engine.grpc.proto import engine_pb2_grpc
+import sys
+sys.path.append("..")
 
-import rethinkdb as r
-from rethinkdb.errors import (
-    ReqlAuthError,
-    ReqlCursorEmpty,
-    ReqlDriverError,
-    ReqlError,
-    ReqlInternalError,
-    ReqlNonExistenceError,
-    ReqlOpFailedError,
-    ReqlOpIndeterminateError,
-    ReqlPermissionError,
-    ReqlQueryLogicError,
-    ReqlResourceLimitError,
-    ReqlRuntimeError,
-    ReqlServerCompileError,
-    ReqlTimeoutError,
-    ReqlUserError)
-    
-from engine.grpc.lib.database import rdb
+from api.grpc.proto import desktop_pb2
+from api.grpc.proto import desktop_pb2_grpc
+# ~ from engine.grpc.proto import desktops_stream_pb2
+# ~ from engine.grpc.proto import desktops_stream_pb2_grpc
+# ~ from engine.grpc.proto import template_pb2
+# ~ from engine.grpc.proto import template_pb2_grpc
+# ~ from engine.grpc.proto import templates_stream_pb2
+# ~ from engine.grpc.proto import templates_stream_pb2_grpc
+# ~ from engine.grpc.proto import template_pb2
+# ~ from engine.grpc.proto import base_pb2_grpc
+# ~ from engine.grpc.proto import bases_stream_pb2
+# ~ from engine.grpc.proto import bases_stream_pb2_grpc
+# ~ from engine.grpc.proto import media_pb2
+# ~ from engine.grpc.proto import media_pb2_grpc
+# ~ from engine.grpc.proto import media_stream_pb2_grpc
+# ~ from engine.grpc.proto import engine_pb2
+# ~ from engine.grpc.proto import engine_pb2_grpc
 
 class EngineClient(object):
     """
@@ -54,14 +37,14 @@ class EngineClient(object):
  
         # bind the client to the server channel
         self.desktop_stub = desktop_pb2_grpc.DesktopStub(self.channel)
-        self.desktops_stream_stub = desktops_stream_pb2_grpc.DesktopsStreamStub(self.channel)
-        self.template_stub = template_pb2_grpc.TemplateStub(self.channel)
-        self.templates_stream_stub = templates_stream_pb2_grpc.TemplatesStreamStub(self.channel)
-        self.base_stub = base_pb2_grpc.BaseStub(self.channel)
-        self.bases_stream_stub = bases_stream_pb2_grpc.BasesStreamStub(self.channel)
-        self.media_stub = media_pb2_grpc.MediaStub(self.channel)
-        self.media_stream_stub = media_stream_pb2_grpc.MediaStreamStub(self.channel)
-        self.engine_stub = engine_pb2_grpc.EngineStub(self.channel)
+        # ~ self.desktops_stream_stub = desktops_stream_pb2_grpc.DesktopsStreamStub(self.channel)
+        # ~ self.template_stub = template_pb2_grpc.TemplateStub(self.channel)
+        # ~ self.templates_stream_stub = templates_stream_pb2_grpc.TemplatesStreamStub(self.channel)
+        # ~ self.base_stub = base_pb2_grpc.BaseStub(self.channel)
+        # ~ self.bases_stream_stub = bases_stream_pb2_grpc.BasesStreamStub(self.channel)
+        # ~ self.media_stub = media_pb2_grpc.MediaStub(self.channel)
+        # ~ self.media_stream_stub = media_stream_pb2_grpc.MediaStreamStub(self.channel)
+        # ~ self.engine_stub = engine_pb2_grpc.EngineStub(self.channel)
 
     ''' DESKTOPS STREAM '''
     def desktops_changes(self):
@@ -132,6 +115,44 @@ class EngineClient(object):
         # ~ print(response.viewer)
         return True
 
+    def desktop_videos(self):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.desktop_stub.VideoList(desktop_pb2.VideoListRequest())
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        return response
+
+    def desktop_boots(self):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.desktop_stub.BootList(desktop_pb2.BootListRequest())
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == desktop_pb2.DesktopStopResponse.State.STARTED:
+            #~ print(message+' was stopped')
+        #~ else:
+            #~ print(response.state)
+        return response
+                
     def desktop_viewer(self, message):
         """
         Client function to call the rpc
@@ -389,6 +410,8 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
+print(curr_client.desktop_videos())
+print(curr_client.desktop_boots())
 # ~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''
@@ -414,20 +437,20 @@ import time
 
 
 ''' LOKER START/STOP THREAD '''
-j=20
-while j<=20:
-    i=1
-    while i<=10:
-        threading.Thread(target=curr_client.desktop_start, args=('_admin_tetros'+str(i),), daemon=False).start()
-        i=i+1
+# ~ j=20
+# ~ while j<=20:
+    # ~ i=1
+    # ~ while i<=10:
+        # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_tetros'+str(i),), daemon=False).start()
+        # ~ i=i+1
     # ~ time.sleep(10)
 
-    i=1
-    while i<=10:
-        threading.Thread(target=curr_client.desktop_stop, args=('_admin_tetros'+str(i),), daemon=False).start()
-        i=i+1
+    # ~ i=1
+    # ~ while i<=10:
+        # ~ threading.Thread(target=curr_client.desktop_stop, args=('_admin_tetros'+str(i),), daemon=False).start()
+        # ~ i=i+1
         
-    j=j+1
+    # ~ j=j+1
     
     # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_downloaded_tetros',), daemon=False).start()
     # ~ threading.Thread(target=curr_client.desktop_start, args=('_admin_downloaded_zxspectrum',), daemon=False).start()

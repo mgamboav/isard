@@ -1,17 +1,19 @@
 #### PRODUCTION
-FROM isard/alpine-pandas:latest AS production
+#FROM isard/alpine-pandas:latest AS production
+FROM alpine:latest AS production
 MAINTAINER isard <info@isard.com>
 
-RUN apk add --no-cache bash yarn py3-libvirt py3-paramiko py3-lxml py3-pexpect py3-openssl py3-bcrypt py3-gevent py3-flask py3-netaddr py3-requests curl openssh-client
+# Needed in hypervisor connection scripts
+RUN apk add --no-cache bash curl openssh-client
+RUN apk add --no-cache py3-psycopg2
+
+# Removed in new version. Kept here only to reference
+#py3-libvirt py3-paramiko py3-lxml py3-pexpect py3-openssl py3-bcrypt py3-gevent py3-netaddr py3-requests curl openssh-client py3-psycopg2
 
 COPY dockers/app/requirements.pip3 /requirements.pip3
-RUN pip3 install --no-cache-dir -r requirements.pip3
-
-## GRPC
 RUN apk add --no-cache --virtual .build_deps build-base python3-dev
-RUN pip3 install grpcio grpcio-tools
+RUN pip3 install --no-cache-dir -r requirements.pip3
 RUN apk del .build_deps
-
 
 RUN mkdir -p /root/.ssh
 RUN echo "Host isard-hypervisor \
@@ -22,7 +24,8 @@ RUN apk add --no-cache supervisor
 RUN mkdir -p /var/log/supervisor
 COPY dockers/app/supervisord.conf /etc/supervisord.conf
 
-EXPOSE 5000
+# GRPC SERVER
+EXPOSE 1313
 
 COPY dockers/app/certs.sh /
 COPY dockers/app/add-hypervisor.sh /
@@ -36,10 +39,10 @@ CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
 #### DEVELOPMENT
 FROM production AS development
-RUN apk add --no-cache git py3-xmltodict
-
-RUN pip3 install ipython pytest
-RUN apk add --no-cache vim openssh
+RUN apk add --no-cache git vim nano openssh 
+#py3-xmltodict
+RUN apk add --no-cache build-base python3-dev
+RUN pip3 install ipython pytest grpcio-tools
 
 
 #COPY dockers/app/certs_devel.sh /certs.sh

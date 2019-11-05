@@ -3,7 +3,7 @@ import grpc
 import time,json
 from concurrent import futures
 
-from engine.grpc.proto import desktop_pb2, desktop_pb2_grpc, desktops_stream_pb2, desktops_stream_pb2_grpc
+from api.grpc.proto import desktop_pb2, desktop_pb2_grpc, desktops_stream_pb2, desktops_stream_pb2_grpc
 from engine.grpc.proto import template_pb2, template_pb2_grpc
 
 from engine.grpc.proto import engine_pb2, engine_pb2_grpc
