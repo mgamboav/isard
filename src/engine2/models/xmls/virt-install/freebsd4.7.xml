@@ -1,0 +1,79 @@
+<domain type="kvm">
+  <name>freebsd4.7</name>
+  <uuid>61241cc1-fe11-44cc-bfd1-a6a3002e3e7d</uuid>
+  <memory>2097152</memory>
+  <currentMemory>2097152</currentMemory>
+  <vcpu>1</vcpu>
+  <os>
+    <type arch="x86_64">hvm</type>
+    <boot dev="network"/>
+    <boot dev="cdrom"/>
+    <boot dev="fd"/>
+    <boot dev="hd"/>
+    <bootmenu enable="yes"/>
+  </os>
+  <features>
+    <acpi/>
+    <apic/>
+    <vmport state="off"/>
+  </features>
+  <cpu mode="custom" match="exact">
+    <model>Haswell-noTSX</model>
+  </cpu>
+  <clock offset="utc">
+    <timer name="rtc" tickpolicy="catchup"/>
+    <timer name="pit" tickpolicy="delay"/>
+    <timer name="hpet" present="no"/>
+  </clock>
+  <pm>
+    <suspend-to-mem enabled="no"/>
+    <suspend-to-disk enabled="no"/>
+  </pm>
+  <devices>
+    <emulator>/usr/bin/qemu-kvm</emulator>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2"/>
+      <source file="/home/tmp/disk.qcow2"/>
+      <target dev="hda" bus="ide"/>
+    </disk>
+    <disk type="file" device="cdrom">
+      <driver name="qemu" type="raw"/>
+      <source file="/home/tmp/cdrom.iso"/>
+      <target dev="hdb" bus="ide"/>
+      <readonly/>
+    </disk>
+    <disk type="file" device="floppy">
+      <driver name="qemu" type="raw"/>
+      <source file="/home/tmp/floppy.img"/>
+      <target dev="fda" bus="fdc"/>
+    </disk>
+    <controller type="usb" index="0" model="ich9-ehci1"/>
+    <controller type="usb" index="0" model="ich9-uhci1">
+      <master startport="0"/>
+    </controller>
+    <controller type="usb" index="0" model="ich9-uhci2">
+      <master startport="2"/>
+    </controller>
+    <controller type="usb" index="0" model="ich9-uhci3">
+      <master startport="4"/>
+    </controller>
+    <interface type="bridge">
+      <source bridge="br"/>
+      <mac address="52:54:00:ab:e8:c0"/>
+    </interface>
+    <graphics type="spice" port="-1" tlsPort="-1" autoport="yes">
+      <image compression="off"/>
+    </graphics>
+    <console type="pty"/>
+    <channel type="spicevmc">
+      <target type="virtio" name="com.redhat.spice.0"/>
+    </channel>
+    <sound model="ich6"/>
+    <video>
+      <model type="qxl"/>
+    </video>
+    <redirdev bus="usb" type="spicevmc"/>
+    <redirdev bus="usb" type="spicevmc"/>
+  </devices>
+</domain>
+
