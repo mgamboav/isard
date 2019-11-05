@@ -21,3 +21,14 @@ class TransitionError(Error):
         self.previous = previous
         self.next = next
         self.message = message
+
+class UnAcceptedValueConnectionHypParameters(Error):
+    """Raised a connection to hypervisor if parameters are invalid.
+
+    Attributes:
+    """
+    def __init__(self, data=None):
+        self.data = data
+
+    def __str__(self):
+        return repr(f"Connection parameters are not well formatted. {data}")

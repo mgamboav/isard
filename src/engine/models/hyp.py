@@ -9,6 +9,7 @@ a module to control hypervisor functions and state. Overrides libvirt events and
 
 """
 
+import re
 import traceback
 import socket
 import time
@@ -33,24 +34,53 @@ from engine.config import *
 from engine.services.lib.functions import exec_remote_cmd
 from engine.services.db.domains import update_domain_status, get_domains_with_status_in_list
 
-TIMEOUT_QUEUE = 20
-TIMEOUT_CONN_HYPERVISOR = 4 #int(CONFIG_DICT['HYPERVISORS']['timeout_conn_hypervisor'])
+class UnAcceptedValueConnectionHypParameters(Exception):
+    def __init__(self, data=None):
+        self.data = data
+
+    def __str__(self):
+        return repr(f"Connection parameters are not well formatted. {data}")
+
+class Hyp(object):
+    """
+    Operates with hypervisor
+    """
+    def __init__(self, hostname, user='root', port:int=22, try_ssh_autologin=False):
+
+        if 1 < port < pow(2, 16):
+            port = int(port)
+        else:
+            log.error("port to connect hypervisor {} is not valid: {port}")
+            raise UnAcceptedValueConnectionHypParameters("Port innvalid, must be between 1 and 2^16: {port}")
+
+        if (type(port) == int) and port > 1 and port < pow(2, 16):
+            log.error("port to connect hypervisor {} is not valid: {port}")
+            raise UnAcceptedValueConnectionHypParameters("Port innvalid: {port}")
+
+        self.port = int(port)
+
+    def verify_parameters_ssh(self,port,hostname,user):
+        if type(port) is not int:
+            raise UnAcceptedValueConnectionHypParameters("Port for ssh connection must be integer")
+        if type(address) is not str:
+            raise UnAcceptedValueConnectionHypParameters("Hostname for ssh connection must be string")
+        #port between 1 and 2^16
+        if 1 < port < pow(2, 16):
+            port = int(port)
+        else:
+            log.error("port to connect hypervisor {} is not valid: {port}")
+            raise UnAcceptedValueConnectionHypParameters("Port innvalid, must be between 1 and 2^16: {port}")
+        #hostame is valid
+        if hostname[-1] == ".":
+            hostname = hostname[:-1]  # strip exactly one dot from the right, if present
+        #allowed = re.compile("(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
+        #if all(allowed.match(x) for x in hostname.split(".")) is False:
+        if all(x.find(' ')<0 for x in hostname.split('.')):
+            raise UnAcceptedValueConnectionHypParameters(f"Hostname as space characters: {hostname}")
 
 
-# > 1 is connected
-HYP_STATUS_CONNECTED = 10
 
-# 1 is ready
-HYP_STATUS_READY = 1
 
-# < 0 not connected and error
-HYP_STATUS_ERROR_WHEN_CONNECT = -5
-HYP_STATUS_ERROR_WHEN_CONNECT_TIMELIMIT = -6
-HYP_STATUS_ERROR_NOT_RESOLVES_HOSTNAME = -7
-HYP_STATUS_ERROR_WHEN_CLOSE_CONNEXION = -1
-HYP_STATUS_NOT_ALIVE = -10
-
-MAX_GET_KVM_RETRIES = 3
 
 class hyp(object):
     """
@@ -62,9 +92,11 @@ class hyp(object):
         # self.id = 0
         self.domains = []
         if (type(port) == int) and port > 1 and port < pow(2, 16):
-            self.port = port
-        else:
-            self.port = 22
+            log.error("port to connect hypervisor {} is not valid: {port}")
+            raise UnAcceptedValueConnectionHypParameters()
+        self.port=int(port)
+
+        log.error('El port es: '+str(self.port))
         self.try_ssh_autologin = try_ssh_autologin
         self.user = user
         self.hostname = address
@@ -450,7 +482,7 @@ class hyp(object):
             log.error('can not get stats from libvirt if hypervisor {} is not connected'.format(self.hostname))
             return False
 
-    def     process_hypervisor_stats(self, raw_stats):
+    def  process_hypervisor_stats(self, raw_stats):
         if len(self.info) == 0:
             self.get_hyp_info()
 

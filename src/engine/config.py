@@ -149,3 +149,23 @@ TESTS = {
                 "user":  "root"
                 }]
 }
+
+
+TIMEOUT_QUEUE = 20
+TIMEOUT_CONN_HYPERVISOR = 4 #int(CONFIG_DICT['HYPERVISORS']['timeout_conn_hypervisor'])
+
+
+# > 1 is connected
+HYP_STATUS_CONNECTED = 10
+
+# 1 is ready
+HYP_STATUS_READY = 1
+
+# < 0 not connected and error
+HYP_STATUS_ERROR_WHEN_CONNECT = -5
+HYP_STATUS_ERROR_WHEN_CONNECT_TIMELIMIT = -6
+HYP_STATUS_ERROR_NOT_RESOLVES_HOSTNAME = -7
+HYP_STATUS_ERROR_WHEN_CLOSE_CONNEXION = -1
+HYP_STATUS_NOT_ALIVE = -10
+
+MAX_GET_KVM_RETRIES = 3

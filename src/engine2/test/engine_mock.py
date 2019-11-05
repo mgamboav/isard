@@ -1,8 +1,6 @@
-from sm.desktop_sm import DesktopSM, StateInvalidError
+from common.sm.desktop_sm import DesktopSM
 # ~ import engine.exceptions
 from engine.exceptions import *
-
-import random,time,string
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
