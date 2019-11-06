@@ -10,8 +10,11 @@ alembicArgs = [
 ]
 try:
     alembic.config.main(argv=alembicArgs)
-except:
+except Exception as e:
+    print(e)
     pass
+    
+    
 alembicArgs = [
     '--raiseerr',
     'upgrade', 'head',

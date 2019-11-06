@@ -9,7 +9,8 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from models.desktop import Base, Desktop, Boot, Interface, Graphic, Video, DiskBus, DiskFormat
+from models.desktop import *
+# ~ Base, Desktop, Boot, Interface, Graphic, Video, Disk, DiskBus, DiskFormat
 # Iso, Floppy
 
 Session = sessionmaker()
@@ -39,15 +40,59 @@ def upgrade():
     session.bulk_save_objects(videos)
     session.bulk_save_objects(disk_buses)
     session.bulk_save_objects(disk_formats)    
-    
+
+# ~ s = Set.query.get(2)
+# ~ p = Product.query.get(3)
+# ~ a = Set_Product_Association(set=s, product=p, quantity=23)
+# ~ db.session.add(a)
+# ~ db.session.commit()
+
+# ~ set = desktop
+# ~ product = boot
      # ~ id, boots=['disk'], disks=None, isos=None, floppies=None, graphics=['spice'], interfaces=['default'], video=['qxl'], vcpu=1, memory=1024 ):
-    # ~ d_boots = [session.query(Boot).get('disk'),session.query(Boot).get('pxe')]
-    # ~ d_disks = [session.query(Disk)
-    # ~ desktop = Desktop(id='_admin_tetros'), d_boots, d_disks
-    # ~ session.add(desktop)    
+
+
+    ### Create new elements: disk
+    disk1_bus= session.query(DiskBus).get('virtio')
+    disk1_format = session.query(DiskFormat).get('qcow2')
+    disk1 = Disk('_admin_tetros_disk', '/pepinillo', disk1_bus, 'vda', 4, disk1_format)
+    session.add(disk1)
+    
+    ### Get new elements: boots, graphics, interfaces, videos
+    boot1 = session.query(Boot).get('disk') 
+    boot2 = session.query(Boot).get('pxe') 
+    graphic1 = session.query(Graphic).get('spice')
+    interface1 = session.query(Interface).get('default')
+    video1 = session.query(Video).get('qxl')
+    
+    ### Create Desktop
+    desktop = Desktop(id="_admin_tetros", vcpu = 1, memory = 1024)
+    session.add(desktop)
+    
+    ### Associate elements with desktop
+    dda1 = Desktop_Disk_Association(desktop=desktop, disk_id=disk1.id, order = 1)
+    session.add(dda1)
+    desktop.disk_id=disk1.id
+    
+    dba1 = Desktop_Boot_Association(desktop=desktop, boot_id=boot1.id, order = 1)
+    session.add(dba1)
+    dba2 = Desktop_Boot_Association(desktop=desktop, boot_id=boot2.id, order = 2)
+    session.add(dba2)    
+    dga1 = Desktop_Graphic_Association(desktop=desktop, graphic_id='spice', order = 1)
+    session.add(dga1)
+    dia1 = Desktop_Interface_Association(desktop=desktop, interface_id=interface1.id, order = 1)
+    session.add(dia1)
+    desktop.video_id=video1.id
+    # ~ dva1 = Desktop_Video_Association(desktop=desktop, video_id=video1, order = 1)
+    # ~ session.add(dva1)
+    
+    session.add(desktop)    
     session.commit()
 
 
 def downgrade():
     bind = op.get_bind()
     Base.metadata.drop_all(bind=bind)
+
+    # ~ for tbl in reversed(Base.metadata.sorted_tables):
+        # ~ engine.execute(tbl.delete())
