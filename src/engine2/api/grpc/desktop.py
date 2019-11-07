@@ -191,5 +191,15 @@ class DesktopServicer(desktop_pb2_grpc.DesktopServicer):
             context.set_code(grpc.StatusCode.UNKNOWN)             
             return desktop_pb2.FromTemplateResponse()
                     
+    def New(self, request, context):
+        try:             
+            state, next_actions = self.engine.desktop.new(request.desktop_id, request.template_id, request.hardware)
+            return desktop_pb2.FromTemplateResponse(state=state, next_actions=next_actions)
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ logs.grpc.error(f'FromTemplate error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
 
-    
+            context.set_details(str(e))
+            context.set_code(grpc.StatusCode.UNKNOWN)             
+            return desktop_pb2.FromTemplateResponse()

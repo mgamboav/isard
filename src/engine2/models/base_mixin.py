@@ -21,3 +21,9 @@ class BaseMixin(Base):
         """
         column_names = _inspect(self.__class__).columns.keys()
         return {k: self.__dict__[k] for k in column_names}    
+
+    # ~ @classmethod
+    # ~ def complex_cls_method(cls, key, values):
+        # ~ main = cls(keyword=key, value="")
+        # ~ ids = [cls(keyword=key, value=item, parent=main) for item in values]
+        # ~ return [main] + ids  

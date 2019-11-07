@@ -33,6 +33,26 @@ enum Action {
     TEMPLATE = 7;
 }
 
+enum Format {
+    qcow2 = 0;
+    raw = 1;
+    iso = 2;
+    vdk = 3;
+}
+
+enum Bus {
+    ide = 0;
+    virtio = 1;
+    sata =2;
+    scsii = 3;
+}
+
+enum Boot {
+    disk = 0;
+    iso = 1;
+    pxe = 3;
+}
+    
 message ListRequest {}
 
 message ListResponse {
@@ -257,13 +277,20 @@ message Viewer {
     float client_since = 11;
 }
 
+
+message Disk {
+    string id = 4;
+    string rpath = 3;
+    string bus = 4;
+    string format = 4;
+    int32  size = 5; 
+}
+
 message Hardware {
     int32 vcpus = 1;
     int32 memory = 2;
-    string boot_disk_rpath = 3;
-    string boot_disk_bus = 4;
-    int32  boot_disk_size = 5; 
-    repeated string videos = 6;
+    repeated Disk disks = 3;
+    repeated string videos = 4;
     repeated string graphics = 7;
     repeated string boots = 8;
     repeated string interfaces = 9;
