@@ -11,8 +11,8 @@ class BaseMixin(Base):
     __abstract__ = True
     # ~ id = db.Column(db.Integer, primary_key=True)
 
-    def by_id(self, pk):
-        return db.query(self.__class__).get(pk)
+    def by_name(name):
+        return db.query(self.__class__).get(name)
 
     def to_dict(self):
         """Returns model as dict of properties.

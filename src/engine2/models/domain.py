@@ -44,8 +44,10 @@ class Domain_Media(Base):
     order = sa.Column(sa.Integer)
     
     medias = relationship("MediaXML", back_populates="domains")
-    domain = relationship("domain", back_populates="medias")
+    domain = relationship("Domain", back_populates="medias")
 
+
+        
 class Domain_Interface(Base):
     __tablename__ = 'domain_interface'
 
@@ -53,9 +55,10 @@ class Domain_Interface(Base):
     interface_id = sa.Column(sa.Integer, sa.ForeignKey('interface_xml.id'), primary_key=True)
     order = sa.Column(sa.Integer)
     model = sa.Column(sa.String)
+    mac = sa.Column(sa.String)
     
     interfaces = relationship("InterfaceXML", back_populates="domains")
-    domain = relationship("domain", back_populates="interfaces")
+    domain = relationship("Domain", back_populates="interfaces")
 
 class Domain_Graphic(Base):
     __tablename__ = 'domain_graphic'
@@ -64,9 +67,28 @@ class Domain_Graphic(Base):
     graphic_id = sa.Column(sa.Integer, sa.ForeignKey('graphic_xml.id'), primary_key=True)
     order = sa.Column(sa.Integer)
     
-    graphics = relationship("GraphicXML", back_populates="domains")
-    domain = relationship("Domain", back_populates="graphics")
-  
+    graphic = relationship("GraphicXML", back_populates="domain")
+    domain = relationship("Domain", back_populates="graphic")
+
+    # ~ def __init__(self, domain=None):
+        # ~ print("in __init__: ", domain)
+        # ~ self.domain = domain
+        # ~ # self.correspondent = correspondent
+
+# ~ from sqlalchemy.ext.associationproxy import association_proxy
+# ~ Graphic.members = association_proxy("graphic", "domain")
+# ~ User.communities = association_proxy("memberships", "community")
+        
+class Domain_Video(Base):
+    __tablename__ = 'domain_video'
+
+    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
+    graphic_id = sa.Column(sa.Integer, sa.ForeignKey('video_xml.id'), primary_key=True)
+    order = sa.Column(sa.Integer)
+    
+    videos = relationship("VideoXML", back_populates="domains")
+    domain = relationship("Domain", back_populates="videos")
+      
 class Domain(Base):
     __tablename__ = 'domain'
 
@@ -81,7 +103,7 @@ class Domain(Base):
     # ~ boot_id = sa.Column(sa.Integer, sa.ForeignKey('boot.id'))
     
     # ~ domain_xml_id = sa.Column(sa.Integer, sa.ForeignKey('domain_xml.id'))
-    domain_xml = relationship("DomainXML")
+    domain_xmls = relationship("DomainXML")
     
     boot = relationship("Boot")
     
@@ -89,17 +111,20 @@ class Domain(Base):
     disk = relationship('Disk')
     
     # Many to Many
-    medias = relationship("Domain_Media_Association", 
+    medias = relationship("Domain_Media", 
                                         back_populates="domain")
                                         
-    graphics = relationship("Domain_Graphic_Association", 
+    graphic = relationship("Domain_Graphic", 
                                         back_populates="domain")
                                         
-    interfaces = relationship("Domain_Interface_Association", 
+    interfaces = relationship("Domain_Interface", 
                                         back_populates="domain")                                                                                                                                                                                                                                                
+
+    videos = relationship("Domain_Video", 
+                                        back_populates="domain") 
     # Many to One
     # ~ video_id = sa.Column(sa.Integer, sa.ForeignKey('video.id'))
-    video = relationship("Video")
+    # ~ video = relationship("Video")
     
     vcpu = sa.Column(sa.Integer)
     memory = sa.Column(sa.Integer)
@@ -118,7 +143,7 @@ class Disk(Base):
     
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
     
-    xml_id = sa.Column(sa.Integer, sa.ForeignKey('disk_xml.id'))  
+    # ~ xml_id = sa.Column(sa.Integer, sa.ForeignKey('disk_xml.id'))  
     xml = relationship('DiskXML')
     
     rpath = sa.Column(sa.String)
@@ -171,8 +196,8 @@ class MediaXML(Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
-    domains = relationship("Domain_MediaXML_Association", 
-                                        back_populates="media_xmls")      
+    domains = relationship("Domain_Media", 
+                                        back_populates="medias")      
     def __init__(self, name, xml):
         self.name = name
         self.xml = xml
@@ -183,8 +208,8 @@ class GraphicXML(Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
-    domains = relationship("Domain_GraphicXML_Association", 
-                                        back_populates="graphic_xmls")      
+    domain = relationship("Domain_Graphic", 
+                                        back_populates="graphic")      
 
     def __init__(self, name, xml):
         self.name = name
@@ -196,8 +221,8 @@ class VideoXML(Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
-    domains = relationship("Domain_VideoXML_Association", 
-                                        back_populates="video_xmls")      
+    domains = relationship("Domain_Video", 
+                                        back_populates="videos")      
 
     def __init__(self, name, xml):
         self.name = name
@@ -209,8 +234,8 @@ class InterfaceXML(Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
-    domains = relationship("Domain_InterfaceXML_Association", 
-                                        back_populates="interface_xmls")      
+    domains = relationship("Domain_Interface", 
+                                        back_populates="interfaces")      
 
     def __init__(self, name, xml):
         self.name = name
