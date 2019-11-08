@@ -4,7 +4,7 @@ from common.exceptions.engine import *
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models.desktop import *
+from models.domain import *
 from api.grpc.proto import desktop_pb2
 import sys, os
 

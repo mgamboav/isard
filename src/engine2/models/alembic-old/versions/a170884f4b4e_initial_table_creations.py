@@ -36,6 +36,7 @@ vid='''
 
 '''
 def upgrade():
+
     bind = op.get_bind()
     Base.metadata.create_all(bind=bind)
     
@@ -79,6 +80,7 @@ def upgrade():
 
 
 def downgrade():
+    # ~ op.execute("drop schema public CASCADE")
     bind = op.get_bind()
     Base.metadata.drop_all(bind=bind)
 
