@@ -26,16 +26,33 @@ XML_MEDIA_CDROM = {'name': 'iso',
     </disk>
 '''
 
-XML_DISK = '''
+XML_DISK = {'name': 'disk',
+'xml': '''
     <disk type="file" device="disk">
       <driver name="qemu" type="{driver_type}"/>
       <source file="{source}"/>
       <target dev="{prefix_suffix}d{target_suffix}" bus="{bus}"/>
     </disk>
-'''
-    
-<!--
-driver_type = qcow2, raw
-bus = ide, sata, virtio, scsi
--->
+'''}
+
+XML_DISK_READONLY = {'name': 'disk_readonly',
+'xml': '''
+    <disk type="file" device="disk">
+      <driver name="qemu" type="{driver_type}"/>
+      <source file="{source}"/>
+      <target dev="{prefix_suffix}d{target_suffix}" bus="{bus}"/>
+      <readonly/>
+    </disk>
+'''}
+
+XML_DISK_DEVICE = {'name': 'disk_device',
+'xml': '''
+<disk type='block' device='disk'>
+    <driver name='qemu' type='raw'/>
+    <source dev='{source}'/>
+    <target dev='vdb' bus='virtio'/>
+</disk>
+'''}
+# ~ driver_type = qcow2, raw
+# ~ bus = ide, sata, virtio, scsi
 
