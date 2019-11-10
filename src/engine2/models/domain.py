@@ -5,6 +5,8 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy.inspection import inspect as _inspect
 
 from models.base_mixin import BaseMixin as Base
+
+from common.connection_manager import db_session
         
 class Domain_Media(Base):
     __tablename__ = 'domain_media'
@@ -74,6 +76,14 @@ class Domain(Base):
     vcpu = sa.Column(sa.Integer)
     memory = sa.Column(sa.Integer)
 
+    def get_xml(name):
+        # ~ print(self)
+        with db_session() as db:
+            return db.query(Domain).all()
+            # ~ return db.query(Domain).get(name)
+            # ~ return db.query(self.__class__).get(name)
+        # ~ self.tree.xpath(xpath).getparent().remove(self.tree.xpath(xpath))
+        
 class Disk(Base):
     __tablename__ = 'disk'
     

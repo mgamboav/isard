@@ -2,10 +2,10 @@ import threading
 import grpc
 
 import sys
-sys.path.append("..")
+sys.path.append("../../")
 
-from api.grpc.proto import desktop_pb2
-from api.grpc.proto import desktop_pb2_grpc
+from api.grpc.proto import domain_pb2
+from api.grpc.proto import domain_pb2_grpc
 # ~ from engine.grpc.proto import desktops_stream_pb2
 # ~ from engine.grpc.proto import desktops_stream_pb2_grpc
 # ~ from engine.grpc.proto import template_pb2
@@ -36,7 +36,7 @@ class EngineClient(object):
                         '{}:{}'.format(self.host, self.server_port))
  
         # bind the client to the server channel
-        self.desktop_stub = desktop_pb2_grpc.DesktopStub(self.channel)
+        self.domain_stub = domain_pb2_grpc.DomainStub(self.channel)
         # ~ self.desktops_stream_stub = desktops_stream_pb2_grpc.DesktopsStreamStub(self.channel)
         # ~ self.template_stub = template_pb2_grpc.TemplateStub(self.channel)
         # ~ self.templates_stream_stub = templates_stream_pb2_grpc.TemplatesStreamStub(self.channel)
@@ -75,12 +75,12 @@ class EngineClient(object):
         return response.desktop
 
 # ~ 
-    def desktop_list(self):
+    def domain_list(self):
         """
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.List(desktop_pb2.ListRequest())
+            response = self.domain_stub.List(domain_pb2.ListRequest())
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -92,7 +92,7 @@ class EngineClient(object):
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
-        return response.desktops
+        return response.domains
                  
     def desktop_start(self, message):
         """
@@ -429,9 +429,9 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
-print(curr_client.desktop_videos())
-print(curr_client.desktop_boots())
-print(curr_client.desktop_interfaces())
+print(curr_client.domain_list())
+# ~ print(curr_client.desktop_boots())
+# ~ print(curr_client.desktop_interfaces())
 # ~ curr_client.domain_changes()
 
 ''' ENGINE IS ALIVE '''

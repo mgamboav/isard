@@ -22,7 +22,7 @@ down_revision = None
 branch_labels = None
 depends_on = None
 
-
+graph=""
 def upgrade():
 
     bind = op.get_bind()
@@ -43,6 +43,7 @@ def upgrade():
     session.add(domain)    
     session.commit()
 
+    # ~ print(Domain.get_xml("_amin_tetros"))
 
 def downgrade():
     # ~ op.execute("drop schema public CASCADE")

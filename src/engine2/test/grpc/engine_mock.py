@@ -5,21 +5,43 @@ from common.exceptions.engine import *
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models.domain import *
-from api.grpc.proto import desktop_pb2
+from common.connection_manager import db_session
+
+from api.grpc.proto import domain_pb2
 import sys, os
 
 class EngineMock(object):
     def __init__(self):
         self.desktop_sm = DesktopSM()
         
-        self.db = create_engine('postgresql://isardvdi:isardvdi@isard-database:5432/engine')
-        self.dbsession = sessionmaker(bind=self.db)
-        self.session = self.dbsession()
-        self.desktop = DesktopMock(self.session)
+        # ~ self.db = create_engine('postgresql://isardvdi:isardvdi@isard-database:5432/engine')
+        # ~ self.dbsession = sessionmaker(bind=self.db)
+        # ~ self.session = db_session()
+        self.domain = DomainMock() #(self.session)
 
-class DesktopMock(object):
-    def __init__(self, session):
-        self.session = session    
+class DomainMock(object):
+    def __init__(self):
+        # ~ self.session = session  
+        pass  
+
+    def list(self,pb=False):
+        ''' From running dict '''
+        try:
+            with db_session() as db:
+                domains = db.query(Domain).all()
+                # ~ domains = self.session.query(Domain).all()
+            if pb:
+                return [domain_pb2.DomainMessage(**d.to_dict()) for d in domains]
+            domains_dict = {}
+            for domain in [d.to_dict() for d in domains]:
+                id = domain.pop('id')
+                domains_dict[id] = domain
+            return domains_dict
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+
             
     def video_list(self,pb=False):
         ''' From running dict '''

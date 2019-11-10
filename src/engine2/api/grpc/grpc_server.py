@@ -3,7 +3,7 @@ import grpc
 # ~ import hashlib
 from concurrent import futures
 
-from api.grpc.proto import desktop_pb2_grpc
+from api.grpc.proto import domain_pb2_grpc
 # ~ from api.grpc.proto import desktops_stream_pb2_grpc
 # ~ from api.grpc.proto import template_pb2_grpc
 # ~ from api.grpc.proto import templates_stream_pb2_grpc
@@ -13,7 +13,7 @@ from api.grpc.proto import desktop_pb2_grpc
 # ~ from api.grpc.proto import media_stream_pb2_grpc
 # ~ from api.grpc.proto import engine_pb2_grpc
 
-from api.grpc.desktop import DesktopServicer
+from api.grpc.domain import DomainServicer
 # ~ from api.grpc.desktops_stream import DesktopsStreamServicer
 # ~ from api.grpc.template import TemplateServicer
 # ~ from api.grpc.templates_stream import TemplatesStreamServicer
@@ -39,7 +39,7 @@ class GrpcServer(object):
         # of thread pool workers.
         self.engine_grpc_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-        desktop_pb2_grpc.add_DesktopServicer_to_server(DesktopServicer(self.engine),self.engine_grpc_server)
+        domain_pb2_grpc.add_DomainServicer_to_server(DomainServicer(self.engine),self.engine_grpc_server)
         # ~ desktops_stream_pb2_grpc.add_DesktopsStreamServicer_to_server(DesktopsStreamServicer(self.app),self.engine_grpc_server)        
         # ~ template_pb2_grpc.add_TemplateServicer_to_server(TemplateServicer(self.app),self.engine_grpc_server)
         # ~ templates_stream_pb2_grpc.add_TemplatesStreamServicer_to_server(TemplatesStreamServicer(self.app),self.engine_grpc_server)  

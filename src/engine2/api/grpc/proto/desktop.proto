@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package desktop;
+package domain;
 
 //import "google/protobuf/any.proto";
  
-service Desktop {
+service Domain {
     rpc List(ListRequest) returns (ListResponse) {}
     rpc ListState(ListStateRequest) returns (ListStateResponse) {}
     rpc Get(GetRequest) returns (GetResponse) {}
@@ -56,16 +56,16 @@ enum Boot {
 message ListRequest {}
 
 message ListResponse {
-    message DesktopFields {
-        string desktop_id = 1;
+    message DomainFields {
+        string Domain_id = 1;
         Hardware hardware = 2;
     }
-    repeated DesktopFields desktops = 1;
+    repeated DomainFields Domains = 1;
 }
 
 message ListStateRequest {}
 
-message DesktopState {
+message DomainState {
     enum State {
         UNKNOWN = 0;
         STOPPED = 1;
@@ -74,17 +74,17 @@ message DesktopState {
         DELETED = 4;
         FAILED = 5;
     }
-    string desktop_id = 1;
+    string Domain_id = 1;
     State state = 2;
     repeated Action next_actions = 3;
 }
 
 message ListStateResponse {
-    repeated DesktopState desktops = 1;
+    repeated DomainState Domains = 1;
 }
 
 message GetRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
 }
 
 message GetResponse {
@@ -102,7 +102,7 @@ message GetResponse {
 }
 
 message GetStateRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
 }
 
 message GetStateResponse {
@@ -119,7 +119,7 @@ message GetStateResponse {
 }
 
 message FromTemplateRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
     string template_id = 2;
     Hardware hardware = 3;
 }
@@ -136,7 +136,7 @@ message FromTemplateResponse {
 }
 
 message FromMediaRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
     string virt_install_id = 2;
     Hardware hardware = 3;
 }
@@ -152,7 +152,7 @@ message FromMediaResponse {
 }
 
 message UpdateRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
     HardwareUpdate hardware = 2;
 }
 
@@ -167,7 +167,7 @@ message UpdateResponse {
 }
 
 message DeleteRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
 }
 
 message DeleteResponse {
@@ -181,7 +181,7 @@ message DeleteResponse {
 }
 
 message StartRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
 }
 
 message StartResponse {
@@ -199,7 +199,7 @@ message StartResponse {
 }
 
 message StopRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
 }
 
 message StopResponse {
@@ -216,7 +216,7 @@ message StopResponse {
 }
 
 message ViewerRequest {
-    string desktop_id = 1;
+    string Domain_id = 1;
 }
 
 message ViewerResponse {
