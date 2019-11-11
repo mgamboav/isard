@@ -2,8 +2,8 @@ from common.sm.desktop_sm import DesktopSM
 # ~ import engine.exceptions
 from common.exceptions.engine import *
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# ~ from sqlalchemy import create_engine
+# ~ from sqlalchemy.orm import sessionmaker
 from models.domain import *
 from common.connection_manager import db_session
 
@@ -42,6 +42,24 @@ class DomainMock(object):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
 
+    def get(self,pb=False):
+        ''' From running dict '''
+        try:
+            with db_session() as db:
+                domain = db.query(Domain('_admin_tetros')).get()
+                # ~ domains = self.session.query(Domain).all()
+            if pb:
+                return domain_pb2.DomainMessage(**domain.to_dict())
+            return domain
+            domains_dict = {}
+            for domain in [d.to_dict() for d in domains]:
+                id = domain.pop('id')
+                domains_dict[id] = domain
+            return domains_dict
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             
     def video_list(self,pb=False):
         ''' From running dict '''

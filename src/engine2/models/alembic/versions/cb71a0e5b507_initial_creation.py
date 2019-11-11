@@ -10,6 +10,8 @@ import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from models.domain import *
+from models.snippets import XMLHelper
+
 # ~ Base, domain, Boot, Interface, Graphic, Video, Disk, DiskBus, DiskFormat
 # Iso, Floppy
 
@@ -22,9 +24,13 @@ down_revision = None
 branch_labels = None
 depends_on = None
 
-graph=""
-def upgrade():
+xml = XMLHelper()
 
+graph=""
+
+
+    
+def upgrade():
     bind = op.get_bind()
     Base.metadata.create_all(bind=bind)
     
@@ -33,6 +39,7 @@ def upgrade():
     graphics = [GraphicXML('spice',graph)]
     session.bulk_save_objects(graphics)
     
+    session.bulk_save_objects([DomainXML(name=x['name'], xml=x['xml']) for x in xml.get_virtinstalls()])
 
     g_spice = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
     domain = Domain(name="_admin_tetros", vcpu = 1, memory = 768)
@@ -40,15 +47,14 @@ def upgrade():
     domain.graphic.append(dg)
     
     
+        
     session.add(domain)    
     session.commit()
 
     # ~ print(Domain.get_xml("_amin_tetros"))
 
 def downgrade():
-    # ~ op.execute("drop schema public CASCADE")
     bind = op.get_bind()
     Base.metadata.drop_all(bind=bind)
-
     # ~ for tbl in reversed(Base.metadata.sorted_tables):
         # ~ engine.execute(tbl.delete())

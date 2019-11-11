@@ -60,7 +60,8 @@ class Domain(Base):
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True)
-
+    
+    domain_xmls_id = sa.Column(sa.Integer, sa.ForeignKey('domain_xml.id'))
     domain_xmls = relationship("DomainXML")  
     boot = relationship("Boot")
     disk = relationship('Disk')
@@ -79,7 +80,8 @@ class Domain(Base):
     def get_xml(name):
         # ~ print(self)
         with db_session() as db:
-            return db.query(Domain).all()
+            domains = db.query(Domain).all()
+            return(domains[0].graphic[0])
             # ~ return db.query(Domain).get(name)
             # ~ return db.query(self.__class__).get(name)
         # ~ self.tree.xpath(xpath).getparent().remove(self.tree.xpath(xpath))
@@ -137,7 +139,7 @@ class DomainXML(Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
-    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
+    # ~ domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
     # ~ domains = relationship("Domain_DomainXML_Association", 
                                         # ~ back_populates="domain_xmls")      
 

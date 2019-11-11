@@ -1,0 +1,327 @@
+syntax = "proto3";
+
+package domain;
+
+//import "google/protobuf/any.proto";
+ 
+service Domain {
+    rpc List(ListRequest) returns (ListResponse) {}
+    rpc ListState(ListStateRequest) returns (ListStateResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc GetState(GetStateRequest) returns (GetStateResponse) {}
+    rpc FromTemplate(FromTemplateRequest) returns (FromTemplateResponse) {}
+    rpc FromMedia(FromMediaRequest) returns (FromMediaResponse) {}
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc Start(StartRequest) returns (StartResponse) {}
+    rpc Stop(StopRequest) returns (StopResponse) {}
+    rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
+    
+    rpc VideoList(VideoListRequest) returns (VideoListResponse) {}
+    rpc BootList(BootListRequest) returns (BootListResponse) {}
+    rpc InterfaceList(InterfaceListRequest) returns (InterfaceListResponse) {}
+}
+
+enum Action {
+    UNKNOWN = 0;
+    STOP = 1;
+    START = 2;
+    PAUSE = 3;
+    RESUME = 4;
+    DELETE = 5;
+    UPDATE = 6;
+    TEMPLATE = 7;
+}
+
+enum Format {
+    qcow2 = 0;
+    raw = 1;
+    iso = 2;
+    vdk = 3;
+}
+
+enum Bus {
+    ide = 0;
+    virtio = 1;
+    sata =2;
+    scsii = 3;
+}
+
+enum Boot {
+    DISK = 0;
+    ISO = 1;
+    PXE = 2;
+}
+    
+message ListRequest {}
+
+message DomainMessage {
+    int32 id = 1;
+    string name = 2;
+    int32 vcpu = 3;
+    int32 memory = 4;
+    Hardware hardware = 5;
+}
+    
+message ListResponse {
+    repeated DomainMessage domains = 1;
+}
+
+message ListStateRequest {}
+
+message DomainState {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    string Domain_id = 1;
+    State state = 2;
+    repeated Action next_actions = 3;
+}
+
+message ListStateResponse {
+    repeated DomainState Domains = 1;
+}
+
+message GetRequest {
+    string Domain_id = 1;
+}
+
+message GetResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    Hardware hardware = 1;
+    State state = 2;
+    repeated Action next_actions = 3;
+}
+
+message GetStateRequest {
+    string Domain_id = 1;
+}
+
+message GetStateResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    State state = 1;
+    repeated Action next_actions = 3;
+}
+
+message FromTemplateRequest {
+    string Domain_id = 1;
+    string template_id = 2;
+    Hardware hardware = 3;
+}
+
+message FromTemplateResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
+    }
+
+    State state = 1;
+    repeated Action next_actions = 2;
+}
+
+message FromMediaRequest {
+    string Domain_id = 1;
+    string virt_install_id = 2;
+    Hardware hardware = 3;
+}
+
+message FromMediaResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
+    }
+    State state = 1;
+    repeated Action next_actions = 3;
+}
+
+message UpdateRequest {
+    string Domain_id = 1;
+    HardwareUpdate hardware = 2;
+}
+
+message UpdateResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
+    }
+    State state = 1;
+    repeated Action next_actions = 2;
+}
+
+message DeleteRequest {
+    string Domain_id = 1;
+}
+
+message DeleteResponse {
+    enum State {
+        UNKNOWN = 0;
+        DELETED = 1;
+        FAILED = 2;
+    }
+    State state = 1;
+    repeated Action next_actions = 2;
+}
+
+message StartRequest {
+    string Domain_id = 1;
+}
+
+message StartResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    State state = 1;
+    Viewer viewer = 2;
+    repeated Action next_actions = 3;
+}
+
+message StopRequest {
+    string Domain_id = 1;
+}
+
+message StopResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    State state = 1;
+    repeated Action next_actions = 2;
+}
+
+message ViewerRequest {
+    string Domain_id = 1;
+}
+
+message ViewerResponse {
+    Viewer viewer = 1;
+    repeated Action next_actions = 2;
+}
+
+message VideoListRequest {
+}
+
+message Video {
+    string id = 1;
+    string model = 2;
+    int32 heads = 3;
+    int32 ram = 4;
+    int32 vram = 5;
+}
+    
+message VideoListResponse {
+    repeated Video videos = 1;
+}
+
+message BootListRequest {
+}
+
+    
+message BootListResponse {
+    repeated Boot boots = 1;
+}
+
+message InterfaceListRequest {
+}
+
+message Interface {
+    string id = 1;
+    string ifname = 2;
+    string model = 3;
+    string net = 4;
+    string type = 5;
+}
+    
+message InterfaceListResponse {
+    repeated Interface interfaces = 1;
+}
+
+message Viewer {
+    string hostname = 1;
+    string hostname_external = 2;
+    int32 port_spice = 5;
+    int32 port_spice_ssl = 6;
+    int32 port_vnc = 7;
+    int32 port_vnc_websocket = 8;
+    string passwd = 9;
+    string client_addr = 10;
+    float client_since = 11;
+}
+
+
+message Disk {
+    string id = 1;
+    string rpath = 2;
+    string bus = 3;
+    string format = 4;
+    int32  size = 5; 
+}
+
+message Hardware {
+    int32 vcpus = 1;
+    int32 memory = 2;
+    repeated Disk disks = 3;
+    repeated string videos = 4;
+    repeated string graphics = 7;
+    repeated string boots = 8;
+    repeated string interfaces = 9;
+    repeated string isos = 10;
+    repeated string floppies = 11;
+}
+
+message HardwareDerived {
+    int32 vcpus = 1;
+    int32 memory = 2;
+    string boot_disk_rpath = 3;
+    string boot_disk_bus = 4; 
+    repeated string videos = 5;
+    repeated string graphics = 6;
+    repeated string boots = 7;
+    repeated string interfaces = 8;
+    repeated string isos = 9;
+    repeated string floppies = 10;
+}
+
+message HardwareUpdate {
+    int32 vcpus = 1;
+    int32 memory = 2;
+    string boot_disk_bus = 7; 
+    repeated string videos = 3;
+    repeated string graphics= 4 ;
+    repeated string boots = 5;
+    repeated string interfaces = 6;
+    repeated string isos = 8;
+    repeated string floppies = 9;
+}
+
+
