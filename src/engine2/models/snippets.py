@@ -42,27 +42,31 @@ class XMLHelper(object):
             return False
         return data        
 
-    def _get_snippets(self,kind,name):
-        
-        snippets['interface']['network']={'name': 'network',
+    def get_snippets(self,kind):
+        snippets={'interface':[],
+                    'disk':[],
+                    'media':[],
+                    'graphic':[],
+                    'video':[]}
+        snippets['interface'].append({'name': 'network',
         'xml': '''
     <interface type="network">
       <source network="{source}"/>
       <mac address="{mac}"/>
       <model type="{model}"/>
     </interface>
-'''}
+'''})
 
-        snippets['interface']['bridge']={'name': 'bridge',
+        snippets['interface'].append({'name': 'bridge',
         'xml': '''
     <interface type="bridge">
       <source bridge="{source}"/>
       <mac address="{mac}"/>
       <model type="{model}"/>
     </interface>
-'''}
+'''})
 
-        snippets['disk']['iso']={'name': 'iso',
+        snippets['media'].append({'name': 'iso',
         'xml': '''
     <disk type="file" device="cdrom">
       <driver name="qemu" type="raw"/>
@@ -70,18 +74,18 @@ class XMLHelper(object):
       <target dev="hd{target_suffix}" bus="ide"/>
       <readonly/>
     </disk>
-'''}
+'''})
 
-        snippets['disk']['disk']={'name': 'disk',
+        snippets['disk'].append({'name': 'disk',
         'xml': '''
     <disk type="file" device="disk">
       <driver name="qemu" type="{driver_type}"/>
       <source file="{source}"/>
       <target dev="{prefix_suffix}d{target_suffix}" bus="{bus}"/>
     </disk>
-'''}
+'''})
 
-        snippets['disk']['disk_ro']={'name': 'disk_ro',
+        snippets['disk'].append({'name': 'disk_ro',
         'xml': '''
     <disk type="file" device="disk">
       <driver name="qemu" type="{driver_type}"/>
@@ -89,18 +93,18 @@ class XMLHelper(object):
       <target dev="{prefix_suffix}d{target_suffix}" bus="{bus}"/>
       <readonly/>
     </disk>
-'''}
+'''})
 
-        snippets['disk']['floppy]'] = {'name': 'floppy',
+        snippets['media'].append({'name': 'floppy',
         'xml': '''
     <disk type="file" device="floppy">
       <driver name="qemu" type="raw"/>
       <source file="{source}"/>
       <target dev="{prefix_suffix}d{target_suffix}" bus="fdc"/>
     </disk>
-'''}
+'''})
 
-        snippets['disk']['floppy_ro']= {'name': 'floppy_ro',
+        snippets['media'].append({'name': 'floppy_ro',
         'xml': '''
     <disk type="file" device="floppy">
       <driver name="qemu" type="raw"/>
@@ -108,9 +112,34 @@ class XMLHelper(object):
       <target dev="{prefix_suffix}d{target_suffix}" bus="fdc"/>
       <readonly/>
     </disk>
-'''}
+'''})
 
-        return snippets[kind][name]
+        snippets['graphic'].append({'name': 'spice',
+        'xml': '''
+    <graphics type="spice" port="-1" tlsPort="-1" autoport="yes">
+      <image compression="off"/>
+    </graphics>
+'''})
+
+        snippets['video'].append({'name': 'qxl',
+        'xml': '''
+    <video>
+      <model type="qxl"/>
+    </video>
+'''})
+
+# ~ <graphics type='spice' port='-1' tlsPort='-1' autoport='yes'>
+  # ~ <channel name='main' mode='secure'/>
+  # ~ <channel name='record' mode='insecure'/>
+  # ~ <image compression='auto_glz'/>
+  # ~ <streaming mode='filter'/>
+  # ~ <clipboard copypaste='no'/>
+  # ~ <mouse mode='client'/>
+  # ~ <filetransfer enable='no'/>
+  # ~ <gl enable='yes' rendernode='/dev/dri/by-path/pci-0000:00:02.0-render'/>
+# ~ </graphics>
+
+        return snippets[kind]
         
     # ~ <disk type="file" device="floppy">
       # ~ <driver name="qemu" type="raw"/>

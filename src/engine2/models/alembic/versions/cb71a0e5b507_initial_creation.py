@@ -26,8 +26,6 @@ depends_on = None
 
 xml = XMLHelper()
 
-graph=""
-
 
     
 def upgrade():
@@ -36,19 +34,72 @@ def upgrade():
     
     session = Session(bind=bind)
     
-    graphics = [GraphicXML('spice',graph)]
-    session.bulk_save_objects(graphics)
-    
+   
+    ## Add virtio-install xmls 
     session.bulk_save_objects([DomainXML(name=x['name'], xml=x['xml']) for x in xml.get_virtinstalls()])
+    
+    ## Add snippet xmls
+    session.bulk_save_objects([DiskXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('disk')])
+    session.bulk_save_objects([MediaXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('media')])
+    session.bulk_save_objects([InterfaceXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('interface')])
+    session.bulk_save_objects([GraphicXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('graphic')])
+    session.bulk_save_objects([VideoXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('video')])
 
-    g_spice = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
-    domain = Domain(name="_admin_tetros", vcpu = 1, memory = 768)
-    dg = Domain_Graphic(domain=domain, graphic=g_spice, order=1)
+	################################3
+	# New domain.
+	## Get xml for new domain
+    d_xml = session.query(DomainXML).filter(DomainXML.name == 'win2k3').one()
+    
+	## Create the domain
+    domain = Domain(name="_admin_tetros", domain_xml=d_xml, vcpu = 1, memory = 768)
+
+    ### Boot
+    db = Boot(domain_id=domain.id, name='pxe') #, order=1)
+    domain.boot.append(db)
+    db = Boot(domain_id=domain.id, name='disk') #, order=1)
+    domain.boot.append(db)
+    db = Boot(domain_id=domain.id, name='iso') #, order=1)
+    domain.boot.append(db)
+    
+
+    # ~ print(Boot.filter_by(name='disk').first())
+    ### Hard disk
+    dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
+    dd = Disk(domain_id=domain.id, xml=dd_xml, name='_admin_tetros', rpath='admin/admin', bus='virtio', dev='vda', size=10, format='qcow2', order=1)
+    domain.disk.append(dd)
+
+    ### Medias
+    dm_xml = session.query(MediaXML).filter(MediaXML.name == 'iso').one()
+    dm = Disk(domain_id=domain.id, xml=dd_xml, name='_admin_tetros', rpath='admin/admin', bus='virtio', dev='vda', size=10, format='qcow2', order=1)
+    domain.disk.append(dd)
+    
+    ### Interfaces
+    di_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
+    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, order=1)
+    domain.interfaces.append(di)        
+        
+    ### Graphics
+    dg_xml = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
+    dg = Domain_Graphic(domain_id=domain, graphic_id=dg_xml.id, order=1)
     domain.graphic.append(dg)
+    
+    ### Videos
+    dv_xml = session.query(VideoXML).filter(VideoXML.name == 'qxl').one()
+    dv = Domain_Video(domain_id=domain, video_id=dv_xml.id, order=1)
+    domain.videos.append(dv)
+    
+    
+    
     
     
         
-    session.add(domain)    
+    session.add(domain)  
+    
+    print(session.query(Boot).filter(Boot.name == 'disk').one())
+    # ~ exit(1)
+    domain.boot.remove(session.query(Boot).filter(Boot.name == 'disk').one()) 
+    db = Boot(domain_id=domain.id, name='disk') #, order=1)
+    domain.boot.append(db)          
     session.commit()
 
     # ~ print(Domain.get_xml("_amin_tetros"))

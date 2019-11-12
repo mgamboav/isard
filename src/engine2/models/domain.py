@@ -3,6 +3,7 @@ import sqlalchemy as sa
 # ~ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.inspection import inspect as _inspect
+from sqlalchemy.ext.orderinglist import ordering_list
 
 from models.base_mixin import BaseMixin as Base
 
@@ -33,7 +34,7 @@ class Domain_Interface(Base):
     mac = sa.Column(sa.String)
     
     interfaces = relationship("InterfaceXML", back_populates="domains")
-    domain = relationship("Domain", back_populates="interfaces")
+    domains = relationship("Domain", back_populates="interfaces")
 
 class Domain_Graphic(Base):
     __tablename__ = 'domain_graphic'
@@ -49,7 +50,7 @@ class Domain_Video(Base):
     __tablename__ = 'domain_video'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
-    graphic_id = sa.Column(sa.Integer, sa.ForeignKey('video_xml.id'), primary_key=True)
+    video_id = sa.Column(sa.Integer, sa.ForeignKey('video_xml.id'), primary_key=True)
     order = sa.Column(sa.Integer)
     
     videos = relationship("VideoXML", back_populates="domains")
@@ -61,16 +62,21 @@ class Domain(Base):
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True)
     
-    domain_xmls_id = sa.Column(sa.Integer, sa.ForeignKey('domain_xml.id'))
-    domain_xmls = relationship("DomainXML")  
-    boot = relationship("Boot")
+    domain_xml_id = sa.Column(sa.Integer, sa.ForeignKey('domain_xml.id'), nullable=False)
+    domain_xml = relationship("DomainXML")  
+    boot = relationship("Boot", order_by="Boot.order",
+							collection_class=ordering_list('order'),
+							cascade="all, delete-orphan")
+    # ~ bullets = relationship("Bullet", order_by="Bullet.position",
+                            # ~ collection_class=ordering_list('position')
+                                
     disk = relationship('Disk')
     medias = relationship("Domain_Media", 
                                         back_populates="domain")
     graphic = relationship("Domain_Graphic", 
                                         back_populates="domain")
     interfaces = relationship("Domain_Interface", 
-                                        back_populates="domain")                                                                                                                                                                                                                                                
+                                        back_populates="domains")                                                                                                                                                                                                                                                
     videos = relationship("Domain_Video", 
                                         back_populates="domain") 
                                         
@@ -100,7 +106,7 @@ class Disk(Base):
     
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
     
-    # ~ xml_id = sa.Column(sa.Integer, sa.ForeignKey('disk_xml.id'))  
+    xml_id = sa.Column(sa.Integer, sa.ForeignKey('disk_xml.id'), nullable=False)  
     xml = relationship('DiskXML')
     
     rpath = sa.Column(sa.String)
@@ -109,8 +115,9 @@ class Disk(Base):
     size = sa.Column(sa.Integer)
     format = sa.Column(sa.String)
 
-    def __init__(self, domain_id, name, rpath=".",bus="virtio", dev="vda", size=5, format="qcow2", order=1):
+    def __init__(self, domain_id, name, xml, rpath=".",bus="virtio", dev="vda", size=5, format="qcow2", order=1):
         self.name = name
+        self.xml = xml
         self.domain_id = domain_id
         self.rpath = rpath
         self.bus = bus
@@ -125,7 +132,7 @@ class DiskXML(Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
-    disk_id = sa.Column(sa.Integer, sa.ForeignKey('disk.id'))  
+    # ~ disk_id = sa.Column(sa.Integer, sa.ForeignKey('disk.id'))  
     # ~ domains = relationship("Domain_Disk", 
                                         # ~ back_populates="disk_xmls")      
 
@@ -200,11 +207,28 @@ class InterfaceXML(Base):
    
 class Boot(Base):
     __tablename__ = "boot"
+    __table_args__ = (
+            sa.Index("domain_id", "name"),
+        )    
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id", "order"),
+        # ~ )   
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'))
     order = sa.Column(sa.Integer)
     
-    def __init__(self, domain_id, name, order):
-        self.domain_id = domain_id
-        self.name = name
+    # ~ def __init__(self, domain_id, name, order):
+        # ~ self.domain_id = domain_id
+        # ~ self.name = name
+        # ~ self.order = order
+    
+    # ~ def add(self, domain_id, name):
+        #print(self)
+        # ~ with db_session() as db:
+            # ~ boots = db.query(Boot).filter(db.Boot.domain_id == domain_id).all()
+            # ~ if name in [boots.name]:
+				# ~ raise
+            # ~ return(domains[0].graphic[0])
+            		
+    # ~ def remove(self,domain_id, name):
