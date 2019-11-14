@@ -10,6 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.exc import IntegrityError
+from models.base_mixin import BaseMixin
 from models.domain import *
 from models.snippets import XMLHelper
 
@@ -31,7 +32,7 @@ xml = XMLHelper()
     
 def upgrade():
     bind = op.get_bind()
-    Base.metadata.create_all(bind=bind)
+    BaseMixin.metadata.create_all(bind=bind)
     
     session = Session(bind=bind)
     

@@ -8,7 +8,11 @@ from common.exceptions.engine import NotFoundError
 import logging
 log = logging.getLogger(__name__)
 
-from common.connection_manager import db_session
+# ~ from common.connection_manager import db_session
+from common.connection_manager import engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+db = scoped_session(sessionmaker(bind=engine))
+
 from models.domain import *
 
 MIN_TIMEOUT = 5  # Start/Stop/delete
@@ -24,9 +28,9 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
 
     def BootList(self, request, context):
         try:
-            with db_session() as db:
+            # ~ with db_session() as db:
                 # ~ boots = db.query(Boot).filter(Boot.domain_id==db.query(Domain).filter(Domain.name == request.domain_name).one().id).all()
-                boots = Boot.list(request.domain_name)
+            boots = Boot.list(request.domain_name)
             return domain_pb2.BootListResponse(boots=[b.name for b in boots]) #[domain_pb2.BootMessage(**d.to_dict()) for d in boots]
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()

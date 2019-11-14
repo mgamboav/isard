@@ -5,7 +5,12 @@ from common.exceptions.engine import *
 # ~ from sqlalchemy import create_engine
 # ~ from sqlalchemy.orm import sessionmaker
 from models.domain import *
-from common.connection_manager import db_session
+
+
+# ~ from common.connection_manager import db_session
+from common.connection_manager import engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+db = scoped_session(sessionmaker(bind=engine))
 
 from api.grpc.proto import domain_pb2
 import sys, os
@@ -27,8 +32,8 @@ class DomainMock(object):
     def list(self,pb=False):
         ''' From running dict '''
         try:
-            with db_session() as db:
-                domains = db.query(Domain).all()
+            # ~ with db_session() as db:
+            domains = db.query(Domain).all()
                 # ~ domains = self.session.query(Domain).all()
             if pb:
                 return [domain_pb2.DomainMessage(**d.to_dict()) for d in domains]
@@ -45,8 +50,8 @@ class DomainMock(object):
     def get(self,pb=False):
         ''' From running dict '''
         try:
-            with db_session() as db:
-                domain = db.query(Domain('_admin_tetros')).get()
+            # ~ with db_session() as db:
+            domain = db.query(Domain('_admin_tetros')).get()
                 # ~ domains = self.session.query(Domain).all()
             if pb:
                 return domain_pb2.DomainMessage(**domain.to_dict())
