@@ -3,6 +3,7 @@ import sqlalchemy as sa
 # ~ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.inspection import inspect as _inspect
 from sqlalchemy.ext.declarative import declarative_base
+from common.connection_manager import db_session
 
 import json
 Base = declarative_base()
@@ -11,9 +12,19 @@ class BaseMixin(Base):
     __abstract__ = True
     # ~ id = db.Column(db.Integer, primary_key=True)
 
-    def by_name(name):
-        return db.query(self.__class__).get(name)
+    @classmethod
+    def get_by(cls, **kw):
+        return Session.query(cls).filter_by(**kw).first()
+    
+    @classmethod
+    def by_name(self,name):
+        with db_session as db:
+            return db.query(self.__class__).get(name)
 
+    def id_by_name(domain_name):
+        with db_session() as db:
+            return db.query(Domain).filter(Domain.name == domain_name).one().id
+            
     def to_dict(self):
         """Returns model as dict of properties.
         Note:
@@ -21,6 +32,7 @@ class BaseMixin(Base):
         """
         column_names = _inspect(self.__class__).columns.keys()
         return {k: self.__dict__[k] for k in column_names}    
+
 
     # ~ @classmethod
     # ~ def complex_cls_method(cls, key, values):

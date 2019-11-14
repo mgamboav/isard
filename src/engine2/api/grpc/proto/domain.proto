@@ -20,6 +20,8 @@ service Domain {
     rpc VideoList(VideoListRequest) returns (VideoListResponse) {}
     rpc BootList(BootListRequest) returns (BootListResponse) {}
     rpc InterfaceList(InterfaceListRequest) returns (InterfaceListResponse) {}
+    
+    rpc BootUpdate(BootUpdateRequest) returns (BootUpdateResponse) {}
 }
 
 enum Action {
@@ -47,11 +49,7 @@ enum Bus {
     scsii = 3;
 }
 
-enum Boot {
-    DISK = 0;
-    ISO = 1;
-    PXE = 2;
-}
+
     
 message ListRequest {}
 
@@ -243,11 +241,26 @@ message VideoListResponse {
     repeated Video videos = 1;
 }
 
-message BootListRequest {
+enum Boot {
+    BOOT_HD = 0;
+    BOOT_CD = 1;
+    BOOT_PXE = 2;
 }
 
-    
+message BootListRequest {
+    string domain_name = 1;
+}
+
 message BootListResponse {
+    repeated Boot boots = 1;
+}
+
+message BootUpdateRequest {
+    string domain_name = 1;
+    repeated Boot boots = 2;
+}
+
+message BootUpdateResponse {
     repeated Boot boots = 1;
 }
 

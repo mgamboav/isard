@@ -9,6 +9,7 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.exc import IntegrityError
 from models.domain import *
 from models.snippets import XMLHelper
 
@@ -45,20 +46,20 @@ def upgrade():
     session.bulk_save_objects([GraphicXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('graphic')])
     session.bulk_save_objects([VideoXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('video')])
 
-	################################3
-	# New domain.
-	## Get xml for new domain
+    ################################3
+    # New domain.
+    ## Get xml for new domain
     d_xml = session.query(DomainXML).filter(DomainXML.name == 'win2k3').one()
     
-	## Create the domain
+    ## Create the domain
     domain = Domain(name="_admin_tetros", domain_xml=d_xml, vcpu = 1, memory = 768)
 
     ### Boot
-    db = Boot(domain_id=domain.id, name='pxe') #, order=1)
+    db = Boot(domain_id=domain.id, name='BOOT_PXE') #, order=1)
     domain.boot.append(db)
-    db = Boot(domain_id=domain.id, name='disk') #, order=1)
+    db = Boot(domain_id=domain.id, name='BOOT_HD') #, order=1)
     domain.boot.append(db)
-    db = Boot(domain_id=domain.id, name='iso') #, order=1)
+    db = Boot(domain_id=domain.id, name='BOOT_CD') #, order=1)
     domain.boot.append(db)
     
 
@@ -95,11 +96,21 @@ def upgrade():
         
     session.add(domain)  
     
-    print(session.query(Boot).filter(Boot.name == 'disk').one())
+    # ~ print(session.query(Boot).filter(Boot.name == 'disk').one())
     # ~ exit(1)
-    domain.boot.remove(session.query(Boot).filter(Boot.name == 'disk').one()) 
-    db = Boot(domain_id=domain.id, name='disk') #, order=1)
-    domain.boot.append(db)          
+    # ~ domain.boot.remove(session.query(Boot).filter(Boot.name == 'disk').one()) 
+    
+    # ~ session.commit()
+    # ~ session = Session(bind=bind)
+    # ~ db = Boot(domain_id=domain.id, name='disk')
+    # ~ try: 
+        # ~ domain.boot.insert(1,db)
+    # ~ except Exception as IntegrityError:
+        # ~ domain.boot.remove(session.query(Boot).filter(Boot.name == 'disk').one()) 
+        # ~ domain.boot.insert(1,db)
+    
+    domain.boot.append(db)
+    # ~ domain.boot.reorder()        
     session.commit()
 
     # ~ print(Domain.get_xml("_amin_tetros"))

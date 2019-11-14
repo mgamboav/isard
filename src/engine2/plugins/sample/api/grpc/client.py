@@ -8,9 +8,6 @@ from common.exceptions.engine import NotFoundError
 import logging
 log = logging.getLogger(__name__)
 
-from common.connection_manager import db_session
-from models.domain import *
-
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
 
@@ -22,35 +19,6 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
         self.server_port = 46001
         self.engine = engine
 
-    def BootList(self, request, context):
-        try:
-            with db_session() as db:
-                # ~ boots = db.query(Boot).filter(Boot.domain_id==db.query(Domain).filter(Domain.name == request.domain_name).one().id).all()
-                boots = Boot.list(request.domain_name)
-            return domain_pb2.BootListResponse(boots=[b.name for b in boots]) #[domain_pb2.BootMessage(**d.to_dict()) for d in boots]
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            log.error(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            
-            context.set_details(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            context.set_code(grpc.StatusCode.INTERNAL)               
-            return domain_pb2.BootListResponse()
-
-    def BootUpdate(self, request, context):
-        try:
-            with db_session() as db:
-                Boot.update(request.domain_id,request.boots)
-            return domain_pb2.BootListResponse(boots=[b.name for b in boots]) #[domain_pb2.BootMessage(**d.to_dict()) for d in boots]
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            log.error(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            
-            context.set_details(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            context.set_code(grpc.StatusCode.INTERNAL)               
-            return domain_pb2.BootListResponse()
-                                        
     def VideoList(self, request, context):
         ''' Gets desktop videos in system with all data '''
         try:
@@ -65,19 +33,19 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.VideoListResponse() 
 
-    # ~ def BootList(self, request, context):
-        # ~ ''' Gets desktop videos in system with all data '''
-        # ~ try:
-            # ~ boots_pb = self.engine.desktop.boot_list(pb=True)
-            # ~ return desktop_pb2.BootListResponse(boots=boots_pb)            
-        # ~ except Exception as e:
-            # ~ exc_type, exc_obj, exc_tb = sys.exc_info()
-            # ~ fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            #logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+    def BootList(self, request, context):
+        ''' Gets desktop videos in system with all data '''
+        try:
+            boots_pb = self.engine.desktop.boot_list(pb=True)
+            return desktop_pb2.BootListResponse(boots=boots_pb)            
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             
-            # ~ context.set_details(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            # ~ context.set_code(grpc.StatusCode.INTERNAL)               
-            # ~ return desktop_pb2.BootListResponse() 
+            context.set_details(f'BootList error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return desktop_pb2.BootListResponse() 
 
     def InterfaceList(self, request, context):
         ''' Gets desktop videos in system with all data '''

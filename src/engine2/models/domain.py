@@ -65,8 +65,8 @@ class Domain(Base):
     domain_xml_id = sa.Column(sa.Integer, sa.ForeignKey('domain_xml.id'), nullable=False)
     domain_xml = relationship("DomainXML")  
     boot = relationship("Boot", order_by="Boot.order",
-							collection_class=ordering_list('order'),
-							cascade="all, delete-orphan")
+                            collection_class=ordering_list('order'),
+                            cascade="all, delete-orphan")
     # ~ bullets = relationship("Bullet", order_by="Bullet.position",
                             # ~ collection_class=ordering_list('position')
                                 
@@ -91,6 +91,9 @@ class Domain(Base):
             # ~ return db.query(Domain).get(name)
             # ~ return db.query(self.__class__).get(name)
         # ~ self.tree.xpath(xpath).getparent().remove(self.tree.xpath(xpath))
+    def id_by_name(domain_name):
+        with db_session() as db:
+            return db.query(Domain).filter(Domain.name == domain_name).first()
         
 class Disk(Base):
     __tablename__ = 'disk'
@@ -207,28 +210,40 @@ class InterfaceXML(Base):
    
 class Boot(Base):
     __tablename__ = "boot"
-    __table_args__ = (
-            sa.Index("domain_id", "name"),
-        )    
-    # ~ __table_args__ = (
-            # ~ sa.UniqueConstraint("domain_id", "order"),
-        # ~ )   
+  
+
     id = sa.Column(sa.Integer, primary_key=True)
-    name = sa.Column(sa.String, unique=True, nullable=False)
-    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'))
-    order = sa.Column(sa.Integer)
-    
+    name = sa.Column(sa.String, nullable=False)
+    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), nullable=False)
+    order = sa.Column(sa.Integer, nullable=False)
+
+    __table_args__ = (
+            sa.UniqueConstraint(domain_id, name),
+        )   
+    # ~ __table_args__ = (
+            # ~ sa.PrimaryKeyConstraint(domain_id, order),
+        # ~ )  
+            
     # ~ def __init__(self, domain_id, name, order):
         # ~ self.domain_id = domain_id
         # ~ self.name = name
         # ~ self.order = order
     
-    # ~ def add(self, domain_id, name):
-        #print(self)
-        # ~ with db_session() as db:
-            # ~ boots = db.query(Boot).filter(db.Boot.domain_id == domain_id).all()
-            # ~ if name in [boots.name]:
-				# ~ raise
-            # ~ return(domains[0].graphic[0])
-            		
+    def update(domain_name, names):
+        # ~ #print(self)
+        with db_session() as db:
+            db.boot.remove(db.query(Boot).filter(Boot.domain_id == domain_id).delete())
+            db.domain.boot.append([Boot(domain_id=domain.id, name=name) for name in names]) 
+            return True
+            # ~ boot = Boot(domain_id=domain.id, name=name)
+            # ~ try: 
+                # ~ db.boot.insert(1,boot)
+                # ~ db.domain.boot.insert(1,db)
+            # ~ except Exception as IntegrityError:
+                # ~ db.bootremove(db.query(Boot).filter(Boot.name == name).one()) 
+                # ~ db.domain.boot.insert(1,boot)
+    def list(domain_name):
+        with db_session() as db:
+            return db.query(Boot).filter(Boot.domain_id==str(Domain.id_by_name(domain_name).id)).all()
+            # ~ eturn db.query(Boot).filter(Boot.domain_id==Domain.id_by_name(domain_name).id).all()
     # ~ def remove(self,domain_id, name):

@@ -85,6 +85,11 @@ class DomainStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListResponse.FromString,
         )
+    self.BootUpdate = channel.unary_unary(
+        '/domain.Domain/BootUpdate',
+        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateResponse.FromString,
+        )
 
 
 class DomainServicer(object):
@@ -190,6 +195,13 @@ class DomainServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def BootUpdate(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_DomainServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -262,6 +274,11 @@ def add_DomainServicer_to_server(servicer, server):
           servicer.InterfaceList,
           request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListResponse.SerializeToString,
+      ),
+      'BootUpdate': grpc.unary_unary_rpc_method_handler(
+          servicer.BootUpdate,
+          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

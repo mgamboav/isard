@@ -93,7 +93,28 @@ class EngineClient(object):
         #~ else:
             #~ print(response.state)
         return response.domains
-                 
+
+    def domain_boot_list(self, message):
+        """
+        Client function to call the rpc
+        """
+        try:
+            print(message)
+            b = domain_pb2.BootListRequest(domain_name=message)
+            response = self.domain_stub.BootList(b)
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
+            #~ print(message+' was started')
+        #~ else:
+            #~ print(response.state)
+        return response.boots
+                         
     def desktop_start(self, message):
         """
         Client function to call the rpc
@@ -429,7 +450,7 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
-print(curr_client.domain_list())
+print(curr_client.domain_boot_list('_admin_tetros'))
 # ~ print(curr_client.desktop_boots())
 # ~ print(curr_client.desktop_interfaces())
 # ~ curr_client.domain_changes()

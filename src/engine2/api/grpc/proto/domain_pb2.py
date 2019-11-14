@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='domain',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1b\x61pi/grpc/proto/domain.proto\x12\x06\x64omain\"\r\n\x0bListRequest\"k\n\rDomainMessage\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04vcpu\x18\x03 \x01(\x05\x12\x0e\n\x06memory\x18\x04 \x01(\x05\x12\"\n\x08hardware\x18\x05 \x01(\x0b\x32\x10.domain.Hardware\"6\n\x0cListResponse\x12&\n\x07\x64omains\x18\x01 \x03(\x0b\x32\x15.domain.DomainMessage\"\x12\n\x10ListStateRequest\"\xc5\x01\n\x0b\x44omainState\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.DomainState.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"9\n\x11ListStateResponse\x12$\n\x07\x44omains\x18\x01 \x03(\x0b\x32\x13.domain.DomainState\"\x1f\n\nGetRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xd6\x01\n\x0bGetResponse\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.GetResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"$\n\x0fGetStateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xbc\x01\n\x10GetStateResponse\x12-\n\x05state\x18\x01 \x01(\x0e\x32\x1e.domain.GetStateResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"a\n\x13\x46romTemplateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x9e\x01\n\x14\x46romTemplateResponse\x12\x31\n\x05state\x18\x01 \x01(\x0e\x32\".domain.FromTemplateResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"b\n\x10\x46romMediaRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x98\x01\n\x11\x46romMediaResponse\x12.\n\x05state\x18\x01 \x01(\x0e\x32\x1f.domain.FromMediaResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"L\n\rUpdateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12(\n\x08hardware\x18\x02 \x01(\x0b\x32\x16.domain.HardwareUpdate\"\x92\x01\n\x0eUpdateResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.UpdateResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"\"\n\rDeleteRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\x92\x01\n\x0e\x44\x65leteResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.DeleteResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07\x44\x45LETED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"!\n\x0cStartRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xd6\x01\n\rStartResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.domain.StartResponse.State\x12\x1e\n\x06viewer\x18\x02 \x01(\x0b\x32\x0e.domain.Viewer\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\" \n\x0bStopRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xb4\x01\n\x0cStopResponse\x12)\n\x05state\x18\x01 \x01(\x0e\x32\x1a.domain.StopResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"\"\n\rViewerRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"V\n\x0eViewerResponse\x12\x1e\n\x06viewer\x18\x01 \x01(\x0b\x32\x0e.domain.Viewer\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"\x12\n\x10VideoListRequest\"L\n\x05Video\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05model\x18\x02 \x01(\t\x12\r\n\x05heads\x18\x03 \x01(\x05\x12\x0b\n\x03ram\x18\x04 \x01(\x05\x12\x0c\n\x04vram\x18\x05 \x01(\x05\"2\n\x11VideoListResponse\x12\x1d\n\x06videos\x18\x01 \x03(\x0b\x32\r.domain.Video\"\x11\n\x0f\x42ootListRequest\"/\n\x10\x42ootListResponse\x12\x1b\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x0c.domain.Boot\"\x16\n\x14InterfaceListRequest\"Q\n\tInterface\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06ifname\x18\x02 \x01(\t\x12\r\n\x05model\x18\x03 \x01(\t\x12\x0b\n\x03net\x18\x04 \x01(\t\x12\x0c\n\x04type\x18\x05 \x01(\t\">\n\x15InterfaceListResponse\x12%\n\ninterfaces\x18\x01 \x03(\x0b\x32\x11.domain.Interface\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"L\n\x04\x44isk\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05rpath\x18\x02 \x01(\t\x12\x0b\n\x03\x62us\x18\x03 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x04 \x01(\t\x12\x0c\n\x04size\x18\x05 \x01(\x05\"\xab\x01\n\x08Hardware\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x1b\n\x05\x64isks\x18\x03 \x03(\x0b\x32\x0c.domain.Disk\x12\x0e\n\x06videos\x18\x04 \x03(\t\x12\x10\n\x08graphics\x18\x07 \x03(\t\x12\r\n\x05\x62oots\x18\x08 \x03(\t\x12\x12\n\ninterfaces\x18\t \x03(\t\x12\x0c\n\x04isos\x18\n \x03(\t\x12\x10\n\x08\x66loppies\x18\x0b \x03(\t\"\xc5\x01\n\x0fHardwareDerived\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x0e\n\x06videos\x18\x05 \x03(\t\x12\x10\n\x08graphics\x18\x06 \x03(\t\x12\r\n\x05\x62oots\x18\x07 \x03(\t\x12\x12\n\ninterfaces\x18\x08 \x03(\t\x12\x0c\n\x04isos\x18\t \x03(\t\x12\x10\n\x08\x66loppies\x18\n \x03(\t\"\xab\x01\n\x0eHardwareUpdate\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x15\n\rboot_disk_bus\x18\x07 \x01(\t\x12\x0e\n\x06videos\x18\x03 \x03(\t\x12\x10\n\x08graphics\x18\x04 \x03(\t\x12\r\n\x05\x62oots\x18\x05 \x03(\t\x12\x12\n\ninterfaces\x18\x06 \x03(\t\x12\x0c\n\x04isos\x18\x08 \x03(\t\x12\x10\n\x08\x66loppies\x18\t \x03(\t*g\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04STOP\x10\x01\x12\t\n\x05START\x10\x02\x12\t\n\x05PAUSE\x10\x03\x12\n\n\x06RESUME\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\n\n\x06UPDATE\x10\x06\x12\x0c\n\x08TEMPLATE\x10\x07*.\n\x06\x46ormat\x12\t\n\x05qcow2\x10\x00\x12\x07\n\x03raw\x10\x01\x12\x07\n\x03iso\x10\x02\x12\x07\n\x03vdk\x10\x03*/\n\x03\x42us\x12\x07\n\x03ide\x10\x00\x12\n\n\x06virtio\x10\x01\x12\x08\n\x04sata\x10\x02\x12\t\n\x05scsii\x10\x03*\"\n\x04\x42oot\x12\x08\n\x04\x44ISK\x10\x00\x12\x07\n\x03ISO\x10\x01\x12\x07\n\x03PXE\x10\x02\x32\xf8\x06\n\x06\x44omain\x12\x33\n\x04List\x12\x13.domain.ListRequest\x1a\x14.domain.ListResponse\"\x00\x12\x42\n\tListState\x12\x18.domain.ListStateRequest\x1a\x19.domain.ListStateResponse\"\x00\x12\x30\n\x03Get\x12\x12.domain.GetRequest\x1a\x13.domain.GetResponse\"\x00\x12?\n\x08GetState\x12\x17.domain.GetStateRequest\x1a\x18.domain.GetStateResponse\"\x00\x12K\n\x0c\x46romTemplate\x12\x1b.domain.FromTemplateRequest\x1a\x1c.domain.FromTemplateResponse\"\x00\x12\x42\n\tFromMedia\x12\x18.domain.FromMediaRequest\x1a\x19.domain.FromMediaResponse\"\x00\x12\x39\n\x06Update\x12\x15.domain.UpdateRequest\x1a\x16.domain.UpdateResponse\"\x00\x12\x39\n\x06\x44\x65lete\x12\x15.domain.DeleteRequest\x1a\x16.domain.DeleteResponse\"\x00\x12\x36\n\x05Start\x12\x14.domain.StartRequest\x1a\x15.domain.StartResponse\"\x00\x12\x33\n\x04Stop\x12\x13.domain.StopRequest\x1a\x14.domain.StopResponse\"\x00\x12\x39\n\x06Viewer\x12\x15.domain.ViewerRequest\x1a\x16.domain.ViewerResponse\"\x00\x12\x42\n\tVideoList\x12\x18.domain.VideoListRequest\x1a\x19.domain.VideoListResponse\"\x00\x12?\n\x08\x42ootList\x12\x17.domain.BootListRequest\x1a\x18.domain.BootListResponse\"\x00\x12N\n\rInterfaceList\x12\x1c.domain.InterfaceListRequest\x1a\x1d.domain.InterfaceListResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x1b\x61pi/grpc/proto/domain.proto\x12\x06\x64omain\"\r\n\x0bListRequest\"k\n\rDomainMessage\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04vcpu\x18\x03 \x01(\x05\x12\x0e\n\x06memory\x18\x04 \x01(\x05\x12\"\n\x08hardware\x18\x05 \x01(\x0b\x32\x10.domain.Hardware\"6\n\x0cListResponse\x12&\n\x07\x64omains\x18\x01 \x03(\x0b\x32\x15.domain.DomainMessage\"\x12\n\x10ListStateRequest\"\xc5\x01\n\x0b\x44omainState\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.DomainState.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"9\n\x11ListStateResponse\x12$\n\x07\x44omains\x18\x01 \x03(\x0b\x32\x13.domain.DomainState\"\x1f\n\nGetRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xd6\x01\n\x0bGetResponse\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.GetResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"$\n\x0fGetStateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xbc\x01\n\x10GetStateResponse\x12-\n\x05state\x18\x01 \x01(\x0e\x32\x1e.domain.GetStateResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"a\n\x13\x46romTemplateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x9e\x01\n\x14\x46romTemplateResponse\x12\x31\n\x05state\x18\x01 \x01(\x0e\x32\".domain.FromTemplateResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"b\n\x10\x46romMediaRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x98\x01\n\x11\x46romMediaResponse\x12.\n\x05state\x18\x01 \x01(\x0e\x32\x1f.domain.FromMediaResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"L\n\rUpdateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12(\n\x08hardware\x18\x02 \x01(\x0b\x32\x16.domain.HardwareUpdate\"\x92\x01\n\x0eUpdateResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.UpdateResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"\"\n\rDeleteRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\x92\x01\n\x0e\x44\x65leteResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.DeleteResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07\x44\x45LETED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"!\n\x0cStartRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xd6\x01\n\rStartResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.domain.StartResponse.State\x12\x1e\n\x06viewer\x18\x02 \x01(\x0b\x32\x0e.domain.Viewer\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\" \n\x0bStopRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xb4\x01\n\x0cStopResponse\x12)\n\x05state\x18\x01 \x01(\x0e\x32\x1a.domain.StopResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"\"\n\rViewerRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"V\n\x0eViewerResponse\x12\x1e\n\x06viewer\x18\x01 \x01(\x0b\x32\x0e.domain.Viewer\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"\x12\n\x10VideoListRequest\"L\n\x05Video\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05model\x18\x02 \x01(\t\x12\r\n\x05heads\x18\x03 \x01(\x05\x12\x0b\n\x03ram\x18\x04 \x01(\x05\x12\x0c\n\x04vram\x18\x05 \x01(\x05\"2\n\x11VideoListResponse\x12\x1d\n\x06videos\x18\x01 \x03(\x0b\x32\r.domain.Video\"&\n\x0f\x42ootListRequest\x12\x13\n\x0b\x64omain_name\x18\x01 \x01(\t\"/\n\x10\x42ootListResponse\x12\x1b\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x0c.domain.Boot\"E\n\x11\x42ootUpdateRequest\x12\x13\n\x0b\x64omain_name\x18\x01 \x01(\t\x12\x1b\n\x05\x62oots\x18\x02 \x03(\x0e\x32\x0c.domain.Boot\"1\n\x12\x42ootUpdateResponse\x12\x1b\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x0c.domain.Boot\"\x16\n\x14InterfaceListRequest\"Q\n\tInterface\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06ifname\x18\x02 \x01(\t\x12\r\n\x05model\x18\x03 \x01(\t\x12\x0b\n\x03net\x18\x04 \x01(\t\x12\x0c\n\x04type\x18\x05 \x01(\t\">\n\x15InterfaceListResponse\x12%\n\ninterfaces\x18\x01 \x03(\x0b\x32\x11.domain.Interface\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\"L\n\x04\x44isk\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05rpath\x18\x02 \x01(\t\x12\x0b\n\x03\x62us\x18\x03 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x04 \x01(\t\x12\x0c\n\x04size\x18\x05 \x01(\x05\"\xab\x01\n\x08Hardware\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x1b\n\x05\x64isks\x18\x03 \x03(\x0b\x32\x0c.domain.Disk\x12\x0e\n\x06videos\x18\x04 \x03(\t\x12\x10\n\x08graphics\x18\x07 \x03(\t\x12\r\n\x05\x62oots\x18\x08 \x03(\t\x12\x12\n\ninterfaces\x18\t \x03(\t\x12\x0c\n\x04isos\x18\n \x03(\t\x12\x10\n\x08\x66loppies\x18\x0b \x03(\t\"\xc5\x01\n\x0fHardwareDerived\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x17\n\x0f\x62oot_disk_rpath\x18\x03 \x01(\t\x12\x15\n\rboot_disk_bus\x18\x04 \x01(\t\x12\x0e\n\x06videos\x18\x05 \x03(\t\x12\x10\n\x08graphics\x18\x06 \x03(\t\x12\r\n\x05\x62oots\x18\x07 \x03(\t\x12\x12\n\ninterfaces\x18\x08 \x03(\t\x12\x0c\n\x04isos\x18\t \x03(\t\x12\x10\n\x08\x66loppies\x18\n \x03(\t\"\xab\x01\n\x0eHardwareUpdate\x12\r\n\x05vcpus\x18\x01 \x01(\x05\x12\x0e\n\x06memory\x18\x02 \x01(\x05\x12\x15\n\rboot_disk_bus\x18\x07 \x01(\t\x12\x0e\n\x06videos\x18\x03 \x03(\t\x12\x10\n\x08graphics\x18\x04 \x03(\t\x12\r\n\x05\x62oots\x18\x05 \x03(\t\x12\x12\n\ninterfaces\x18\x06 \x03(\t\x12\x0c\n\x04isos\x18\x08 \x03(\t\x12\x10\n\x08\x66loppies\x18\t \x03(\t*g\n\x06\x41\x63tion\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04STOP\x10\x01\x12\t\n\x05START\x10\x02\x12\t\n\x05PAUSE\x10\x03\x12\n\n\x06RESUME\x10\x04\x12\n\n\x06\x44\x45LETE\x10\x05\x12\n\n\x06UPDATE\x10\x06\x12\x0c\n\x08TEMPLATE\x10\x07*.\n\x06\x46ormat\x12\t\n\x05qcow2\x10\x00\x12\x07\n\x03raw\x10\x01\x12\x07\n\x03iso\x10\x02\x12\x07\n\x03vdk\x10\x03*/\n\x03\x42us\x12\x07\n\x03ide\x10\x00\x12\n\n\x06virtio\x10\x01\x12\x08\n\x04sata\x10\x02\x12\t\n\x05scsii\x10\x03*.\n\x04\x42oot\x12\x0b\n\x07\x42OOT_HD\x10\x00\x12\x0b\n\x07\x42OOT_CD\x10\x01\x12\x0c\n\x08\x42OOT_PXE\x10\x02\x32\xbf\x07\n\x06\x44omain\x12\x33\n\x04List\x12\x13.domain.ListRequest\x1a\x14.domain.ListResponse\"\x00\x12\x42\n\tListState\x12\x18.domain.ListStateRequest\x1a\x19.domain.ListStateResponse\"\x00\x12\x30\n\x03Get\x12\x12.domain.GetRequest\x1a\x13.domain.GetResponse\"\x00\x12?\n\x08GetState\x12\x17.domain.GetStateRequest\x1a\x18.domain.GetStateResponse\"\x00\x12K\n\x0c\x46romTemplate\x12\x1b.domain.FromTemplateRequest\x1a\x1c.domain.FromTemplateResponse\"\x00\x12\x42\n\tFromMedia\x12\x18.domain.FromMediaRequest\x1a\x19.domain.FromMediaResponse\"\x00\x12\x39\n\x06Update\x12\x15.domain.UpdateRequest\x1a\x16.domain.UpdateResponse\"\x00\x12\x39\n\x06\x44\x65lete\x12\x15.domain.DeleteRequest\x1a\x16.domain.DeleteResponse\"\x00\x12\x36\n\x05Start\x12\x14.domain.StartRequest\x1a\x15.domain.StartResponse\"\x00\x12\x33\n\x04Stop\x12\x13.domain.StopRequest\x1a\x14.domain.StopResponse\"\x00\x12\x39\n\x06Viewer\x12\x15.domain.ViewerRequest\x1a\x16.domain.ViewerResponse\"\x00\x12\x42\n\tVideoList\x12\x18.domain.VideoListRequest\x1a\x19.domain.VideoListResponse\"\x00\x12?\n\x08\x42ootList\x12\x17.domain.BootListRequest\x1a\x18.domain.BootListResponse\"\x00\x12N\n\rInterfaceList\x12\x1c.domain.InterfaceListRequest\x1a\x1d.domain.InterfaceListResponse\"\x00\x12\x45\n\nBootUpdate\x12\x19.domain.BootUpdateRequest\x1a\x1a.domain.BootUpdateResponse\"\x00\x62\x06proto3')
 )
 
 _ACTION = _descriptor.EnumDescriptor(
@@ -65,8 +65,8 @@ _ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3717,
-  serialized_end=3820,
+  serialized_start=3860,
+  serialized_end=3963,
 )
 _sym_db.RegisterEnumDescriptor(_ACTION)
 
@@ -96,8 +96,8 @@ _FORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3822,
-  serialized_end=3868,
+  serialized_start=3965,
+  serialized_end=4011,
 )
 _sym_db.RegisterEnumDescriptor(_FORMAT)
 
@@ -127,8 +127,8 @@ _BUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3870,
-  serialized_end=3917,
+  serialized_start=4013,
+  serialized_end=4060,
 )
 _sym_db.RegisterEnumDescriptor(_BUS)
 
@@ -140,22 +140,22 @@ _BOOT = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='DISK', index=0, number=0,
+      name='BOOT_HD', index=0, number=0,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ISO', index=1, number=1,
+      name='BOOT_CD', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='PXE', index=2, number=2,
+      name='BOOT_PXE', index=2, number=2,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3919,
-  serialized_end=3953,
+  serialized_start=4062,
+  serialized_end=4108,
 )
 _sym_db.RegisterEnumDescriptor(_BOOT)
 
@@ -176,9 +176,9 @@ ide = 0
 virtio = 1
 sata = 2
 scsii = 3
-DISK = 0
-ISO = 1
-PXE = 2
+BOOT_HD = 0
+BOOT_CD = 1
+BOOT_PXE = 2
 
 
 _DOMAINSTATE_STATE = _descriptor.EnumDescriptor(
@@ -1490,6 +1490,13 @@ _BOOTLISTREQUEST = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='domain_name', full_name='domain.BootListRequest.domain_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1503,7 +1510,7 @@ _BOOTLISTREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=2647,
-  serialized_end=2664,
+  serialized_end=2685,
 )
 
 
@@ -1533,8 +1540,77 @@ _BOOTLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2666,
-  serialized_end=2713,
+  serialized_start=2687,
+  serialized_end=2734,
+)
+
+
+_BOOTUPDATEREQUEST = _descriptor.Descriptor(
+  name='BootUpdateRequest',
+  full_name='domain.BootUpdateRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='domain_name', full_name='domain.BootUpdateRequest.domain_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='boots', full_name='domain.BootUpdateRequest.boots', index=1,
+      number=2, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2736,
+  serialized_end=2805,
+)
+
+
+_BOOTUPDATERESPONSE = _descriptor.Descriptor(
+  name='BootUpdateResponse',
+  full_name='domain.BootUpdateResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='boots', full_name='domain.BootUpdateResponse.boots', index=0,
+      number=1, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2807,
+  serialized_end=2856,
 )
 
 
@@ -1557,8 +1633,8 @@ _INTERFACELISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2715,
-  serialized_end=2737,
+  serialized_start=2858,
+  serialized_end=2880,
 )
 
 
@@ -1616,8 +1692,8 @@ _INTERFACE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2739,
-  serialized_end=2820,
+  serialized_start=2882,
+  serialized_end=2963,
 )
 
 
@@ -1647,8 +1723,8 @@ _INTERFACELISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2822,
-  serialized_end=2884,
+  serialized_start=2965,
+  serialized_end=3027,
 )
 
 
@@ -1734,8 +1810,8 @@ _VIEWER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2887,
-  serialized_end=3089,
+  serialized_start=3030,
+  serialized_end=3232,
 )
 
 
@@ -1793,8 +1869,8 @@ _DISK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3091,
-  serialized_end=3167,
+  serialized_start=3234,
+  serialized_end=3310,
 )
 
 
@@ -1880,8 +1956,8 @@ _HARDWARE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3170,
-  serialized_end=3341,
+  serialized_start=3313,
+  serialized_end=3484,
 )
 
 
@@ -1974,8 +2050,8 @@ _HARDWAREDERIVED = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3344,
-  serialized_end=3541,
+  serialized_start=3487,
+  serialized_end=3684,
 )
 
 
@@ -2061,8 +2137,8 @@ _HARDWAREUPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3544,
-  serialized_end=3715,
+  serialized_start=3687,
+  serialized_end=3858,
 )
 
 _DOMAINMESSAGE.fields_by_name['hardware'].message_type = _HARDWARE
@@ -2104,6 +2180,8 @@ _VIEWERRESPONSE.fields_by_name['viewer'].message_type = _VIEWER
 _VIEWERRESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
 _VIDEOLISTRESPONSE.fields_by_name['videos'].message_type = _VIDEO
 _BOOTLISTRESPONSE.fields_by_name['boots'].enum_type = _BOOT
+_BOOTUPDATEREQUEST.fields_by_name['boots'].enum_type = _BOOT
+_BOOTUPDATERESPONSE.fields_by_name['boots'].enum_type = _BOOT
 _INTERFACELISTRESPONSE.fields_by_name['interfaces'].message_type = _INTERFACE
 _HARDWARE.fields_by_name['disks'].message_type = _DISK
 DESCRIPTOR.message_types_by_name['ListRequest'] = _LISTREQUEST
@@ -2135,6 +2213,8 @@ DESCRIPTOR.message_types_by_name['Video'] = _VIDEO
 DESCRIPTOR.message_types_by_name['VideoListResponse'] = _VIDEOLISTRESPONSE
 DESCRIPTOR.message_types_by_name['BootListRequest'] = _BOOTLISTREQUEST
 DESCRIPTOR.message_types_by_name['BootListResponse'] = _BOOTLISTRESPONSE
+DESCRIPTOR.message_types_by_name['BootUpdateRequest'] = _BOOTUPDATEREQUEST
+DESCRIPTOR.message_types_by_name['BootUpdateResponse'] = _BOOTUPDATERESPONSE
 DESCRIPTOR.message_types_by_name['InterfaceListRequest'] = _INTERFACELISTREQUEST
 DESCRIPTOR.message_types_by_name['Interface'] = _INTERFACE
 DESCRIPTOR.message_types_by_name['InterfaceListResponse'] = _INTERFACELISTRESPONSE
@@ -2352,6 +2432,20 @@ BootListResponse = _reflection.GeneratedProtocolMessageType('BootListResponse', 
   })
 _sym_db.RegisterMessage(BootListResponse)
 
+BootUpdateRequest = _reflection.GeneratedProtocolMessageType('BootUpdateRequest', (_message.Message,), {
+  'DESCRIPTOR' : _BOOTUPDATEREQUEST,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.BootUpdateRequest)
+  })
+_sym_db.RegisterMessage(BootUpdateRequest)
+
+BootUpdateResponse = _reflection.GeneratedProtocolMessageType('BootUpdateResponse', (_message.Message,), {
+  'DESCRIPTOR' : _BOOTUPDATERESPONSE,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.BootUpdateResponse)
+  })
+_sym_db.RegisterMessage(BootUpdateResponse)
+
 InterfaceListRequest = _reflection.GeneratedProtocolMessageType('InterfaceListRequest', (_message.Message,), {
   'DESCRIPTOR' : _INTERFACELISTREQUEST,
   '__module__' : 'api.grpc.proto.domain_pb2'
@@ -2416,8 +2510,8 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=3956,
-  serialized_end=4844,
+  serialized_start=4111,
+  serialized_end=5070,
   methods=[
   _descriptor.MethodDescriptor(
     name='List',
@@ -2543,6 +2637,15 @@ _DOMAIN = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_INTERFACELISTREQUEST,
     output_type=_INTERFACELISTRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='BootUpdate',
+    full_name='domain.Domain.BootUpdate',
+    index=14,
+    containing_service=None,
+    input_type=_BOOTUPDATEREQUEST,
+    output_type=_BOOTUPDATERESPONSE,
     serialized_options=None,
   ),
 ])
