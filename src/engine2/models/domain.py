@@ -1,11 +1,11 @@
 # ~ from sqlalchemy import Table, Column, sa.String, sa.Integer
 import sqlalchemy as sa
-# ~ from sqlalchemy.ext.declarative import declarative_BaseMixin
+# ~ from sqlalchemy.ext.declarative import declarative_Base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.inspection import inspect as _inspect
 from sqlalchemy.ext.orderinglist import ordering_list
 
-# ~ from models.BaseMixin_mixin import BaseMixinMixin as BaseMixin
+# ~ from models.Base_mixin import BaseMixin as Base
 from models.base_mixin import BaseMixin
 
 # ~ from common.connection_manager import db_session
@@ -13,8 +13,10 @@ from common.connection_manager import engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 db = scoped_session(sessionmaker(bind=engine))
 
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
         
-class Domain_Media(BaseMixin):
+class Domain_Media(Base):
     __tablename__ = 'domain_media'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -29,7 +31,7 @@ class Domain_Media(BaseMixin):
     medias = relationship("MediaXML", back_populates="domains")
     domain = relationship("Domain", back_populates="medias")
 
-class Domain_Interface(BaseMixin):
+class Domain_Interface(Base):
     __tablename__ = 'domain_interface'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -41,7 +43,7 @@ class Domain_Interface(BaseMixin):
     interfaces = relationship("InterfaceXML", back_populates="domains")
     domains = relationship("Domain", back_populates="interfaces")
 
-class Domain_Graphic(BaseMixin):
+class Domain_Graphic(Base):
     __tablename__ = 'domain_graphic'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -51,7 +53,7 @@ class Domain_Graphic(BaseMixin):
     graphic = relationship("GraphicXML", back_populates="domain")
     domain = relationship("Domain", back_populates="graphic")
         
-class Domain_Video(BaseMixin):
+class Domain_Video(Base):
     __tablename__ = 'domain_video'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -61,7 +63,7 @@ class Domain_Video(BaseMixin):
     videos = relationship("VideoXML", back_populates="domains")
     domain = relationship("Domain", back_populates="videos")
       
-class Domain(BaseMixin):
+class Domain(BaseMixin, Base):
     __tablename__ = 'domain'
 
     id = sa.Column(sa.Integer, primary_key=True)
@@ -88,22 +90,20 @@ class Domain(BaseMixin):
     vcpu = sa.Column(sa.Integer)
     memory = sa.Column(sa.Integer)
 
-    def get_xml(name):
-        # ~ print(self)
-        with db_session() as db:
-            domains = db.query(Domain).all()
-            return(domains[0].graphic[0])
-            # ~ return db.query(Domain).get(name)
-            # ~ return db.query(self.__class__).get(name)
-        # ~ self.tree.xpath(xpath).getparent().remove(self.tree.xpath(xpath))
-    def id_by_name(domain_name):
-        # ~ with db_session() as db:
-            return db.query(Domain).filter(Domain.name == domain_name).first()
+    def get_xml(domain_name):
+        domain = Domain.by_name(domain_name)
+        domain_xml = db.query(DomainXML).filter(DomainXML.id == domain.domain_xml_id).first().xml
+        disks = db.query(Disk).filter(Disk.id == domain.id).all()
+        disks_xml = [db.query(DiskXML).filter(DiskXML.id == d.xml_id).first().xml for d in disks]
+        disks_xml_str = ""
+        for dx in disks_xml:
+            disks_xml_str = disks_xml_str+dx
+        return domain_xml + disks_xml_str
+
         
-class Disk(BaseMixin):
+class Disk(BaseMixin, Base):
     __tablename__ = 'disk'
     
-    ### composite primary_key: domain_id+order
     __table_args__ = (
             sa.UniqueConstraint("domain_id", "order"),
         )
@@ -134,35 +134,36 @@ class Disk(BaseMixin):
         self.format = format  
         self.order = order  
 
-class DiskXML(BaseMixin):
+    # ~ def get_xml(disk_name):
+        # ~ return db.query(DiskXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
+        
+class DiskXML(BaseMixin, Base):
     __tablename__ = "disk_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
-    
-    # ~ disk_id = sa.Column(sa.Integer, sa.ForeignKey('disk.id'))  
-    # ~ domains = relationship("Domain_Disk", 
-                                        # ~ back_populates="disk_xmls")      
 
     def __init__(self, name, xml):
         self.name = name
         self.xml = xml
-        
-class DomainXML(BaseMixin):
+
+    # ~ def get_xml(disk_xml_name):
+        # ~ return db.query(DiskXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
+                
+class DomainXML(BaseMixin, Base):
     __tablename__ = "domain_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
-    
-    # ~ domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
-    # ~ domains = relationship("Domain_DomainXML_Association", 
-                                        # ~ back_populates="domain_xmls")      
 
     def __init__(self, name, xml):
         self.name = name
         self.xml = xml
-        
-class MediaXML(BaseMixin):
+
+    # ~ def get_xml(domain_xml_name):
+        # ~ return db.query(DomainXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
+                
+class MediaXML(BaseMixin, Base):
     __tablename__ = "media_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
@@ -174,7 +175,7 @@ class MediaXML(BaseMixin):
         self.name = name
         self.xml = xml
         
-class GraphicXML(BaseMixin):
+class GraphicXML(BaseMixin, Base):
     __tablename__ = "graphic_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
@@ -187,7 +188,7 @@ class GraphicXML(BaseMixin):
         self.name = name
         self.xml = xml
         
-class VideoXML(BaseMixin):
+class VideoXML(BaseMixin, Base):
     __tablename__ = "video_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
@@ -200,7 +201,7 @@ class VideoXML(BaseMixin):
         self.name = name
         self.xml = xml
 
-class InterfaceXML(BaseMixin):
+class InterfaceXML(BaseMixin, Base):
     __tablename__ = "interface_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
@@ -213,10 +214,8 @@ class InterfaceXML(BaseMixin):
         self.name = name
         self.xml = xml   
    
-class Boot(BaseMixin):
+class Boot(BaseMixin, Base):
     __tablename__ = "boot"
-  
-
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, nullable=False)
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), nullable=False)
@@ -229,26 +228,10 @@ class Boot(BaseMixin):
             # ~ sa.PrimaryKeyConstraint(domain_id, order),
         # ~ )  
             
-    # ~ def __init__(self, domain_id, name, order):
-        # ~ self.domain_id = domain_id
-        # ~ self.name = name
-        # ~ self.order = order
-    
     def update(domain_name, names):
-        # ~ #print(self)
-        # ~ with db_session() as db:
-            db.boot.remove(db.query(Boot).filter(Boot.domain_id == domain_id).delete())
-            db.domain.boot.append([Boot(domain_id=domain.id, name=name) for name in names]) 
-            return True
-            # ~ boot = Boot(domain_id=domain.id, name=name)
-            # ~ try: 
-                # ~ db.boot.insert(1,boot)
-                # ~ db.domain.boot.insert(1,db)
-            # ~ except Exception as IntegrityError:
-                # ~ db.bootremove(db.query(Boot).filter(Boot.name == name).one()) 
-                # ~ db.domain.boot.insert(1,boot)
+        db.boot.remove(db.query(Boot).filter(Boot.domain_id == Domain.by_name(domain_name).id).delete())
+        db.domain.boot.append([Boot(domain_id=Domain.by_name(domain_name).id, name=name) for name in names]) 
+        return True
+
     def list(domain_name):
-        # ~ with db_session() as db:
-            return db.query(Boot).filter(Boot.domain_id==str(Domain.id_by_name(domain_name).id)).all()
-            # ~ return db.query(Boot).filter(Boot.domain_id==Domain.by_name(domain_name).id).all()
-    # ~ def remove(self,domain_id, name):
+        return db.query(Boot).filter(Boot.domain_id==Domain.by_name(domain_name).id).all()

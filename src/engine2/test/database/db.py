@@ -2,18 +2,14 @@ import sys
 
 sys.path.append("../../")
 
-from models.domain import *
-from common.connection_manager import db_session
+from common.connection_manager import engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+db = scoped_session(sessionmaker(bind=engine))
 
-def select_domain(id):
-    with db_session() as db:
-        domains = db.query(Domain).all()
-        print(GraphicXML.get_xml(domains[0].id))
-    return domains
-    return [d.to_dict() for d in domains]
+from models.domain import *
+
+def select_domain(domain_name):
+    print(Domain.get_xml(domain_name))
 
 domains = select_domain('_admin_tetros')
-with db_session() as db:
-    print(Domain.get_xml('_admin_tetros'))
-# ~ with db_session() as db:
-    # ~ print(domains[0].graphic)
+# ~ print(Domain.get_xml('_admin_tetros'))
