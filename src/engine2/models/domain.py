@@ -8,6 +8,8 @@ from sqlalchemy.ext.orderinglist import ordering_list
 # ~ from models.Base_mixin import BaseMixin as Base
 from models.base_mixin import BaseMixin
 
+from models.parser.xml_parser import XmlParser
+
 # ~ from common.connection_manager import db_session
 from common.connection_manager import engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -21,12 +23,12 @@ class Domain_Media(Base):
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     media_id = sa.Column(sa.Integer, sa.ForeignKey('media_xml.id'), primary_key=True)
-    rpath = sa.Column(sa.String)
-    bus = sa.Column(sa.String)
-    dev = sa.Column(sa.String)
+    rpath = sa.Column(sa.String, nullable=False)
+    bus = sa.Column(sa.String, nullable=False)
+    dev = sa.Column(sa.String, nullable=False)
     # size = sa.Column(sa.Integer)
-    format = sa.Column(sa.String)
-    order = sa.Column(sa.Integer)
+    format = sa.Column(sa.String, nullable=False)
+    order = sa.Column(sa.Integer, nullable=False)
     
     medias = relationship("MediaXML", back_populates="domains")
     domain = relationship("Domain", back_populates="medias")
@@ -36,9 +38,9 @@ class Domain_Interface(Base):
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     interface_id = sa.Column(sa.Integer, sa.ForeignKey('interface_xml.id'), primary_key=True)
-    order = sa.Column(sa.Integer)
-    model = sa.Column(sa.String)
-    mac = sa.Column(sa.String)
+    order = sa.Column(sa.Integer, nullable=False)
+    model = sa.Column(sa.String, nullable=False)
+    mac = sa.Column(sa.String, nullable=False)
     
     interfaces = relationship("InterfaceXML", back_populates="domains")
     domains = relationship("Domain", back_populates="interfaces")
@@ -48,7 +50,7 @@ class Domain_Graphic(Base):
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     graphic_id = sa.Column(sa.Integer, sa.ForeignKey('graphic_xml.id'), primary_key=True)
-    order = sa.Column(sa.Integer)
+    order = sa.Column(sa.Integer, nullable=False)
     
     graphic = relationship("GraphicXML", back_populates="domain")
     domain = relationship("Domain", back_populates="graphic")
@@ -58,7 +60,7 @@ class Domain_Video(Base):
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     video_id = sa.Column(sa.Integer, sa.ForeignKey('video_xml.id'), primary_key=True)
-    order = sa.Column(sa.Integer)
+    order = sa.Column(sa.Integer, nullable=False)
     
     videos = relationship("VideoXML", back_populates="domains")
     domain = relationship("Domain", back_populates="videos")
@@ -91,14 +93,25 @@ class Domain(BaseMixin, Base):
     memory = sa.Column(sa.Integer)
 
     def get_xml(domain_name):
-        domain = Domain.by_name(domain_name)
-        domain_xml = db.query(DomainXML).filter(DomainXML.id == domain.domain_xml_id).first().xml
-        disks = db.query(Disk).filter(Disk.id == domain.id).all()
-        disks_xml = [db.query(DiskXML).filter(DiskXML.id == d.xml_id).first().xml for d in disks]
-        disks_xml_str = ""
-        for dx in disks_xml:
-            disks_xml_str = disks_xml_str+dx
-        return domain_xml + disks_xml_str
+        try:
+            domain = Domain.by_name(domain_name)
+            domain_tree = XmlParser(db.query(DomainXML).filter(DomainXML.id == domain.domain_xml_id).first().xml)
+            print(domain.id)
+            for disk in Disk.get_domain_disks(domain.id):
+                domain_tree.domain_disk_add(disk)
+            # ~ disks = db.query(Disk).filter(Disk.id == domain.id).all()
+            # ~ disks_obj = [db.query(DiskXML).filter(DiskXML.id == d.xml_id).first().xml for d in disks]
+            
+            # ~ for dx in disks_xml:
+                # ~ domain_tree.domain_disk_add(dx, '/pepinillo')
+            return domain_tree.to_xml()
+
+        except Exception as e:
+            raise
+            
+        # ~ for dx in disks_xml:
+            # ~ disks_xml_str = disks_xml_str+dx
+        # ~ return domain_xml + disks_xml_str
 
         
 class Disk(BaseMixin, Base):
@@ -117,16 +130,19 @@ class Disk(BaseMixin, Base):
     xml_id = sa.Column(sa.Integer, sa.ForeignKey('disk_xml.id'), nullable=False)  
     xml = relationship('DiskXML')
     
+    ppath = sa.Column(sa.String)
     rpath = sa.Column(sa.String)
+    
     bus = sa.Column(sa.String)
     dev = sa.Column(sa.String)
     size = sa.Column(sa.Integer)
     format = sa.Column(sa.String)
 
-    def __init__(self, domain_id, name, xml, rpath=".",bus="virtio", dev="vda", size=5, format="qcow2", order=1):
+    def __init__(self, domain_id, name, xml, ppath="/", rpath=".",bus="virtio", dev="vda", size=5, format="qcow2", order=1):
         self.name = name
         self.xml = xml
         self.domain_id = domain_id
+        self.ppath = ppath
         self.rpath = rpath
         self.bus = bus
         self.dev = dev
@@ -134,6 +150,20 @@ class Disk(BaseMixin, Base):
         self.format = format  
         self.order = order  
 
+    def get_domain_disks(domain_id):
+        disks = db.query(Disk).filter(Disk.id == domain_id).all()
+        disks_list = []
+        for disk in disks:
+            disks_list.append({'name':disk.name,
+                            'xml': db.query(DiskXML).filter(DiskXML.id == disk.xml_id).first().xml,
+                            'ppath': disk.ppath,
+                            'rpath': disk.rpath,
+                            'bus': disk.bus,
+                            'dev': disk.dev,
+                            'size': disk.size,
+                            'format': disk.format,
+                            'order': disk.order})
+        return disks_list
     # ~ def get_xml(disk_name):
         # ~ return db.query(DiskXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
         

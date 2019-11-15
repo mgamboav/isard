@@ -36,17 +36,17 @@ enum Action {
 }
 
 enum Format {
-    qcow2 = 0;
-    raw = 1;
-    iso = 2;
-    vdk = 3;
+    FORMAT_QCOW2 = 0;
+    FORMAT_RAW = 1;
+    FORMAT_ISO = 2;
+    FORMAT_VMDK = 3;
 }
 
 enum Bus {
-    ide = 0;
-    virtio = 1;
-    sata =2;
-    scsii = 3;
+    BUS_IDE = 0;
+    BUS_VIRTIO = 1;
+    BUS_SATA =2;
+    BUS_SCSII = 3;
 }
 
 

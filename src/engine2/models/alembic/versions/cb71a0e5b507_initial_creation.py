@@ -77,7 +77,7 @@ def upgrade():
     
     ### Interfaces
     di_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
-    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, order=1)
+    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', mac='11:22:33:44:55:66', order=1)
     domain.interfaces.append(di)        
         
     ### Graphics

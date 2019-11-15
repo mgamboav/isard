@@ -79,9 +79,9 @@ class XMLHelper(object):
         snippets['disk'].append({'name': 'disk',
         'xml': '''
     <disk type="file" device="disk">
-      <driver name="qemu" type="{driver_type}"/>
+      <driver name="qemu" type="{format}"/>
       <source file="{source}"/>
-      <target dev="{prefix_suffix}d{target_suffix}" bus="{bus}"/>
+      <target dev="{dev}" bus="{bus}"/>
     </disk>
 '''})
 
