@@ -67,7 +67,7 @@ def upgrade():
     # ~ print(Boot.filter_by(name='disk').first())
     ### Hard disk
     dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
-    dd = Disk(domain_id=domain.id, xml=dd_xml, name='_admin_tetros', rpath='admin/admin', bus='virtio', dev='vda', size=10, format='qcow2', order=1)
+    dd = Disk(domain_id=domain.id, xml=dd_xml, name='_admin_tetros', ppath='isard/1/', rpath='admin/admin/file.qcow2', bus='virtio', dev='vda', size=10, format='qcow2', order=1)
     domain.disk.append(dd)
 
     ### Medias
@@ -77,7 +77,7 @@ def upgrade():
     
     ### Interfaces
     di_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
-    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', mac='11:22:33:44:55:66', order=1)
+    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', source='network', mac='11:22:33:44:55:66', order=1)
     domain.interfaces.append(di)        
         
     ### Graphics

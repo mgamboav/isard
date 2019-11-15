@@ -22,13 +22,13 @@ class BaseMixin(object):
     # ~ def get_by(cls, **kw):
         # ~ return Session.query(cls).filter_by(**kw).first()
             
-    # ~ def to_dict(self):
-        # ~ """Returns model as dict of properties.
-        # ~ Note:
-            # ~ Removes SQLAlchemy fields included in self.__dict__
-        # ~ """
-        # ~ column_names = _inspect(self.__class__).columns.keys()
-        # ~ return {k: self.__dict__[k] for k in column_names}   
+    def to_dict(self):
+        """Returns model as dict of properties.
+        Note:
+            Removes SQLAlchemy fields included in self.__dict__
+        """
+        column_names = _inspect(self.__class__).columns.keys()
+        return {k: self.__dict__[k] for k in column_names}   
     
 
 

@@ -39,6 +39,7 @@ class Domain_Interface(Base):
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     interface_id = sa.Column(sa.Integer, sa.ForeignKey('interface_xml.id'), primary_key=True)
     order = sa.Column(sa.Integer, nullable=False)
+    source = sa.Column(sa.String, nullable=False)
     model = sa.Column(sa.String, nullable=False)
     mac = sa.Column(sa.String, nullable=False)
     
@@ -99,6 +100,12 @@ class Domain(BaseMixin, Base):
             print(domain.id)
             for disk in Disk.get_domain_disks(domain.id):
                 domain_tree.domain_disk_add(disk)
+            for interface in InterfaceXML.get_domain_interfaces(domain.id):
+                domain_tree.domain_interface_add(interface)         
+            for graphic in GraphicXML.get_domain_graphics(domain.id):
+                domain_tree.domain_graphic_add(graphic)  
+            for video in VideoXML.get_domain_video(domain.id):
+                domain_tree.domain_graphic_add(video) 
             # ~ disks = db.query(Disk).filter(Disk.id == domain.id).all()
             # ~ disks_obj = [db.query(DiskXML).filter(DiskXML.id == d.xml_id).first().xml for d in disks]
             
@@ -164,8 +171,6 @@ class Disk(BaseMixin, Base):
                             'format': disk.format,
                             'order': disk.order})
         return disks_list
-    # ~ def get_xml(disk_name):
-        # ~ return db.query(DiskXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
         
 class DiskXML(BaseMixin, Base):
     __tablename__ = "disk_xml"
@@ -217,6 +222,16 @@ class GraphicXML(BaseMixin, Base):
     def __init__(self, name, xml):
         self.name = name
         self.xml = xml
+
+    def get_domain_graphics(domain_id):
+        graphics = db.query(GraphicXML).filter(GraphicXML.id == domain_id).all()
+        graphics_list = []
+        for graphic in graphics:
+            gdata = db.query(Domain_Graphic).filter(Domain_Graphic.graphic_id == graphic.id).first()
+            graphics_list.append({'name':graphic.name,
+                            'xml': graphic.xml,
+                            'order': gdata.order})
+        return graphics_list   
         
 class VideoXML(BaseMixin, Base):
     __tablename__ = "video_xml"
@@ -231,6 +246,16 @@ class VideoXML(BaseMixin, Base):
         self.name = name
         self.xml = xml
 
+    def get_domain_video(domain_id):
+        videos = db.query(VideoXML).filter(VideoXML.id == domain_id).all()
+        videos_list = []
+        for video in videos:
+            vdata = db.query(Domain_Video).filter(Domain_Video.video_id == video.id).first()
+            videos_list.append({'name':video.name,
+                            'xml': video.xml,
+                            'order': vdata.order})
+        return videos_list   
+        
 class InterfaceXML(BaseMixin, Base):
     __tablename__ = "interface_xml"
     id = sa.Column(sa.Integer, primary_key=True)
@@ -243,7 +268,20 @@ class InterfaceXML(BaseMixin, Base):
     def __init__(self, name, xml):
         self.name = name
         self.xml = xml   
-   
+
+    def get_domain_interfaces(domain_id):
+        interfaces = db.query(InterfaceXML).filter(InterfaceXML.id == domain_id).all()
+        interfaces_list = []
+        for interface in interfaces:
+            ifdata = db.query(Domain_Interface).filter(Domain_Interface.interface_id == interface.id).first()
+            interfaces_list.append({'name':interface.name,
+                            'xml': interface.xml,
+                            'source': ifdata.source,
+                            'mac': ifdata.mac,
+                            'model': ifdata.model,
+                            'order': ifdata.order})
+        return interfaces_list   
+
 class Boot(BaseMixin, Base):
     __tablename__ = "boot"
     id = sa.Column(sa.Integer, primary_key=True)
