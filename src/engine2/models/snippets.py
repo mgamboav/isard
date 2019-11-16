@@ -47,7 +47,9 @@ class XMLHelper(object):
                     'disk':[],
                     'media':[],
                     'graphic':[],
-                    'video':[]}
+                    'video':[],
+                    'memory':[],
+                    'vcpu':[]}
         snippets['interface'].append({'name': 'network',
         'xml': '''
     <interface type="network">
@@ -128,6 +130,24 @@ class XMLHelper(object):
     </video>
 '''})
 
+        snippets['memory'].append({'name': 'balloon',
+        'xml': '''
+  <maxMemory unit="{unit}">{maxmemory}</maxMemory>
+  <memory unit="{unit}">{memory}</memory>
+  <currentMemory unit="{unit}">{currentmemory}</currentMemory>
+'''})
+
+        snippets['vcpu'].append({'name': 'vcpu',
+        'xml': '''
+  <vcpu>{vcpu}</vcpu>
+'''})
+
+# ~ <vcpu placement='static' cpuset="1-4,^3,6" current="1">2</vcpu>
+
+  # ~ <maxMemory unit='KiB'>1524288</maxMemory>
+  # ~ <memory unit='KiB'>524288</memory>
+  # ~ <currentMemory unit='KiB'>524288</currentMemory>
+    
 # ~ <graphics type='spice' port='-1' tlsPort='-1' autoport='yes'>
   # ~ <channel name='main' mode='secure'/>
   # ~ <channel name='record' mode='insecure'/>

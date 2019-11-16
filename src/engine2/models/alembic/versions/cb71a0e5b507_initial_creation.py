@@ -46,15 +46,24 @@ def upgrade():
     session.bulk_save_objects([InterfaceXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('interface')])
     session.bulk_save_objects([GraphicXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('graphic')])
     session.bulk_save_objects([VideoXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('video')])
-
+    session.bulk_save_objects([MemoryXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('memory')])
+    session.bulk_save_objects([VcpuXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('vcpu')])
     ################################3
     # New domain.
     ## Get xml for new domain
     d_xml = session.query(DomainXML).filter(DomainXML.name == 'win2k3').one()
     
     ## Create the domain
-    domain = Domain(name="_admin_tetros", domain_xml=d_xml, vcpu = 1, memory = 768)
+    domain = Domain(name="_admin_tetros", domain_xml=d_xml) #, vcpu = 1, memory = 768)
 
+    mem_xml = session.query(MemoryXML).filter(MemoryXML.name == 'balloon').one()
+    mem = Domain_Memory(domain_id=domain, memory_id=mem_xml.id, mem=1500)
+    domain.memory.append(mem) 
+    
+    vcpu_xml = session.query(VcpuXML).filter(VcpuXML.name == 'vcpu').one()
+    vcpu = Domain_Vcpu(domain_id=domain, vcpu_id=vcpu_xml.id, vcpus=2)
+    domain.vcpu.append(vcpu) 
+        
     ### Boot
     db = Boot(domain_id=domain.id, name='BOOT_PXE') #, order=1)
     domain.boot.append(db)

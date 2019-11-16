@@ -17,7 +17,43 @@ db = scoped_session(sessionmaker(bind=engine))
 
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
+
+def same_as(column_name):
+    def default_function(context):
+        return context.current_parameters.get(column_name)
+    return default_function
+    
+class Domain_Vcpu(Base):
+    __tablename__ = 'domain_vcpu'
+
+    __table_args__ = (
+            sa.UniqueConstraint("domain_id", "vcpu_id"),
+        )
         
+    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
+    vcpu_id = sa.Column(sa.Integer, sa.ForeignKey('vcpu_xml.id'), primary_key=True)
+    vcpus = sa.Column(sa.Integer, nullable=False)
+    
+    vcpu = relationship("VcpuXML", back_populates="domain")
+    domain = relationship("Domain", back_populates="vcpu")
+    
+class Domain_Memory(Base):
+    __tablename__ = 'domain_memory'
+
+    __table_args__ = (
+            sa.UniqueConstraint("domain_id", "memory_id"),
+        )
+        
+    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
+    memory_id = sa.Column(sa.Integer, sa.ForeignKey('memory_xml.id'), primary_key=True)
+    unit = sa.Column(sa.String, default='MiB')
+    mem = sa.Column(sa.Integer, nullable=False)
+    maxmemory = sa.Column(sa.Integer, default=same_as('mem'))
+    currentmemory = sa.Column(sa.Integer, default=same_as('mem'))
+    
+    memory = relationship("MemoryXML", back_populates="domain")
+    domain = relationship("Domain", back_populates="memory")
+            
 class Domain_Media(Base):
     __tablename__ = 'domain_media'
 
@@ -89,15 +125,23 @@ class Domain(BaseMixin, Base):
                                         back_populates="domains")                                                                                                                                                                                                                                                
     videos = relationship("Domain_Video", 
                                         back_populates="domain") 
+    memory = relationship("Domain_Memory", 
+                                        back_populates="domain") 
+    vcpu = relationship("Domain_Vcpu", 
+                                        back_populates="domain")                                         
                                         
-    vcpu = sa.Column(sa.Integer)
-    memory = sa.Column(sa.Integer)
+    # ~ memory = relationship('MemoryXML')
+    # ~ vcpu = relationship('VcpuXML')
+    # ~ vcpu = sa.Column(sa.Integer)
+    # ~ memory = sa.Column(sa.Integer)
 
     def get_xml(domain_name):
         try:
             domain = Domain.by_name(domain_name)
             domain_tree = XmlParser(db.query(DomainXML).filter(DomainXML.id == domain.domain_xml_id).first().xml)
-            print(domain.id)
+            domain_tree.domain_name_update(domain.name)
+            domain_tree.domain_vcpu_update(VcpuXML.get_domain_vcpu(domain.id))
+            domain_tree.domain_memory_update(MemoryXML.get_domain_memory(domain.id))
             for disk in Disk.get_domain_disks(domain.id):
                 domain_tree.domain_disk_add(disk)
             for interface in InterfaceXML.get_domain_interfaces(domain.id):
@@ -106,20 +150,10 @@ class Domain(BaseMixin, Base):
                 domain_tree.domain_graphic_add(graphic)  
             for video in VideoXML.get_domain_video(domain.id):
                 domain_tree.domain_graphic_add(video) 
-            # ~ disks = db.query(Disk).filter(Disk.id == domain.id).all()
-            # ~ disks_obj = [db.query(DiskXML).filter(DiskXML.id == d.xml_id).first().xml for d in disks]
-            
-            # ~ for dx in disks_xml:
-                # ~ domain_tree.domain_disk_add(dx, '/pepinillo')
             return domain_tree.to_xml()
 
         except Exception as e:
             raise
-            
-        # ~ for dx in disks_xml:
-            # ~ disks_xml_str = disks_xml_str+dx
-        # ~ return domain_xml + disks_xml_str
-
         
 class Disk(BaseMixin, Base):
     __tablename__ = 'disk'
@@ -171,7 +205,53 @@ class Disk(BaseMixin, Base):
                             'format': disk.format,
                             'order': disk.order})
         return disks_list
+
+class MemoryXML(BaseMixin, Base):
+    __tablename__ = 'memory_xml'
+    
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id"),
+        # ~ )
+    
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.String, unique=True)
+    xml = sa.Column(sa.String, unique=True)
+
+    domain = relationship("Domain_Memory", 
+                                        back_populates="memory")      
+    # ~ domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
+
+    def get_domain_memory(domain_id):
+        memory = db.query(MemoryXML).filter(MemoryXML.id == domain_id).first()
+        mdata = db.query(Domain_Memory).filter(Domain_Memory.memory_id == memory.id).first()
+        return {'xml': memory.xml,
+                'unit': mdata.unit,
+                'maxmemory':mdata.maxmemory,
+                'memory': mdata.mem,
+                'currentmemory': mdata.currentmemory}
+        return memory_list  
         
+class VcpuXML(BaseMixin, Base):
+    __tablename__ = 'vcpu_xml'
+    
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id"),
+        # ~ )
+    
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.String, unique=True)
+    xml = sa.Column(sa.String, unique=True)
+
+    domain = relationship("Domain_Vcpu", 
+                                        back_populates="vcpu")  
+    # ~ domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
+
+    def get_domain_vcpu(domain_id):
+        vcpu = db.query(VcpuXML).filter(VcpuXML.id == domain_id).first()
+        vdata = db.query(Domain_Vcpu).filter(Domain_Vcpu.vcpu_id == vcpu.id).first()
+        return {'xml': vcpu.xml,
+                'vcpu':vdata.vcpus}
+                        
 class DiskXML(BaseMixin, Base):
     __tablename__ = "disk_xml"
     id = sa.Column(sa.Integer, primary_key=True)

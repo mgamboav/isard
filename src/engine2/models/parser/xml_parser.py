@@ -11,8 +11,11 @@ class XmlParser(object):
             raise
 
     def remove_branch(self, xpath, index=0):
-        self.tree.xpath(xpath)[index].getparent().remove(self.tree.xpath(xpath)[index])
-
+        try:
+            self.tree.xpath(xpath)[index].getparent().remove(self.tree.xpath(xpath)[index])
+            return True
+        except:
+            return False
 
     def clean_xml(self):
         items = ['disk','graphics','video','interface']
@@ -20,16 +23,40 @@ class XmlParser(object):
         for i in items:
             while len(self.tree.xpath(xpath+i)):
                 self.remove_branch(xpath+i)         
-            # ~ sub = self.tree.xpath(xpath+i)
-            # ~ self.remove_branch(xpath)
-            # ~ index=0
-            # ~ for s in sub:
-                # ~ sub[index].remove()
-                # ~ index=index+1
-                
+        self.remove_branch('/domain/uuid') 
+        self.remove_branch('/domain/memory')
+        self.remove_branch('/domain/currentMemory')
+        self.remove_branch('/domain/maxMemory')  
+        self.remove_branch('/domain/vcpu')                 
+
     def to_xml(self):
         return etree.tostring(self.tree, encoding='unicode', pretty_print=True)
 
+    def domain_name_update(self, name):
+        self.tree.xpath('/domain/name')[0].text = name
+
+    def domain_vcpu_update(self, vcpu):
+        try:
+            vcpu_xml = vcpu['xml'].format(vcpu=vcpu['vcpu'])
+            vcpu_etree = etree.parse(StringIO(vcpu_xml))
+            self.tree.xpath('/domain/name')[0].addnext(vcpu_etree.getroot())
+        except Exception as e:
+            raise
+        return True
+        
+    def domain_memory_update(self, memory):
+        try:
+            memory_xml = memory['xml'].format(unit=memory['unit'],
+                                         maxmemory=str(memory['maxmemory']),
+                                         memory=str(memory['memory']),
+                                         currentmemory=str(memory['currentmemory']))
+            memory_xmls = memory_xml.splitlines()
+            memory_etrees = [etree.parse(StringIO(memory_xml)) for memory_xml in memory_xmls if memory_xml is not ""]
+            [self.tree.xpath('/domain/name')[0].addnext(memory_etree.getroot()) for memory_etree in memory_etrees]
+        except Exception as e:
+            raise
+        return True
+                                                         
     def domain_disk_next_dev(self, bus):
         ''' device = disk, cdrom, floppy '''
         ''' bus = virtio, ide, fdc, sata, scsii, ... '''
