@@ -132,9 +132,15 @@ class XMLHelper(object):
     </video>
 '''})
 
+        # ~ snippets['memory'].append({'name': 'hotplug',
+        # ~ 'xml': '''
+  # ~ <maxMemory slots="{slots}" unit="{unit}">{maxmemory}</maxMemory>
+  # ~ <memory unit="{unit}">{memory}</memory>
+  # ~ <currentMemory unit="{unit}">{currentmemory}</currentMemory>
+# ~ '''})
+
         snippets['memory'].append({'name': 'balloon',
         'xml': '''
-  <maxMemory unit="{unit}">{maxmemory}</maxMemory>
   <memory unit="{unit}">{memory}</memory>
   <currentMemory unit="{unit}">{currentmemory}</currentMemory>
 '''})
@@ -150,9 +156,13 @@ class XMLHelper(object):
   </cpu>
 '''})
 
+  # ~ <cpu mode='host-model' check='partial'>
+    # ~ <model fallback='allow'/>
+  # ~ </cpu>
+
         snippets['cpu'].append({'name': 'host_model',
         'xml': '''
-  <cpu mode="host-model">
+  <cpu mode="host-model" check="partial">
     <model fallback="{fallback}"/>
   </cpu>
 '''})

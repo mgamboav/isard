@@ -53,10 +53,10 @@ def upgrade():
     ################################3
     # New domain.
     ## Get xml for new domain
-    d_xml = session.query(DomainXML).filter(DomainXML.name == 'win2k3').one()
+    d_xml = session.query(DomainXML).filter(DomainXML.name == 'altlinux1.0').one()
     
     ## Create the domain
-    domain = Domain(name="____", domain_xml=d_xml) #, vcpu = 1, memory = 768)
+    domain = Domain(name="_t_e_s_t_", domain_xml=d_xml) #, vcpu = 1, memory = 768)
 
     mem_xml = session.query(MemoryXML).filter(MemoryXML.name == 'balloon').one()
     mem = Domain_Memory(domain_id=domain, memory_id=mem_xml.id, mem=1500)
@@ -66,48 +66,49 @@ def upgrade():
     vcpu = Domain_Vcpu(domain_id=domain, vcpu_id=vcpu_xml.id, vcpus=2)
     domain.vcpu.append(vcpu) 
 
-    # ~ cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'custom').one()
-    # ~ cpu = Domain_Cpu(domain_id=domain, cpu_id=cpu_xml.id)
-    # ~ domain.cpu.append(cpu) 
-
     cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'host_model').one()
     cpu = Domain_Cpu(domain_id=domain, cpu_id=cpu_xml.id)
     domain.cpu.append(cpu)
-                
+          
+    # ~ sound_xml = session.query(SoundXML).filter(SoundXML.name == 'ich6').one()
+    # ~ sound = Domain_Sound(domain_id=domain, sound_id = sound_xml.id)
+    # ~ domain.sound.append(sound)
+          
     ### Boot
-    db = Boot(domain_id=domain.id, name='BOOT_PXE') #, order=1)
+    db = Boot(domain_id=domain.id, name='BOOT_NETWORK') #, order=1)
     domain.boot.append(db)
-    db = Boot(domain_id=domain.id, name='BOOT_HD') #, order=1)
-    domain.boot.append(db)
-    db = Boot(domain_id=domain.id, name='BOOT_CD') #, order=1)
-    domain.boot.append(db)
+    # ~ db = Boot(domain_id=domain.id, name='BOOT_HD') #, order=1)
+    # ~ domain.boot.append(db)
+    # ~ db = Boot(domain_id=domain.id, name='BOOT_CD') #, order=1)
+    # ~ domain.boot.append(db)
     
 
     # ~ print(Boot.filter_by(name='disk').first())
     ### Hard disk
-    dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
-    dd = Disk(domain_id=domain.id, xml=dd_xml, name='____', filename="____.qcow2", bus='virtio', size=10, format='qcow2', order=1)
-    domain.disk.append(dd)
+    # ~ dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
+    # ~ dd = Disk(domain_id=domain.id, xml=dd_xml, name='____', filename="____.qcow2", bus='virtio', size=10, format='qcow2', order=1)
+    # ~ domain.disk.append(dd)
 
     ### Medias
-    dm_xml = session.query(MediaXML).filter(MediaXML.name == 'iso').one()
-    dm = Domain_Media(domain_id=domain.id, media_id=dm_xml.id, filename="____.iso", order=1)
-    domain.medias.append(dm)
+    # ~ dm_xml = session.query(MediaXML).filter(MediaXML.name == 'iso').one()
+    # ~ dm = Domain_Media(domain_id=domain.id, media_id=dm_xml.id, filename="____.iso", order=1)
+    # ~ domain.medias.append(dm)
     
     ### Interfaces
     di_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
-    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', source='network', mac='11:22:33:44:55:66', order=1)
+    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', source='default', order=1)
+    # ~ , mac='11:22:33:44:55:66', order=1)
     domain.interfaces.append(di)        
         
     ### Graphics
-    dg_xml = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
-    dg = Domain_Graphic(domain_id=domain, graphic_id=dg_xml.id, order=1)
-    domain.graphic.append(dg)
+    # ~ dg_xml = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
+    # ~ dg = Domain_Graphic(domain_id=domain, graphic_id=dg_xml.id, order=1)
+    # ~ domain.graphic.append(dg)
     
     ### Videos
-    dv_xml = session.query(VideoXML).filter(VideoXML.name == 'qxl').one()
-    dv = Domain_Video(domain_id=domain, video_id=dv_xml.id, order=1)
-    domain.videos.append(dv)
+    # ~ dv_xml = session.query(VideoXML).filter(VideoXML.name == 'qxl').one()
+    # ~ dv = Domain_Video(domain_id=domain, video_id=dv_xml.id, order=1)
+    # ~ domain.videos.append(dv)
     
     
     
@@ -115,28 +116,10 @@ def upgrade():
     
         
     session.add(domain)  
-    
-    # ~ print(session.query(Boot).filter(Boot.name == 'disk').one())
-    # ~ exit(1)
-    # ~ domain.boot.remove(session.query(Boot).filter(Boot.name == 'disk').one()) 
-    
-    # ~ session.commit()
-    # ~ session = Session(bind=bind)
-    # ~ db = Boot(domain_id=domain.id, name='disk')
-    # ~ try: 
-        # ~ domain.boot.insert(1,db)
-    # ~ except Exception as IntegrityError:
-        # ~ domain.boot.remove(session.query(Boot).filter(Boot.name == 'disk').one()) 
-        # ~ domain.boot.insert(1,db)
-    
-    domain.boot.append(db)
+    # ~ domain.boot.append(db)
     # ~ domain.boot.reorder()        
     session.commit()
-
-    # ~ print(Domain.get_xml("_amin_tetros"))
 
 def downgrade():
     bind = op.get_bind()
     Base.metadata.drop_all(bind=bind)
-    # ~ for tbl in reversed(Base.metadata.sorted_tables):
-        # ~ engine.execute(tbl.delete())

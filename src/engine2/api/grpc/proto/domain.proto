@@ -242,9 +242,10 @@ message VideoListResponse {
 }
 
 enum Boot {
-    BOOT_HD = 0;
-    BOOT_CD = 1;
-    BOOT_PXE = 2;
+    BOOT_HD = 1;
+    BOOT_CDROM = 2;
+    BOOT_NETWORK = 3;
+    BOOT_FD = 4;
 }
 
 message BootListRequest {

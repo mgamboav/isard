@@ -23,12 +23,20 @@ def same_as(column_name):
         return context.current_parameters.get(column_name)
     return default_function
 
+# ~ def get_all_data(domain_id,IntermediateObject, RelatedObject):
+        # ~ relateds_table = db.query(IntermediateObject).filter(IntermediateObject.domain_id == domain_id).all()
+        # ~ related_list = []
+        # ~ for related_table in relateds_table:
+            # ~ row = db.query(RelatedObject).filter(RelatedObject.id == related_table.media_id).first()
+            # ~ related_list.append({**row._as_dict(), **related_table._as_dict()})
+        # ~ return related_list
+        
 # ~ def file_name():
     # ~ def default_function(context):
         # ~ return context.current_parameters.get('name')+'.'+context.current_parameters.get('format')
     # ~ return default_function
     
-class Domain_Sound(Base):
+class Domain_Sound(BaseMixin, Base):
     __tablename__ = 'domain_sound'
 
     __table_args__ = (
@@ -41,7 +49,7 @@ class Domain_Sound(Base):
     sound = relationship("SoundXML", back_populates="domain")
     domain = relationship("Domain", back_populates="sound")
 
-class Domain_Cpu(Base):
+class Domain_Cpu(BaseMixin, Base):
     __tablename__ = 'domain_cpu'
         
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -49,11 +57,12 @@ class Domain_Cpu(Base):
     match = sa.Column(sa.String, default='exact')
     fallback = sa.Column(sa.String, default='allow')
     model = sa.Column(sa.String, default='Haswell-noTSX')
+    check = sa.Column(sa.String, default='partial')
     
     cpu = relationship("CpuXML", back_populates="domain")
     domain = relationship("Domain", back_populates="cpu")
             
-class Domain_Vcpu(Base):
+class Domain_Vcpu(BaseMixin, Base):
     __tablename__ = 'domain_vcpu'
 
     # ~ __table_args__ = (
@@ -67,7 +76,7 @@ class Domain_Vcpu(Base):
     vcpu = relationship("VcpuXML", back_populates="domain")
     domain = relationship("Domain", back_populates="vcpu")
     
-class Domain_Memory(Base):
+class Domain_Memory(BaseMixin, Base):
     __tablename__ = 'domain_memory'
 
     # ~ __table_args__ = (
@@ -101,20 +110,20 @@ class Domain_Media(BaseMixin, Base):
     medias = relationship("MediaXML", back_populates="domains")
     domain = relationship("Domain", back_populates="medias")
 
-class Domain_Interface(Base):
+class Domain_Interface(BaseMixin, Base):
     __tablename__ = 'domain_interface'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     interface_id = sa.Column(sa.Integer, sa.ForeignKey('interface_xml.id'), primary_key=True)
     order = sa.Column(sa.Integer, nullable=False)
-    source = sa.Column(sa.String, nullable=False)
-    model = sa.Column(sa.String, nullable=False)
-    mac = sa.Column(sa.String, nullable=False)
+    source = sa.Column(sa.String, default='default')
+    model = sa.Column(sa.String, default='virtio')
+    mac = sa.Column(sa.String)
     
     interfaces = relationship("InterfaceXML", back_populates="domains")
     domains = relationship("Domain", back_populates="interfaces")
 
-class Domain_Graphic(Base):
+class Domain_Graphic(BaseMixin, Base):
     __tablename__ = 'domain_graphic'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -124,7 +133,7 @@ class Domain_Graphic(Base):
     graphic = relationship("GraphicXML", back_populates="domain")
     domain = relationship("Domain", back_populates="graphic")
         
-class Domain_Video(Base):
+class Domain_Video(BaseMixin, Base):
     __tablename__ = 'domain_video'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
@@ -172,6 +181,7 @@ class Domain(BaseMixin, Base):
     # ~ vcpu = sa.Column(sa.Integer)
     # ~ memory = sa.Column(sa.Integer)
 
+        
     def get_xml(domain_name):
         try:
             domain = Domain.by_name(domain_name)
@@ -264,10 +274,10 @@ class SoundXML(BaseMixin, Base):
                                         back_populates="sound")      
 
     def get_domain_sound(domain_id):
-        sound = db.query(SoundXML).filter(SoundXML.id == domain_id).first()
-        sdata = db.query(Domain_Sound).filter(Domain_Sound.sound_id == sound.id).first()
-        return {'name': sound.name,
-                'xml': sound.xml}
+        domain_sound = db.query(Domain_Sound).filter(Domain_Sound.domain_id == domain_id).first()
+        if domain_sound == None: return False
+        sound = db.query(SoundXML).filter(SoundXML.id == domain_sound.sound_id).first()
+        return {**sound._as_dict(), **domain_sound._as_dict()}
         
 class MemoryXML(BaseMixin, Base):
     __tablename__ = 'memory_xml'
@@ -284,15 +294,12 @@ class MemoryXML(BaseMixin, Base):
                                         back_populates="memory")      
 
     def get_domain_memory(domain_id):
-        memory = db.query(MemoryXML).filter(MemoryXML.id == domain_id).first()
-        mdata = db.query(Domain_Memory).filter(Domain_Memory.memory_id == memory.id).first()
-        return {'name': memory.name,
-                'xml': memory.xml,
-                'unit': mdata.unit,
-                'maxmemory':mdata.maxmemory,
-                'memory': mdata.mem,
-                'currentmemory': mdata.currentmemory}
-
+        domain_memory = db.query(Domain_Memory).filter(Domain_Memory.domain_id == domain_id).first()
+        memory = db.query(MemoryXML).filter(MemoryXML.id == domain_memory.memory_id).first()
+        dict = {**memory._as_dict(), **domain_memory._as_dict()}
+        dict['memory'] = dict.pop('mem')
+        return dict
+        
 class CpuXML(BaseMixin, Base):
     __tablename__ = 'cpu_xml'
     
@@ -310,11 +317,7 @@ class CpuXML(BaseMixin, Base):
     def get_domain_cpu(domain_id):
         domain_cpu = db.query(Domain_Cpu).filter(Domain_Cpu.domain_id == domain_id).first()
         cpu = db.query(CpuXML).filter(CpuXML.id == domain_cpu.cpu_id).first()
-        return {'name': cpu.name,
-                'xml': cpu.xml,
-                'fallback': domain_cpu.fallback,
-                'match':domain_cpu.match,
-                'model': domain_cpu.model}
+        return {**cpu._as_dict(), **domain_cpu._as_dict()}
                         
 class VcpuXML(BaseMixin, Base):
     __tablename__ = 'vcpu_xml'
@@ -334,9 +337,7 @@ class VcpuXML(BaseMixin, Base):
     def get_domain_vcpu(domain_id):
         domain_vcpu = db.query(Domain_Vcpu).filter(Domain_Vcpu.domain_id == domain_id).first()
         vcpu = db.query(VcpuXML).filter(VcpuXML.id == domain_vcpu.vcpu_id).first()
-        return {'name': vcpu.name,
-                'xml': vcpu.xml,
-                'vcpu':domain_vcpu.vcpus}
+        return {**vcpu._as_dict(), **domain_vcpu._as_dict()}
                         
 class DiskXML(BaseMixin, Base):
     __tablename__ = "disk_xml"
@@ -344,26 +345,12 @@ class DiskXML(BaseMixin, Base):
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
 
-    def __init__(self, name, xml):
-        self.name = name
-        self.xml = xml
-
-    # ~ def get_xml(disk_xml_name):
-        # ~ return db.query(DiskXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
-                
 class DomainXML(BaseMixin, Base):
     __tablename__ = "domain_xml"
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True, nullable=False)
     xml = sa.Column(sa.String, unique=True, nullable=False)
 
-    def __init__(self, name, xml):
-        self.name = name
-        self.xml = xml
-
-    # ~ def get_xml(domain_xml_name):
-        # ~ return db.query(DomainXML).filter(DiskXML.id == Disk.by_name(disk_name).xml_id).first().xml
-                
 class MediaXML(BaseMixin, Base):
     __tablename__ = "media_xml"
     id = sa.Column(sa.Integer, primary_key=True)
@@ -395,14 +382,12 @@ class GraphicXML(BaseMixin, Base):
         self.xml = xml
 
     def get_domain_graphics(domain_id):
-        graphics = db.query(GraphicXML).filter(GraphicXML.id == domain_id).all()
+        domain_graphics = db.query(Domain_Graphic).filter(Domain_Graphic.domain_id == domain_id).all()
         graphics_list = []
-        for graphic in graphics:
-            gdata = db.query(Domain_Graphic).filter(Domain_Graphic.graphic_id == graphic.id).first()
-            graphics_list.append({'name':graphic.name,
-                            'xml': graphic.xml,
-                            'order': gdata.order})
-        return graphics_list   
+        for domain_graphic in domain_graphics:
+            graphic = db.query(GraphicXML).filter(GraphicXML.id == domain_graphic.graphic_id).first()
+            graphics_list.append({**graphic._as_dict(), **domain_graphic._as_dict()})
+        return graphics_list    
         
 class VideoXML(BaseMixin, Base):
     __tablename__ = "video_xml"
@@ -413,19 +398,13 @@ class VideoXML(BaseMixin, Base):
     domains = relationship("Domain_Video", 
                                         back_populates="videos")      
 
-    def __init__(self, name, xml):
-        self.name = name
-        self.xml = xml
-
     def get_domain_video(domain_id):
-        videos = db.query(VideoXML).filter(VideoXML.id == domain_id).all()
+        domain_videos = db.query(Domain_Video).filter(Domain_Video.domain_id == domain_id).all()
         videos_list = []
-        for video in videos:
-            vdata = db.query(Domain_Video).filter(Domain_Video.video_id == video.id).first()
-            videos_list.append({'name':video.name,
-                            'xml': video.xml,
-                            'order': vdata.order})
-        return videos_list   
+        for domain_video in domain_videos:
+            video = db.query(VideoXML).filter(VideoXML.id == domain_video.video_id).first()
+            videos_list.append({**video._as_dict(), **domain_video._as_dict()})
+        return videos_list  
         
 class InterfaceXML(BaseMixin, Base):
     __tablename__ = "interface_xml"
@@ -436,22 +415,13 @@ class InterfaceXML(BaseMixin, Base):
     domains = relationship("Domain_Interface", 
                                         back_populates="interfaces")      
 
-    def __init__(self, name, xml):
-        self.name = name
-        self.xml = xml   
-
     def get_domain_interfaces(domain_id):
-        interfaces = db.query(InterfaceXML).filter(InterfaceXML.id == domain_id).all()
+        domain_interfaces = db.query(Domain_Interface).filter(Domain_Interface.domain_id == domain_id).all()
         interfaces_list = []
-        for interface in interfaces:
-            ifdata = db.query(Domain_Interface).filter(Domain_Interface.interface_id == interface.id).first()
-            interfaces_list.append({'name':interface.name,
-                            'xml': interface.xml,
-                            'source': ifdata.source,
-                            'mac': ifdata.mac,
-                            'model': ifdata.model,
-                            'order': ifdata.order})
-        return interfaces_list   
+        for domain_interface in domain_interfaces:
+            interface = db.query(InterfaceXML).filter(InterfaceXML.id == domain_interface.interface_id).first()
+            interfaces_list.append({**interface._as_dict(), **domain_interface._as_dict()})
+        return interfaces_list  
 
 class Boot(BaseMixin, Base):
     __tablename__ = "boot"

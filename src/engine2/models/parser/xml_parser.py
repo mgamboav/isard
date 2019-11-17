@@ -1,5 +1,6 @@
 from lxml import etree
 from io import StringIO
+import re
 
 class XmlParser(object):
     def __init__(self, xml):
@@ -59,7 +60,7 @@ class XmlParser(object):
     def domain_vcpu_update(self, vcpu, remove=False):
         if remove: self.clean_xml('vcpu')
         try:
-            vcpu_xml = vcpu['xml'].format(vcpu=vcpu['vcpu'])
+            vcpu_xml = vcpu['xml'].format(vcpu=vcpu['vcpus'])
             vcpu_etree = etree.parse(StringIO(vcpu_xml))
             self.tree.xpath('/domain/name')[0].addnext(vcpu_etree.getroot())
         except Exception as e:
@@ -71,7 +72,8 @@ class XmlParser(object):
         try:
             cpu_xml = cpu['xml'].format(match=cpu['match'],
                                         fallback=cpu['fallback'],
-                                        model=cpu['model'])
+                                        model=cpu['model'],
+                                        check=cpu['check'])
             cpu_etree = etree.parse(StringIO(cpu_xml))
             self.tree.xpath('/domain/os')[0].addnext(cpu_etree.getroot())
         except Exception as e:
@@ -97,7 +99,7 @@ class XmlParser(object):
             self.clean_xml(item='boot')
             dev_xml = '''<boot dev="{dev}"/>'''
             menu_xml = '''<bootmenu enable="{menu}"/>'''
-            boots_xml = [dev_xml.format(dev=bd) for bd in boot_devs]
+            boots_xml = [dev_xml.format(dev=bd.split('BOOT_')[1].lower()) for bd in boot_devs]
             boots_etree = [etree.parse(StringIO(boot_xml)) for boot_xml in boots_xml]
             for be in boots_etree:
                 self.tree.xpath('/domain/os')[0].insert(-1, be.getroot())
@@ -137,6 +139,7 @@ class XmlParser(object):
 
    
     def domain_disk_add(self, disk, remove=False):
+        if disk is False: return False
         if remove: self.clean_xml('disk')
         try:
             dev, disk_new_xpath = self.domain_disk_next_dev(disk['bus'])
@@ -154,7 +157,10 @@ class XmlParser(object):
         return True
 
     def domain_interface_add(self, interface, remove=False):
+        if interface is False: return False
         if remove: self.clean_xml('interface')
+        if interface['mac'] is None:
+            interface['xml']=re.sub(".*{mac}.*\n?","",interface['xml'])
         try:
             interface_xml = interface['xml'].format(source=interface['source'],
                                          mac=interface['mac'],
@@ -172,6 +178,7 @@ class XmlParser(object):
         return True
 
     def domain_graphic_add(self, graphic, remove=False):
+        if graphic is False: return False
         if remove: self.clean_xml('graphics')
         try:
             graphic_xml = graphic['xml'].format()
@@ -188,6 +195,7 @@ class XmlParser(object):
         return True
 
     def domain_video_add(self, video, remove=False):
+        if video is False: return False
         if remove: self.clean_xml('video')
         try:
             video_xml = video['xml'].format()
@@ -204,6 +212,7 @@ class XmlParser(object):
         return True
 
     def domain_sound_add(self, sound, remove=False):
+        if sound is False: return False
         if remove: self.clean_xml('sound')
         try:
             sound_xml = sound['xml'].format()
