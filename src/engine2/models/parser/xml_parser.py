@@ -17,25 +17,47 @@ class XmlParser(object):
         except:
             return False
 
-    def clean_xml(self):
-        items = ['disk','graphics','video','interface']
-        xpath='/domain[@type="kvm"]/devices/'
-        for i in items:
-            while len(self.tree.xpath(xpath+i)):
-                self.remove_branch(xpath+i)         
-        self.remove_branch('/domain/uuid') 
-        self.remove_branch('/domain/memory')
-        self.remove_branch('/domain/currentMemory')
-        self.remove_branch('/domain/maxMemory')  
-        self.remove_branch('/domain/vcpu')                 
-
+    def clean_xml(self, item=None):
+        if item == 'uuid' or item ==None: self.remove_branch('/domain/uuid') 
+        if item == 'memory' or item ==None:
+            self.remove_branch('/domain/memory')
+            self.remove_branch('/domain/currentMemory')
+            self.remove_branch('/domain/maxMemory')  
+        if item == 'vcpu' or item ==None: self.remove_branch('/domain/vcpu')
+        if item == 'cpu' or item ==None: self.remove_branch('/domain/cpu') 
+        if item == 'disk' or item == None :
+            device = self.tree.xpath('/domain/devices')[0]
+            for disk in device.findall(".//disk"):
+                device.remove(disk)         
+        if item == 'graphics' or item ==None:
+            device = self.tree.xpath('/domain/devices')[0]
+            for graphic in device.findall(".//graphics"):
+                device.remove(graphic)    
+        if item == 'video' or item ==None:
+            device = self.tree.xpath('/domain/devices')[0]
+            for video in device.findall(".//video"):
+                device.remove(video)   
+        if item == 'interface' or item ==None:
+            device = self.tree.xpath('/domain/devices')[0]
+            for interface in device.findall(".//interface"):
+                device.remove(interface)   
+        if item == 'boot' or item == None :
+            os = self.tree.xpath('/domain/os')[0]
+            for boot in os.findall(".//boot") + os.findall(".//bootmenu"):
+                os.remove(boot)
+        if item == 'sound' or item == None :
+            device = self.tree.xpath('/domain/devices')[0]
+            for sound in device.findall(".//sound"):
+                device.remove(sound) 
+                                
     def to_xml(self):
         return etree.tostring(self.tree, encoding='unicode', pretty_print=True)
 
     def domain_name_update(self, name):
         self.tree.xpath('/domain/name')[0].text = name
 
-    def domain_vcpu_update(self, vcpu):
+    def domain_vcpu_update(self, vcpu, remove=False):
+        if remove: self.clean_xml('vcpu')
         try:
             vcpu_xml = vcpu['xml'].format(vcpu=vcpu['vcpu'])
             vcpu_etree = etree.parse(StringIO(vcpu_xml))
@@ -43,8 +65,21 @@ class XmlParser(object):
         except Exception as e:
             raise
         return True
-        
-    def domain_memory_update(self, memory):
+
+    def domain_cpu_update(self, cpu, remove=False):
+        if remove: self.clean_xml('cpu')
+        try:
+            cpu_xml = cpu['xml'].format(match=cpu['match'],
+                                        fallback=cpu['fallback'],
+                                        model=cpu['model'])
+            cpu_etree = etree.parse(StringIO(cpu_xml))
+            self.tree.xpath('/domain/os')[0].addnext(cpu_etree.getroot())
+        except Exception as e:
+            raise
+        return True
+                
+    def domain_memory_update(self, memory, remove=False):
+        if remove: self.clean_xml('memory')
         try:
             memory_xml = memory['xml'].format(unit=memory['unit'],
                                          maxmemory=str(memory['maxmemory']),
@@ -56,7 +91,23 @@ class XmlParser(object):
         except Exception as e:
             raise
         return True
-                                                         
+
+    def domain_boot_update(self,boot_devs, menu=False):
+        try:
+            self.clean_xml(item='boot')
+            dev_xml = '''<boot dev="{dev}"/>'''
+            menu_xml = '''<bootmenu enable="{menu}"/>'''
+            boots_xml = [dev_xml.format(dev=bd) for bd in boot_devs]
+            boots_etree = [etree.parse(StringIO(boot_xml)) for boot_xml in boots_xml]
+            for be in boots_etree:
+                self.tree.xpath('/domain/os')[0].insert(-1, be.getroot())
+            menu_xml = menu_xml.format(menu='yes' if menu else 'no')
+            menu_etree = etree.parse(StringIO(menu_xml))
+            self.tree.xpath('/domain/os')[0].insert(-1, menu_etree.getroot()) 
+        except Exception as e:
+            raise
+        return True
+                                                                     
     def domain_disk_next_dev(self, bus):
         ''' device = disk, cdrom, floppy '''
         ''' bus = virtio, ide, fdc, sata, scsii, ... '''
@@ -66,9 +117,9 @@ class XmlParser(object):
             devs=[]
             idisk = 0
             for d in disks:
-                print(d.xpath('target[@dev]')[0].get("bus"))
+                # ~ print(d.xpath('target[@dev]')[0].get("bus"))
                 if d.xpath('target[@dev]')[0].get("bus") == bus:
-                    print(d.xpath('target[@dev]')[0].get("dev"))
+                    # ~ print(d.xpath('target[@dev]')[0].get("dev"))
                     devs.append(d.xpath('target[@dev]')[0].get("dev"))
                 idisk=idisk + 1            
             if len(devs) == 0:
@@ -85,12 +136,13 @@ class XmlParser(object):
             raise
 
    
-    def domain_disk_add(self, disk):
+    def domain_disk_add(self, disk, remove=False):
+        if remove: self.clean_xml('disk')
         try:
             dev, disk_new_xpath = self.domain_disk_next_dev(disk['bus'])
             disk_xml = disk['xml'].format(format=disk['format'],
-                                         source=disk['ppath']+disk['rpath'],
-                                         dev=disk['dev'],
+                                         source=disk['ppath']+disk['rpath']+disk['filename'],
+                                         dev=dev,
                                          bus=disk['bus'])
             disk_etree = etree.parse(StringIO(disk_xml))
             if disk_new_xpath is not None:
@@ -101,7 +153,8 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_interface_add(self, interface):
+    def domain_interface_add(self, interface, remove=False):
+        if remove: self.clean_xml('interface')
         try:
             interface_xml = interface['xml'].format(source=interface['source'],
                                          mac=interface['mac'],
@@ -118,7 +171,8 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_graphic_add(self, graphic):
+    def domain_graphic_add(self, graphic, remove=False):
+        if remove: self.clean_xml('graphics')
         try:
             graphic_xml = graphic['xml'].format()
             graphic_etree = etree.parse(StringIO(graphic_xml))
@@ -133,12 +187,13 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_video_add(self, video):
+    def domain_video_add(self, video, remove=False):
+        if remove: self.clean_xml('video')
         try:
             video_xml = video['xml'].format()
             video_etree = etree.parse(StringIO(video_xml))
 
-            video_xpath='/domain[@type="kvm"]/devices/video'
+            video_xpath='/domain/devices/video'
             video = self.tree.xpath(video_xpath)
             if len(video) == 0:
                 self.tree.xpath('/domain/devices')[-1].append(video_etree.getroot())
@@ -147,22 +202,29 @@ class XmlParser(object):
         except Exception as e:
             raise
         return True
-                                    
+
+    def domain_sound_add(self, sound, remove=False):
+        if remove: self.clean_xml('sound')
+        try:
+            sound_xml = sound['xml'].format()
+            sound_etree = etree.parse(StringIO(sound_xml))
+
+            sound_xpath='/domain/devices/sound'
+            sound = self.tree.xpath(sound_xpath)
+            if len(sound) == 0:
+                self.tree.xpath('/domain/devices')[-1].append(sound_etree.getroot())
+            else:
+                sound[-1].addnext(sound_etree.getroot())
+        except Exception as e:
+            raise
+        return True
+                                            
     def xml_check(self, xml):
         try:
             return etree.parse(StringIO(xml), parser)
-            # ~ return True
         except Exception as e:
             # ~ log.error('Exception when parse xml: {}'.format(e))
             # ~ log.error('xml that fail: \n{}'.format(xml))
             # ~ log.error('Traceback: {}'.format(traceback.format_exc()))
-            self.parser = False
             raise
-            return False
-
-        # ~ self.vm_dict = self.dict_from_xml(self.tree)
-
-        # ~ self.index_disks = {}
-        # ~ self.index_disks['virtio'] = 0
-        # ~ self.index_disks['ide'] = 0
-        # ~ self.index_disks['sata'] = 0
+            

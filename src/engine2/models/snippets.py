@@ -49,7 +49,9 @@ class XMLHelper(object):
                     'graphic':[],
                     'video':[],
                     'memory':[],
-                    'vcpu':[]}
+                    'vcpu':[],
+                    'cpu':[],
+                    'sound':[]}
         snippets['interface'].append({'name': 'network',
         'xml': '''
     <interface type="network">
@@ -73,7 +75,7 @@ class XMLHelper(object):
     <disk type="file" device="cdrom">
       <driver name="qemu" type="raw"/>
       <source file="{source}"/>
-      <target dev="hd{target_suffix}" bus="ide"/>
+      <target dev="{dev}" bus="ide"/>
       <readonly/>
     </disk>
 '''})
@@ -92,7 +94,7 @@ class XMLHelper(object):
     <disk type="file" device="disk">
       <driver name="qemu" type="{driver_type}"/>
       <source file="{source}"/>
-      <target dev="{prefix_suffix}d{target_suffix}" bus="{bus}"/>
+      <target dev="{dev}" bus="{bus}"/>
       <readonly/>
     </disk>
 '''})
@@ -102,7 +104,7 @@ class XMLHelper(object):
     <disk type="file" device="floppy">
       <driver name="qemu" type="raw"/>
       <source file="{source}"/>
-      <target dev="{prefix_suffix}d{target_suffix}" bus="fdc"/>
+      <target dev="{dev}" bus="fdc"/>
     </disk>
 '''})
 
@@ -111,7 +113,7 @@ class XMLHelper(object):
     <disk type="file" device="floppy">
       <driver name="qemu" type="raw"/>
       <source file="{source}"/>
-      <target dev="{prefix_suffix}d{target_suffix}" bus="fdc"/>
+      <target dev="{dev}" bus="fdc"/>
       <readonly/>
     </disk>
 '''})
@@ -142,138 +144,29 @@ class XMLHelper(object):
   <vcpu>{vcpu}</vcpu>
 '''})
 
-# ~ <vcpu placement='static' cpuset="1-4,^3,6" current="1">2</vcpu>
+        snippets['cpu'].append({'name': 'host_passthrough',
+        'xml': '''
+  <cpu mode="host-passthrough">
+  </cpu>
+'''})
 
-  # ~ <maxMemory unit='KiB'>1524288</maxMemory>
-  # ~ <memory unit='KiB'>524288</memory>
-  # ~ <currentMemory unit='KiB'>524288</currentMemory>
-    
-# ~ <graphics type='spice' port='-1' tlsPort='-1' autoport='yes'>
-  # ~ <channel name='main' mode='secure'/>
-  # ~ <channel name='record' mode='insecure'/>
-  # ~ <image compression='auto_glz'/>
-  # ~ <streaming mode='filter'/>
-  # ~ <clipboard copypaste='no'/>
-  # ~ <mouse mode='client'/>
-  # ~ <filetransfer enable='no'/>
-  # ~ <gl enable='yes' rendernode='/dev/dri/by-path/pci-0000:00:02.0-render'/>
-# ~ </graphics>
+        snippets['cpu'].append({'name': 'host_model',
+        'xml': '''
+  <cpu mode="host-model">
+    <model fallback="{fallback}"/>
+  </cpu>
+'''})
+
+        snippets['cpu'].append({'name': 'custom',
+        'xml': '''
+  <cpu mode="custom" match="{match}">
+    <model fallback="{fallback}">{model}</model>
+  </cpu>
+'''})
+
+        snippets['sound'].append({'name': 'ich6',
+        'xml': '''
+  <sound model="ich6"/>
+'''})
 
         return snippets[kind]
-        
-    # ~ <disk type="file" device="floppy">
-      # ~ <driver name="qemu" type="raw"/>
-      # ~ <source file="/home/tmp/floppy.img"/>
-      # ~ <target dev="fda" bus="fdc"/>
-    # ~ </disk>
-    
-        # ~ <graphics type="spice" port="-1" tlsPort="-1" autoport="yes">
-      # ~ <image compression="off"/>
-    # ~ </graphics>
-    
-    # ~ <video>
-      # ~ <model type="qxl"/>
-    # ~ </video>
-    
-    # ~ <sound model='ich6'>
-      # ~ <codec type='micro'/>
-    # ~ <sound/>
-            
-
-# ~ XML_MEMORY = {'NAME': 'memory',
-# ~ 'xml': '''
-  # ~ <memory>{memory}</memory>
-  # ~ <currentMemory>{current_memory}</currentMemory>
-# ~ '''}
-# ~ driver_type = qcow2, raw
-# ~ bus = ide, sata, virtio, scsi
-
-# ~ <domain type="kvm">
-  # ~ <name>fedora26</name>
-  # ~ <uuid>c8be35a9-59eb-4f43-86fb-f9002e046ed5</uuid>
-  # ~ <memory>2097152</memory>
-  # ~ <currentMemory>2097152</currentMemory>
-  # ~ <vcpu>1</vcpu>
-  # ~ <os>
-    # ~ <type arch="x86_64">hvm</type>
-    # ~ <boot dev="network"/>
-    # ~ <boot dev="cdrom"/>
-    # ~ <boot dev="fd"/>
-    # ~ <boot dev="hd"/>
-    # ~ <bootmenu enable="yes"/>
-  # ~ </os>
-  # ~ <features>
-    # ~ <acpi/>
-    # ~ <apic/>
-    # ~ <vmport state="off"/>
-  # ~ </features>
-  # ~ <cpu mode="custom" match="exact">
-    # ~ <model>Haswell-noTSX</model>
-  # ~ </cpu>
-  # ~ <clock offset="utc">
-    # ~ <timer name="rtc" tickpolicy="catchup"/>
-    # ~ <timer name="pit" tickpolicy="delay"/>
-    # ~ <timer name="hpet" present="no"/>
-  # ~ </clock>
-  # ~ <pm>
-    # ~ <suspend-to-mem enabled="no"/>
-    # ~ <suspend-to-disk enabled="no"/>
-  # ~ </pm>
-  # ~ <devices>
-    # ~ <emulator>/usr/bin/qemu-kvm</emulator>
-    # ~ <disk type="file" device="disk">
-      # ~ <driver name="qemu" type="qcow2"/>
-      # ~ <source file="/home/tmp/disk.qcow2"/>
-      # ~ <target dev="vda" bus="virtio"/>
-    # ~ </disk>
-    # ~ <disk type="file" device="cdrom">
-      # ~ <driver name="qemu" type="raw"/>
-      # ~ <source file="/home/tmp/cdrom.iso"/>
-      # ~ <target dev="hda" bus="ide"/>
-      # ~ <readonly/>
-    # ~ </disk>
-    # ~ <disk type="file" device="floppy">
-      # ~ <driver name="qemu" type="raw"/>
-      # ~ <source file="/home/tmp/floppy.img"/>
-      # ~ <target dev="fda" bus="fdc"/>
-    # ~ </disk>
-    # ~ <controller type="usb" index="0" model="ich9-ehci1"/>
-    # ~ <controller type="usb" index="0" model="ich9-uhci1">
-      # ~ <master startport="0"/>
-    # ~ </controller>
-    # ~ <controller type="usb" index="0" model="ich9-uhci2">
-      # ~ <master startport="2"/>
-    # ~ </controller>
-    # ~ <controller type="usb" index="0" model="ich9-uhci3">
-      # ~ <master startport="4"/>
-    # ~ </controller>
-    # ~ <interface type="bridge">
-      # ~ <source bridge="br"/>
-      # ~ <mac address="52:54:00:0e:ec:71"/>
-      # ~ <model type="virtio"/>
-    # ~ </interface>
-    # ~ <input type="tablet" bus="usb"/>
-    # ~ <graphics type="spice" port="-1" tlsPort="-1" autoport="yes">
-      # ~ <image compression="off"/>
-    # ~ </graphics>
-    # ~ <console type="pty"/>
-    # ~ <channel type="unix">
-      # ~ <source mode="bind"/>
-      # ~ <target type="virtio" name="org.qemu.guest_agent.0"/>
-    # ~ </channel>
-    # ~ <channel type="spicevmc">
-      # ~ <target type="virtio" name="com.redhat.spice.0"/>
-    # ~ </channel>
-    # ~ <sound model="ich6"/>
-    # ~ <video>
-      # ~ <model type="qxl"/>
-    # ~ </video>
-    # ~ <redirdev bus="usb" type="spicevmc"/>
-    # ~ <redirdev bus="usb" type="spicevmc"/>
-    # ~ <rng model="virtio">
-      # ~ <backend model="random">/dev/urandom</backend>
-    # ~ </rng>
-  # ~ </devices>
-# ~ </domain>
-
-

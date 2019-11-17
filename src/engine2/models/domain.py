@@ -22,16 +22,46 @@ def same_as(column_name):
     def default_function(context):
         return context.current_parameters.get(column_name)
     return default_function
+
+# ~ def file_name():
+    # ~ def default_function(context):
+        # ~ return context.current_parameters.get('name')+'.'+context.current_parameters.get('format')
+    # ~ return default_function
     
-class Domain_Vcpu(Base):
-    __tablename__ = 'domain_vcpu'
+class Domain_Sound(Base):
+    __tablename__ = 'domain_sound'
 
     __table_args__ = (
-            sa.UniqueConstraint("domain_id", "vcpu_id"),
+            sa.UniqueConstraint("domain_id", "sound_id"),
         )
         
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
-    vcpu_id = sa.Column(sa.Integer, sa.ForeignKey('vcpu_xml.id'), primary_key=True)
+    sound_id = sa.Column(sa.Integer, sa.ForeignKey('sound_xml.id'), primary_key=True)
+    
+    sound = relationship("SoundXML", back_populates="domain")
+    domain = relationship("Domain", back_populates="sound")
+
+class Domain_Cpu(Base):
+    __tablename__ = 'domain_cpu'
+        
+    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
+    cpu_id = sa.Column(sa.Integer, sa.ForeignKey('cpu_xml.id')) #, primary_key=True)
+    match = sa.Column(sa.String, default='exact')
+    fallback = sa.Column(sa.String, default='allow')
+    model = sa.Column(sa.String, default='Haswell-noTSX')
+    
+    cpu = relationship("CpuXML", back_populates="domain")
+    domain = relationship("Domain", back_populates="cpu")
+            
+class Domain_Vcpu(Base):
+    __tablename__ = 'domain_vcpu'
+
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id", "vcpu_id"),
+        # ~ )
+        
+    domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
+    vcpu_id = sa.Column(sa.Integer, sa.ForeignKey('vcpu_xml.id')) #, primary_key=True)
     vcpus = sa.Column(sa.Integer, nullable=False)
     
     vcpu = relationship("VcpuXML", back_populates="domain")
@@ -40,12 +70,12 @@ class Domain_Vcpu(Base):
 class Domain_Memory(Base):
     __tablename__ = 'domain_memory'
 
-    __table_args__ = (
-            sa.UniqueConstraint("domain_id", "memory_id"),
-        )
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id", "memory_id"),
+        # ~ )
         
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
-    memory_id = sa.Column(sa.Integer, sa.ForeignKey('memory_xml.id'), primary_key=True)
+    memory_id = sa.Column(sa.Integer, sa.ForeignKey('memory_xml.id')) #, primary_key=True)
     unit = sa.Column(sa.String, default='MiB')
     mem = sa.Column(sa.Integer, nullable=False)
     maxmemory = sa.Column(sa.Integer, default=same_as('mem'))
@@ -54,16 +84,18 @@ class Domain_Memory(Base):
     memory = relationship("MemoryXML", back_populates="domain")
     domain = relationship("Domain", back_populates="memory")
             
-class Domain_Media(Base):
+class Domain_Media(BaseMixin, Base):
     __tablename__ = 'domain_media'
 
     domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id'), primary_key=True)
     media_id = sa.Column(sa.Integer, sa.ForeignKey('media_xml.id'), primary_key=True)
-    rpath = sa.Column(sa.String, nullable=False)
-    bus = sa.Column(sa.String, nullable=False)
-    dev = sa.Column(sa.String, nullable=False)
+    ppath = sa.Column(sa.String, default="disks/")
+    rpath = sa.Column(sa.String, default="domains/")
+    filename = sa.Column(sa.String, nullable=False)
+    bus = sa.Column(sa.String, default="ide")
+    # ~ dev = sa.Column(sa.String, nullable=False)
     # size = sa.Column(sa.Integer)
-    format = sa.Column(sa.String, nullable=False)
+    format = sa.Column(sa.String, default="raw")
     order = sa.Column(sa.Integer, nullable=False)
     
     medias = relationship("MediaXML", back_populates="domains")
@@ -129,7 +161,12 @@ class Domain(BaseMixin, Base):
                                         back_populates="domain") 
     vcpu = relationship("Domain_Vcpu", 
                                         back_populates="domain")                                         
+    cpu = relationship("Domain_Cpu", 
+                                        back_populates="domain")   
                                         
+    sound = relationship("Domain_Sound", 
+                                        back_populates="domain")  
+                                                                                
     # ~ memory = relationship('MemoryXML')
     # ~ vcpu = relationship('VcpuXML')
     # ~ vcpu = sa.Column(sa.Integer)
@@ -140,10 +177,15 @@ class Domain(BaseMixin, Base):
             domain = Domain.by_name(domain_name)
             domain_tree = XmlParser(db.query(DomainXML).filter(DomainXML.id == domain.domain_xml_id).first().xml)
             domain_tree.domain_name_update(domain.name)
-            domain_tree.domain_vcpu_update(VcpuXML.get_domain_vcpu(domain.id))
             domain_tree.domain_memory_update(MemoryXML.get_domain_memory(domain.id))
+            domain_tree.domain_vcpu_update(VcpuXML.get_domain_vcpu(domain.id))
+            domain_tree.domain_cpu_update(CpuXML.get_domain_cpu(domain.id))
+            domain_tree.domain_boot_update([boot.name for boot in Boot.list(domain.name)])
+            domain_tree.domain_sound_add(SoundXML.get_domain_sound(domain.id))
             for disk in Disk.get_domain_disks(domain.id):
                 domain_tree.domain_disk_add(disk)
+            for media in MediaXML.get_domain_medias(domain.id):
+                domain_tree.domain_disk_add(media)
             for interface in InterfaceXML.get_domain_interfaces(domain.id):
                 domain_tree.domain_interface_add(interface)         
             for graphic in GraphicXML.get_domain_graphics(domain.id):
@@ -171,25 +213,26 @@ class Disk(BaseMixin, Base):
     xml_id = sa.Column(sa.Integer, sa.ForeignKey('disk_xml.id'), nullable=False)  
     xml = relationship('DiskXML')
     
-    ppath = sa.Column(sa.String)
-    rpath = sa.Column(sa.String)
+    ppath = sa.Column(sa.String, default="disks/")
+    rpath = sa.Column(sa.String, default="domains/")
+    filename = sa.Column(sa.String, nullable=False)
     
-    bus = sa.Column(sa.String)
-    dev = sa.Column(sa.String)
-    size = sa.Column(sa.Integer)
-    format = sa.Column(sa.String)
+    bus = sa.Column(sa.String, default='virtio')
+    # ~ dev = sa.Column(sa.String)
+    size = sa.Column(sa.Integer, default=10)
+    format = sa.Column(sa.String, default='qcow2')
 
-    def __init__(self, domain_id, name, xml, ppath="/", rpath=".",bus="virtio", dev="vda", size=5, format="qcow2", order=1):
-        self.name = name
-        self.xml = xml
-        self.domain_id = domain_id
-        self.ppath = ppath
-        self.rpath = rpath
-        self.bus = bus
-        self.dev = dev
-        self.size = size
-        self.format = format  
-        self.order = order  
+    # ~ def __init__(self, domain_id, name, xml, ppath="/", rpath=".",bus="virtio", dev="vda", size=5, format="qcow2", order=1):
+        # ~ self.name = name
+        # ~ self.xml = xml
+        # ~ self.domain_id = domain_id
+        # ~ self.ppath = ppath
+        # ~ self.rpath = rpath
+        # ~ self.bus = bus
+        # ~ self.dev = dev
+        # ~ self.size = size
+        # ~ self.format = format  
+        # ~ self.order = order  
 
     def get_domain_disks(domain_id):
         disks = db.query(Disk).filter(Disk.id == domain_id).all()
@@ -199,13 +242,33 @@ class Disk(BaseMixin, Base):
                             'xml': db.query(DiskXML).filter(DiskXML.id == disk.xml_id).first().xml,
                             'ppath': disk.ppath,
                             'rpath': disk.rpath,
+                            'filename': disk.filename,
                             'bus': disk.bus,
-                            'dev': disk.dev,
                             'size': disk.size,
                             'format': disk.format,
                             'order': disk.order})
         return disks_list
 
+class SoundXML(BaseMixin, Base):
+    __tablename__ = 'sound_xml'
+    
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id"),
+        # ~ )
+    
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.String, unique=True)
+    xml = sa.Column(sa.String, unique=True)
+
+    domain = relationship("Domain_Sound", 
+                                        back_populates="sound")      
+
+    def get_domain_sound(domain_id):
+        sound = db.query(SoundXML).filter(SoundXML.id == domain_id).first()
+        sdata = db.query(Domain_Sound).filter(Domain_Sound.sound_id == sound.id).first()
+        return {'name': sound.name,
+                'xml': sound.xml}
+        
 class MemoryXML(BaseMixin, Base):
     __tablename__ = 'memory_xml'
     
@@ -219,18 +282,40 @@ class MemoryXML(BaseMixin, Base):
 
     domain = relationship("Domain_Memory", 
                                         back_populates="memory")      
-    # ~ domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
 
     def get_domain_memory(domain_id):
         memory = db.query(MemoryXML).filter(MemoryXML.id == domain_id).first()
         mdata = db.query(Domain_Memory).filter(Domain_Memory.memory_id == memory.id).first()
-        return {'xml': memory.xml,
+        return {'name': memory.name,
+                'xml': memory.xml,
                 'unit': mdata.unit,
                 'maxmemory':mdata.maxmemory,
                 'memory': mdata.mem,
                 'currentmemory': mdata.currentmemory}
-        return memory_list  
-        
+
+class CpuXML(BaseMixin, Base):
+    __tablename__ = 'cpu_xml'
+    
+    # ~ __table_args__ = (
+            # ~ sa.UniqueConstraint("domain_id"),
+        # ~ )
+    
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.String, unique=True)
+    xml = sa.Column(sa.String, unique=True)
+
+    domain = relationship("Domain_Cpu", 
+                                        back_populates="cpu")  
+
+    def get_domain_cpu(domain_id):
+        domain_cpu = db.query(Domain_Cpu).filter(Domain_Cpu.domain_id == domain_id).first()
+        cpu = db.query(CpuXML).filter(CpuXML.id == domain_cpu.cpu_id).first()
+        return {'name': cpu.name,
+                'xml': cpu.xml,
+                'fallback': domain_cpu.fallback,
+                'match':domain_cpu.match,
+                'model': domain_cpu.model}
+                        
 class VcpuXML(BaseMixin, Base):
     __tablename__ = 'vcpu_xml'
     
@@ -247,10 +332,11 @@ class VcpuXML(BaseMixin, Base):
     # ~ domain_id = sa.Column(sa.Integer, sa.ForeignKey('domain.id')) 
 
     def get_domain_vcpu(domain_id):
-        vcpu = db.query(VcpuXML).filter(VcpuXML.id == domain_id).first()
-        vdata = db.query(Domain_Vcpu).filter(Domain_Vcpu.vcpu_id == vcpu.id).first()
-        return {'xml': vcpu.xml,
-                'vcpu':vdata.vcpus}
+        domain_vcpu = db.query(Domain_Vcpu).filter(Domain_Vcpu.domain_id == domain_id).first()
+        vcpu = db.query(VcpuXML).filter(VcpuXML.id == domain_vcpu.vcpu_id).first()
+        return {'name': vcpu.name,
+                'xml': vcpu.xml,
+                'vcpu':domain_vcpu.vcpus}
                         
 class DiskXML(BaseMixin, Base):
     __tablename__ = "disk_xml"
@@ -286,10 +372,15 @@ class MediaXML(BaseMixin, Base):
     
     domains = relationship("Domain_Media", 
                                         back_populates="medias")      
-    def __init__(self, name, xml):
-        self.name = name
-        self.xml = xml
-        
+
+    def get_domain_medias(domain_id):
+        domain_medias = db.query(Domain_Media).filter(Domain_Media.domain_id == domain_id).all()
+        medias_list = []
+        for domain_media in domain_medias:
+            media = db.query(MediaXML).filter(MediaXML.id == domain_media.media_id).first()
+            medias_list.append({**media._as_dict(), **domain_media._as_dict()})
+        return medias_list         
+
 class GraphicXML(BaseMixin, Base):
     __tablename__ = "graphic_xml"
     id = sa.Column(sa.Integer, primary_key=True)
@@ -376,9 +467,9 @@ class Boot(BaseMixin, Base):
             # ~ sa.PrimaryKeyConstraint(domain_id, order),
         # ~ )  
             
-    def update(domain_name, names):
+    def update(domain_name, boots):
         db.boot.remove(db.query(Boot).filter(Boot.domain_id == Domain.by_name(domain_name).id).delete())
-        db.domain.boot.append([Boot(domain_id=Domain.by_name(domain_name).id, name=name) for name in names]) 
+        db.domain.boot.append([Boot(domain_id=Domain.by_name(domain_name).id, name=boot) for boot in boots]) 
         return True
 
     def list(domain_name):

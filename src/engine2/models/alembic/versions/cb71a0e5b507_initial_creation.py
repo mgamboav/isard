@@ -48,13 +48,15 @@ def upgrade():
     session.bulk_save_objects([VideoXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('video')])
     session.bulk_save_objects([MemoryXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('memory')])
     session.bulk_save_objects([VcpuXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('vcpu')])
+    session.bulk_save_objects([CpuXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('cpu')])
+    session.bulk_save_objects([SoundXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('sound')])
     ################################3
     # New domain.
     ## Get xml for new domain
     d_xml = session.query(DomainXML).filter(DomainXML.name == 'win2k3').one()
     
     ## Create the domain
-    domain = Domain(name="_admin_tetros", domain_xml=d_xml) #, vcpu = 1, memory = 768)
+    domain = Domain(name="____", domain_xml=d_xml) #, vcpu = 1, memory = 768)
 
     mem_xml = session.query(MemoryXML).filter(MemoryXML.name == 'balloon').one()
     mem = Domain_Memory(domain_id=domain, memory_id=mem_xml.id, mem=1500)
@@ -63,7 +65,15 @@ def upgrade():
     vcpu_xml = session.query(VcpuXML).filter(VcpuXML.name == 'vcpu').one()
     vcpu = Domain_Vcpu(domain_id=domain, vcpu_id=vcpu_xml.id, vcpus=2)
     domain.vcpu.append(vcpu) 
-        
+
+    # ~ cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'custom').one()
+    # ~ cpu = Domain_Cpu(domain_id=domain, cpu_id=cpu_xml.id)
+    # ~ domain.cpu.append(cpu) 
+
+    cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'host_model').one()
+    cpu = Domain_Cpu(domain_id=domain, cpu_id=cpu_xml.id)
+    domain.cpu.append(cpu)
+                
     ### Boot
     db = Boot(domain_id=domain.id, name='BOOT_PXE') #, order=1)
     domain.boot.append(db)
@@ -76,13 +86,13 @@ def upgrade():
     # ~ print(Boot.filter_by(name='disk').first())
     ### Hard disk
     dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
-    dd = Disk(domain_id=domain.id, xml=dd_xml, name='_admin_tetros', ppath='isard/1/', rpath='admin/admin/file.qcow2', bus='virtio', dev='vda', size=10, format='qcow2', order=1)
+    dd = Disk(domain_id=domain.id, xml=dd_xml, name='____', filename="____.qcow2", bus='virtio', size=10, format='qcow2', order=1)
     domain.disk.append(dd)
 
     ### Medias
     dm_xml = session.query(MediaXML).filter(MediaXML.name == 'iso').one()
-    dm = Disk(domain_id=domain.id, xml=dd_xml, name='_admin_tetros', rpath='admin/admin', bus='virtio', dev='vda', size=10, format='qcow2', order=1)
-    domain.disk.append(dd)
+    dm = Domain_Media(domain_id=domain.id, media_id=dm_xml.id, filename="____.iso", order=1)
+    domain.medias.append(dm)
     
     ### Interfaces
     di_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
