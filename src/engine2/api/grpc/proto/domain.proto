@@ -5,23 +5,57 @@ package domain;
 //import "google/protobuf/any.proto";
  
 service Domain {
+    // Database
     rpc List(ListRequest) returns (ListResponse) {}
     rpc ListState(ListStateRequest) returns (ListStateResponse) {}
     rpc Get(GetRequest) returns (GetResponse) {}
-    rpc GetState(GetStateRequest) returns (GetStateResponse) {}
+    rpc State(GetStateRequest) returns (GetStateResponse) {}
+    rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
+    
+    rpc VideoList(VideoListRequest) returns (VideoListResponse) {}
+    rpc BootList(BootListRequest) returns (BootListResponse) {}
+    rpc InterfaceList(InterfaceListRequest) returns (InterfaceListResponse) {}
+    // graphics
+    // cpu
+    // memory
+    // sound
+    // disk
+    // media
+    
+    
+    // Engine only
     rpc FromTemplate(FromTemplateRequest) returns (FromTemplateResponse) {}
     rpc FromMedia(FromMediaRequest) returns (FromMediaResponse) {}
     rpc Update(UpdateRequest) returns (UpdateResponse) {}
     rpc Delete(DeleteRequest) returns (DeleteResponse) {}
     rpc Start(StartRequest) returns (StartResponse) {}
     rpc Stop(StopRequest) returns (StopResponse) {}
-    rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
+    // pause
+    // resume
+    // template
     
-    rpc VideoList(VideoListRequest) returns (VideoListResponse) {}
-    rpc BootList(BootListRequest) returns (BootListResponse) {}
-    rpc InterfaceList(InterfaceListRequest) returns (InterfaceListResponse) {}
-    
+    // Database & Engine (test domain before updating)
+    // video add
+    // video remove
+    // video update
     rpc BootUpdate(BootUpdateRequest) returns (BootUpdateResponse) {}
+    // interface add
+    // interface remove
+    // interface update
+    // graphics add
+    // graphics remove
+    // graphics update
+    // cpu update
+    // memory update
+    // soudn add
+    // sound remove
+    // sound update
+    // disk add
+    // disk remove
+    // disk update
+    // media add
+    // media remove
+    // media update
 }
 
 enum Action {

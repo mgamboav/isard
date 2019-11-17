@@ -148,6 +148,7 @@ class Domain(BaseMixin, Base):
 
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True)
+    state = sa.Column(sa.String, default='STATE_UNKNOWN')
     
     domain_xml_id = sa.Column(sa.Integer, sa.ForeignKey('domain_xml.id'), nullable=False)
     domain_xml = relationship("DomainXML")  
