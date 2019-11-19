@@ -1,13 +1,13 @@
 syntax = "proto3";
 
 package domain;
+import "api/grpc/proto/domain_enums.proto";
 
 //import "google/protobuf/any.proto";
  
 service Domain {
     // Database
     rpc List(ListRequest) returns (ListResponse) {}
-    rpc ListState(ListStateRequest) returns (ListStateResponse) {}
     rpc Get(GetRequest) returns (GetResponse) {}
     rpc State(GetStateRequest) returns (GetStateResponse) {}
     rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
@@ -47,48 +47,11 @@ service Domain {
     // media update
 }
 
-enum State {
-    STATE_UNKNOWN = 0;
-    STATE_STOPPED = 1;
-    STATE_STARTED = 2;
-    STATE_PAUSED = 3;
-    STATE_DELETED = 4;
-    STATE_FAILED = 5;
-}
 
-enum Action {
-    ACTION_UNKNOWN = 0;
-    ACTION_STOP = 1;
-    ACTION_START = 2;
-    ACTION_PAUSE = 3;
-    ACTION_RESUME = 4;
-    ACTION_DELETE = 5;
-    ACTION_UPDATE = 6;
-    ACTION_TEMPLATE = 7;
-}
-
-enum Format {
-    FORMAT_QCOW2 = 0;
-    FORMAT_RAW = 1;
-    FORMAT_ISO = 2;
-    FORMAT_VMDK = 3;
-}
-
-enum Bus {
-    BUS_IDE = 0;
-    BUS_VIRTIO = 1;
-    BUS_SATA =2;
-    BUS_SCSII = 3;
-}
-
-enum Boot {
-    BOOT_HD = 0;
-    BOOT_CDROM = 1;
-    BOOT_NETWORK = 2;
-    BOOT_FD = 3;
-}
-
-message VmDisk {
+///////////////////////////////////////////////////////
+///// Dictionary messages
+///////////////////////////////////////////////////////
+message VmDiskDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
@@ -98,15 +61,31 @@ message VmDisk {
     Bus bus = 7;
     int32 size = 8;
     Format format = 9;
+    int32 order = 10;
 }
 
-message VmSound {
+message VmDisk {
+    int32 id = 1;
+    string name = 2;
+    string path = 3;
+    Bus bus = 4;
+    int32 size = 5;
+    Format format = 6;
+    int32 order = 7;
+}
+
+message VmSoundDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
 }
 
-message VmCpu {
+message VmSound {
+    int32 id = 1;
+    string name = 2;
+}
+
+message VmCpuDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
@@ -116,14 +95,25 @@ message VmCpu {
     string check = 7;
 }
 
-message VmVcpu {
+message VmCpu {
+    int32 id = 1;
+    string name = 2;
+}
+
+message VmVcpuDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
     int32 vcpus = 4;
 }    
 
-message VmMemory {
+message VmVcpu {
+    int32 id = 1;
+    string name = 2;
+    int32 vcpus = 4;
+}
+
+message VmMemoryDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
@@ -133,7 +123,14 @@ message VmMemory {
     int32 currentmemory = 7;
 }
 
-message VmMedia {
+message VmMemory {
+    int32 id = 1;
+    string name = 2;
+    string unit = 4;
+    int32 memory = 5;
+}
+
+message VmMediaDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
@@ -145,7 +142,16 @@ message VmMedia {
     int32 order = 9;
 }
 
-message VmInterface {
+message VmMedia {
+    int32 id = 1;
+    string name = 2;
+    string filename = 3;
+    string bus = 7;
+    string format = 8;
+    int32 order = 9;
+}
+
+message VmInterfaceDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
@@ -155,7 +161,27 @@ message VmInterface {
     int32 order = 7;
 }
 
+message VmInterface {
+    int32 id = 1;
+    string name = 2;
+    string source = 3;
+    string model = 4;
+    string mac = 5;
+    int32 order = 6;
+}
+
+message VmGraphicDetail {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+}
+
 message VmGraphic {
+    int32 id = 1;
+    string name = 2;
+}
+
+message VmVideoDetail {
     int32 id = 1;
     string name = 2;
     string xml = 3;
@@ -164,7 +190,20 @@ message VmGraphic {
 message VmVideo {
     int32 id = 1;
     string name = 2;
-    string xml = 3;
+}
+
+message HardwareDetail {
+    VmMemoryDetail memory = 4;
+    VmVcpuDetail vcpu = 5;
+    VmCpuDetail cpu = 6;
+    repeated Boot boots = 7;
+    repeated VmDiskDetail disks = 8;
+    repeated VmMediaDetail medias = 9;
+    repeated VmInterfaceDetail interfaces = 10;
+    repeated VmGraphicDetail graphics = 11;
+    repeated VmVideoDetail videos = 12;
+    repeated VmSoundDetail sounds = 13;
+    string xml = 14;
 }
 
 message Hardware {
@@ -178,14 +217,42 @@ message Hardware {
     repeated VmGraphic graphics = 11;
     repeated VmVideo videos = 12;
     repeated VmSound sounds = 13;
-    string xml = 14;
 }
 
-message DomainMessage {
+message Vm {
     int32 id = 1;
     string name = 2;
     State state = 3;
+	repeated Action next_actions = 4;    
 }
+
+message VmHardware {
+    int32 id = 1;
+    string name = 2;
+    State state = 3;
+	repeated Action next_actions = 4;
+	Hardware hardware = 5;
+	
+}
+
+message VmHardwareDetail {
+    int32 id = 1;
+    string name = 2;
+    State state = 3;
+	repeated Action next_actions = 4;    
+	HardwareDetail hardware = 5;
+}
+
+//////////////////////////////////////////////////////
+/////////// ENDPOINT MESSAGES
+//////////////////////////////////////////////////////
+
+message ListRequest {}
+
+message ListResponse {
+    repeated Vm domains = 1;
+}
+
 
 message HardwareRequest {
     string domain_id = 1;
@@ -211,13 +278,7 @@ message HardwareUpdateResponse {
     Hardware hardware = 1;
 }
 
-message ListRequest {}
 
-
-    
-message ListResponse {
-    repeated DomainMessage domains = 1;
-}
 
 message ListStateRequest {}
 

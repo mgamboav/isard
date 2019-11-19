@@ -20,11 +20,6 @@ class DomainStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListResponse.FromString,
         )
-    self.ListState = channel.unary_unary(
-        '/domain.Domain/ListState',
-        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListStateRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListStateResponse.FromString,
-        )
     self.Get = channel.unary_unary(
         '/domain.Domain/Get',
         request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.GetRequest.SerializeToString,
@@ -95,13 +90,6 @@ class DomainServicer(object):
   def List(self, request, context):
     """Database
     """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def ListState(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -197,11 +185,6 @@ def add_DomainServicer_to_server(servicer, server):
           servicer.List,
           request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListResponse.SerializeToString,
-      ),
-      'ListState': grpc.unary_unary_rpc_method_handler(
-          servicer.ListState,
-          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListStateRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ListStateResponse.SerializeToString,
       ),
       'Get': grpc.unary_unary_rpc_method_handler(
           servicer.Get,

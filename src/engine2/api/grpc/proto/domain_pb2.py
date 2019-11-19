@@ -4,7 +4,6 @@
 
 import sys
 _b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
-from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -14,6 +13,7 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from api.grpc.proto import domain_enums_pb2 as api_dot_grpc_dot_proto_dot_domain__enums__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -21,214 +21,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='domain',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x1b\x61pi/grpc/proto/domain.proto\x12\x06\x64omain\"\xa7\x01\n\x06VmDisk\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05ppath\x18\x04 \x01(\t\x12\r\n\x05rpath\x18\x05 \x01(\t\x12\x10\n\x08\x66ilename\x18\x06 \x01(\t\x12\x18\n\x03\x62us\x18\x07 \x01(\x0e\x32\x0b.domain.Bus\x12\x0c\n\x04size\x18\x08 \x01(\x05\x12\x1e\n\x06\x66ormat\x18\t \x01(\x0e\x32\x0e.domain.Format\"0\n\x07VmSound\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\"m\n\x05VmCpu\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05match\x18\x04 \x01(\t\x12\x10\n\x08\x66\x61llback\x18\x05 \x01(\t\x12\r\n\x05model\x18\x06 \x01(\t\x12\r\n\x05\x63heck\x18\x07 \x01(\t\">\n\x06VmVcpu\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05vcpus\x18\x04 \x01(\x05\"y\n\x08VmMemory\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\x0c\n\x04unit\x18\x04 \x01(\t\x12\x0e\n\x06memory\x18\x05 \x01(\x05\x12\x11\n\tmaxmemory\x18\x06 \x01(\x05\x12\x15\n\rcurrentmemory\x18\x07 \x01(\x05\"\x8c\x01\n\x07VmMedia\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05ppath\x18\x04 \x01(\t\x12\r\n\x05rpath\x18\x05 \x01(\t\x12\x10\n\x08\x66ilename\x18\x06 \x01(\t\x12\x0b\n\x03\x62us\x18\x07 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x08 \x01(\t\x12\r\n\x05order\x18\t \x01(\x05\"o\n\x0bVmInterface\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\x0e\n\x06source\x18\x04 \x01(\t\x12\r\n\x05model\x18\x05 \x01(\t\x12\x0b\n\x03mac\x18\x06 \x01(\t\x12\r\n\x05order\x18\x07 \x01(\x05\"2\n\tVmGraphic\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\"0\n\x07VmVideo\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\"\xe0\x02\n\x08Hardware\x12 \n\x06memory\x18\x04 \x01(\x0b\x32\x10.domain.VmMemory\x12\x1c\n\x04vcpu\x18\x05 \x01(\x0b\x32\x0e.domain.VmVcpu\x12\x1a\n\x03\x63pu\x18\x06 \x01(\x0b\x32\r.domain.VmCpu\x12\x1b\n\x05\x62oots\x18\x07 \x03(\x0e\x32\x0c.domain.Boot\x12\x1d\n\x05\x64isks\x18\x08 \x03(\x0b\x32\x0e.domain.VmDisk\x12\x1f\n\x06medias\x18\t \x03(\x0b\x32\x0f.domain.VmMedia\x12\'\n\ninterfaces\x18\n \x03(\x0b\x32\x13.domain.VmInterface\x12#\n\x08graphics\x18\x0b \x03(\x0b\x32\x11.domain.VmGraphic\x12\x1f\n\x06videos\x18\x0c \x03(\x0b\x32\x0f.domain.VmVideo\x12\x1f\n\x06sounds\x18\r \x03(\x0b\x32\x0f.domain.VmSound\x12\x0b\n\x03xml\x18\x0e \x01(\t\"G\n\rDomainMessage\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1c\n\x05state\x18\x03 \x01(\x0e\x32\r.domain.State\"$\n\x0fHardwareRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xba\x01\n\x10HardwareResponse\x12-\n\x05state\x18\x01 \x01(\x0e\x32\x1e.domain.HardwareResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\";\n\x15HardwareUpdateRequest\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\"<\n\x16HardwareUpdateResponse\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\"\r\n\x0bListRequest\"6\n\x0cListResponse\x12&\n\x07\x64omains\x18\x01 \x03(\x0b\x32\x15.domain.DomainMessage\"\x12\n\x10ListStateRequest\"\xc5\x01\n\x0b\x44omainState\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.DomainState.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"9\n\x11ListStateResponse\x12$\n\x07\x44omains\x18\x01 \x03(\x0b\x32\x13.domain.DomainState\"\x1f\n\nGetRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xd6\x01\n\x0bGetResponse\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.GetResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"$\n\x0fGetStateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xbc\x01\n\x10GetStateResponse\x12-\n\x05state\x18\x01 \x01(\x0e\x32\x1e.domain.GetStateResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"a\n\x13\x46romTemplateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x9e\x01\n\x14\x46romTemplateResponse\x12\x31\n\x05state\x18\x01 \x01(\x0e\x32\".domain.FromTemplateResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"b\n\x10\x46romMediaRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x98\x01\n\x11\x46romMediaResponse\x12.\n\x05state\x18\x01 \x01(\x0e\x32\x1f.domain.FromMediaResponse.State\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"\"\n\rDeleteRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\x92\x01\n\x0e\x44\x65leteResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.DeleteResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07\x44\x45LETED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"!\n\x0cStartRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xd6\x01\n\rStartResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.domain.StartResponse.State\x12\x1e\n\x06viewer\x18\x02 \x01(\x0b\x32\x0e.domain.Viewer\x12$\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\" \n\x0bStopRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xb4\x01\n\x0cStopResponse\x12)\n\x05state\x18\x01 \x01(\x0e\x32\x1a.domain.StopResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"!\n\x0cPauseRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xb6\x01\n\rPauseResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.domain.PauseResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"\"\n\rResumeRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xb8\x01\n\x0eResumeResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.ResumeResponse.State\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"\"\n\rViewerRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"V\n\x0eViewerResponse\x12\x1e\n\x06viewer\x18\x01 \x01(\x0b\x32\x0e.domain.Viewer\x12$\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x0e.domain.Action\"\x12\n\x10VideoListRequest\"L\n\x05Video\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05model\x18\x02 \x01(\t\x12\r\n\x05heads\x18\x03 \x01(\x05\x12\x0b\n\x03ram\x18\x04 \x01(\x05\x12\x0c\n\x04vram\x18\x05 \x01(\x05\"2\n\x11VideoListResponse\x12\x1d\n\x06videos\x18\x01 \x03(\x0b\x32\r.domain.Video\"&\n\x0f\x42ootListRequest\x12\x13\n\x0b\x64omain_name\x18\x01 \x01(\t\"/\n\x10\x42ootListResponse\x12\x1b\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x0c.domain.Boot\"E\n\x11\x42ootUpdateRequest\x12\x13\n\x0b\x64omain_name\x18\x01 \x01(\t\x12\x1b\n\x05\x62oots\x18\x02 \x03(\x0e\x32\x0c.domain.Boot\"1\n\x12\x42ootUpdateResponse\x12\x1b\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x0c.domain.Boot\"\x16\n\x14InterfaceListRequest\"Q\n\tInterface\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06ifname\x18\x02 \x01(\t\x12\r\n\x05model\x18\x03 \x01(\t\x12\x0b\n\x03net\x18\x04 \x01(\t\x12\x0c\n\x04type\x18\x05 \x01(\t\">\n\x15InterfaceListResponse\x12%\n\ninterfaces\x18\x01 \x03(\x0b\x32\x11.domain.Interface\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02*w\n\x05State\x12\x11\n\rSTATE_UNKNOWN\x10\x00\x12\x11\n\rSTATE_STOPPED\x10\x01\x12\x11\n\rSTATE_STARTED\x10\x02\x12\x10\n\x0cSTATE_PAUSED\x10\x03\x12\x11\n\rSTATE_DELETED\x10\x04\x12\x10\n\x0cSTATE_FAILED\x10\x05*\x9f\x01\n\x06\x41\x63tion\x12\x12\n\x0e\x41\x43TION_UNKNOWN\x10\x00\x12\x0f\n\x0b\x41\x43TION_STOP\x10\x01\x12\x10\n\x0c\x41\x43TION_START\x10\x02\x12\x10\n\x0c\x41\x43TION_PAUSE\x10\x03\x12\x11\n\rACTION_RESUME\x10\x04\x12\x11\n\rACTION_DELETE\x10\x05\x12\x11\n\rACTION_UPDATE\x10\x06\x12\x13\n\x0f\x41\x43TION_TEMPLATE\x10\x07*K\n\x06\x46ormat\x12\x10\n\x0c\x46ORMAT_QCOW2\x10\x00\x12\x0e\n\nFORMAT_RAW\x10\x01\x12\x0e\n\nFORMAT_ISO\x10\x02\x12\x0f\n\x0b\x46ORMAT_VMDK\x10\x03*?\n\x03\x42us\x12\x0b\n\x07\x42US_IDE\x10\x00\x12\x0e\n\nBUS_VIRTIO\x10\x01\x12\x0c\n\x08\x42US_SATA\x10\x02\x12\r\n\tBUS_SCSII\x10\x03*B\n\x04\x42oot\x12\x0b\n\x07\x42OOT_HD\x10\x00\x12\x0e\n\nBOOT_CDROM\x10\x01\x12\x10\n\x0c\x42OOT_NETWORK\x10\x02\x12\x0b\n\x07\x42OOT_FD\x10\x03\x32\xec\x06\n\x06\x44omain\x12\x33\n\x04List\x12\x13.domain.ListRequest\x1a\x14.domain.ListResponse\"\x00\x12\x42\n\tListState\x12\x18.domain.ListStateRequest\x1a\x19.domain.ListStateResponse\"\x00\x12\x30\n\x03Get\x12\x12.domain.GetRequest\x1a\x13.domain.GetResponse\"\x00\x12<\n\x05State\x12\x17.domain.GetStateRequest\x1a\x18.domain.GetStateResponse\"\x00\x12\x39\n\x06Viewer\x12\x15.domain.ViewerRequest\x1a\x16.domain.ViewerResponse\"\x00\x12?\n\x08Hardware\x12\x17.domain.HardwareRequest\x1a\x18.domain.HardwareResponse\"\x00\x12K\n\x0c\x46romTemplate\x12\x1b.domain.FromTemplateRequest\x1a\x1c.domain.FromTemplateResponse\"\x00\x12\x42\n\tFromMedia\x12\x18.domain.FromMediaRequest\x1a\x19.domain.FromMediaResponse\"\x00\x12Q\n\x0eHardwareUpdate\x12\x1d.domain.HardwareUpdateRequest\x1a\x1e.domain.HardwareUpdateResponse\"\x00\x12\x39\n\x06\x44\x65lete\x12\x15.domain.DeleteRequest\x1a\x16.domain.DeleteResponse\"\x00\x12\x36\n\x05Start\x12\x14.domain.StartRequest\x1a\x15.domain.StartResponse\"\x00\x12\x33\n\x04Stop\x12\x13.domain.StopRequest\x1a\x14.domain.StopResponse\"\x00\x12\x36\n\x05Pause\x12\x14.domain.PauseRequest\x1a\x15.domain.PauseResponse\"\x00\x12\x39\n\x06Resume\x12\x15.domain.ResumeRequest\x1a\x16.domain.ResumeResponse\"\x00\x62\x06proto3')
-)
+  serialized_pb=_b('\n\x1b\x61pi/grpc/proto/domain.proto\x12\x06\x64omain\x1a!api/grpc/proto/domain_enums.proto\"\xae\x01\n\x0cVmDiskDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05ppath\x18\x04 \x01(\t\x12\r\n\x05rpath\x18\x05 \x01(\t\x12\x10\n\x08\x66ilename\x18\x06 \x01(\t\x12\x11\n\x03\x62us\x18\x07 \x01(\x0e\x32\x04.Bus\x12\x0c\n\x04size\x18\x08 \x01(\x05\x12\x17\n\x06\x66ormat\x18\t \x01(\x0e\x32\x07.Format\x12\r\n\x05order\x18\n \x01(\x05\"y\n\x06VmDisk\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04path\x18\x03 \x01(\t\x12\x11\n\x03\x62us\x18\x04 \x01(\x0e\x32\x04.Bus\x12\x0c\n\x04size\x18\x05 \x01(\x05\x12\x17\n\x06\x66ormat\x18\x06 \x01(\x0e\x32\x07.Format\x12\r\n\x05order\x18\x07 \x01(\x05\"6\n\rVmSoundDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\"#\n\x07VmSound\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"s\n\x0bVmCpuDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05match\x18\x04 \x01(\t\x12\x10\n\x08\x66\x61llback\x18\x05 \x01(\t\x12\r\n\x05model\x18\x06 \x01(\t\x12\r\n\x05\x63heck\x18\x07 \x01(\t\"!\n\x05VmCpu\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"D\n\x0cVmVcpuDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05vcpus\x18\x04 \x01(\x05\"1\n\x06VmVcpu\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05vcpus\x18\x04 \x01(\x05\"\x7f\n\x0eVmMemoryDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\x0c\n\x04unit\x18\x04 \x01(\t\x12\x0e\n\x06memory\x18\x05 \x01(\x05\x12\x11\n\tmaxmemory\x18\x06 \x01(\x05\x12\x15\n\rcurrentmemory\x18\x07 \x01(\x05\"B\n\x08VmMemory\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04unit\x18\x04 \x01(\t\x12\x0e\n\x06memory\x18\x05 \x01(\x05\"\x92\x01\n\rVmMediaDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\r\n\x05ppath\x18\x04 \x01(\t\x12\r\n\x05rpath\x18\x05 \x01(\t\x12\x10\n\x08\x66ilename\x18\x06 \x01(\t\x12\x0b\n\x03\x62us\x18\x07 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x08 \x01(\t\x12\r\n\x05order\x18\t \x01(\x05\"a\n\x07VmMedia\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x10\n\x08\x66ilename\x18\x03 \x01(\t\x12\x0b\n\x03\x62us\x18\x07 \x01(\t\x12\x0e\n\x06\x66ormat\x18\x08 \x01(\t\x12\r\n\x05order\x18\t \x01(\x05\"u\n\x11VmInterfaceDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\x12\x0e\n\x06source\x18\x04 \x01(\t\x12\r\n\x05model\x18\x05 \x01(\t\x12\x0b\n\x03mac\x18\x06 \x01(\t\x12\r\n\x05order\x18\x07 \x01(\x05\"b\n\x0bVmInterface\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06source\x18\x03 \x01(\t\x12\r\n\x05model\x18\x04 \x01(\t\x12\x0b\n\x03mac\x18\x05 \x01(\t\x12\r\n\x05order\x18\x06 \x01(\x05\"8\n\x0fVmGraphicDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\"%\n\tVmGraphic\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"6\n\rVmVideoDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0b\n\x03xml\x18\x03 \x01(\t\"#\n\x07VmVideo\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x95\x03\n\x0eHardwareDetail\x12&\n\x06memory\x18\x04 \x01(\x0b\x32\x16.domain.VmMemoryDetail\x12\"\n\x04vcpu\x18\x05 \x01(\x0b\x32\x14.domain.VmVcpuDetail\x12 \n\x03\x63pu\x18\x06 \x01(\x0b\x32\x13.domain.VmCpuDetail\x12\x14\n\x05\x62oots\x18\x07 \x03(\x0e\x32\x05.Boot\x12#\n\x05\x64isks\x18\x08 \x03(\x0b\x32\x14.domain.VmDiskDetail\x12%\n\x06medias\x18\t \x03(\x0b\x32\x15.domain.VmMediaDetail\x12-\n\ninterfaces\x18\n \x03(\x0b\x32\x19.domain.VmInterfaceDetail\x12)\n\x08graphics\x18\x0b \x03(\x0b\x32\x17.domain.VmGraphicDetail\x12%\n\x06videos\x18\x0c \x03(\x0b\x32\x15.domain.VmVideoDetail\x12%\n\x06sounds\x18\r \x03(\x0b\x32\x15.domain.VmSoundDetail\x12\x0b\n\x03xml\x18\x0e \x01(\t\"\xcc\x02\n\x08Hardware\x12 \n\x06memory\x18\x04 \x01(\x0b\x32\x10.domain.VmMemory\x12\x1c\n\x04vcpu\x18\x05 \x01(\x0b\x32\x0e.domain.VmVcpu\x12\x1a\n\x03\x63pu\x18\x06 \x01(\x0b\x32\r.domain.VmCpu\x12\x14\n\x05\x62oots\x18\x07 \x03(\x0e\x32\x05.Boot\x12\x1d\n\x05\x64isks\x18\x08 \x03(\x0b\x32\x0e.domain.VmDisk\x12\x1f\n\x06medias\x18\t \x03(\x0b\x32\x0f.domain.VmMedia\x12\'\n\ninterfaces\x18\n \x03(\x0b\x32\x13.domain.VmInterface\x12#\n\x08graphics\x18\x0b \x03(\x0b\x32\x11.domain.VmGraphic\x12\x1f\n\x06videos\x18\x0c \x03(\x0b\x32\x0f.domain.VmVideo\x12\x1f\n\x06sounds\x18\r \x03(\x0b\x32\x0f.domain.VmSound\"T\n\x02Vm\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x15\n\x05state\x18\x03 \x01(\x0e\x32\x06.State\x12\x1d\n\x0cnext_actions\x18\x04 \x03(\x0e\x32\x07.Action\"\x80\x01\n\nVmHardware\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x15\n\x05state\x18\x03 \x01(\x0e\x32\x06.State\x12\x1d\n\x0cnext_actions\x18\x04 \x03(\x0e\x32\x07.Action\x12\"\n\x08hardware\x18\x05 \x01(\x0b\x32\x10.domain.Hardware\"\x8c\x01\n\x10VmHardwareDetail\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x15\n\x05state\x18\x03 \x01(\x0e\x32\x06.State\x12\x1d\n\x0cnext_actions\x18\x04 \x03(\x0e\x32\x07.Action\x12(\n\x08hardware\x18\x05 \x01(\x0b\x32\x16.domain.HardwareDetail\"\r\n\x0bListRequest\"+\n\x0cListResponse\x12\x1b\n\x07\x64omains\x18\x01 \x03(\x0b\x32\n.domain.Vm\"$\n\x0fHardwareRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xb3\x01\n\x10HardwareResponse\x12-\n\x05state\x18\x01 \x01(\x0e\x32\x1e.domain.HardwareResponse.State\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\";\n\x15HardwareUpdateRequest\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\"<\n\x16HardwareUpdateResponse\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\"\x12\n\x10ListStateRequest\"\xbe\x01\n\x0b\x44omainState\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.DomainState.State\x12\x1d\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"9\n\x11ListStateResponse\x12$\n\x07\x44omains\x18\x01 \x03(\x0b\x32\x13.domain.DomainState\"\x1f\n\nGetRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xcf\x01\n\x0bGetResponse\x12\"\n\x08hardware\x18\x01 \x01(\x0b\x32\x10.domain.Hardware\x12(\n\x05state\x18\x02 \x01(\x0e\x32\x19.domain.GetResponse.State\x12\x1d\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"$\n\x0fGetStateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xb5\x01\n\x10GetStateResponse\x12-\n\x05state\x18\x01 \x01(\x0e\x32\x1e.domain.GetStateResponse.State\x12\x1d\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"a\n\x13\x46romTemplateRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x13\n\x0btemplate_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x97\x01\n\x14\x46romTemplateResponse\x12\x31\n\x05state\x18\x01 \x01(\x0e\x32\".domain.FromTemplateResponse.State\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"b\n\x10\x46romMediaRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\x12\x17\n\x0fvirt_install_id\x18\x02 \x01(\t\x12\"\n\x08hardware\x18\x03 \x01(\x0b\x32\x10.domain.Hardware\"\x91\x01\n\x11\x46romMediaResponse\x12.\n\x05state\x18\x01 \x01(\x0e\x32\x1f.domain.FromMediaResponse.State\x12\x1d\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x07.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"\"\n\rDeleteRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\x8b\x01\n\x0e\x44\x65leteResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.DeleteResponse.State\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\"-\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07\x44\x45LETED\x10\x01\x12\n\n\x06\x46\x41ILED\x10\x02\"!\n\x0cStartRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"\xcf\x01\n\rStartResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.domain.StartResponse.State\x12\x1e\n\x06viewer\x18\x02 \x01(\x0b\x32\x0e.domain.Viewer\x12\x1d\n\x0cnext_actions\x18\x03 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\" \n\x0bStopRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xad\x01\n\x0cStopResponse\x12)\n\x05state\x18\x01 \x01(\x0e\x32\x1a.domain.StopResponse.State\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"!\n\x0cPauseRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xaf\x01\n\rPauseResponse\x12*\n\x05state\x18\x01 \x01(\x0e\x32\x1b.domain.PauseResponse.State\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"\"\n\rResumeRequest\x12\x11\n\tdomain_id\x18\x01 \x01(\t\"\xb1\x01\n\x0eResumeResponse\x12+\n\x05state\x18\x01 \x01(\x0e\x32\x1c.domain.ResumeResponse.State\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\"S\n\x05State\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07STOPPED\x10\x01\x12\x0b\n\x07STARTED\x10\x02\x12\n\n\x06PAUSED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04\x12\n\n\x06\x46\x41ILED\x10\x05\"\"\n\rViewerRequest\x12\x11\n\tDomain_id\x18\x01 \x01(\t\"O\n\x0eViewerResponse\x12\x1e\n\x06viewer\x18\x01 \x01(\x0b\x32\x0e.domain.Viewer\x12\x1d\n\x0cnext_actions\x18\x02 \x03(\x0e\x32\x07.Action\"\x12\n\x10VideoListRequest\"L\n\x05Video\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05model\x18\x02 \x01(\t\x12\r\n\x05heads\x18\x03 \x01(\x05\x12\x0b\n\x03ram\x18\x04 \x01(\x05\x12\x0c\n\x04vram\x18\x05 \x01(\x05\"2\n\x11VideoListResponse\x12\x1d\n\x06videos\x18\x01 \x03(\x0b\x32\r.domain.Video\"&\n\x0f\x42ootListRequest\x12\x13\n\x0b\x64omain_name\x18\x01 \x01(\t\"(\n\x10\x42ootListResponse\x12\x14\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x05.Boot\">\n\x11\x42ootUpdateRequest\x12\x13\n\x0b\x64omain_name\x18\x01 \x01(\t\x12\x14\n\x05\x62oots\x18\x02 \x03(\x0e\x32\x05.Boot\"*\n\x12\x42ootUpdateResponse\x12\x14\n\x05\x62oots\x18\x01 \x03(\x0e\x32\x05.Boot\"\x16\n\x14InterfaceListRequest\"Q\n\tInterface\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06ifname\x18\x02 \x01(\t\x12\r\n\x05model\x18\x03 \x01(\t\x12\x0b\n\x03net\x18\x04 \x01(\t\x12\x0c\n\x04type\x18\x05 \x01(\t\">\n\x15InterfaceListResponse\x12%\n\ninterfaces\x18\x01 \x03(\x0b\x32\x11.domain.Interface\"\xca\x01\n\x06Viewer\x12\x10\n\x08hostname\x18\x01 \x01(\t\x12\x19\n\x11hostname_external\x18\x02 \x01(\t\x12\x12\n\nport_spice\x18\x05 \x01(\x05\x12\x16\n\x0eport_spice_ssl\x18\x06 \x01(\x05\x12\x10\n\x08port_vnc\x18\x07 \x01(\x05\x12\x1a\n\x12port_vnc_websocket\x18\x08 \x01(\x05\x12\x0e\n\x06passwd\x18\t \x01(\t\x12\x13\n\x0b\x63lient_addr\x18\n \x01(\t\x12\x14\n\x0c\x63lient_since\x18\x0b \x01(\x02\x32\xa8\x06\n\x06\x44omain\x12\x33\n\x04List\x12\x13.domain.ListRequest\x1a\x14.domain.ListResponse\"\x00\x12\x30\n\x03Get\x12\x12.domain.GetRequest\x1a\x13.domain.GetResponse\"\x00\x12<\n\x05State\x12\x17.domain.GetStateRequest\x1a\x18.domain.GetStateResponse\"\x00\x12\x39\n\x06Viewer\x12\x15.domain.ViewerRequest\x1a\x16.domain.ViewerResponse\"\x00\x12?\n\x08Hardware\x12\x17.domain.HardwareRequest\x1a\x18.domain.HardwareResponse\"\x00\x12K\n\x0c\x46romTemplate\x12\x1b.domain.FromTemplateRequest\x1a\x1c.domain.FromTemplateResponse\"\x00\x12\x42\n\tFromMedia\x12\x18.domain.FromMediaRequest\x1a\x19.domain.FromMediaResponse\"\x00\x12Q\n\x0eHardwareUpdate\x12\x1d.domain.HardwareUpdateRequest\x1a\x1e.domain.HardwareUpdateResponse\"\x00\x12\x39\n\x06\x44\x65lete\x12\x15.domain.DeleteRequest\x1a\x16.domain.DeleteResponse\"\x00\x12\x36\n\x05Start\x12\x14.domain.StartRequest\x1a\x15.domain.StartResponse\"\x00\x12\x33\n\x04Stop\x12\x13.domain.StopRequest\x1a\x14.domain.StopResponse\"\x00\x12\x36\n\x05Pause\x12\x14.domain.PauseRequest\x1a\x15.domain.PauseResponse\"\x00\x12\x39\n\x06Resume\x12\x15.domain.ResumeRequest\x1a\x16.domain.ResumeResponse\"\x00\x62\x06proto3')
+  ,
+  dependencies=[api_dot_grpc_dot_proto_dot_domain__enums__pb2.DESCRIPTOR,])
 
-_STATE = _descriptor.EnumDescriptor(
-  name='State',
-  full_name='domain.State',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='STATE_UNKNOWN', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='STATE_STOPPED', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='STATE_STARTED', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='STATE_PAUSED', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='STATE_DELETED', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='STATE_FAILED', index=5, number=5,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=4995,
-  serialized_end=5114,
-)
-_sym_db.RegisterEnumDescriptor(_STATE)
-
-State = enum_type_wrapper.EnumTypeWrapper(_STATE)
-_ACTION = _descriptor.EnumDescriptor(
-  name='Action',
-  full_name='domain.Action',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_UNKNOWN', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_STOP', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_START', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_PAUSE', index=3, number=3,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_RESUME', index=4, number=4,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_DELETE', index=5, number=5,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_UPDATE', index=6, number=6,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ACTION_TEMPLATE', index=7, number=7,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=5117,
-  serialized_end=5276,
-)
-_sym_db.RegisterEnumDescriptor(_ACTION)
-
-Action = enum_type_wrapper.EnumTypeWrapper(_ACTION)
-_FORMAT = _descriptor.EnumDescriptor(
-  name='Format',
-  full_name='domain.Format',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='FORMAT_QCOW2', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FORMAT_RAW', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FORMAT_ISO', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FORMAT_VMDK', index=3, number=3,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=5278,
-  serialized_end=5353,
-)
-_sym_db.RegisterEnumDescriptor(_FORMAT)
-
-Format = enum_type_wrapper.EnumTypeWrapper(_FORMAT)
-_BUS = _descriptor.EnumDescriptor(
-  name='Bus',
-  full_name='domain.Bus',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='BUS_IDE', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BUS_VIRTIO', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BUS_SATA', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BUS_SCSII', index=3, number=3,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=5355,
-  serialized_end=5418,
-)
-_sym_db.RegisterEnumDescriptor(_BUS)
-
-Bus = enum_type_wrapper.EnumTypeWrapper(_BUS)
-_BOOT = _descriptor.EnumDescriptor(
-  name='Boot',
-  full_name='domain.Boot',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='BOOT_HD', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BOOT_CDROM', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BOOT_NETWORK', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='BOOT_FD', index=3, number=3,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=5420,
-  serialized_end=5486,
-)
-_sym_db.RegisterEnumDescriptor(_BOOT)
-
-Boot = enum_type_wrapper.EnumTypeWrapper(_BOOT)
-STATE_UNKNOWN = 0
-STATE_STOPPED = 1
-STATE_STARTED = 2
-STATE_PAUSED = 3
-STATE_DELETED = 4
-STATE_FAILED = 5
-ACTION_UNKNOWN = 0
-ACTION_STOP = 1
-ACTION_START = 2
-ACTION_PAUSE = 3
-ACTION_RESUME = 4
-ACTION_DELETE = 5
-ACTION_UPDATE = 6
-ACTION_TEMPLATE = 7
-FORMAT_QCOW2 = 0
-FORMAT_RAW = 1
-FORMAT_ISO = 2
-FORMAT_VMDK = 3
-BUS_IDE = 0
-BUS_VIRTIO = 1
-BUS_SATA = 2
-BUS_SCSII = 3
-BOOT_HD = 0
-BOOT_CDROM = 1
-BOOT_NETWORK = 2
-BOOT_FD = 3
 
 
 _HARDWARERESPONSE_STATE = _descriptor.EnumDescriptor(
@@ -252,8 +48,8 @@ _HARDWARERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1523,
-  serialized_end=1568,
+  serialized_start=2930,
+  serialized_end=2975,
 )
 _sym_db.RegisterEnumDescriptor(_HARDWARERESPONSE_STATE)
 
@@ -290,8 +86,8 @@ _DOMAINSTATE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_DOMAINSTATE_STATE)
 
@@ -328,8 +124,8 @@ _GETRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_GETRESPONSE_STATE)
 
@@ -366,8 +162,8 @@ _GETSTATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_GETSTATERESPONSE_STATE)
 
@@ -392,8 +188,8 @@ _FROMTEMPLATERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1523,
-  serialized_end=1568,
+  serialized_start=2930,
+  serialized_end=2975,
 )
 _sym_db.RegisterEnumDescriptor(_FROMTEMPLATERESPONSE_STATE)
 
@@ -418,8 +214,8 @@ _FROMMEDIARESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1523,
-  serialized_end=1568,
+  serialized_start=2930,
+  serialized_end=2975,
 )
 _sym_db.RegisterEnumDescriptor(_FROMMEDIARESPONSE_STATE)
 
@@ -444,8 +240,8 @@ _DELETERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3175,
-  serialized_end=3220,
+  serialized_start=4469,
+  serialized_end=4514,
 )
 _sym_db.RegisterEnumDescriptor(_DELETERESPONSE_STATE)
 
@@ -482,8 +278,8 @@ _STARTRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_STARTRESPONSE_STATE)
 
@@ -520,8 +316,8 @@ _STOPRESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_STOPRESPONSE_STATE)
 
@@ -558,8 +354,8 @@ _PAUSERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_PAUSERESPONSE_STATE)
 
@@ -596,10 +392,104 @@ _RESUMERESPONSE_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1899,
-  serialized_end=1982,
+  serialized_start=3228,
+  serialized_end=3311,
 )
 _sym_db.RegisterEnumDescriptor(_RESUMERESPONSE_STATE)
+
+
+_VMDISKDETAIL = _descriptor.Descriptor(
+  name='VmDiskDetail',
+  full_name='domain.VmDiskDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmDiskDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmDiskDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmDiskDetail.xml', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='ppath', full_name='domain.VmDiskDetail.ppath', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='rpath', full_name='domain.VmDiskDetail.rpath', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='filename', full_name='domain.VmDiskDetail.filename', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bus', full_name='domain.VmDiskDetail.bus', index=6,
+      number=7, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='size', full_name='domain.VmDiskDetail.size', index=7,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='format', full_name='domain.VmDiskDetail.format', index=8,
+      number=9, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='order', full_name='domain.VmDiskDetail.order', index=9,
+      number=10, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=75,
+  serialized_end=249,
+)
 
 
 _VMDISK = _descriptor.Descriptor(
@@ -624,50 +514,36 @@ _VMDISK = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmDisk.xml', index=2,
+      name='path', full_name='domain.VmDisk.path', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='ppath', full_name='domain.VmDisk.ppath', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='rpath', full_name='domain.VmDisk.rpath', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filename', full_name='domain.VmDisk.filename', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='bus', full_name='domain.VmDisk.bus', index=6,
-      number=7, type=14, cpp_type=8, label=1,
+      name='bus', full_name='domain.VmDisk.bus', index=3,
+      number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='size', full_name='domain.VmDisk.size', index=7,
-      number=8, type=5, cpp_type=1, label=1,
+      name='size', full_name='domain.VmDisk.size', index=4,
+      number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='format', full_name='domain.VmDisk.format', index=8,
-      number=9, type=14, cpp_type=8, label=1,
+      name='format', full_name='domain.VmDisk.format', index=5,
+      number=6, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='order', full_name='domain.VmDisk.order', index=6,
+      number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -684,8 +560,53 @@ _VMDISK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=40,
-  serialized_end=207,
+  serialized_start=251,
+  serialized_end=372,
+)
+
+
+_VMSOUNDDETAIL = _descriptor.Descriptor(
+  name='VmSoundDetail',
+  full_name='domain.VmSoundDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmSoundDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmSoundDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmSoundDetail.xml', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=374,
+  serialized_end=428,
 )
 
 
@@ -710,9 +631,75 @@ _VMSOUND = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=430,
+  serialized_end=465,
+)
+
+
+_VMCPUDETAIL = _descriptor.Descriptor(
+  name='VmCpuDetail',
+  full_name='domain.VmCpuDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmSound.xml', index=2,
+      name='id', full_name='domain.VmCpuDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmCpuDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmCpuDetail.xml', index=2,
       number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='match', full_name='domain.VmCpuDetail.match', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='fallback', full_name='domain.VmCpuDetail.fallback', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='model', full_name='domain.VmCpuDetail.model', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='check', full_name='domain.VmCpuDetail.check', index=6,
+      number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -729,8 +716,8 @@ _VMSOUND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=209,
-  serialized_end=257,
+  serialized_start=467,
+  serialized_end=582,
 )
 
 
@@ -755,38 +742,55 @@ _VMCPU = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=584,
+  serialized_end=617,
+)
+
+
+_VMVCPUDETAIL = _descriptor.Descriptor(
+  name='VmVcpuDetail',
+  full_name='domain.VmVcpuDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmCpu.xml', index=2,
+      name='id', full_name='domain.VmVcpuDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmVcpuDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmVcpuDetail.xml', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='match', full_name='domain.VmCpu.match', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='fallback', full_name='domain.VmCpu.fallback', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='model', full_name='domain.VmCpu.model', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='check', full_name='domain.VmCpu.check', index=6,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='vcpus', full_name='domain.VmVcpuDetail.vcpus', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -802,8 +806,8 @@ _VMCPU = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=259,
-  serialized_end=368,
+  serialized_start=619,
+  serialized_end=687,
 )
 
 
@@ -829,14 +833,7 @@ _VMVCPU = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmVcpu.xml', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='vcpus', full_name='domain.VmVcpu.vcpus', index=3,
+      name='vcpus', full_name='domain.VmVcpu.vcpus', index=2,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -854,8 +851,81 @@ _VMVCPU = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=370,
-  serialized_end=432,
+  serialized_start=689,
+  serialized_end=738,
+)
+
+
+_VMMEMORYDETAIL = _descriptor.Descriptor(
+  name='VmMemoryDetail',
+  full_name='domain.VmMemoryDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmMemoryDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmMemoryDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmMemoryDetail.xml', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='unit', full_name='domain.VmMemoryDetail.unit', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='memory', full_name='domain.VmMemoryDetail.memory', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='maxmemory', full_name='domain.VmMemoryDetail.maxmemory', index=5,
+      number=6, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='currentmemory', full_name='domain.VmMemoryDetail.currentmemory', index=6,
+      number=7, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=740,
+  serialized_end=867,
 )
 
 
@@ -881,36 +951,15 @@ _VMMEMORY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmMemory.xml', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='unit', full_name='domain.VmMemory.unit', index=3,
+      name='unit', full_name='domain.VmMemory.unit', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='memory', full_name='domain.VmMemory.memory', index=4,
+      name='memory', full_name='domain.VmMemory.memory', index=3,
       number=5, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='maxmemory', full_name='domain.VmMemory.maxmemory', index=5,
-      number=6, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='currentmemory', full_name='domain.VmMemory.currentmemory', index=6,
-      number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -927,8 +976,95 @@ _VMMEMORY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=434,
-  serialized_end=555,
+  serialized_start=869,
+  serialized_end=935,
+)
+
+
+_VMMEDIADETAIL = _descriptor.Descriptor(
+  name='VmMediaDetail',
+  full_name='domain.VmMediaDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmMediaDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmMediaDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmMediaDetail.xml', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='ppath', full_name='domain.VmMediaDetail.ppath', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='rpath', full_name='domain.VmMediaDetail.rpath', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='filename', full_name='domain.VmMediaDetail.filename', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bus', full_name='domain.VmMediaDetail.bus', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='format', full_name='domain.VmMediaDetail.format', index=7,
+      number=8, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='order', full_name='domain.VmMediaDetail.order', index=8,
+      number=9, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=938,
+  serialized_end=1084,
 )
 
 
@@ -954,49 +1090,28 @@ _VMMEDIA = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmMedia.xml', index=2,
+      name='filename', full_name='domain.VmMedia.filename', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='ppath', full_name='domain.VmMedia.ppath', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='rpath', full_name='domain.VmMedia.rpath', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='filename', full_name='domain.VmMedia.filename', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='bus', full_name='domain.VmMedia.bus', index=6,
+      name='bus', full_name='domain.VmMedia.bus', index=3,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='format', full_name='domain.VmMedia.format', index=7,
+      name='format', full_name='domain.VmMedia.format', index=4,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='order', full_name='domain.VmMedia.order', index=8,
+      name='order', full_name='domain.VmMedia.order', index=5,
       number=9, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1014,8 +1129,81 @@ _VMMEDIA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=558,
-  serialized_end=698,
+  serialized_start=1086,
+  serialized_end=1183,
+)
+
+
+_VMINTERFACEDETAIL = _descriptor.Descriptor(
+  name='VmInterfaceDetail',
+  full_name='domain.VmInterfaceDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmInterfaceDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmInterfaceDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmInterfaceDetail.xml', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='source', full_name='domain.VmInterfaceDetail.source', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='model', full_name='domain.VmInterfaceDetail.model', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='mac', full_name='domain.VmInterfaceDetail.mac', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='order', full_name='domain.VmInterfaceDetail.order', index=6,
+      number=7, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1185,
+  serialized_end=1302,
 )
 
 
@@ -1041,36 +1229,29 @@ _VMINTERFACE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmInterface.xml', index=2,
+      name='source', full_name='domain.VmInterface.source', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='source', full_name='domain.VmInterface.source', index=3,
+      name='model', full_name='domain.VmInterface.model', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='model', full_name='domain.VmInterface.model', index=4,
+      name='mac', full_name='domain.VmInterface.mac', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='mac', full_name='domain.VmInterface.mac', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='order', full_name='domain.VmInterface.order', index=6,
-      number=7, type=5, cpp_type=1, label=1,
+      name='order', full_name='domain.VmInterface.order', index=5,
+      number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1087,8 +1268,53 @@ _VMINTERFACE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=700,
-  serialized_end=811,
+  serialized_start=1304,
+  serialized_end=1402,
+)
+
+
+_VMGRAPHICDETAIL = _descriptor.Descriptor(
+  name='VmGraphicDetail',
+  full_name='domain.VmGraphicDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmGraphicDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmGraphicDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmGraphicDetail.xml', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1404,
+  serialized_end=1460,
 )
 
 
@@ -1113,8 +1339,46 @@ _VMGRAPHIC = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1462,
+  serialized_end=1499,
+)
+
+
+_VMVIDEODETAIL = _descriptor.Descriptor(
+  name='VmVideoDetail',
+  full_name='domain.VmVideoDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmGraphic.xml', index=2,
+      name='id', full_name='domain.VmVideoDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmVideoDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.VmVideoDetail.xml', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1132,8 +1396,8 @@ _VMGRAPHIC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=813,
-  serialized_end=863,
+  serialized_start=1501,
+  serialized_end=1555,
 )
 
 
@@ -1158,9 +1422,103 @@ _VMVIDEO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1557,
+  serialized_end=1592,
+)
+
+
+_HARDWAREDETAIL = _descriptor.Descriptor(
+  name='HardwareDetail',
+  full_name='domain.HardwareDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.VmVideo.xml', index=2,
-      number=3, type=9, cpp_type=9, label=1,
+      name='memory', full_name='domain.HardwareDetail.memory', index=0,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='vcpu', full_name='domain.HardwareDetail.vcpu', index=1,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cpu', full_name='domain.HardwareDetail.cpu', index=2,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='boots', full_name='domain.HardwareDetail.boots', index=3,
+      number=7, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='disks', full_name='domain.HardwareDetail.disks', index=4,
+      number=8, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='medias', full_name='domain.HardwareDetail.medias', index=5,
+      number=9, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='interfaces', full_name='domain.HardwareDetail.interfaces', index=6,
+      number=10, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='graphics', full_name='domain.HardwareDetail.graphics', index=7,
+      number=11, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='videos', full_name='domain.HardwareDetail.videos', index=8,
+      number=12, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sounds', full_name='domain.HardwareDetail.sounds', index=9,
+      number=13, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='xml', full_name='domain.HardwareDetail.xml', index=10,
+      number=14, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1177,8 +1535,8 @@ _VMVIDEO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=865,
-  serialized_end=913,
+  serialized_start=1595,
+  serialized_end=2000,
 )
 
 
@@ -1259,13 +1617,6 @@ _HARDWARE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='xml', full_name='domain.Hardware.xml', index=10,
-      number=14, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1278,36 +1629,43 @@ _HARDWARE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=916,
-  serialized_end=1268,
+  serialized_start=2003,
+  serialized_end=2335,
 )
 
 
-_DOMAINMESSAGE = _descriptor.Descriptor(
-  name='DomainMessage',
-  full_name='domain.DomainMessage',
+_VM = _descriptor.Descriptor(
+  name='Vm',
+  full_name='domain.Vm',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='domain.DomainMessage.id', index=0,
+      name='id', full_name='domain.Vm.id', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='domain.DomainMessage.name', index=1,
+      name='name', full_name='domain.Vm.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='state', full_name='domain.DomainMessage.state', index=2,
+      name='state', full_name='domain.Vm.state', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_actions', full_name='domain.Vm.next_actions', index=3,
+      number=4, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -1323,8 +1681,181 @@ _DOMAINMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1270,
-  serialized_end=1341,
+  serialized_start=2337,
+  serialized_end=2421,
+)
+
+
+_VMHARDWARE = _descriptor.Descriptor(
+  name='VmHardware',
+  full_name='domain.VmHardware',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmHardware.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmHardware.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='domain.VmHardware.state', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_actions', full_name='domain.VmHardware.next_actions', index=3,
+      number=4, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='hardware', full_name='domain.VmHardware.hardware', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2424,
+  serialized_end=2552,
+)
+
+
+_VMHARDWAREDETAIL = _descriptor.Descriptor(
+  name='VmHardwareDetail',
+  full_name='domain.VmHardwareDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='domain.VmHardwareDetail.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='domain.VmHardwareDetail.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='domain.VmHardwareDetail.state', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='next_actions', full_name='domain.VmHardwareDetail.next_actions', index=3,
+      number=4, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='hardware', full_name='domain.VmHardwareDetail.hardware', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2555,
+  serialized_end=2695,
+)
+
+
+_LISTREQUEST = _descriptor.Descriptor(
+  name='ListRequest',
+  full_name='domain.ListRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2697,
+  serialized_end=2710,
+)
+
+
+_LISTRESPONSE = _descriptor.Descriptor(
+  name='ListResponse',
+  full_name='domain.ListResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='domains', full_name='domain.ListResponse.domains', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2712,
+  serialized_end=2755,
 )
 
 
@@ -1354,8 +1885,8 @@ _HARDWAREREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1343,
-  serialized_end=1379,
+  serialized_start=2757,
+  serialized_end=2793,
 )
 
 
@@ -1400,8 +1931,8 @@ _HARDWARERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1382,
-  serialized_end=1568,
+  serialized_start=2796,
+  serialized_end=2975,
 )
 
 
@@ -1431,8 +1962,8 @@ _HARDWAREUPDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1570,
-  serialized_end=1629,
+  serialized_start=2977,
+  serialized_end=3036,
 )
 
 
@@ -1462,63 +1993,8 @@ _HARDWAREUPDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1631,
-  serialized_end=1691,
-)
-
-
-_LISTREQUEST = _descriptor.Descriptor(
-  name='ListRequest',
-  full_name='domain.ListRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1693,
-  serialized_end=1706,
-)
-
-
-_LISTRESPONSE = _descriptor.Descriptor(
-  name='ListResponse',
-  full_name='domain.ListResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='domains', full_name='domain.ListResponse.domains', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1708,
-  serialized_end=1762,
+  serialized_start=3038,
+  serialized_end=3098,
 )
 
 
@@ -1541,8 +2017,8 @@ _LISTSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1764,
-  serialized_end=1782,
+  serialized_start=3100,
+  serialized_end=3118,
 )
 
 
@@ -1587,8 +2063,8 @@ _DOMAINSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1785,
-  serialized_end=1982,
+  serialized_start=3121,
+  serialized_end=3311,
 )
 
 
@@ -1618,8 +2094,8 @@ _LISTSTATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1984,
-  serialized_end=2041,
+  serialized_start=3313,
+  serialized_end=3370,
 )
 
 
@@ -1649,8 +2125,8 @@ _GETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2043,
-  serialized_end=2074,
+  serialized_start=3372,
+  serialized_end=3403,
 )
 
 
@@ -1695,8 +2171,8 @@ _GETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2077,
-  serialized_end=2291,
+  serialized_start=3406,
+  serialized_end=3613,
 )
 
 
@@ -1726,8 +2202,8 @@ _GETSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2293,
-  serialized_end=2329,
+  serialized_start=3615,
+  serialized_end=3651,
 )
 
 
@@ -1765,8 +2241,8 @@ _GETSTATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2332,
-  serialized_end=2520,
+  serialized_start=3654,
+  serialized_end=3835,
 )
 
 
@@ -1810,8 +2286,8 @@ _FROMTEMPLATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2522,
-  serialized_end=2619,
+  serialized_start=3837,
+  serialized_end=3934,
 )
 
 
@@ -1849,8 +2325,8 @@ _FROMTEMPLATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2622,
-  serialized_end=2780,
+  serialized_start=3937,
+  serialized_end=4088,
 )
 
 
@@ -1894,8 +2370,8 @@ _FROMMEDIAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2782,
-  serialized_end=2880,
+  serialized_start=4090,
+  serialized_end=4188,
 )
 
 
@@ -1933,8 +2409,8 @@ _FROMMEDIARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2883,
-  serialized_end=3035,
+  serialized_start=4191,
+  serialized_end=4336,
 )
 
 
@@ -1964,8 +2440,8 @@ _DELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3037,
-  serialized_end=3071,
+  serialized_start=4338,
+  serialized_end=4372,
 )
 
 
@@ -2003,8 +2479,8 @@ _DELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3074,
-  serialized_end=3220,
+  serialized_start=4375,
+  serialized_end=4514,
 )
 
 
@@ -2034,8 +2510,8 @@ _STARTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3222,
-  serialized_end=3255,
+  serialized_start=4516,
+  serialized_end=4549,
 )
 
 
@@ -2080,8 +2556,8 @@ _STARTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3258,
-  serialized_end=3472,
+  serialized_start=4552,
+  serialized_end=4759,
 )
 
 
@@ -2111,8 +2587,8 @@ _STOPREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3474,
-  serialized_end=3506,
+  serialized_start=4761,
+  serialized_end=4793,
 )
 
 
@@ -2150,8 +2626,8 @@ _STOPRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3509,
-  serialized_end=3689,
+  serialized_start=4796,
+  serialized_end=4969,
 )
 
 
@@ -2181,8 +2657,8 @@ _PAUSEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3691,
-  serialized_end=3724,
+  serialized_start=4971,
+  serialized_end=5004,
 )
 
 
@@ -2220,8 +2696,8 @@ _PAUSERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3727,
-  serialized_end=3909,
+  serialized_start=5007,
+  serialized_end=5182,
 )
 
 
@@ -2251,8 +2727,8 @@ _RESUMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3911,
-  serialized_end=3945,
+  serialized_start=5184,
+  serialized_end=5218,
 )
 
 
@@ -2290,8 +2766,8 @@ _RESUMERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3948,
-  serialized_end=4132,
+  serialized_start=5221,
+  serialized_end=5398,
 )
 
 
@@ -2321,8 +2797,8 @@ _VIEWERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4134,
-  serialized_end=4168,
+  serialized_start=5400,
+  serialized_end=5434,
 )
 
 
@@ -2359,8 +2835,8 @@ _VIEWERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4170,
-  serialized_end=4256,
+  serialized_start=5436,
+  serialized_end=5515,
 )
 
 
@@ -2383,8 +2859,8 @@ _VIDEOLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4258,
-  serialized_end=4276,
+  serialized_start=5517,
+  serialized_end=5535,
 )
 
 
@@ -2442,8 +2918,8 @@ _VIDEO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4278,
-  serialized_end=4354,
+  serialized_start=5537,
+  serialized_end=5613,
 )
 
 
@@ -2473,8 +2949,8 @@ _VIDEOLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4356,
-  serialized_end=4406,
+  serialized_start=5615,
+  serialized_end=5665,
 )
 
 
@@ -2504,8 +2980,8 @@ _BOOTLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4408,
-  serialized_end=4446,
+  serialized_start=5667,
+  serialized_end=5705,
 )
 
 
@@ -2535,8 +3011,8 @@ _BOOTLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4448,
-  serialized_end=4495,
+  serialized_start=5707,
+  serialized_end=5747,
 )
 
 
@@ -2573,8 +3049,8 @@ _BOOTUPDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4497,
-  serialized_end=4566,
+  serialized_start=5749,
+  serialized_end=5811,
 )
 
 
@@ -2604,8 +3080,8 @@ _BOOTUPDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4568,
-  serialized_end=4617,
+  serialized_start=5813,
+  serialized_end=5855,
 )
 
 
@@ -2628,8 +3104,8 @@ _INTERFACELISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4619,
-  serialized_end=4641,
+  serialized_start=5857,
+  serialized_end=5879,
 )
 
 
@@ -2687,8 +3163,8 @@ _INTERFACE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4643,
-  serialized_end=4724,
+  serialized_start=5881,
+  serialized_end=5962,
 )
 
 
@@ -2718,8 +3194,8 @@ _INTERFACELISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4726,
-  serialized_end=4788,
+  serialized_start=5964,
+  serialized_end=6026,
 )
 
 
@@ -2805,89 +3281,120 @@ _VIEWER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4791,
-  serialized_end=4993,
+  serialized_start=6029,
+  serialized_end=6231,
 )
 
-_VMDISK.fields_by_name['bus'].enum_type = _BUS
-_VMDISK.fields_by_name['format'].enum_type = _FORMAT
+_VMDISKDETAIL.fields_by_name['bus'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BUS
+_VMDISKDETAIL.fields_by_name['format'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._FORMAT
+_VMDISK.fields_by_name['bus'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BUS
+_VMDISK.fields_by_name['format'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._FORMAT
+_HARDWAREDETAIL.fields_by_name['memory'].message_type = _VMMEMORYDETAIL
+_HARDWAREDETAIL.fields_by_name['vcpu'].message_type = _VMVCPUDETAIL
+_HARDWAREDETAIL.fields_by_name['cpu'].message_type = _VMCPUDETAIL
+_HARDWAREDETAIL.fields_by_name['boots'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BOOT
+_HARDWAREDETAIL.fields_by_name['disks'].message_type = _VMDISKDETAIL
+_HARDWAREDETAIL.fields_by_name['medias'].message_type = _VMMEDIADETAIL
+_HARDWAREDETAIL.fields_by_name['interfaces'].message_type = _VMINTERFACEDETAIL
+_HARDWAREDETAIL.fields_by_name['graphics'].message_type = _VMGRAPHICDETAIL
+_HARDWAREDETAIL.fields_by_name['videos'].message_type = _VMVIDEODETAIL
+_HARDWAREDETAIL.fields_by_name['sounds'].message_type = _VMSOUNDDETAIL
 _HARDWARE.fields_by_name['memory'].message_type = _VMMEMORY
 _HARDWARE.fields_by_name['vcpu'].message_type = _VMVCPU
 _HARDWARE.fields_by_name['cpu'].message_type = _VMCPU
-_HARDWARE.fields_by_name['boots'].enum_type = _BOOT
+_HARDWARE.fields_by_name['boots'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BOOT
 _HARDWARE.fields_by_name['disks'].message_type = _VMDISK
 _HARDWARE.fields_by_name['medias'].message_type = _VMMEDIA
 _HARDWARE.fields_by_name['interfaces'].message_type = _VMINTERFACE
 _HARDWARE.fields_by_name['graphics'].message_type = _VMGRAPHIC
 _HARDWARE.fields_by_name['videos'].message_type = _VMVIDEO
 _HARDWARE.fields_by_name['sounds'].message_type = _VMSOUND
-_DOMAINMESSAGE.fields_by_name['state'].enum_type = _STATE
+_VM.fields_by_name['state'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._STATE
+_VM.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
+_VMHARDWARE.fields_by_name['state'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._STATE
+_VMHARDWARE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
+_VMHARDWARE.fields_by_name['hardware'].message_type = _HARDWARE
+_VMHARDWAREDETAIL.fields_by_name['state'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._STATE
+_VMHARDWAREDETAIL.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
+_VMHARDWAREDETAIL.fields_by_name['hardware'].message_type = _HARDWAREDETAIL
+_LISTRESPONSE.fields_by_name['domains'].message_type = _VM
 _HARDWARERESPONSE.fields_by_name['state'].enum_type = _HARDWARERESPONSE_STATE
-_HARDWARERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_HARDWARERESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _HARDWARERESPONSE.fields_by_name['hardware'].message_type = _HARDWARE
 _HARDWARERESPONSE_STATE.containing_type = _HARDWARERESPONSE
 _HARDWAREUPDATEREQUEST.fields_by_name['hardware'].message_type = _HARDWARE
 _HARDWAREUPDATERESPONSE.fields_by_name['hardware'].message_type = _HARDWARE
-_LISTRESPONSE.fields_by_name['domains'].message_type = _DOMAINMESSAGE
 _DOMAINSTATE.fields_by_name['state'].enum_type = _DOMAINSTATE_STATE
-_DOMAINSTATE.fields_by_name['next_actions'].enum_type = _ACTION
+_DOMAINSTATE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _DOMAINSTATE_STATE.containing_type = _DOMAINSTATE
 _LISTSTATERESPONSE.fields_by_name['Domains'].message_type = _DOMAINSTATE
 _GETRESPONSE.fields_by_name['hardware'].message_type = _HARDWARE
 _GETRESPONSE.fields_by_name['state'].enum_type = _GETRESPONSE_STATE
-_GETRESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_GETRESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _GETRESPONSE_STATE.containing_type = _GETRESPONSE
 _GETSTATERESPONSE.fields_by_name['state'].enum_type = _GETSTATERESPONSE_STATE
-_GETSTATERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_GETSTATERESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _GETSTATERESPONSE_STATE.containing_type = _GETSTATERESPONSE
 _FROMTEMPLATEREQUEST.fields_by_name['hardware'].message_type = _HARDWARE
 _FROMTEMPLATERESPONSE.fields_by_name['state'].enum_type = _FROMTEMPLATERESPONSE_STATE
-_FROMTEMPLATERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_FROMTEMPLATERESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _FROMTEMPLATERESPONSE_STATE.containing_type = _FROMTEMPLATERESPONSE
 _FROMMEDIAREQUEST.fields_by_name['hardware'].message_type = _HARDWARE
 _FROMMEDIARESPONSE.fields_by_name['state'].enum_type = _FROMMEDIARESPONSE_STATE
-_FROMMEDIARESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_FROMMEDIARESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _FROMMEDIARESPONSE_STATE.containing_type = _FROMMEDIARESPONSE
 _DELETERESPONSE.fields_by_name['state'].enum_type = _DELETERESPONSE_STATE
-_DELETERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_DELETERESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _DELETERESPONSE_STATE.containing_type = _DELETERESPONSE
 _STARTRESPONSE.fields_by_name['state'].enum_type = _STARTRESPONSE_STATE
 _STARTRESPONSE.fields_by_name['viewer'].message_type = _VIEWER
-_STARTRESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_STARTRESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _STARTRESPONSE_STATE.containing_type = _STARTRESPONSE
 _STOPRESPONSE.fields_by_name['state'].enum_type = _STOPRESPONSE_STATE
-_STOPRESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_STOPRESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _STOPRESPONSE_STATE.containing_type = _STOPRESPONSE
 _PAUSERESPONSE.fields_by_name['state'].enum_type = _PAUSERESPONSE_STATE
-_PAUSERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_PAUSERESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _PAUSERESPONSE_STATE.containing_type = _PAUSERESPONSE
 _RESUMERESPONSE.fields_by_name['state'].enum_type = _RESUMERESPONSE_STATE
-_RESUMERESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_RESUMERESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _RESUMERESPONSE_STATE.containing_type = _RESUMERESPONSE
 _VIEWERRESPONSE.fields_by_name['viewer'].message_type = _VIEWER
-_VIEWERRESPONSE.fields_by_name['next_actions'].enum_type = _ACTION
+_VIEWERRESPONSE.fields_by_name['next_actions'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._ACTION
 _VIDEOLISTRESPONSE.fields_by_name['videos'].message_type = _VIDEO
-_BOOTLISTRESPONSE.fields_by_name['boots'].enum_type = _BOOT
-_BOOTUPDATEREQUEST.fields_by_name['boots'].enum_type = _BOOT
-_BOOTUPDATERESPONSE.fields_by_name['boots'].enum_type = _BOOT
+_BOOTLISTRESPONSE.fields_by_name['boots'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BOOT
+_BOOTUPDATEREQUEST.fields_by_name['boots'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BOOT
+_BOOTUPDATERESPONSE.fields_by_name['boots'].enum_type = api_dot_grpc_dot_proto_dot_domain__enums__pb2._BOOT
 _INTERFACELISTRESPONSE.fields_by_name['interfaces'].message_type = _INTERFACE
+DESCRIPTOR.message_types_by_name['VmDiskDetail'] = _VMDISKDETAIL
 DESCRIPTOR.message_types_by_name['VmDisk'] = _VMDISK
+DESCRIPTOR.message_types_by_name['VmSoundDetail'] = _VMSOUNDDETAIL
 DESCRIPTOR.message_types_by_name['VmSound'] = _VMSOUND
+DESCRIPTOR.message_types_by_name['VmCpuDetail'] = _VMCPUDETAIL
 DESCRIPTOR.message_types_by_name['VmCpu'] = _VMCPU
+DESCRIPTOR.message_types_by_name['VmVcpuDetail'] = _VMVCPUDETAIL
 DESCRIPTOR.message_types_by_name['VmVcpu'] = _VMVCPU
+DESCRIPTOR.message_types_by_name['VmMemoryDetail'] = _VMMEMORYDETAIL
 DESCRIPTOR.message_types_by_name['VmMemory'] = _VMMEMORY
+DESCRIPTOR.message_types_by_name['VmMediaDetail'] = _VMMEDIADETAIL
 DESCRIPTOR.message_types_by_name['VmMedia'] = _VMMEDIA
+DESCRIPTOR.message_types_by_name['VmInterfaceDetail'] = _VMINTERFACEDETAIL
 DESCRIPTOR.message_types_by_name['VmInterface'] = _VMINTERFACE
+DESCRIPTOR.message_types_by_name['VmGraphicDetail'] = _VMGRAPHICDETAIL
 DESCRIPTOR.message_types_by_name['VmGraphic'] = _VMGRAPHIC
+DESCRIPTOR.message_types_by_name['VmVideoDetail'] = _VMVIDEODETAIL
 DESCRIPTOR.message_types_by_name['VmVideo'] = _VMVIDEO
+DESCRIPTOR.message_types_by_name['HardwareDetail'] = _HARDWAREDETAIL
 DESCRIPTOR.message_types_by_name['Hardware'] = _HARDWARE
-DESCRIPTOR.message_types_by_name['DomainMessage'] = _DOMAINMESSAGE
+DESCRIPTOR.message_types_by_name['Vm'] = _VM
+DESCRIPTOR.message_types_by_name['VmHardware'] = _VMHARDWARE
+DESCRIPTOR.message_types_by_name['VmHardwareDetail'] = _VMHARDWAREDETAIL
+DESCRIPTOR.message_types_by_name['ListRequest'] = _LISTREQUEST
+DESCRIPTOR.message_types_by_name['ListResponse'] = _LISTRESPONSE
 DESCRIPTOR.message_types_by_name['HardwareRequest'] = _HARDWAREREQUEST
 DESCRIPTOR.message_types_by_name['HardwareResponse'] = _HARDWARERESPONSE
 DESCRIPTOR.message_types_by_name['HardwareUpdateRequest'] = _HARDWAREUPDATEREQUEST
 DESCRIPTOR.message_types_by_name['HardwareUpdateResponse'] = _HARDWAREUPDATERESPONSE
-DESCRIPTOR.message_types_by_name['ListRequest'] = _LISTREQUEST
-DESCRIPTOR.message_types_by_name['ListResponse'] = _LISTRESPONSE
 DESCRIPTOR.message_types_by_name['ListStateRequest'] = _LISTSTATEREQUEST
 DESCRIPTOR.message_types_by_name['DomainState'] = _DOMAINSTATE
 DESCRIPTOR.message_types_by_name['ListStateResponse'] = _LISTSTATERESPONSE
@@ -2922,12 +3429,14 @@ DESCRIPTOR.message_types_by_name['InterfaceListRequest'] = _INTERFACELISTREQUEST
 DESCRIPTOR.message_types_by_name['Interface'] = _INTERFACE
 DESCRIPTOR.message_types_by_name['InterfaceListResponse'] = _INTERFACELISTRESPONSE
 DESCRIPTOR.message_types_by_name['Viewer'] = _VIEWER
-DESCRIPTOR.enum_types_by_name['State'] = _STATE
-DESCRIPTOR.enum_types_by_name['Action'] = _ACTION
-DESCRIPTOR.enum_types_by_name['Format'] = _FORMAT
-DESCRIPTOR.enum_types_by_name['Bus'] = _BUS
-DESCRIPTOR.enum_types_by_name['Boot'] = _BOOT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+VmDiskDetail = _reflection.GeneratedProtocolMessageType('VmDiskDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMDISKDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmDiskDetail)
+  })
+_sym_db.RegisterMessage(VmDiskDetail)
 
 VmDisk = _reflection.GeneratedProtocolMessageType('VmDisk', (_message.Message,), {
   'DESCRIPTOR' : _VMDISK,
@@ -2936,12 +3445,26 @@ VmDisk = _reflection.GeneratedProtocolMessageType('VmDisk', (_message.Message,),
   })
 _sym_db.RegisterMessage(VmDisk)
 
+VmSoundDetail = _reflection.GeneratedProtocolMessageType('VmSoundDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMSOUNDDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmSoundDetail)
+  })
+_sym_db.RegisterMessage(VmSoundDetail)
+
 VmSound = _reflection.GeneratedProtocolMessageType('VmSound', (_message.Message,), {
   'DESCRIPTOR' : _VMSOUND,
   '__module__' : 'api.grpc.proto.domain_pb2'
   # @@protoc_insertion_point(class_scope:domain.VmSound)
   })
 _sym_db.RegisterMessage(VmSound)
+
+VmCpuDetail = _reflection.GeneratedProtocolMessageType('VmCpuDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMCPUDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmCpuDetail)
+  })
+_sym_db.RegisterMessage(VmCpuDetail)
 
 VmCpu = _reflection.GeneratedProtocolMessageType('VmCpu', (_message.Message,), {
   'DESCRIPTOR' : _VMCPU,
@@ -2950,12 +3473,26 @@ VmCpu = _reflection.GeneratedProtocolMessageType('VmCpu', (_message.Message,), {
   })
 _sym_db.RegisterMessage(VmCpu)
 
+VmVcpuDetail = _reflection.GeneratedProtocolMessageType('VmVcpuDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMVCPUDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmVcpuDetail)
+  })
+_sym_db.RegisterMessage(VmVcpuDetail)
+
 VmVcpu = _reflection.GeneratedProtocolMessageType('VmVcpu', (_message.Message,), {
   'DESCRIPTOR' : _VMVCPU,
   '__module__' : 'api.grpc.proto.domain_pb2'
   # @@protoc_insertion_point(class_scope:domain.VmVcpu)
   })
 _sym_db.RegisterMessage(VmVcpu)
+
+VmMemoryDetail = _reflection.GeneratedProtocolMessageType('VmMemoryDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMMEMORYDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmMemoryDetail)
+  })
+_sym_db.RegisterMessage(VmMemoryDetail)
 
 VmMemory = _reflection.GeneratedProtocolMessageType('VmMemory', (_message.Message,), {
   'DESCRIPTOR' : _VMMEMORY,
@@ -2964,12 +3501,26 @@ VmMemory = _reflection.GeneratedProtocolMessageType('VmMemory', (_message.Messag
   })
 _sym_db.RegisterMessage(VmMemory)
 
+VmMediaDetail = _reflection.GeneratedProtocolMessageType('VmMediaDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMMEDIADETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmMediaDetail)
+  })
+_sym_db.RegisterMessage(VmMediaDetail)
+
 VmMedia = _reflection.GeneratedProtocolMessageType('VmMedia', (_message.Message,), {
   'DESCRIPTOR' : _VMMEDIA,
   '__module__' : 'api.grpc.proto.domain_pb2'
   # @@protoc_insertion_point(class_scope:domain.VmMedia)
   })
 _sym_db.RegisterMessage(VmMedia)
+
+VmInterfaceDetail = _reflection.GeneratedProtocolMessageType('VmInterfaceDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMINTERFACEDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmInterfaceDetail)
+  })
+_sym_db.RegisterMessage(VmInterfaceDetail)
 
 VmInterface = _reflection.GeneratedProtocolMessageType('VmInterface', (_message.Message,), {
   'DESCRIPTOR' : _VMINTERFACE,
@@ -2978,12 +3529,26 @@ VmInterface = _reflection.GeneratedProtocolMessageType('VmInterface', (_message.
   })
 _sym_db.RegisterMessage(VmInterface)
 
+VmGraphicDetail = _reflection.GeneratedProtocolMessageType('VmGraphicDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMGRAPHICDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmGraphicDetail)
+  })
+_sym_db.RegisterMessage(VmGraphicDetail)
+
 VmGraphic = _reflection.GeneratedProtocolMessageType('VmGraphic', (_message.Message,), {
   'DESCRIPTOR' : _VMGRAPHIC,
   '__module__' : 'api.grpc.proto.domain_pb2'
   # @@protoc_insertion_point(class_scope:domain.VmGraphic)
   })
 _sym_db.RegisterMessage(VmGraphic)
+
+VmVideoDetail = _reflection.GeneratedProtocolMessageType('VmVideoDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMVIDEODETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmVideoDetail)
+  })
+_sym_db.RegisterMessage(VmVideoDetail)
 
 VmVideo = _reflection.GeneratedProtocolMessageType('VmVideo', (_message.Message,), {
   'DESCRIPTOR' : _VMVIDEO,
@@ -2992,6 +3557,13 @@ VmVideo = _reflection.GeneratedProtocolMessageType('VmVideo', (_message.Message,
   })
 _sym_db.RegisterMessage(VmVideo)
 
+HardwareDetail = _reflection.GeneratedProtocolMessageType('HardwareDetail', (_message.Message,), {
+  'DESCRIPTOR' : _HARDWAREDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.HardwareDetail)
+  })
+_sym_db.RegisterMessage(HardwareDetail)
+
 Hardware = _reflection.GeneratedProtocolMessageType('Hardware', (_message.Message,), {
   'DESCRIPTOR' : _HARDWARE,
   '__module__' : 'api.grpc.proto.domain_pb2'
@@ -2999,12 +3571,40 @@ Hardware = _reflection.GeneratedProtocolMessageType('Hardware', (_message.Messag
   })
 _sym_db.RegisterMessage(Hardware)
 
-DomainMessage = _reflection.GeneratedProtocolMessageType('DomainMessage', (_message.Message,), {
-  'DESCRIPTOR' : _DOMAINMESSAGE,
+Vm = _reflection.GeneratedProtocolMessageType('Vm', (_message.Message,), {
+  'DESCRIPTOR' : _VM,
   '__module__' : 'api.grpc.proto.domain_pb2'
-  # @@protoc_insertion_point(class_scope:domain.DomainMessage)
+  # @@protoc_insertion_point(class_scope:domain.Vm)
   })
-_sym_db.RegisterMessage(DomainMessage)
+_sym_db.RegisterMessage(Vm)
+
+VmHardware = _reflection.GeneratedProtocolMessageType('VmHardware', (_message.Message,), {
+  'DESCRIPTOR' : _VMHARDWARE,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmHardware)
+  })
+_sym_db.RegisterMessage(VmHardware)
+
+VmHardwareDetail = _reflection.GeneratedProtocolMessageType('VmHardwareDetail', (_message.Message,), {
+  'DESCRIPTOR' : _VMHARDWAREDETAIL,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.VmHardwareDetail)
+  })
+_sym_db.RegisterMessage(VmHardwareDetail)
+
+ListRequest = _reflection.GeneratedProtocolMessageType('ListRequest', (_message.Message,), {
+  'DESCRIPTOR' : _LISTREQUEST,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.ListRequest)
+  })
+_sym_db.RegisterMessage(ListRequest)
+
+ListResponse = _reflection.GeneratedProtocolMessageType('ListResponse', (_message.Message,), {
+  'DESCRIPTOR' : _LISTRESPONSE,
+  '__module__' : 'api.grpc.proto.domain_pb2'
+  # @@protoc_insertion_point(class_scope:domain.ListResponse)
+  })
+_sym_db.RegisterMessage(ListResponse)
 
 HardwareRequest = _reflection.GeneratedProtocolMessageType('HardwareRequest', (_message.Message,), {
   'DESCRIPTOR' : _HARDWAREREQUEST,
@@ -3033,20 +3633,6 @@ HardwareUpdateResponse = _reflection.GeneratedProtocolMessageType('HardwareUpdat
   # @@protoc_insertion_point(class_scope:domain.HardwareUpdateResponse)
   })
 _sym_db.RegisterMessage(HardwareUpdateResponse)
-
-ListRequest = _reflection.GeneratedProtocolMessageType('ListRequest', (_message.Message,), {
-  'DESCRIPTOR' : _LISTREQUEST,
-  '__module__' : 'api.grpc.proto.domain_pb2'
-  # @@protoc_insertion_point(class_scope:domain.ListRequest)
-  })
-_sym_db.RegisterMessage(ListRequest)
-
-ListResponse = _reflection.GeneratedProtocolMessageType('ListResponse', (_message.Message,), {
-  'DESCRIPTOR' : _LISTRESPONSE,
-  '__module__' : 'api.grpc.proto.domain_pb2'
-  # @@protoc_insertion_point(class_scope:domain.ListResponse)
-  })
-_sym_db.RegisterMessage(ListResponse)
 
 ListStateRequest = _reflection.GeneratedProtocolMessageType('ListStateRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTSTATEREQUEST,
@@ -3294,8 +3880,8 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=5489,
-  serialized_end=6365,
+  serialized_start=6234,
+  serialized_end=7042,
   methods=[
   _descriptor.MethodDescriptor(
     name='List',
@@ -3307,18 +3893,9 @@ _DOMAIN = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
-    name='ListState',
-    full_name='domain.Domain.ListState',
-    index=1,
-    containing_service=None,
-    input_type=_LISTSTATEREQUEST,
-    output_type=_LISTSTATERESPONSE,
-    serialized_options=None,
-  ),
-  _descriptor.MethodDescriptor(
     name='Get',
     full_name='domain.Domain.Get',
-    index=2,
+    index=1,
     containing_service=None,
     input_type=_GETREQUEST,
     output_type=_GETRESPONSE,
@@ -3327,7 +3904,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='State',
     full_name='domain.Domain.State',
-    index=3,
+    index=2,
     containing_service=None,
     input_type=_GETSTATEREQUEST,
     output_type=_GETSTATERESPONSE,
@@ -3336,7 +3913,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Viewer',
     full_name='domain.Domain.Viewer',
-    index=4,
+    index=3,
     containing_service=None,
     input_type=_VIEWERREQUEST,
     output_type=_VIEWERRESPONSE,
@@ -3345,7 +3922,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Hardware',
     full_name='domain.Domain.Hardware',
-    index=5,
+    index=4,
     containing_service=None,
     input_type=_HARDWAREREQUEST,
     output_type=_HARDWARERESPONSE,
@@ -3354,7 +3931,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='FromTemplate',
     full_name='domain.Domain.FromTemplate',
-    index=6,
+    index=5,
     containing_service=None,
     input_type=_FROMTEMPLATEREQUEST,
     output_type=_FROMTEMPLATERESPONSE,
@@ -3363,7 +3940,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='FromMedia',
     full_name='domain.Domain.FromMedia',
-    index=7,
+    index=6,
     containing_service=None,
     input_type=_FROMMEDIAREQUEST,
     output_type=_FROMMEDIARESPONSE,
@@ -3372,7 +3949,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='HardwareUpdate',
     full_name='domain.Domain.HardwareUpdate',
-    index=8,
+    index=7,
     containing_service=None,
     input_type=_HARDWAREUPDATEREQUEST,
     output_type=_HARDWAREUPDATERESPONSE,
@@ -3381,7 +3958,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Delete',
     full_name='domain.Domain.Delete',
-    index=9,
+    index=8,
     containing_service=None,
     input_type=_DELETEREQUEST,
     output_type=_DELETERESPONSE,
@@ -3390,7 +3967,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Start',
     full_name='domain.Domain.Start',
-    index=10,
+    index=9,
     containing_service=None,
     input_type=_STARTREQUEST,
     output_type=_STARTRESPONSE,
@@ -3399,7 +3976,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Stop',
     full_name='domain.Domain.Stop',
-    index=11,
+    index=10,
     containing_service=None,
     input_type=_STOPREQUEST,
     output_type=_STOPRESPONSE,
@@ -3408,7 +3985,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Pause',
     full_name='domain.Domain.Pause',
-    index=12,
+    index=11,
     containing_service=None,
     input_type=_PAUSEREQUEST,
     output_type=_PAUSERESPONSE,
@@ -3417,7 +3994,7 @@ _DOMAIN = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Resume',
     full_name='domain.Domain.Resume',
-    index=13,
+    index=12,
     containing_service=None,
     input_type=_RESUMEREQUEST,
     output_type=_RESUMERESPONSE,

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+enum State {
+    STATE_UNKNOWN = 0;
+    STATE_STOPPED = 1;
+    STATE_STARTED = 2;
+    STATE_PAUSED = 3;
+    STATE_DELETED = 4;
+    STATE_FAILED = 5;
+}
+
+enum Action {
+    ACTION_UNKNOWN = 0;
+    ACTION_STOP = 1;
+    ACTION_START = 2;
+    ACTION_PAUSE = 3;
+    ACTION_RESUME = 4;
+    ACTION_DELETE = 5;
+    ACTION_UPDATE = 6;
+    ACTION_TEMPLATE = 7;
+}
+
+enum Format {
+    FORMAT_QCOW2 = 0;
+    FORMAT_RAW = 1;
+    FORMAT_ISO = 2;
+    FORMAT_VMDK = 3;
+}
+
+enum Bus {
+    BUS_IDE = 0;
+    BUS_VIRTIO = 1;
+    BUS_SATA =2;
+    BUS_SCSII = 3;
+}
+
+enum Boot {
+    BOOT_HD = 0;
+    BOOT_CDROM = 1;
+    BOOT_NETWORK = 2;
+    BOOT_FD = 3;
+}
