@@ -40,20 +40,10 @@ class DomainStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ViewerRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ViewerResponse.FromString,
         )
-    self.VideoList = channel.unary_unary(
-        '/domain.Domain/VideoList',
-        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.VideoListRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.VideoListResponse.FromString,
-        )
-    self.BootList = channel.unary_unary(
-        '/domain.Domain/BootList',
-        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootListRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootListResponse.FromString,
-        )
-    self.InterfaceList = channel.unary_unary(
-        '/domain.Domain/InterfaceList',
-        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListResponse.FromString,
+    self.Hardware = channel.unary_unary(
+        '/domain.Domain/Hardware',
+        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareResponse.FromString,
         )
     self.FromTemplate = channel.unary_unary(
         '/domain.Domain/FromTemplate',
@@ -65,10 +55,10 @@ class DomainStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.FromMediaRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.FromMediaResponse.FromString,
         )
-    self.Update = channel.unary_unary(
-        '/domain.Domain/Update',
-        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.UpdateRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.UpdateResponse.FromString,
+    self.HardwareUpdate = channel.unary_unary(
+        '/domain.Domain/HardwareUpdate',
+        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareUpdateRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareUpdateResponse.FromString,
         )
     self.Delete = channel.unary_unary(
         '/domain.Domain/Delete',
@@ -85,10 +75,15 @@ class DomainStub(object):
         request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.StopRequest.SerializeToString,
         response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.StopResponse.FromString,
         )
-    self.BootUpdate = channel.unary_unary(
-        '/domain.Domain/BootUpdate',
-        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateRequest.SerializeToString,
-        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateResponse.FromString,
+    self.Pause = channel.unary_unary(
+        '/domain.Domain/Pause',
+        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.PauseRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.PauseResponse.FromString,
+        )
+    self.Resume = channel.unary_unary(
+        '/domain.Domain/Resume',
+        request_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ResumeRequest.SerializeToString,
+        response_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ResumeResponse.FromString,
         )
 
 
@@ -132,21 +127,7 @@ class DomainServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def VideoList(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def BootList(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def InterfaceList(self, request, context):
+  def Hardware(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -167,7 +148,7 @@ class DomainServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def Update(self, request, context):
+  def HardwareUpdate(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -195,12 +176,16 @@ class DomainServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def BootUpdate(self, request, context):
-    """Database & Engine (test domain before updating)
-    video add
-    video remove
-    video update
-    """
+  def Pause(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def Resume(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -233,20 +218,10 @@ def add_DomainServicer_to_server(servicer, server):
           request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ViewerRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ViewerResponse.SerializeToString,
       ),
-      'VideoList': grpc.unary_unary_rpc_method_handler(
-          servicer.VideoList,
-          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.VideoListRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.VideoListResponse.SerializeToString,
-      ),
-      'BootList': grpc.unary_unary_rpc_method_handler(
-          servicer.BootList,
-          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootListRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootListResponse.SerializeToString,
-      ),
-      'InterfaceList': grpc.unary_unary_rpc_method_handler(
-          servicer.InterfaceList,
-          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.InterfaceListResponse.SerializeToString,
+      'Hardware': grpc.unary_unary_rpc_method_handler(
+          servicer.Hardware,
+          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareResponse.SerializeToString,
       ),
       'FromTemplate': grpc.unary_unary_rpc_method_handler(
           servicer.FromTemplate,
@@ -258,10 +233,10 @@ def add_DomainServicer_to_server(servicer, server):
           request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.FromMediaRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.FromMediaResponse.SerializeToString,
       ),
-      'Update': grpc.unary_unary_rpc_method_handler(
-          servicer.Update,
-          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.UpdateRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.UpdateResponse.SerializeToString,
+      'HardwareUpdate': grpc.unary_unary_rpc_method_handler(
+          servicer.HardwareUpdate,
+          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareUpdateRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.HardwareUpdateResponse.SerializeToString,
       ),
       'Delete': grpc.unary_unary_rpc_method_handler(
           servicer.Delete,
@@ -278,10 +253,15 @@ def add_DomainServicer_to_server(servicer, server):
           request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.StopRequest.FromString,
           response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.StopResponse.SerializeToString,
       ),
-      'BootUpdate': grpc.unary_unary_rpc_method_handler(
-          servicer.BootUpdate,
-          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateRequest.FromString,
-          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.BootUpdateResponse.SerializeToString,
+      'Pause': grpc.unary_unary_rpc_method_handler(
+          servicer.Pause,
+          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.PauseRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.PauseResponse.SerializeToString,
+      ),
+      'Resume': grpc.unary_unary_rpc_method_handler(
+          servicer.Resume,
+          request_deserializer=api_dot_grpc_dot_proto_dot_domain__pb2.ResumeRequest.FromString,
+          response_serializer=api_dot_grpc_dot_proto_dot_domain__pb2.ResumeResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

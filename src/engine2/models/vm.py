@@ -92,8 +92,6 @@ class Vm_Media(BaseMixin, Base):
     rpath = sa.Column(sa.String, default="vms/")
     filename = sa.Column(sa.String, nullable=False)
     bus = sa.Column(sa.String, default="ide")
-    # ~ dev = sa.Column(sa.String, nullable=False)
-    # size = sa.Column(sa.Integer)
     format = sa.Column(sa.String, default="raw")
     order = sa.Column(sa.Integer, nullable=False)
     
@@ -139,7 +137,6 @@ class Vm(BaseMixin, Base):
 
     
     id = sa.Column(sa.Integer, primary_key=True)
-    kind = sa.Column(sa.String(50))
     name = sa.Column(sa.String, unique=True)
     state = sa.Column(sa.String, default='STATE_UNKNOWN')
     
@@ -169,17 +166,12 @@ class Vm(BaseMixin, Base):
                                         
     sound = relationship("Vm_Sound", 
                                         back_populates="vm")  
-
+    kind = sa.Column(sa.String)
+    
     __mapper_args__ = {
         'polymorphic_on':kind,
         'polymorphic_identity':'vm'
     }
-                                                                                    
-    # ~ memory = relationship('MemoryXML')
-    # ~ vcpu = relationship('VcpuXML')
-    # ~ vcpu = sa.Column(sa.Integer)
-    # ~ memory = sa.Column(sa.Integer)
-
         
     def get_xml(vm_name):
         try:
@@ -227,7 +219,6 @@ class Disk(BaseMixin, Base):
     filename = sa.Column(sa.String, nullable=False)
     
     bus = sa.Column(sa.String, default='virtio')
-    # ~ dev = sa.Column(sa.String)
     size = sa.Column(sa.Integer, default=10)
     format = sa.Column(sa.String, default='qcow2')
 

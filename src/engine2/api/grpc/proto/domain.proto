@@ -11,34 +11,23 @@ service Domain {
     rpc Get(GetRequest) returns (GetResponse) {}
     rpc State(GetStateRequest) returns (GetStateResponse) {}
     rpc Viewer(ViewerRequest) returns (ViewerResponse) {}
-    
-    rpc VideoList(VideoListRequest) returns (VideoListResponse) {}
-    rpc BootList(BootListRequest) returns (BootListResponse) {}
-    rpc InterfaceList(InterfaceListRequest) returns (InterfaceListResponse) {}
-    // graphics
-    // cpu
-    // memory
-    // sound
-    // disk
-    // media
-    
+    rpc Hardware(HardwareRequest) returns (HardwareResponse) {}
     
     // Engine only
     rpc FromTemplate(FromTemplateRequest) returns (FromTemplateResponse) {}
     rpc FromMedia(FromMediaRequest) returns (FromMediaResponse) {}
-    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    rpc HardwareUpdate(HardwareUpdateRequest) returns (HardwareUpdateResponse) {}
     rpc Delete(DeleteRequest) returns (DeleteResponse) {}
     rpc Start(StartRequest) returns (StartResponse) {}
     rpc Stop(StopRequest) returns (StopResponse) {}
-    // pause
-    // resume
-    // template
+    rpc Pause(PauseRequest) returns (PauseResponse) {}
+    rpc Resume(ResumeRequest) returns (ResumeResponse) {}
     
     // Database & Engine (test domain before updating)
     // video add
     // video remove
     // video update
-    rpc BootUpdate(BootUpdateRequest) returns (BootUpdateResponse) {}
+    // rpc BootUpdate(BootUpdateRequest) returns (BootUpdateResponse) {}
     // interface add
     // interface remove
     // interface update
@@ -58,15 +47,24 @@ service Domain {
     // media update
 }
 
+enum State {
+    STATE_UNKNOWN = 0;
+    STATE_STOPPED = 1;
+    STATE_STARTED = 2;
+    STATE_PAUSED = 3;
+    STATE_DELETED = 4;
+    STATE_FAILED = 5;
+}
+
 enum Action {
-    UNKNOWN = 0;
-    STOP = 1;
-    START = 2;
-    PAUSE = 3;
-    RESUME = 4;
-    DELETE = 5;
-    UPDATE = 6;
-    TEMPLATE = 7;
+    ACTION_UNKNOWN = 0;
+    ACTION_STOP = 1;
+    ACTION_START = 2;
+    ACTION_PAUSE = 3;
+    ACTION_RESUME = 4;
+    ACTION_DELETE = 5;
+    ACTION_UPDATE = 6;
+    ACTION_TEMPLATE = 7;
 }
 
 enum Format {
@@ -83,17 +81,139 @@ enum Bus {
     BUS_SCSII = 3;
 }
 
+enum Boot {
+    BOOT_HD = 0;
+    BOOT_CDROM = 1;
+    BOOT_NETWORK = 2;
+    BOOT_FD = 3;
+}
 
-    
-message ListRequest {}
+message VmDisk {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+    string ppath = 4;
+    string rpath = 5;
+    string filename = 6;
+    Bus bus = 7;
+    int32 size = 8;
+    Format format = 9;
+}
+
+message VmSound {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+}
+
+message VmCpu {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+    string match = 4;
+    string fallback = 5;
+    string model = 6;
+    string check = 7;
+}
+
+message VmVcpu {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+    int32 vcpus = 4;
+}    
+
+message VmMemory {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+    string unit = 4;
+    int32 memory = 5;
+    int32 maxmemory = 6;
+    int32 currentmemory = 7;
+}
+
+message VmMedia {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+    string ppath = 4;
+    string rpath = 5;
+    string filename = 6;
+    string bus = 7;
+    string format = 8;
+    int32 order = 9;
+}
+
+message VmInterface {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+    string source = 4;
+    string model = 5;
+    string mac = 6;
+    int32 order = 7;
+}
+
+message VmGraphic {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+}
+
+message VmVideo {
+    int32 id = 1;
+    string name = 2;
+    string xml = 3;
+}
+
+message Hardware {
+    VmMemory memory = 4;
+    VmVcpu vcpu = 5;
+    VmCpu cpu = 6;
+    repeated Boot boots = 7;
+    repeated VmDisk disks = 8;
+    repeated VmMedia medias = 9;
+    repeated VmInterface interfaces = 10;
+    repeated VmGraphic graphics = 11;
+    repeated VmVideo videos = 12;
+    repeated VmSound sounds = 13;
+    string xml = 14;
+}
 
 message DomainMessage {
     int32 id = 1;
     string name = 2;
-    int32 vcpu = 3;
-    int32 memory = 4;
-    Hardware hardware = 5;
+    State state = 3;
 }
+
+message HardwareRequest {
+    string domain_id = 1;
+    
+}
+    
+message HardwareResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        FAILED = 2;
+    }
+    State state = 1;
+    repeated Action next_actions = 2;
+    Hardware hardware = 3;
+}
+
+message HardwareUpdateRequest {
+    Hardware hardware = 1;
+}
+    
+message HardwareUpdateResponse {
+    Hardware hardware = 1;
+}
+
+message ListRequest {}
+
+
     
 message ListResponse {
     repeated DomainMessage domains = 1;
@@ -187,20 +307,6 @@ message FromMediaResponse {
     repeated Action next_actions = 3;
 }
 
-message UpdateRequest {
-    string Domain_id = 1;
-    HardwareUpdate hardware = 2;
-}
-
-message UpdateResponse {
-    enum State {
-        UNKNOWN = 0;
-        STOPPED = 1;
-        FAILED = 2;
-    }
-    State state = 1;
-    repeated Action next_actions = 2;
-}
 
 message DeleteRequest {
     string Domain_id = 1;
@@ -235,7 +341,7 @@ message StartResponse {
 }
 
 message StopRequest {
-    string Domain_id = 1;
+    string domain_id = 1;
 }
 
 message StopResponse {
@@ -251,6 +357,39 @@ message StopResponse {
     repeated Action next_actions = 2;
 }
 
+message PauseRequest {
+    string domain_id = 1;
+}
+
+message PauseResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    State state = 1;
+    repeated Action next_actions = 2;
+}
+
+message ResumeRequest {
+    string domain_id = 1;
+}
+
+message ResumeResponse {
+    enum State {
+        UNKNOWN = 0;
+        STOPPED = 1;
+        STARTED = 2;
+        PAUSED = 3;
+        DELETED = 4;
+        FAILED = 5;
+    }
+    State state = 1;
+    repeated Action next_actions = 2;
+}
 message ViewerRequest {
     string Domain_id = 1;
 }
@@ -275,12 +414,7 @@ message VideoListResponse {
     repeated Video videos = 1;
 }
 
-enum Boot {
-    BOOT_HD = 0;
-    BOOT_CDROM = 1;
-    BOOT_NETWORK = 2;
-    BOOT_FD = 3;
-}
+
 
 message BootListRequest {
     string domain_name = 1;
@@ -324,52 +458,6 @@ message Viewer {
     string passwd = 9;
     string client_addr = 10;
     float client_since = 11;
-}
-
-
-message Disk {
-    string id = 1;
-    string rpath = 2;
-    string bus = 3;
-    string format = 4;
-    int32  size = 5; 
-}
-
-message Hardware {
-    int32 vcpus = 1;
-    int32 memory = 2;
-    repeated Disk disks = 3;
-    repeated string videos = 4;
-    repeated string graphics = 7;
-    repeated string boots = 8;
-    repeated string interfaces = 9;
-    repeated string isos = 10;
-    repeated string floppies = 11;
-}
-
-message HardwareDerived {
-    int32 vcpus = 1;
-    int32 memory = 2;
-    string boot_disk_rpath = 3;
-    string boot_disk_bus = 4; 
-    repeated string videos = 5;
-    repeated string graphics = 6;
-    repeated string boots = 7;
-    repeated string interfaces = 8;
-    repeated string isos = 9;
-    repeated string floppies = 10;
-}
-
-message HardwareUpdate {
-    int32 vcpus = 1;
-    int32 memory = 2;
-    string boot_disk_bus = 7; 
-    repeated string videos = 3;
-    repeated string graphics= 4 ;
-    repeated string boots = 5;
-    repeated string interfaces = 6;
-    repeated string isos = 8;
-    repeated string floppies = 9;
 }
 
 
