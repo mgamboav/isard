@@ -1,22 +1,19 @@
-# ~ from sqlalchemy import Table, Column, sa.String, sa.Integer
 import sqlalchemy as sa
-# ~ from sqlalchemy.ext.declarative import declarative_Base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.inspection import inspect as _inspect
 from sqlalchemy.ext.orderinglist import ordering_list
 
-# ~ from models.Base_mixin import BaseMixin as Base
+from models import db, Base
 from models.base_mixin import BaseMixin
 
+# ~ from common.connection_manager import engine
+# ~ from sqlalchemy.orm import scoped_session, sessionmaker
+# ~ db = scoped_session(sessionmaker(bind=engine))
+
+# ~ from sqlalchemy.ext.declarative import declarative_base
+# ~ Base = declarative_base()
+
 from models.parser.xml_parser import XmlParser
-
-# ~ from common.connection_manager import db_session
-from common.connection_manager import engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-db = scoped_session(sessionmaker(bind=engine))
-
-from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base()
 
 def same_as(column_name):
     def default_function(context):

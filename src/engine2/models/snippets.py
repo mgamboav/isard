@@ -150,7 +150,7 @@ class XMLHelper(object):
   <vcpu>{vcpu}</vcpu>
 '''})
 
-        snippets['cpu'].append({'name': 'host_passthrough',
+        snippets['cpu'].append({'name': 'host-passthrough',
         'xml': '''
   <cpu mode="host-passthrough">
   </cpu>
@@ -160,7 +160,7 @@ class XMLHelper(object):
     # ~ <model fallback='allow'/>
   # ~ </cpu>
 
-        snippets['cpu'].append({'name': 'host_model',
+        snippets['cpu'].append({'name': 'host-model',
         'xml': '''
   <cpu mode="host-model" check="partial">
     <model fallback="{fallback}"/>

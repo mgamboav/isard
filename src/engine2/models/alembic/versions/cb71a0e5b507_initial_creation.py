@@ -12,6 +12,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.exc import IntegrityError
 # ~ from models.base_mixin import BaseMixin
 from models.domain import *
+from models.hypervisor import *
 from models.snippets import XMLHelper
 
 # ~ Base, domain, Boot, Interface, Graphic, Video, Disk, DiskBus, DiskFormat
@@ -66,7 +67,7 @@ def upgrade():
     vcpu = Domain_Vcpu(domain_id=domain, vcpu_id=vcpu_xml.id, vcpus=2)
     domain.vcpu.append(vcpu) 
 
-    cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'host_model').one()
+    cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'host-model').one()
     cpu = Domain_Cpu(domain_id=domain, cpu_id=cpu_xml.id)
     domain.cpu.append(cpu)
           
@@ -99,7 +100,8 @@ def upgrade():
     di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', source='default', order=1)
     # ~ , mac='11:22:33:44:55:66', order=1)
     domain.interfaces.append(di)        
-        
+    session.add(domain) 
+    
     ### Graphics
     # ~ dg_xml = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
     # ~ dg = Domain_Graphic(domain_id=domain, graphic_id=dg_xml.id, order=1)
@@ -112,10 +114,37 @@ def upgrade():
     
     
     
-    
-    
-        
-    session.add(domain)  
+    ##########################################
+    ### Hypervisor
+    ##########################################
+    hv = ViewerCertificate(name='default', 
+                        default_mode='secure',
+                        certificate='certificate ac po984wyt',
+                        server_cert='server cert afjñw49iwp948f',
+                        host_subject='',
+                        domain='isardvdi.com')
+    session.add(hv)
+    session.flush()
+    cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'host-passthrough').one()
+    hp = HypervisorPool(name='default',
+                        viewer_certificate_id=hv.id,
+                        cpu_id=cpu_xml.id)
+    session.add(hp)
+    session.flush()
+    h = Hypervisor(hostname='isard-hypervisor',
+                    passwd='pass',
+                    hypervisor_pool_id=hp.id)
+    session.add(h)
+    session.flush()
+    acl = Acl(hypervisor_pool_id=hp.id,
+                order=1,
+                src='',
+                dst='',
+                weight=100,
+                hypervisor_id=h.id)
+    # ~ h.hypervisor_pool_id.append(hp) 
+    session.add(acl)
+    session.flush()
     # ~ domain.boot.append(db)
     # ~ domain.boot.reorder()        
     session.commit()
