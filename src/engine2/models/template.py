@@ -136,10 +136,7 @@ class Domain_Video(BaseMixin, Base):
 class Domain(BaseMixin, Base):
     __tablename__ = 'domain'
 
-
-    
     id = sa.Column(sa.Integer, primary_key=True)
-    kind = sa.Column(sa.String(50))
     name = sa.Column(sa.String, unique=True)
     state = sa.Column(sa.String, default='STATE_UNKNOWN')
     
@@ -148,6 +145,8 @@ class Domain(BaseMixin, Base):
     boot = relationship("Boot", order_by="Boot.order",
                             collection_class=ordering_list('order'),
                             cascade="all, delete-orphan")
+    # ~ bullets = relationship("Bullet", order_by="Bullet.position",
+                            # ~ collection_class=ordering_list('position')
                                 
     disk = relationship('Disk')
     medias = relationship("Domain_Media", 
@@ -167,12 +166,7 @@ class Domain(BaseMixin, Base):
                                         
     sound = relationship("Domain_Sound", 
                                         back_populates="domain")  
-
-    __mapper_args__ = {
-        'polymorphic_on':kind,
-        'polymorphic_identity':'domain'
-    }
-                                                                                    
+                                                                                
     # ~ memory = relationship('MemoryXML')
     # ~ vcpu = relationship('VcpuXML')
     # ~ vcpu = sa.Column(sa.Integer)
