@@ -54,10 +54,10 @@ class XmlParser(object):
     def to_xml(self):
         return etree.tostring(self.tree, encoding='unicode', pretty_print=True)
 
-    def domain_name_update(self, name):
+    def vm_name_update(self, name):
         self.tree.xpath('/domain/name')[0].text = name
 
-    def domain_vcpu_update(self, vcpu, remove=False):
+    def vm_vcpu_update(self, vcpu, remove=False):
         if remove: self.clean_xml('vcpu')
         try:
             vcpu_xml = vcpu['xml'].format(vcpu=vcpu['vcpus'])
@@ -67,7 +67,7 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_cpu_update(self, cpu, remove=False):
+    def vm_cpu_update(self, cpu, remove=False):
         if remove: self.clean_xml('cpu')
         try:
             cpu_xml = cpu['xml'].format(match=cpu['match'],
@@ -80,7 +80,7 @@ class XmlParser(object):
             raise
         return True
                 
-    def domain_memory_update(self, memory, remove=False):
+    def vm_memory_update(self, memory, remove=False):
         if remove: self.clean_xml('memory')
         try:
             memory_xml = memory['xml'].format(unit=memory['unit'],
@@ -94,7 +94,7 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_boot_update(self,boot_devs, menu=False):
+    def vm_boot_update(self,boot_devs, menu=False):
         try:
             self.clean_xml(item='boot')
             dev_xml = '''<boot dev="{dev}"/>'''
@@ -110,7 +110,7 @@ class XmlParser(object):
             raise
         return True
                                                                      
-    def domain_disk_next_dev(self, bus):
+    def vm_disk_next_dev(self, bus):
         ''' device = disk, cdrom, floppy '''
         ''' bus = virtio, ide, fdc, sata, scsii, ... '''
         try:
@@ -138,11 +138,11 @@ class XmlParser(object):
             raise
 
    
-    def domain_disk_add(self, disk, remove=False):
+    def vm_disk_add(self, disk, remove=False):
         if disk is False: return False
         if remove: self.clean_xml('disk')
         try:
-            dev, disk_new_xpath = self.domain_disk_next_dev(disk['bus'])
+            dev, disk_new_xpath = self.vm_disk_next_dev(disk['bus'])
             disk_xml = disk['xml'].format(format=disk['format'],
                                          source=disk['ppath']+disk['rpath']+disk['filename'],
                                          dev=dev,
@@ -156,7 +156,7 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_interface_add(self, interface, remove=False):
+    def vm_interface_add(self, interface, remove=False):
         if interface is False: return False
         if remove: self.clean_xml('interface')
         if interface['mac'] is None:
@@ -177,7 +177,7 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_graphic_add(self, graphic, remove=False):
+    def vm_graphic_add(self, graphic, remove=False):
         if graphic is False: return False
         if remove: self.clean_xml('graphics')
         try:
@@ -194,7 +194,7 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_video_add(self, video, remove=False):
+    def vm_video_add(self, video, remove=False):
         if video is False: return False
         if remove: self.clean_xml('video')
         try:
@@ -211,7 +211,7 @@ class XmlParser(object):
             raise
         return True
 
-    def domain_sound_add(self, sound, remove=False):
+    def vm_sound_add(self, sound, remove=False):
         if sound is False: return False
         if remove: self.clean_xml('sound')
         try:

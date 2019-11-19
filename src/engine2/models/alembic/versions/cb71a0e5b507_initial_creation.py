@@ -11,11 +11,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.exc import IntegrityError
 # ~ from models.base_mixin import BaseMixin
-from models.domain import *
+from models.domain import Domain
+from models.template import Template
+from models.vm import *
 from models.hypervisor import *
+
 from models.snippets import XMLHelper
 
-# ~ Base, domain, Boot, Interface, Graphic, Video, Disk, DiskBus, DiskFormat
+# ~ Base, vm, Boot, Interface, Graphic, Video, Disk, DiskBus, DiskFormat
 # Iso, Floppy
 
 Session = sessionmaker()
@@ -39,7 +42,7 @@ def upgrade():
     
    
     ## Add virtio-install xmls 
-    session.bulk_save_objects([DomainXML(name=x['name'], xml=x['xml']) for x in xml.get_virtinstalls()])
+    session.bulk_save_objects([VmXML(name=x['name'], xml=x['xml']) for x in xml.get_virtinstalls()])
     
     ## Add snippet xmls
     session.bulk_save_objects([DiskXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('disk')])
@@ -52,65 +55,65 @@ def upgrade():
     session.bulk_save_objects([CpuXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('cpu')])
     session.bulk_save_objects([SoundXML(name=i['name'], xml=i['xml']) for i in xml.get_snippets('sound')])
     ################################3
-    # New domain.
-    ## Get xml for new domain
-    d_xml = session.query(DomainXML).filter(DomainXML.name == 'altlinux1.0').one()
+    # New vm.
+    ## Get xml for new vm
+    d_xml = session.query(VmXML).filter(VmXML.name == 'altlinux1.0').one()
     
-    ## Create the domain
-    domain = Domain(name="_t_e_s_t_", domain_xml=d_xml) #, vcpu = 1, memory = 768)
+    ## Create the vm
+    d = Domain(name="_t_e_s_t_", vm_xml=d_xml) #, vcpu = 1, memory = 768)
 
     mem_xml = session.query(MemoryXML).filter(MemoryXML.name == 'balloon').one()
-    mem = Domain_Memory(domain_id=domain, memory_id=mem_xml.id, mem=1500)
-    domain.memory.append(mem) 
+    mem = Vm_Memory(vm_id=d, memory_id=mem_xml.id, mem=1500)
+    d.memory.append(mem) 
     
     vcpu_xml = session.query(VcpuXML).filter(VcpuXML.name == 'vcpu').one()
-    vcpu = Domain_Vcpu(domain_id=domain, vcpu_id=vcpu_xml.id, vcpus=2)
-    domain.vcpu.append(vcpu) 
+    vcpu = Vm_Vcpu(vm_id=d, vcpu_id=vcpu_xml.id, vcpus=2)
+    d.vcpu.append(vcpu) 
 
     cpu_xml = session.query(CpuXML).filter(CpuXML.name == 'host-model').one()
-    cpu = Domain_Cpu(domain_id=domain, cpu_id=cpu_xml.id)
-    domain.cpu.append(cpu)
+    cpu = Vm_Cpu(vm_id=d, cpu_id=cpu_xml.id)
+    d.cpu.append(cpu)
           
     # ~ sound_xml = session.query(SoundXML).filter(SoundXML.name == 'ich6').one()
-    # ~ sound = Domain_Sound(domain_id=domain, sound_id = sound_xml.id)
-    # ~ domain.sound.append(sound)
+    # ~ sound = Vm_Sound(vm_id=vm, sound_id = sound_xml.id)
+    # ~ vm.sound.append(sound)
           
     ### Boot
-    db = Boot(domain_id=domain.id, name='BOOT_NETWORK') #, order=1)
-    domain.boot.append(db)
-    # ~ db = Boot(domain_id=domain.id, name='BOOT_HD') #, order=1)
-    # ~ domain.boot.append(db)
-    # ~ db = Boot(domain_id=domain.id, name='BOOT_CD') #, order=1)
-    # ~ domain.boot.append(db)
+    db = Boot(vm_id=d.id, name='BOOT_NETWORK') #, order=1)
+    d.boot.append(db)
+    db = Boot(vm_id=d.id, name='BOOT_HD') #, order=1)
+    d.boot.append(db)
+    db = Boot(vm_id=d.id, name='BOOT_CD') #, order=1)
+    d.boot.append(db)
     
 
     # ~ print(Boot.filter_by(name='disk').first())
     ### Hard disk
-    # ~ dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
-    # ~ dd = Disk(domain_id=domain.id, xml=dd_xml, name='____', filename="____.qcow2", bus='virtio', size=10, format='qcow2', order=1)
-    # ~ domain.disk.append(dd)
+    dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
+    dd = Disk(vm_id=d.id, xml=dd_xml, name='____', filename="____.qcow2", bus='virtio', size=10, format='qcow2')
+    d.disk.append(dd)
 
     ### Medias
     # ~ dm_xml = session.query(MediaXML).filter(MediaXML.name == 'iso').one()
-    # ~ dm = Domain_Media(domain_id=domain.id, media_id=dm_xml.id, filename="____.iso", order=1)
-    # ~ domain.medias.append(dm)
+    # ~ dm = Vm_Media(vm_id=vm.id, media_id=dm_xml.id, filename="____.iso", order=1)
+    # ~ vm.medias.append(dm)
     
     ### Interfaces
     di_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
-    di = Domain_Interface(domain_id=domain, interface_id=di_xml.id, model='virtio', source='default', order=1)
+    di = Vm_Interface(vm_id=d, interface_id=di_xml.id, model='virtio', source='default', order=1)
     # ~ , mac='11:22:33:44:55:66', order=1)
-    domain.interfaces.append(di)        
-    session.add(domain) 
+    d.interfaces.append(di)        
+    session.add(d) 
     
     ### Graphics
     # ~ dg_xml = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
-    # ~ dg = Domain_Graphic(domain_id=domain, graphic_id=dg_xml.id, order=1)
-    # ~ domain.graphic.append(dg)
+    # ~ dg = Vm_Graphic(vm_id=vm, graphic_id=dg_xml.id, order=1)
+    # ~ vm.graphic.append(dg)
     
     ### Videos
     # ~ dv_xml = session.query(VideoXML).filter(VideoXML.name == 'qxl').one()
-    # ~ dv = Domain_Video(domain_id=domain, video_id=dv_xml.id, order=1)
-    # ~ domain.videos.append(dv)
+    # ~ dv = Vm_Video(vm_id=vm, video_id=dv_xml.id, order=1)
+    # ~ vm.videos.append(dv)
     
     
     
@@ -145,8 +148,8 @@ def upgrade():
     # ~ h.hypervisor_pool_id.append(hp) 
     session.add(acl)
     session.flush()
-    # ~ domain.boot.append(db)
-    # ~ domain.boot.reorder()        
+    # ~ vm.boot.append(db)
+    # ~ vm.boot.reorder()        
     session.commit()
 
 def downgrade():

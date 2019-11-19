@@ -6,7 +6,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from models import db, Base
 from models.base_mixin import BaseMixin
 
-from models.domain import CpuXML
+from models.vm import CpuXML
 
 import enum
 
@@ -39,17 +39,10 @@ class HypervisorPool(BaseMixin, Base):
     viewer_certificate_id = sa.Column(sa.Integer, sa.ForeignKey('viewer_certificate.id'), nullable=False)
     viewer_certificate = relationship("ViewerCertificate")  
     
-    # ~ interfaces = sa.Column(sa.Integer, )
     cpu_id = sa.Column(sa.Integer, sa.ForeignKey('cpu_xml.id'), default=1)
     cpu = relationship("CpuXML")  
     
     acl = relationship("Acl")
-    
-    # ~ path_groups =
-    # ~ path_templates =
-    # ~ path_media =
-
-
         
 class Hypervisor(BaseMixin, Base):
     __tablename__ = 'hypervisor'
@@ -66,7 +59,6 @@ class Hypervisor(BaseMixin, Base):
     viewer_hostname = sa.Column(sa.String, default=same_as('hostname'))
     viewer_nat_hostname = sa.Column(sa.String, default=same_as('hostname'))
     viewer_nat_offset = sa.Column(sa.Integer, default=0)
-    
     enabled = sa.Column(sa.Boolean, default=False)
     state = sa.Column(sa.String, default='STATE_DISCONNECTED')
     
@@ -74,8 +66,7 @@ class Hypervisor(BaseMixin, Base):
     hypervisor_pool = relationship("HypervisorPool")   
     
     acl = relationship("Acl", uselist=False, back_populates="hypervisor")
-    
-    
+      
 class Acl(BaseMixin, Base):
     __tablename__ = 'acl'
 

@@ -14,7 +14,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 db = scoped_session(sessionmaker(bind=engine))
 
 # ~ from models.domain import *
-from models.desktop import *
+from models.domain import Domain
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
 

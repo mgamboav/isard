@@ -5,6 +5,6 @@ db = scoped_session(sessionmaker(bind=engine))
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
-from models.desktop import *
-# ~ from models.domain import *
-# ~ from models.hypervisor import *
+from models.domain import *
+from models.template import *
+from models.hypervisor import *
