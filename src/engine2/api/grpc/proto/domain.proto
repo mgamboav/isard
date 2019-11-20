@@ -259,7 +259,7 @@ message ListHardwareDetailResponse {
 
 //// GET
 message GetRequest {
-    string domain_id = 1;
+    int32 id = 1;
 }
 
 message GetResponse {

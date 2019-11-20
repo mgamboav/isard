@@ -2,8 +2,8 @@
     
 class DomainSM():
     def __init__(self):
-        self.states  = ['STOPPED','STARTED','PAUSED','DELETED','FAILED','UNKNOWN']
-        self.actions = ['STOP','START','PAUSE','RESUME','DELETE','UPDATE','TEMPLATE']
+        self.states  = ['STATE_STOPPED','STATE_STARTED','STATE_PAUSED','STATE_DELETED','STATE_FAILED','STATE_UNKNOWN']
+        self.actions = ['ACTION_STOP','ACTION_START','ACTION_PAUSE','ACTION_RESUME','ACTION_DELETE','ACTION_UPDATE','ACTION_TEMPLATE']
         self.transitions = {}
         
         self.define_machine()
@@ -17,33 +17,33 @@ class DomainSM():
         if action not in self.transitions[init_state].keys():
             self.transitions[init_state][action] = {}
             self.transitions[init_state][action][end_state] = True
-            self.transitions[init_state][action]['FAILED'] = False
+            self.transitions[init_state][action]['STATE_FAILED'] = False
 
     def define_machine(self):
-        self.add_transition('STOPPED','START','STARTED')
-        self.add_transition('STOPPED','DELETE','DELETED')
-        self.add_transition('STOPPED','UPDATE','STOPPED')
-        self.add_transition('STOPPED','TEMPLATE','STOPPED')
+        self.add_transition('STATE_STOPPED','ACTION_START','STATE_STARTED')
+        self.add_transition('STATE_STOPPED','ACTION_DELETE','STATE_DELETED')
+        self.add_transition('STATE_STOPPED','ACTION_UPDATE','STATE_STOPPED')
+        self.add_transition('STATE_STOPPED','ACTION_TEMPLATE','STATE_STOPPED')
         
-        self.add_transition('STARTED','STOP','STOPPED')
-        self.add_transition('STARTED','PAUSE','PAUSED')
+        self.add_transition('STATE_STARTED','ACTION_STOP','STATE_STOPPED')
+        self.add_transition('STATE_STARTED','ACTION_PAUSE','STATE_PAUSED')
         
-        self.add_transition('FAILED','START','STARTED')
-        self.add_transition('FAILED','DELETE','DELETED')
-        self.add_transition('FAILED','UPDATE','STOPPED')
+        self.add_transition('STATE_FAILED','ACTION_START','STATE_STARTED')
+        self.add_transition('STATE_FAILED','ACTION_DELETE','STATE_DELETED')
+        self.add_transition('STATE_FAILED','ACTION_UPDATE','STATE_STOPPED')
         
-        self.add_transition('PAUSED','RESUME','STARTED')
-        self.add_transition('PAUSED','STOP','STOPPED')
+        self.add_transition('STATE_PAUSED','ACTION_RESUME','STATE_STARTED')
+        self.add_transition('STATE_PAUSED','ACTION_STOP','STATE_STOPPED')
         
-        self.add_transition('UNKNOWN','DELETE','DELETED')
+        self.add_transition('STATE_UNKNOWN','ACTION_DELETE','STATE_DELETED')
         
     def get_states(self):
         return self.states
     
     def get_next_actions(self,state):
-        if state == 'DELETED': return []
+        if state == 'STATE_DELETED': return []
         if state in self.transitions.keys():
-            return self.transitions[state].keys()
+            return list(self.transitions[state].keys())
         raise StateInvalidError
 
 class DomainSMError(Exception):

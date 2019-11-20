@@ -55,12 +55,12 @@ class EngineClient(object):
         except KeyboardInterrupt:            
             return 
             
-    def desktop_get(self, message):
+    def domain_get(self, message):
         """
         Client function to call the rpc
         """
         try:
-            response = self.desktop_stub.Get(desktop_pb2.GetRequest(desktop_id=message))
+            response = self.domain_stub.Get(domain_pb2.GetRequest(id=message))
         except grpc.RpcError as e:
             print(e.details())
             print(e.code().name)
@@ -72,7 +72,7 @@ class EngineClient(object):
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
-        return response.desktop
+        return response.id
 
 # ~ 
     def domain_list(self):
@@ -450,7 +450,7 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
-print(curr_client.domain_boot_list('_admin_tetros'))
+print(curr_client.domain_get(1))
 # ~ print(curr_client.desktop_boots())
 # ~ print(curr_client.desktop_interfaces())
 # ~ curr_client.domain_changes()

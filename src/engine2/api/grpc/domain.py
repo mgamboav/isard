@@ -5,16 +5,22 @@ from api.grpc.proto import domain_pb2
 from api.grpc.proto import domain_pb2_grpc
 from common.exceptions.engine import NotFoundError
 
+from models.domain import Domain
+from models.template import Template
+from models.vm import *
+from models.hypervisor import *
+from models import db
+
 import logging
 log = logging.getLogger(__name__)
 
 # ~ from common.connection_manager import db_session
-from common.connection_manager import engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-db = scoped_session(sessionmaker(bind=engine))
+# ~ from common.connection_manager import engine
+# ~ from sqlalchemy.orm import scoped_session, sessionmaker
+# ~ db = scoped_session(sessionmaker(bind=engine))
 
 # ~ from models.domain import *
-from models.domain import Domain
+# ~ from models.domain import Domain
 MIN_TIMEOUT = 5  # Start/Stop/delete
 MAX_TIMEOUT = 10 # Creations...
 
@@ -25,6 +31,26 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
     def __init__(self, engine):
         self.server_port = 46001
         self.engine = engine
+
+    def Get(self, request, context):
+        ''' Gets domain_id with all data '''
+        try:
+            # ~ state, desktop, next_actions = 
+            vm = self.engine.domain.get(request.id, pb=True)
+            print(vm)
+            return domain_pb2.GetResponse(vm)
+        # ~ except NonExistenceError:
+            # ~ context.set_details(request.desktop_id+' not found in database.')
+            # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
+            # ~ return desktop_pb2.GetResponse()             
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
+            context.set_details(f'Get error: {request.id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return domain_pb2.GetResponse() 
 
     def BootList(self, request, context):
         try:
@@ -97,23 +123,7 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return desktop_pb2.InterfaceListResponse() 
             
-    def Get(self, request, context):
-        ''' Gets desktop_id with all data '''
-        try:
-            state, desktop, next_actions = self.engine.DesktopGet(request.desktop_id)
-            return desktop_pb2.GetResponse(state=state, desktop=desktop, next_actions=next_actions)
-        # ~ except NonExistenceError:
-            # ~ context.set_details(request.desktop_id+' not found in database.')
-            # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
-            # ~ return desktop_pb2.GetResponse()             
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            
-            context.set_details(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            context.set_code(grpc.StatusCode.INTERNAL)               
-            return desktop_pb2.GetResponse() 
+
 
     def GetState(self, request, context):
         ''' Gets desktop_id only with state '''
