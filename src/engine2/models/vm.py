@@ -138,7 +138,7 @@ class Vm(BaseMixin, Base):
     
     id = sa.Column(sa.Integer, primary_key=True)
     name = sa.Column(sa.String, unique=True)
-    state = sa.Column(sa.String, default='STATE_UNKNOWN')
+    state = sa.Column(sa.String, default='STATE_UNIDENTIFIED')
     
     vm_xml_id = sa.Column(sa.Integer, sa.ForeignKey('vm_xml.id'), nullable=False)
     vm_xml = relationship("VmXML")  
@@ -197,7 +197,26 @@ class Vm(BaseMixin, Base):
 
         except Exception as e:
             raise
-        
+
+    def get(id):
+        vm = db.query(Vm).get(id)
+        return {'id':vm.id,'name':vm.name,'state':vm.state}
+
+    def get_hardware(id):
+        vm = db.query(Vm).get(id)
+        return {'id':vm.id,'name':vm.name,'state':vm.state}
+
+    # ~ VmMemory memory = 4;
+    # ~ VmVcpu vcpu = 5;
+    # ~ VmCpu cpu = 6;
+    # ~ repeated Boot boots = 7;
+    # ~ repeated VmDisk disks = 8;
+    # ~ repeated VmMedia medias = 9;
+    # ~ repeated VmInterface interfaces = 10;
+    # ~ repeated VmGraphic graphics = 11;
+    # ~ repeated VmVideo videos = 12;
+    # ~ repeated VmSound sounds = 13;
+                            
 class Disk(BaseMixin, Base):
     __tablename__ = 'disk'
     

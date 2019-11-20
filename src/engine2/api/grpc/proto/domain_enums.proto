@@ -1,12 +1,13 @@
 syntax = "proto3";
 
 enum State {
-    STATE_UNKNOWN = 0;
-    STATE_STOPPED = 1;
-    STATE_STARTED = 2;
-    STATE_PAUSED = 3;
-    STATE_DELETED = 4;
-    STATE_FAILED = 5;
+	STATE_UNKNOWN = 0;
+    STATE_UNIDENTIFIED = 1;
+    STATE_STOPPED = 2;
+    STATE_STARTED = 3;
+    STATE_PAUSED = 4;
+    STATE_DELETED = 5;
+    STATE_FAILED = 6;
 }
 
 enum Action {

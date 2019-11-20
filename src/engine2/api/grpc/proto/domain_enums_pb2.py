@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n!api/grpc/proto/domain_enums.proto*w\n\x05State\x12\x11\n\rSTATE_UNKNOWN\x10\x00\x12\x11\n\rSTATE_STOPPED\x10\x01\x12\x11\n\rSTATE_STARTED\x10\x02\x12\x10\n\x0cSTATE_PAUSED\x10\x03\x12\x11\n\rSTATE_DELETED\x10\x04\x12\x10\n\x0cSTATE_FAILED\x10\x05*\x9f\x01\n\x06\x41\x63tion\x12\x12\n\x0e\x41\x43TION_UNKNOWN\x10\x00\x12\x0f\n\x0b\x41\x43TION_STOP\x10\x01\x12\x10\n\x0c\x41\x43TION_START\x10\x02\x12\x10\n\x0c\x41\x43TION_PAUSE\x10\x03\x12\x11\n\rACTION_RESUME\x10\x04\x12\x11\n\rACTION_DELETE\x10\x05\x12\x11\n\rACTION_UPDATE\x10\x06\x12\x13\n\x0f\x41\x43TION_TEMPLATE\x10\x07*K\n\x06\x46ormat\x12\x10\n\x0c\x46ORMAT_QCOW2\x10\x00\x12\x0e\n\nFORMAT_RAW\x10\x01\x12\x0e\n\nFORMAT_ISO\x10\x02\x12\x0f\n\x0b\x46ORMAT_VMDK\x10\x03*?\n\x03\x42us\x12\x0b\n\x07\x42US_IDE\x10\x00\x12\x0e\n\nBUS_VIRTIO\x10\x01\x12\x0c\n\x08\x42US_SATA\x10\x02\x12\r\n\tBUS_SCSII\x10\x03*B\n\x04\x42oot\x12\x0b\n\x07\x42OOT_HD\x10\x00\x12\x0e\n\nBOOT_CDROM\x10\x01\x12\x10\n\x0c\x42OOT_NETWORK\x10\x02\x12\x0b\n\x07\x42OOT_FD\x10\x03\x62\x06proto3')
+  serialized_pb=_b('\n!api/grpc/proto/domain_enums.proto*\x8f\x01\n\x05State\x12\x11\n\rSTATE_UNKNOWN\x10\x00\x12\x16\n\x12STATE_UNIDENTIFIED\x10\x01\x12\x11\n\rSTATE_STOPPED\x10\x02\x12\x11\n\rSTATE_STARTED\x10\x03\x12\x10\n\x0cSTATE_PAUSED\x10\x04\x12\x11\n\rSTATE_DELETED\x10\x05\x12\x10\n\x0cSTATE_FAILED\x10\x06*\x9f\x01\n\x06\x41\x63tion\x12\x12\n\x0e\x41\x43TION_UNKNOWN\x10\x00\x12\x0f\n\x0b\x41\x43TION_STOP\x10\x01\x12\x10\n\x0c\x41\x43TION_START\x10\x02\x12\x10\n\x0c\x41\x43TION_PAUSE\x10\x03\x12\x11\n\rACTION_RESUME\x10\x04\x12\x11\n\rACTION_DELETE\x10\x05\x12\x11\n\rACTION_UPDATE\x10\x06\x12\x13\n\x0f\x41\x43TION_TEMPLATE\x10\x07*K\n\x06\x46ormat\x12\x10\n\x0c\x46ORMAT_QCOW2\x10\x00\x12\x0e\n\nFORMAT_RAW\x10\x01\x12\x0e\n\nFORMAT_ISO\x10\x02\x12\x0f\n\x0b\x46ORMAT_VMDK\x10\x03*?\n\x03\x42us\x12\x0b\n\x07\x42US_IDE\x10\x00\x12\x0e\n\nBUS_VIRTIO\x10\x01\x12\x0c\n\x08\x42US_SATA\x10\x02\x12\r\n\tBUS_SCSII\x10\x03*B\n\x04\x42oot\x12\x0b\n\x07\x42OOT_HD\x10\x00\x12\x0e\n\nBOOT_CDROM\x10\x01\x12\x10\n\x0c\x42OOT_NETWORK\x10\x02\x12\x0b\n\x07\x42OOT_FD\x10\x03\x62\x06proto3')
 )
 
 _STATE = _descriptor.EnumDescriptor(
@@ -35,30 +35,34 @@ _STATE = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='STATE_STOPPED', index=1, number=1,
+      name='STATE_UNIDENTIFIED', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='STATE_STARTED', index=2, number=2,
+      name='STATE_STOPPED', index=2, number=2,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='STATE_PAUSED', index=3, number=3,
+      name='STATE_STARTED', index=3, number=3,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='STATE_DELETED', index=4, number=4,
+      name='STATE_PAUSED', index=4, number=4,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='STATE_FAILED', index=5, number=5,
+      name='STATE_DELETED', index=5, number=5,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='STATE_FAILED', index=6, number=6,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=37,
-  serialized_end=156,
+  serialized_start=38,
+  serialized_end=181,
 )
 _sym_db.RegisterEnumDescriptor(_STATE)
 
@@ -104,8 +108,8 @@ _ACTION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=159,
-  serialized_end=318,
+  serialized_start=184,
+  serialized_end=343,
 )
 _sym_db.RegisterEnumDescriptor(_ACTION)
 
@@ -135,8 +139,8 @@ _FORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=320,
-  serialized_end=395,
+  serialized_start=345,
+  serialized_end=420,
 )
 _sym_db.RegisterEnumDescriptor(_FORMAT)
 
@@ -166,8 +170,8 @@ _BUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=397,
-  serialized_end=460,
+  serialized_start=422,
+  serialized_end=485,
 )
 _sym_db.RegisterEnumDescriptor(_BUS)
 
@@ -197,18 +201,19 @@ _BOOT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=462,
-  serialized_end=528,
+  serialized_start=487,
+  serialized_end=553,
 )
 _sym_db.RegisterEnumDescriptor(_BOOT)
 
 Boot = enum_type_wrapper.EnumTypeWrapper(_BOOT)
 STATE_UNKNOWN = 0
-STATE_STOPPED = 1
-STATE_STARTED = 2
-STATE_PAUSED = 3
-STATE_DELETED = 4
-STATE_FAILED = 5
+STATE_UNIDENTIFIED = 1
+STATE_STOPPED = 2
+STATE_STARTED = 3
+STATE_PAUSED = 4
+STATE_DELETED = 5
+STATE_FAILED = 6
 ACTION_UNKNOWN = 0
 ACTION_STOP = 1
 ACTION_START = 2

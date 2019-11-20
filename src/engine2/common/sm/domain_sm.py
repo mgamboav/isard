@@ -2,7 +2,7 @@
     
 class DomainSM():
     def __init__(self):
-        self.states  = ['STATE_STOPPED','STATE_STARTED','STATE_PAUSED','STATE_DELETED','STATE_FAILED','STATE_UNKNOWN']
+        self.states  = ['STATE_STOPPED','STATE_STARTED','STATE_PAUSED','STATE_DELETED','STATE_FAILED','STATE_UNIDENTIFIED']
         self.actions = ['ACTION_STOP','ACTION_START','ACTION_PAUSE','ACTION_RESUME','ACTION_DELETE','ACTION_UPDATE','ACTION_TEMPLATE']
         self.transitions = {}
         
@@ -35,7 +35,7 @@ class DomainSM():
         self.add_transition('STATE_PAUSED','ACTION_RESUME','STATE_STARTED')
         self.add_transition('STATE_PAUSED','ACTION_STOP','STATE_STOPPED')
         
-        self.add_transition('STATE_UNKNOWN','ACTION_DELETE','STATE_DELETED')
+        self.add_transition('STATE_UNIDENTIFIED','ACTION_DELETE','STATE_DELETED')
         
     def get_states(self):
         return self.states

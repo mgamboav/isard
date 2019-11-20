@@ -1,78 +1,54 @@
 from common.sm.domain_sm import DomainSM
-# ~ import engine.exceptions
 from common.exceptions.engine import *
 
-# ~ from sqlalchemy import create_engine
-# ~ from sqlalchemy.orm import sessionmaker
-# ~ from models.domain import Domain
-# ~ from models.vm import *
+from sqlalchemy.orm import load_only
+
 from models.domain import Domain
 from models.template import Template
 from models.vm import *
 from models.hypervisor import *
 from models import db
 
-# ~ from common.connection_manager import db_session
-# ~ from common.connection_manager import engine
-# ~ from sqlalchemy.orm import scoped_session, sessionmaker
-# ~ db = scoped_session(sessionmaker(bind=engine))
-
 from api.grpc.proto import domain_pb2
 import sys, os
 
 class EngineMock(object):
     def __init__(self):
-        
-        
-        # ~ self.db = create_engine('postgresql://isardvdi:isardvdi@isard-database:5432/engine')
-        # ~ self.dbsession = sessionmaker(bind=self.db)
-        # ~ self.session = db_session()
-        self.domain = DomainMock() #(self.session)
+        self.domain = DomainMock()
 
 class DomainMock(object):
     def __init__(self):
-        # ~ self.session = session
         self.domain_sm = DomainSM()  
         pass  
 
-   # ~ int32 id = 1;
-    # ~ string name = 2;
-    # ~ State state = 3;
-    # ~ repeated Action next_actions = 4;
-    
-    # ~ {'id': 1, 'name': '_t_e_s_t_', 'state': 'STATE_UNKNOWN', 'kind': 'domain'}
+# ~ {'id': 1, 'name': '_t_e_s_t_', 'state': 'STATE_UNKNOWN', 'kind': 'domain'}
     
     def get(self,id,pb=False):
         ''' From running dict '''
         try:
-            print(id)
-            # ~ with db_session() as db:
-            domain = db.query(Domain).filter(Domain.id == id).one()
-                # ~ domains = self.session.query(Domain).all()
-            # ~ return domain._as_dict()
-            
-            next_actions = self.domain_sm.get_next_actions(domain.state)
+            vm = Domain.get(id)
+            vm['next_actions'] = self.domain_sm.get_next_actions(vm['state'])
             if pb:
-                vm = domain._as_dict()
-                vm.pop('vm_xml_id')
-                vm.pop('kind')
-                # ~ vm['state']='STATE_STOPPED'
-                vm['next_actions']=next_actions
-                print(vm)
-                # ~ return vm
                 return domain_pb2.Vm(**vm)
-            return domain
-            domains_dict = {}
-            for domain in [d.to_dict() for d in domains]:
-                id = domain.pop('id')
-                domains_dict[id] = domain
-            return domains_dict
+            return vm
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
             
-
+    def get_(self,id,pb=False):
+        ''' From running dict '''
+        try:
+            vm = Domain.get(id)
+            vm['next_actions'] = self.domain_sm.get_next_actions(vm['state'])
+            if pb:
+                return domain_pb2.Vm(**vm)
+            return vm
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
 
     def list(self,pb=False):
         ''' From running dict '''
