@@ -149,7 +149,16 @@ def upgrade():
     session.add(acl)
     session.flush()
     # ~ vm.boot.append(db)
-    # ~ vm.boot.reorder()        
+    # ~ vm.boot.reorder() 
+    
+    ####################
+    # New vm.
+    ## Get xml for new vm
+    d_xml = session.query(VmXML).filter(VmXML.name == 'altlinux1.0').one()
+    
+    ## Create the vm
+    d = Domain(name="_t_e_s_t_2", vm_xml=d_xml, state='STATE_STOPPED')      
+    session.add(d)      
     session.commit()
 
 def downgrade():

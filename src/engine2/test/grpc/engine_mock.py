@@ -56,7 +56,7 @@ class DomainMock(object):
                 vm = domain._as_dict()
                 vm.pop('vm_xml_id')
                 vm.pop('kind')
-                vm['state']='STATE_STOPPED'
+                # ~ vm['state']='STATE_STOPPED'
                 vm['next_actions']=next_actions
                 print(vm)
                 # ~ return vm

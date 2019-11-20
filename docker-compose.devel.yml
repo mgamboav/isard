@@ -56,7 +56,7 @@ services:
     volumes:
       - "./src:/isard"
     ports:
-      - "5000:5000"
+      - "1313:1313"
       - "5555:5555"
     build:
       context: .

@@ -4,6 +4,8 @@ import grpc
 import sys
 sys.path.append("../../")
 
+from google.protobuf.json_format import MessageToDict
+
 from api.grpc.proto import domain_pb2
 from api.grpc.proto import domain_pb2_grpc
 # ~ from engine.grpc.proto import desktops_stream_pb2
@@ -72,7 +74,8 @@ class EngineClient(object):
             #~ print(message+' was started')
         #~ else:
             #~ print(response.state)
-        return response.id
+        #print(response.name)
+        return response
 
 # ~ 
     def domain_list(self):
@@ -450,7 +453,10 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
-print(curr_client.domain_get(1))
+dom = curr_client.domain_get(1)
+print(dom)
+print(MessageToDict(dom))
+# ~ print(dom.name)
 # ~ print(curr_client.desktop_boots())
 # ~ print(curr_client.desktop_interfaces())
 # ~ curr_client.domain_changes()

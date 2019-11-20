@@ -38,7 +38,8 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
             # ~ state, desktop, next_actions = 
             vm = self.engine.domain.get(request.id, pb=True)
             print(vm)
-            return domain_pb2.GetResponse(vm)
+            print(vm.state)
+            return domain_pb2.GetResponse(domain = vm)
         # ~ except NonExistenceError:
             # ~ context.set_details(request.desktop_id+' not found in database.')
             # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
