@@ -77,6 +77,25 @@ class EngineClient(object):
         #print(response.name)
         return response
 
+    def domain_get_hardware(self, message):
+        """
+        Client function to call the rpc
+        """
+        try:
+            response = self.domain_stub.GetHardware(domain_pb2.GetHardwareRequest(id=message))
+        except grpc.RpcError as e:
+            print(e.details())
+            print(e.code().name)
+            print(e.code().value)
+            if grpc.StatusCode.INTERNAL == e.code():
+                print('The error is internal')
+            return False
+        #~ if response.state == desktop_pb2.DesktopStartResponse.State.STARTED:
+            #~ print(message+' was started')
+        #~ else:
+            #~ print(response.state)
+        #print(response.name)
+        return response
 # ~ 
     def domain_list(self):
         """
@@ -453,9 +472,18 @@ import time
 #threading.Thread(target=curr_client.desktops_changes, daemon=True).start()
 #while True: time.sleep(9999)
 
+# ~ for i in range(1,100):
+	# ~ threading.Thread(target=curr_client.domain_get, args=(1,),daemon=False).start()
+	# ~ print(i)
+# ~ while True: time.sleep(9999)
+
 dom = curr_client.domain_get(1)
 print(dom)
 print(MessageToDict(dom))
+
+dom_hard = curr_client.domain_get_hardware(1)
+print(dom_hard)
+print(MessageToDict(dom_hard))
 # ~ print(dom.name)
 # ~ print(curr_client.desktop_boots())
 # ~ print(curr_client.desktop_interfaces())

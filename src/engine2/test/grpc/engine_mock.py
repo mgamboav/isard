@@ -26,7 +26,10 @@ class DomainMock(object):
     def get(self,id,pb=False):
         ''' From running dict '''
         try:
-            vm = Domain.get(id)
+            db()
+            vm = db.query(Domain).filter(Domain.id==id).one().get()
+            db.commit()
+            db.remove()
             vm['next_actions'] = self.domain_sm.get_next_actions(vm['state'])
             if pb:
                 return domain_pb2.Vm(**vm)
@@ -34,12 +37,35 @@ class DomainMock(object):
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            
-    def get_(self,id,pb=False):
+            raise Exception(f'get error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+
+
+    def get_hardware(self,id,pb=False):
         ''' From running dict '''
         try:
+            db()
+            vm = db.query(Domain).filter(Domain.id==id).one()
+            vm_dict = vm.get()
+            vm_hardware_dict = vm.get_hardware()
+            db.commit()
+            db.remove()
+            vm_dict['next_actions'] = self.domain_sm.get_next_actions(vm_dict['state'])
+            vm_dict['hardware'] = vm_hardware_dict
+            if pb:
+                return domain_pb2.VmHardware(**vm_dict)
+            return vm
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            raise Exception(f'get_hardware error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+
+    def get_hardware_detail(self,id,pb=False):
+        ''' From running dict '''
+        try:
+            db()
             vm = Domain.get(id)
+            db.commit()
+            db.remove()
             vm['next_actions'] = self.domain_sm.get_next_actions(vm['state'])
             if pb:
                 return domain_pb2.Vm(**vm)
@@ -47,9 +73,8 @@ class DomainMock(object):
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            raise Exception(f'boot_list error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
-            
-
+            raise Exception(f'get error: \nType: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+                                    
     def list(self,pb=False):
         ''' From running dict '''
         try:

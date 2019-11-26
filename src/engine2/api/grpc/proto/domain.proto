@@ -267,7 +267,7 @@ message GetResponse {
 }
 
 message GetHardwareRequest {
-    string domain_id = 1;
+    int32 id = 1;
 }
 
 message GetHardwareResponse {

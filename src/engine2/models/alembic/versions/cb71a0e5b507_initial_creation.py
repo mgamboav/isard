@@ -80,18 +80,18 @@ def upgrade():
           
     ### Boot
     db = Boot(vm_id=d.id, name='BOOT_NETWORK') #, order=1)
-    d.boot.append(db)
+    d.boots.append(db)
     db = Boot(vm_id=d.id, name='BOOT_HD') #, order=1)
-    d.boot.append(db)
+    d.boots.append(db)
     db = Boot(vm_id=d.id, name='BOOT_CD') #, order=1)
-    d.boot.append(db)
+    d.boots.append(db)
     
 
     # ~ print(Boot.filter_by(name='disk').first())
     ### Hard disk
     dd_xml = session.query(DiskXML).filter(DiskXML.name == 'disk').one()
     dd = Disk(vm_id=d.id, xml=dd_xml, name='____', filename="____.qcow2", bus='virtio', size=10, format='qcow2')
-    d.disk.append(dd)
+    d.disks.append(dd)
 
     ### Medias
     # ~ dm_xml = session.query(MediaXML).filter(MediaXML.name == 'iso').one()
@@ -104,7 +104,14 @@ def upgrade():
     # ~ , mac='11:22:33:44:55:66', order=1)
     d.interfaces.append(di)        
     session.add(d) 
+    session.flush()
     
+    dix_xml = session.query(InterfaceXML).filter(InterfaceXML.name == 'network').one()
+    dix = Vm_Interface(vm_id=d, interface_id=dix_xml.id, model='virtio', source='default', order=2)
+    # ~ , mac='11:22:33:44:55:66', order=1)
+    d.interfaces.append(dix)        
+    session.add(d) 
+        
     ### Graphics
     # ~ dg_xml = session.query(GraphicXML).filter(GraphicXML.name == 'spice').one()
     # ~ dg = Vm_Graphic(vm_id=vm, graphic_id=dg_xml.id, order=1)

@@ -36,8 +36,8 @@ class Vm_Sound(BaseMixin, Base):
     vm_id = sa.Column(sa.Integer, sa.ForeignKey('vm.id'), primary_key=True)
     sound_id = sa.Column(sa.Integer, sa.ForeignKey('sound_xml.id'), primary_key=True)
     
-    sound = relationship("SoundXML", back_populates="vm")
-    vm = relationship("Vm", back_populates="sound")
+    sounds = relationship("SoundXML", back_populates="vm")
+    vm = relationship("Vm", back_populates="sounds")
 
 class Vm_Cpu(BaseMixin, Base):
     __tablename__ = 'vm_cpu'
@@ -82,7 +82,10 @@ class Vm_Memory(BaseMixin, Base):
     
     memory = relationship("MemoryXML", back_populates="vm")
     vm = relationship("Vm", back_populates="memory")
-            
+
+    # ~ def _as_dict_(self):
+        # ~ return {'memory':self.mem,'maxmemory':self.maxmemory,'currentmemory':self.currentmemory,'unit':self.unit}
+                    
 class Vm_Media(BaseMixin, Base):
     __tablename__ = 'vm_media'
 
@@ -100,14 +103,18 @@ class Vm_Media(BaseMixin, Base):
 
 class Vm_Interface(BaseMixin, Base):
     __tablename__ = 'vm_interface'
-
-    vm_id = sa.Column(sa.Integer, sa.ForeignKey('vm.id'), primary_key=True)
-    interface_id = sa.Column(sa.Integer, sa.ForeignKey('interface_xml.id'), primary_key=True)
+        
+    vm_id = sa.Column(sa.Integer, sa.ForeignKey('vm.id')) #, primary_key=True)
+    interface_id = sa.Column(sa.Integer, sa.ForeignKey('interface_xml.id')) #, primary_key=True)
     order = sa.Column(sa.Integer, nullable=False)
     source = sa.Column(sa.String, default='default')
     model = sa.Column(sa.String, default='virtio')
-    mac = sa.Column(sa.String)
-    
+    mac = sa.Column(sa.String) 
+
+    __table_args__ = (
+            sa.PrimaryKeyConstraint(vm_id, order),
+        ) 
+                    
     interfaces = relationship("InterfaceXML", back_populates="vms")
     vms = relationship("Vm", back_populates="interfaces")
 
@@ -118,8 +125,8 @@ class Vm_Graphic(BaseMixin, Base):
     graphic_id = sa.Column(sa.Integer, sa.ForeignKey('graphic_xml.id'), primary_key=True)
     order = sa.Column(sa.Integer, nullable=False)
     
-    graphic = relationship("GraphicXML", back_populates="vm")
-    vm = relationship("Vm", back_populates="graphic")
+    graphics = relationship("GraphicXML", back_populates="vm")
+    vm = relationship("Vm", back_populates="graphics")
         
 class Vm_Video(BaseMixin, Base):
     __tablename__ = 'vm_video'
@@ -142,30 +149,32 @@ class Vm(BaseMixin, Base):
     
     vm_xml_id = sa.Column(sa.Integer, sa.ForeignKey('vm_xml.id'), nullable=False)
     vm_xml = relationship("VmXML")  
-    boot = relationship("Boot", order_by="Boot.order",
-                            collection_class=ordering_list('order'),
-                            cascade="all, delete-orphan")
-                                
-    disk = relationship('Disk', order_by="Disk.order",
-                            collection_class=ordering_list('order'),
-                            cascade="all, delete-orphan")
-    medias = relationship("Vm_Media", 
-                                        back_populates="vm")
-    graphic = relationship("Vm_Graphic", 
-                                        back_populates="vm")
-    interfaces = relationship("Vm_Interface", 
-                                        back_populates="vms")                                                                                                                                                                                                                                                
-    videos = relationship("Vm_Video", 
-                                        back_populates="vm") 
     memory = relationship("Vm_Memory", 
                                         back_populates="vm") 
     vcpu = relationship("Vm_Vcpu", 
                                         back_populates="vm")                                         
     cpu = relationship("Vm_Cpu", 
-                                        back_populates="vm")   
+                                        back_populates="vm")     
+    boots = relationship("Boot", order_by="Boot.order",
+                            collection_class=ordering_list('order'),
+                            cascade="all, delete-orphan")
+                                
+    disks = relationship('Disk', order_by="Disk.order",
+                            collection_class=ordering_list('order'),
+                            cascade="all, delete-orphan")
+    medias = relationship("Vm_Media", 
+                                        back_populates="vm")
+    graphics = relationship("Vm_Graphic", 
+                                        back_populates="vm")
+    interfaces = relationship("Vm_Interface", 
+                                        back_populates="vms")                                                                                                                                                                                                                                                
+    videos = relationship("Vm_Video", 
+                                        back_populates="vm") 
+    sounds = relationship("Vm_Sound", 
+                                        back_populates="vm") 
+  
                                         
-    sound = relationship("Vm_Sound", 
-                                        back_populates="vm")  
+ 
     kind = sa.Column(sa.String)
     
     __mapper_args__ = {
@@ -198,24 +207,21 @@ class Vm(BaseMixin, Base):
         except Exception as e:
             raise
 
-    def get(id):
-        vm = db.query(Vm).get(id)
-        return {'id':vm.id,'name':vm.name,'state':vm.state}
+    def get(self):
+        # ~ vm = db.query(Vm).get(id)
+        return {'id':self.id,'name':self.name,'state':self.state}
 
-    def get_hardware(id):
-        vm = db.query(Vm).get(id)
-        return {'id':vm.id,'name':vm.name,'state':vm.state}
-
-    # ~ VmMemory memory = 4;
-    # ~ VmVcpu vcpu = 5;
-    # ~ VmCpu cpu = 6;
-    # ~ repeated Boot boots = 7;
-    # ~ repeated VmDisk disks = 8;
-    # ~ repeated VmMedia medias = 9;
-    # ~ repeated VmInterface interfaces = 10;
-    # ~ repeated VmGraphic graphics = 11;
-    # ~ repeated VmVideo videos = 12;
-    # ~ repeated VmSound sounds = 13;
+    def get_hardware(self):
+        return {'memory': self.memory[0]._as_dict(),
+				'vcpu': self.vcpu[0]._as_dict(),
+				'cpu': self.cpu[0]._as_dict(),
+				'boots': [boot._as_dict() for boot in self.boots],
+				'disks': [disk._as_dict() for disk in self.disks],
+				'medias': [media._as_dict() for media in self.medias],
+				'interfaces': [interface._as_dict() for interface in self.interfaces],
+				'graphics': [graphic._as_dict() for graphic in self.graphics],
+				'videos': [video._as_dict() for video in self.videos],
+				'sounds': [sound._as_dict() for sound in self.sounds]}
                             
 class Disk(BaseMixin, Base):
     __tablename__ = 'disk'
@@ -280,7 +286,7 @@ class SoundXML(BaseMixin, Base):
     xml = sa.Column(sa.String, unique=True)
 
     vm = relationship("Vm_Sound", 
-                                        back_populates="sound")      
+                                        back_populates="sounds")      
 
     def get_vm_sound(vm_id):
         vm_sound = db.query(Vm_Sound).filter(Vm_Sound.vm_id == vm_id).first()
@@ -384,7 +390,7 @@ class GraphicXML(BaseMixin, Base):
     xml = sa.Column(sa.String, unique=True, nullable=False)
     
     vm = relationship("Vm_Graphic", 
-                                        back_populates="graphic")      
+                                        back_populates="graphics")      
 
     def __init__(self, name, xml):
         self.name = name
@@ -453,3 +459,11 @@ class Boot(BaseMixin, Base):
 
     def list(vm_name):
         return db.query(Boot).filter(Boot.vm_id==Vm.by_name(vm_name).id).all()
+
+    def get_vm_boots(vm_id):
+        vm_boots = db.query(Vm_Boot).filter(Vm.Boot.vm_id == vm_id).all()
+        boot_list = []
+        for vm_boot in vm_boot:
+            boot = db.query(BootXML).filter(BootXML.id == vm_boot.boot_id).first()
+            boots_list.append({**boot._as_dict(), **vm_boot._as_dict()})
+        return boots_list 

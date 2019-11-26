@@ -37,8 +37,6 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
         try:
             # ~ state, desktop, next_actions = 
             vm = self.engine.domain.get(request.id, pb=True)
-            print(vm)
-            print(vm.state)
             return domain_pb2.GetResponse(domain = vm)
         # ~ except NonExistenceError:
             # ~ context.set_details(request.desktop_id+' not found in database.')
@@ -53,6 +51,25 @@ class DomainServicer(domain_pb2_grpc.DomainServicer):
             context.set_code(grpc.StatusCode.INTERNAL)               
             return domain_pb2.GetResponse() 
 
+    def GetHardware(self, request, context):
+        ''' Gets domain_id with all data '''
+        try:
+            # ~ state, desktop, next_actions = 
+            vm = self.engine.domain.get_hardware(request.id, pb=True)
+            return domain_pb2.GetHardwareResponse(domain = vm)
+        # ~ except NonExistenceError:
+            # ~ context.set_details(request.desktop_id+' not found in database.')
+            # ~ context.set_code(grpc.StatusCode.NOT_FOUND)
+            # ~ return desktop_pb2.GetResponse()             
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # ~ logs.grpc.error(f'Get error: {request.desktop_id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            
+            context.set_details(f'GetHardware error: {request.id}\n Type: {exc_type}\n File: {fname}\n Line: {exc_tb.tb_lineno}\n Error: {e}')
+            context.set_code(grpc.StatusCode.INTERNAL)               
+            return domain_pb2.GetHardwareResponse() 
+            
     def BootList(self, request, context):
         try:
             # ~ with db_session() as db:
