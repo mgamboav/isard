@@ -1,2 +1,2 @@
 FROM nginx:alpine
-COPY dockers/static/viewers /usr/share/nginx/html/ws
+COPY dockers/static/spice-web-client /usr/share/nginx/html/ws
