@@ -1,0 +1,19 @@
+networks:
+  isard_network:
+    external: true
+    name: isard_network
+services:
+  isard-static:
+    build:
+      context: .
+      dockerfile: dockers/static/Dockerfile
+    container_name: isard-static
+    image: isard/static:latest
+    networks:
+      isard_network: null
+    ports:
+    - published: 8080
+      target: 80
+    restart: "no"
+version: '3.5'
+

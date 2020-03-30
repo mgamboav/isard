@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+  isard-ha:
+    container_name: isard-ha
+    volumes:
+      - "/home/darta/gene/isard/dockers/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg"
+      - "/opt/isard/certs/default:/certs"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8888:8888"
+    networks:
+      - isard_network
+    image: isard/ha:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: dockers/haproxy/Dockerfile    
+    restart: unless-stopped
+
+networks:
+  isard_network:
+    external: false
+    name: isard_network
+
