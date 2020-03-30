@@ -3,7 +3,9 @@ services:
   isard-ha:
     container_name: isard-ha
     volumes:
-      - "/home/darta/gene/isard/dockers/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg"
+#      - "/.....dockers/haproxy/haproxy.conf:/usr/local/etc/haproxy/haproxy.cfg"
+#################### New certificate concatenates both. Do this before bringing up
+#     cat /opt/isard/certs/default/server-cert.pem /opt/isard/certs/default/server-key.pem > /opt/isard/certs/default/all.pem
       - "/opt/isard/certs/default:/certs"
     ports:
       - "80:80"
