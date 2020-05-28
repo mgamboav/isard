@@ -9,10 +9,6 @@ import (
 	"github.com/spf13/afero"
 )
 
-var (
-	ErrBackingFileNotFound = errors.New("backing file not found")
-)
-
 func (d *DiskOperations) Derivate(name, backingFile string, clusterSize int) error {
 	if _, err := d.env.FS.Stat(backingFile); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrBackingFileNotFound
