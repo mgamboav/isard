@@ -13,18 +13,18 @@ import (
 
 func (d *DiskOperationsServer) Sparsify(ctx context.Context, req *proto.SparsifyRequest) (*proto.SparsifyResponse, error) {
 	if err := grpc.Required(grpc.RequiredParams{
-		"path":         req.Path,
+		"path": req.Path,
 	}); err != nil {
 		return nil, err
 	}
 
-	if err := d.diskoperations.Sparsify(req.Path)); err != nil {
-		if errors.Is(err, diskoperations.ErrFileNotFound)  {
+	if err := d.diskoperations.Sparsify(req.Path); err != nil {
+		if errors.Is(err, diskoperations.ErrFileNotFound) {
 			return nil, status.Errorf(codes.NotFound, "path not found: %v", err)
 		}
 
 		return nil, status.Errorf(codes.Unknown, "sparsify: %v", err)
 	}
 
-	return &proto.SparsifyResponse, nil
+	return &proto.SparsifyResponse{}, nil
 }

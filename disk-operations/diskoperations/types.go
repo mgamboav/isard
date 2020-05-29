@@ -10,7 +10,7 @@ var (
 type ImageInfoQcow2 struct {
 	VirtualSize         int64                   `json:virtual-size`
 	Filename            string                  `json:filename`
-	ClusterSize         int                     `json:cluster-size`
+	ClusterSize         int32                   `json:cluster-size`
 	Format              string                  `json:format`
 	ActualSize          int64                   `json:actual-size`
 	FormatSpecific      *ImageInfoSpecificQcow2 `json:format-specific`
@@ -28,7 +28,7 @@ type ImageInfoSpecificQcow2 struct {
 type ImageInfoSpecificQcow2Detail struct {
 	Compat        string `json:compat`
 	LazyRefcounts bool   `json:lazy-refcounts`
-	RefcountBits  int    `json:refcount-bits`
+	RefcountBits  int32  `json:refcount-bits`
 	Corrupt       bool   `json:corrupt`
 }
 

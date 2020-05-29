@@ -28,7 +28,7 @@ func (d *DiskOperations) SnapshotList(path string) (*[]ImageInfoSnapshot, error)
 
 	info, err := d.InfoQcow2(path)
 	if err != nil {
-		return &[]ImageInfoSnapshot{}, fmt.Errorf("get snapshots: %w: %s", err, info)
+		return &[]ImageInfoSnapshot{}, fmt.Errorf("get snapshots: %w", err)
 	}
 
 	return info.Snapshots, nil
@@ -47,7 +47,7 @@ func (d *DiskOperations) SnapshotApply(path string, id string, delete bool) erro
 	return nil
 }
 
-func (d *DiskOperations) SnapshotDelete(path string, id string, delete bool) error {
+func (d *DiskOperations) SnapshotDelete(path string, id string) error {
 	if _, err := d.env.FS.Stat(path); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrFileNotFound
 	}

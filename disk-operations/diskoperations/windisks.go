@@ -1,6 +1,6 @@
-/* package diskoperations
+package diskoperations
 
-import (
+/* import (
 	"errors"
 	"fmt"
 	"os/exec"
@@ -30,5 +30,4 @@ func (d *DiskOperations) CopyIn(name string, file string, folder string) error {
 		return fmt.Errorf("win copy in: %w: %s", err, out)
 	}
 	return nil
-}
- */
+} */

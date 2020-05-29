@@ -13,16 +13,16 @@ import (
 
 func (d *DiskOperationsServer) Convert(ctx context.Context, req *proto.ConvertRequest) (*proto.ConvertResponse, error) {
 	if err := grpc.Required(grpc.RequiredParams{
-		"path_input":	req.path,
-		"path_output":	req.path_input,
-		"format_input":	req.format_input,
-		"format_output":req.format_output,
+		"path_input":    req.PathInput,
+		"path_output":   req.PathOutput,
+		"format_input":  req.FormatInput,
+		"format_output": req.FormatOutput,
 	}); err != nil {
 		return nil, err
 	}
 
-	if err := d.diskoperations.Convert(req.path_input, req.path_output, req.format_input, req.format_output)); err != nil {
-		if errors.Is(err, diskoperations.ErrFileNotFound)  {
+	if err := d.diskoperations.Convert(req.PathInput, req.PathOutput, req.FormatInput, req.FormatOutput); err != nil {
+		if errors.Is(err, diskoperations.ErrFileNotFound) {
 			return nil, status.Errorf(codes.NotFound, "path not found: %v", err)
 		}
 

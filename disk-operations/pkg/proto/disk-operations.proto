@@ -3,7 +3,6 @@ syntax = "proto3";
 package proto;
 option go_package = "github.com/isard-vdi/isard/disk-operations/pkg/proto";
 
-import "github.com/isard-vdi/isard/disk-operations/diskoperations/types";
 
 service DiskOperations {
     // rpc Create(CreateRequest) returns (CreateResponse) {}
@@ -18,6 +17,7 @@ service DiskOperations {
     rpc SnapshotCreate (SnapshotCreateRequest) returns (SnapshotCreateResponse) {}
     rpc SnapshotApply (SnapshotApplyRequest) returns (SnapshotApplyResponse) {}
     rpc SnapshotDelete (SnapshotDeleteRequest) returns (SnapshotDeleteResponse) {}
+    rpc Sparsify (SparsifyRequest) returns (SparsifyResponse) {}
     // rpc Move(MoveRequest) returns (MoveResponse) {}
     // TODO: Upload / Download progress (stream)
     // rpc Upload(UploadRequest) returns (UploadResponse) {}
@@ -68,10 +68,10 @@ message BackingChainQcow2Request {
 }
 
 message BackingChainQcow2Response {
-    message Paths {
+    message Path {
         string path = 1;
     }
-    repeated Paths path = 1; 
+    repeated Path paths = 1; 
 }
 
 message BackingChainQcow2ReplaceRequest {
@@ -84,6 +84,7 @@ message BackingChainQcow2ReplaceResponse {}
 message BackingChainQcow2RebaseRequest {
     string path = 1;
     string backingpath = 2;
+    bool delete_intermediates = 3;
 }
 
 message BackingChainQcow2RebaseResponse {}
@@ -165,10 +166,16 @@ message SnapshotDeleteResponse {}
 message SnapshotApplyRequest {
     string path = 1;
     string id = 2;
+    bool delete = 3;
 }
 
 message SnapshotApplyResponse {}
 
+message SparsifyRequest {
+    string path = 1;
+}
+
+message SparsifyResponse {}
 // message MoveRequest {
 //     string source = 1;
 //     string destination = 2;
