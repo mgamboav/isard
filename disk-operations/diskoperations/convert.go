@@ -22,7 +22,9 @@ func (d *DiskOperations) Convert(name_input string, name_output string, format_i
 			break
 		}
 	}
-
+	if correct == false {
+		return fmt.Errorf("convert image invalid output format: %s", format_output)
+	}
 	cmd := exec.Command("qemu-img", "convert", "-f", format_input, "-O", format_output, name_input, name_output)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("convert image: %w: %s", err, out)

@@ -3,14 +3,13 @@ package diskoperations
 import (
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 
 	"github.com/spf13/afero"
 )
 
-func (d *DiskOperations) WinRegistryAdd(name string, regfile *os.File) error {
-	if _, err := d.env.FS.Stat(name_input); errors.Is(err, afero.ErrFileNotFound) {
+func (d *DiskOperations) WinRegistryAdd(name string, regfile string) error {
+	if _, err := d.env.FS.Stat(name); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrFileNotFound
 	}
 
@@ -21,8 +20,8 @@ func (d *DiskOperations) WinRegistryAdd(name string, regfile *os.File) error {
 	return nil
 }
 
-func (d *DiskOperations) CopyIn(name string, file *os.File, folder string) error {
-	if _, err := d.env.FS.Stat(name_input); errors.Is(err, afero.ErrFileNotFound) {
+func (d *DiskOperations) CopyIn(name string, file string, folder string) error {
+	if _, err := d.env.FS.Stat(name); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrFileNotFound
 	}
 

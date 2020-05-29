@@ -15,7 +15,7 @@ func (h *Hyper) QMPScreenshot(name string) (image *os.File, error) {
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return os.File, fmt.Errorf("screenshot: %w: %s", err, out)
 	}
-	return os.File, err
+	return os.File, nil
 }
 
 

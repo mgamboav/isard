@@ -26,11 +26,12 @@ func (d *DiskOperations) SnapshotsGet(name string) (*[]ImageInfoSnapshot, error)
 		return &[]ImageInfoSnapshot{}, ErrFileNotFound
 	}
 
-	if info, err := d.InfoQcow2(name); err != nil {
+	info, err := d.InfoQcow2(name)
+	if err != nil {
 		return &[]ImageInfoSnapshot{}, fmt.Errorf("get snapshots: %w: %s", err, info)
 	}
 
-	return info.Snapshots
+	return info.Snapshots, nil
 }
 
 func (d *DiskOperations) SnapshotApply(name string, id string, delete bool) error {
