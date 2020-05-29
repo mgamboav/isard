@@ -9,12 +9,12 @@ import (
 	"github.com/spf13/afero"
 )
 
-func (d *DiskOperations) BackingChainQcow2(name string) ([]string, error) {
-	if _, err := d.env.FS.Stat(name); errors.Is(err, afero.ErrFileNotFound) {
+func (d *DiskOperations) BackingChainQcow2(path string) ([]string, error) {
+	if _, err := d.env.FS.Stat(path); errors.Is(err, afero.ErrFileNotFound) {
 		return []string{}, ErrBackingFileNotFound
 	}
 
-	cmd := exec.Command("qemu-img", "info", "--backing-chain", "--output", "json", name)
+	cmd := exec.Command("qemu-img", "info", "--backing-chain", "--output", "json", path)
 	out := ""
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return []string{}, fmt.Errorf("backing chain: %w: %s", err, out)
@@ -34,37 +34,37 @@ func (d *DiskOperations) BackingChainQcow2(name string) ([]string, error) {
 	return bc, nil
 }
 
-// This only modifies backing file pointer in name
-func (d *DiskOperations) BackingChainQcow2Replace(name string, backing string) error {
-	if _, err := d.env.FS.Stat(name); errors.Is(err, afero.ErrFileNotFound) {
+// This only modifies backing file pointer in path
+func (d *DiskOperations) BackingChainQcow2Replace(path string, backingpath string) error {
+	if _, err := d.env.FS.Stat(path); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrFileNotFound
 	}
 
-	if _, err := d.env.FS.Stat(backing); errors.Is(err, afero.ErrFileNotFound) {
+	if _, err := d.env.FS.Stat(backingpath); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrBackingFileNotFound
 	}
 
-	cmd := exec.Command("qemu-img", "rebase", "-f", "-u", "-b", backing, name)
+	cmd := exec.Command("qemu-img", "rebase", "-f", "-u", "-b", backingpath, path)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("rebase image: %w: %s", err, out)
 	}
 	return nil
 }
 
-// This will commit all changes between backing and name to name
-// So name is the only file that will be modified.
-func (d *DiskOperations) BackingChainQcow2Rebase(name string, backing string, delete_intermediates bool) error {
-	// TODO: Should we add a parameter to delete intermediate files in chain between name and backing?
+// This will commit all changes between backing and path to path
+// So path is the only file that will be modified.
+func (d *DiskOperations) BackingChainQcow2Rebase(path string, backingpath string, delete_intermediates bool) error {
+	// TODO: Should we add a parameter to delete intermediate files in chain between path and backing?
 	// Be sure the intermediates are not being used by any other derived file!
-	if _, err := d.env.FS.Stat(name); errors.Is(err, afero.ErrFileNotFound) {
+	if _, err := d.env.FS.Stat(path); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrFileNotFound
 	}
 
-	if _, err := d.env.FS.Stat(backing); errors.Is(err, afero.ErrFileNotFound) {
+	if _, err := d.env.FS.Stat(backingpath); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrBackingFileNotFound
 	}
 
-	cmd := exec.Command("qemu-img", "rebase", "-f", "-b", backing, name)
+	cmd := exec.Command("qemu-img", "rebase", "-f", "-b", backingpath, path)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("rebase image: %w: %s", err, out)
 	}

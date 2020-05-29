@@ -9,8 +9,8 @@ import (
 )
 
 // TODO: Will always be qcow? or we should check filetypes before proceeding?
-func (d *DiskOperations) Convert(name_input string, name_output string, format_input string, format_output string) error {
-	if _, err := d.env.FS.Stat(name_input); errors.Is(err, afero.ErrFileNotFound) {
+func (d *DiskOperations) Convert(path_input string, path_output string, format_input string, format_output string) error {
+	if _, err := d.env.FS.Stat(path_input); errors.Is(err, afero.ErrFileNotFound) {
 		return ErrFileNotFound
 	}
 
@@ -25,7 +25,7 @@ func (d *DiskOperations) Convert(name_input string, name_output string, format_i
 	if correct == false {
 		return fmt.Errorf("convert image invalid output format: %s", format_output)
 	}
-	cmd := exec.Command("qemu-img", "convert", "-f", format_input, "-O", format_output, name_input, name_output)
+	cmd := exec.Command("qemu-img", "convert", "-f", format_input, "-O", format_output, path_input, path_output)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		return fmt.Errorf("convert image: %w: %s", err, out)
 	}

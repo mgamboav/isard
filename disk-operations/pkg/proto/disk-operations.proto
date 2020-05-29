@@ -3,10 +3,21 @@ syntax = "proto3";
 package proto;
 option go_package = "github.com/isard-vdi/isard/disk-operations/pkg/proto";
 
+import "github.com/isard-vdi/isard/disk-operations/diskoperations/types";
+
 service DiskOperations {
     // rpc Create(CreateRequest) returns (CreateResponse) {}
     rpc Delete(DeleteRequest) returns (DeleteResponse) {}
     rpc Derivate(DerivateRequest) returns (DerivateResponse) {}
+    rpc BackingChainQcow2(BackingChainQcow2Request) returns (BackingChainQcow2Response) {}
+    rpc BackingChainQcow2Replace(BackingChainQcow2ReplaceRequest) returns (BackingChainQcow2ReplaceResponse) {}
+    rpc BackingChainQcow2Rebase(BackingChainQcow2ReplaceRequest) returns (BackingChainQcow2ReplaceResponse) {}
+    rpc Convert (ConvertRequest) returns (ConvertResponse) {}
+    rpc InfoQcow2 (InfoQcow2Request) returns (InfoQcow2Response) {}
+    rpc SnapshotList (SnapshotListRequest) returns (SnapshotListResponse) {}
+    rpc SnapshotCreate (SnapshotCreateRequest) returns (SnapshotCreateResponse) {}
+    rpc SnapshotApply (SnapshotApplyRequest) returns (SnapshotApplyResponse) {}
+    rpc SnapshotDelete (SnapshotDeleteRequest) returns (SnapshotDeleteResponse) {}
     // rpc Move(MoveRequest) returns (MoveResponse) {}
     // TODO: Upload / Download progress (stream)
     // rpc Upload(UploadRequest) returns (UploadResponse) {}
@@ -51,6 +62,112 @@ message DerivateRequest {
 }
 
 message DerivateResponse {}
+
+message BackingChainQcow2Request {
+    string path = 1;
+}
+
+message BackingChainQcow2Response {
+    message Paths {
+        string path = 1;
+    }
+    repeated Paths path = 1; 
+}
+
+message BackingChainQcow2ReplaceRequest {
+    string path = 1;
+    string backingpath = 2;
+}
+
+message BackingChainQcow2ReplaceResponse {}
+
+message BackingChainQcow2RebaseRequest {
+    string path = 1;
+    string backingpath = 2;
+}
+
+message BackingChainQcow2RebaseResponse {}
+
+message ConvertRequest{
+    string path_input = 1;
+    string path_output = 2;
+    string format_input = 3;
+    string format_output = 4;
+}
+
+message ConvertResponse {}
+
+message InfoQcow2Request {
+    string path = 1;
+}
+
+message InfoQcow2Response {
+    ImageInfoQcow2 info = 1;
+}
+
+// QCOW2 MESSAGE INFO IMPLEMENTATION
+message ImageInfoSpecificQcow2Detail {
+    string compat = 1;
+    bool lazy_refcounts = 2;
+    int32 refcount_bits = 3;
+    bool corrupt = 4;
+}
+
+message ImageInfoSpecificQcow2 {
+    string type = 1;
+    ImageInfoSpecificQcow2Detail data = 2;
+}
+
+message ImageInfoSnapshot {
+	int32   vm_clock_nsec = 1;
+	string  name = 2;
+	int64   date_sec = 3;
+	int64   date_nsec = 4;
+	string  id = 5;
+	int64   vm_state_size = 6;
+}
+
+message ImageInfoQcow2 {
+    int64   virtual_size = 1;
+    string  filename = 2;
+    int32   cluster_size = 3;
+    string  format = 4;
+    int64   actual_size = 5;
+    ImageInfoSpecificQcow2 format_specific = 6;
+    string  full_backing_filename = 7;
+    string  backing_filename = 8;
+    bool    dirty_flag = 9;
+    repeated ImageInfoSnapshot snapshots = 10;
+}
+
+message SnapshotListRequest {
+    string path = 1;
+}
+
+message SnapshotListResponse {
+    repeated ImageInfoSnapshot snapshots = 1;
+}
+
+message SnapshotCreateRequest {
+    string path = 1;
+    string id = 2;
+}
+
+message SnapshotCreateResponse {}
+
+message SnapshotDeleteRequest {
+    string path = 1;
+    string id = 2;
+}
+
+message SnapshotDeleteResponse {}
+
+message SnapshotApplyRequest {
+    string path = 1;
+    string id = 2;
+}
+
+message SnapshotApplyResponse {}
 
 // message MoveRequest {
 //     string source = 1;
