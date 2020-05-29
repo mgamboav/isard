@@ -1,4 +1,4 @@
-package diskoperations
+/* package diskoperations
 
 import (
 	"errors"
@@ -31,3 +31,4 @@ func (d *DiskOperations) CopyIn(name string, file string, folder string) error {
 	}
 	return nil
 }
+ */
