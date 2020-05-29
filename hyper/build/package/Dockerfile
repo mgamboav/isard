@@ -31,14 +31,18 @@ RUN apk add --no-cache git \
 	zlib-dev zlib-static \
 	pixman-dev  \
 	# QXL
-	spice-dev
+	spice-dev \
+    # USB Network redirection
+    libusb-dev \
+    usbredir-dev
 
 # Build QEMU
 RUN git clone git://git.qemu-project.org/qemu.git && \
 	cd qemu && \
 	mkdir -p bin/debug/native && \
 	cd bin/debug/native && \
-	../../../configure --target-list=x86_64-softmmu --enable-debug --disable-werror --enable-spice && \
+	../../../configure --target-list=x86_64-softmmu --enable-debug --disable-werror \
+	--enable-spice && \
 	make -j8 install
 
 FROM alpine:3.11
