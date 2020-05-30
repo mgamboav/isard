@@ -12,20 +12,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (h *HyperServer) DesktopStop(ctx context.Context, req *proto.DesktopStopRequest) (*proto.DesktopStopResponse, error) {
+func (h *HyperServer) DesktopScreenshot(ctx context.Context, req *proto.DesktopScreenshotRequest) (*proto.DesktopScreenshotResponse, error) {
 	if err := grpc.Required(grpc.RequiredParams{
 		"id": req.Id,
 	}); err != nil {
 		return nil, err
 	}
 
-	if err := h.hyper.Stop(req.Id); err != nil {
+	if screen, err := h.hyper.DesktopScreenshot(req.Id); err != nil {
 		if errors.Is(err, hyper.ErrDesktopNotStarted) {
-			return nil, status.Errorf(codes.FailedPrecondition, "stop desktop: %v", err)
+			return nil, status.Errorf(codes.FailedPrecondition, "desktop screenshot: %v", err)
 		}
 
-		return nil, status.Errorf(codes.Unknown, "stop desktop: %v", err)
+		return nil, status.Errorf(codes.Unknown, "desktop screenshot: %v", err)
 	}
 
-	return &proto.DesktopStopResponse{}, nil
+	return &proto.DesktopScreenshotResponse{}, nil
 }

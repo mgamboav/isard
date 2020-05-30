@@ -7,7 +7,7 @@ import (
 	"libvirt.org/libvirt-go"
 )
 
-func (h *Hyper) DesktopStop(id string) error {
+func (h *Hyper) DesktopSave(id string, savepath string) error {
 	desktop, err := h.conn.LookupDomainByName(id)
 	if err != nil {
 		var e libvirt.Error
@@ -17,13 +17,16 @@ func (h *Hyper) DesktopStop(id string) error {
 				return ErrDesktopNotStarted
 
 			default:
-				return fmt.Errorf("stop desktop: %s", e.Message)
+				return fmt.Errorf("save desktop: %s", e.Message)
 			}
 		}
 
-		return fmt.Errorf("stop desktop: %w", err)
+		return fmt.Errorf("save desktop: %w", err)
 	}
 	defer desktop.Free()
 
+	if err := desktop.Save(savepath); err != nil {
+		return fmt.Errorf("save desktop: %w", err)
+	}
 	return nil
 }

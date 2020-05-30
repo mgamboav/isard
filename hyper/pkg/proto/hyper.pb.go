@@ -582,6 +582,354 @@ func (x *DesktopScreenshotResponse) GetScreen() string {
 	return ""
 }
 
+type DesktopResumeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *DesktopResumeRequest) Reset() {
+	*x = DesktopResumeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopResumeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopResumeRequest) ProtoMessage() {}
+
+func (x *DesktopResumeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopResumeRequest.ProtoReflect.Descriptor instead.
+func (*DesktopResumeRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DesktopResumeRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DesktopResumeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopResumeResponse) Reset() {
+	*x = DesktopResumeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopResumeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopResumeResponse) ProtoMessage() {}
+
+func (x *DesktopResumeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopResumeResponse.ProtoReflect.Descriptor instead.
+func (*DesktopResumeResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{13}
+}
+
+type DesktopSuspendRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *DesktopSuspendRequest) Reset() {
+	*x = DesktopSuspendRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopSuspendRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopSuspendRequest) ProtoMessage() {}
+
+func (x *DesktopSuspendRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopSuspendRequest.ProtoReflect.Descriptor instead.
+func (*DesktopSuspendRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *DesktopSuspendRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DesktopSuspendResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopSuspendResponse) Reset() {
+	*x = DesktopSuspendResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopSuspendResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopSuspendResponse) ProtoMessage() {}
+
+func (x *DesktopSuspendResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopSuspendResponse.ProtoReflect.Descriptor instead.
+func (*DesktopSuspendResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{15}
+}
+
+type DesktopRestoreRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Savepath string `protobuf:"bytes,1,opt,name=savepath,proto3" json:"savepath,omitempty"`
+}
+
+func (x *DesktopRestoreRequest) Reset() {
+	*x = DesktopRestoreRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopRestoreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopRestoreRequest) ProtoMessage() {}
+
+func (x *DesktopRestoreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopRestoreRequest.ProtoReflect.Descriptor instead.
+func (*DesktopRestoreRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DesktopRestoreRequest) GetSavepath() string {
+	if x != nil {
+		return x.Savepath
+	}
+	return ""
+}
+
+type DesktopRestoreResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopRestoreResponse) Reset() {
+	*x = DesktopRestoreResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopRestoreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopRestoreResponse) ProtoMessage() {}
+
+func (x *DesktopRestoreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopRestoreResponse.ProtoReflect.Descriptor instead.
+func (*DesktopRestoreResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{17}
+}
+
+type DesktopSaveRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id       string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Savepath string `protobuf:"bytes,2,opt,name=savepath,proto3" json:"savepath,omitempty"`
+}
+
+func (x *DesktopSaveRequest) Reset() {
+	*x = DesktopSaveRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopSaveRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopSaveRequest) ProtoMessage() {}
+
+func (x *DesktopSaveRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopSaveRequest.ProtoReflect.Descriptor instead.
+func (*DesktopSaveRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *DesktopSaveRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DesktopSaveRequest) GetSavepath() string {
+	if x != nil {
+		return x.Savepath
+	}
+	return ""
+}
+
+type DesktopSaveResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopSaveResponse) Reset() {
+	*x = DesktopSaveResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopSaveResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopSaveResponse) ProtoMessage() {}
+
+func (x *DesktopSaveResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopSaveResponse.ProtoReflect.Descriptor instead.
+func (*DesktopSaveResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{19}
+}
+
 var File_pkg_proto_hyper_proto protoreflect.FileDescriptor
 
 var file_pkg_proto_hyper_proto_rawDesc = []byte{
@@ -619,41 +967,79 @@ var file_pkg_proto_hyper_proto_rawDesc = []byte{
 	0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x33, 0x0a, 0x19, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
 	0x53, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x73, 0x68, 0x6f, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x06, 0x73, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x32, 0xe7, 0x03, 0x0a, 0x05, 0x48,
-	0x79, 0x70, 0x65, 0x72, 0x12, 0x49, 0x0a, 0x0c, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53,
-	0x74, 0x61, 0x72, 0x74, 0x12, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73,
-	0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
-	0x53, 0x74, 0x61, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
-	0x46, 0x0a, 0x0b, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x12, 0x19,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74,
-	0x6f, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x0b, 0x44, 0x65, 0x73, 0x6b, 0x74,
-	0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x19, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44,
-	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
-	0x70, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
-	0x4c, 0x0a, 0x0d, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x58, 0x4d, 0x4c, 0x47, 0x65, 0x74,
-	0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
-	0x58, 0x4d, 0x4c, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x58, 0x4d, 0x4c,
-	0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5b, 0x0a,
-	0x12, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65, 0x4c,
-	0x69, 0x76, 0x65, 0x12, 0x20, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b,
-	0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65, 0x4c, 0x69, 0x76, 0x65, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65,
-	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65, 0x4c, 0x69, 0x76, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x58, 0x0a, 0x11, 0x44, 0x65,
-	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x73, 0x68, 0x6f, 0x74, 0x12,
-	0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53,
-	0x63, 0x72, 0x65, 0x65, 0x6e, 0x73, 0x68, 0x6f, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x20, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
-	0x53, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x73, 0x68, 0x6f, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0x00, 0x42, 0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x69, 0x73, 0x61, 0x72, 0x64, 0x2d, 0x76, 0x64, 0x69, 0x2f, 0x69, 0x73, 0x61,
-	0x72, 0x64, 0x2f, 0x68, 0x79, 0x70, 0x65, 0x72, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x09, 0x52, 0x06, 0x73, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x22, 0x26, 0x0a, 0x14, 0x44, 0x65,
+	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x75, 0x6d, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
+	0x69, 0x64, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73,
+	0x75, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x0a, 0x15, 0x44,
+	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x02, 0x69, 0x64, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53,
+	0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x33,
+	0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x73, 0x61, 0x76, 0x65, 0x70,
+	0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x61, 0x76, 0x65, 0x70,
+	0x61, 0x74, 0x68, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65,
+	0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x40, 0x0a,
+	0x12, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x73, 0x61, 0x76, 0x65, 0x70, 0x61, 0x74, 0x68, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x61, 0x76, 0x65, 0x70, 0x61, 0x74, 0x68, 0x22,
+	0x15, 0x0a, 0x13, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x9f, 0x06, 0x0a, 0x05, 0x48, 0x79, 0x70, 0x65, 0x72,
+	0x12, 0x49, 0x0a, 0x0c, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x61, 0x72, 0x74,
+	0x12, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
+	0x53, 0x74, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x61, 0x72,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x0b, 0x44,
+	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x12, 0x19, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65,
+	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x12, 0x4c, 0x0a, 0x0d, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65,
+	0x73, 0x75, 0x6d, 0x65, 0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73,
+	0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x75, 0x6d, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
+	0x70, 0x52, 0x65, 0x73, 0x75, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x12, 0x4f, 0x0a, 0x0e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x75, 0x73, 0x70,
+	0x65, 0x6e, 0x64, 0x12, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b,
+	0x74, 0x6f, 0x70, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x1d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
+	0x70, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x00, 0x12, 0x46, 0x0a, 0x0b, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61, 0x76,
+	0x65, 0x12, 0x19, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
+	0x70, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61, 0x76, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4f, 0x0a, 0x0e, 0x44, 0x65,
+	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x12, 0x1c, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x74,
+	0x6f, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x46, 0x0a, 0x0b, 0x44,
+	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x19, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65,
+	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x00, 0x12, 0x4c, 0x0a, 0x0d, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x58, 0x4d,
+	0x4c, 0x47, 0x65, 0x74, 0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73,
+	0x6b, 0x74, 0x6f, 0x70, 0x58, 0x4d, 0x4c, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
+	0x70, 0x58, 0x4d, 0x4c, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x00, 0x12, 0x5b, 0x0a, 0x12, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72,
+	0x61, 0x74, 0x65, 0x4c, 0x69, 0x76, 0x65, 0x12, 0x20, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
+	0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65, 0x4c, 0x69,
+	0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65,
+	0x4c, 0x69, 0x76, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x58,
+	0x0a, 0x11, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x73,
+	0x68, 0x6f, 0x74, 0x12, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73, 0x6b,
+	0x74, 0x6f, 0x70, 0x53, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x73, 0x68, 0x6f, 0x74, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44, 0x65, 0x73,
+	0x6b, 0x74, 0x6f, 0x70, 0x53, 0x63, 0x72, 0x65, 0x65, 0x6e, 0x73, 0x68, 0x6f, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x2c, 0x5a, 0x2a, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x69, 0x73, 0x61, 0x72, 0x64, 0x2d, 0x76, 0x64, 0x69,
+	0x2f, 0x69, 0x73, 0x61, 0x72, 0x64, 0x2f, 0x68, 0x79, 0x70, 0x65, 0x72, 0x2f, 0x70, 0x6b, 0x67,
+	0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -668,7 +1054,7 @@ func file_pkg_proto_hyper_proto_rawDescGZIP() []byte {
 	return file_pkg_proto_hyper_proto_rawDescData
 }
 
-var file_pkg_proto_hyper_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_pkg_proto_hyper_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_pkg_proto_hyper_proto_goTypes = []interface{}{
 	(*DesktopStartRequest)(nil),        // 0: proto.DesktopStartRequest
 	(*DesktopStartResponse)(nil),       // 1: proto.DesktopStartResponse
@@ -682,22 +1068,38 @@ var file_pkg_proto_hyper_proto_goTypes = []interface{}{
 	(*DesktopMigrateLiveResponse)(nil), // 9: proto.DesktopMigrateLiveResponse
 	(*DesktopScreenshotRequest)(nil),   // 10: proto.DesktopScreenshotRequest
 	(*DesktopScreenshotResponse)(nil),  // 11: proto.DesktopScreenshotResponse
+	(*DesktopResumeRequest)(nil),       // 12: proto.DesktopResumeRequest
+	(*DesktopResumeResponse)(nil),      // 13: proto.DesktopResumeResponse
+	(*DesktopSuspendRequest)(nil),      // 14: proto.DesktopSuspendRequest
+	(*DesktopSuspendResponse)(nil),     // 15: proto.DesktopSuspendResponse
+	(*DesktopRestoreRequest)(nil),      // 16: proto.DesktopRestoreRequest
+	(*DesktopRestoreResponse)(nil),     // 17: proto.DesktopRestoreResponse
+	(*DesktopSaveRequest)(nil),         // 18: proto.DesktopSaveRequest
+	(*DesktopSaveResponse)(nil),        // 19: proto.DesktopSaveResponse
 }
 var file_pkg_proto_hyper_proto_depIdxs = []int32{
 	0,  // 0: proto.Hyper.DesktopStart:input_type -> proto.DesktopStartRequest
 	2,  // 1: proto.Hyper.DesktopStop:input_type -> proto.DesktopStopRequest
-	4,  // 2: proto.Hyper.DesktopList:input_type -> proto.DesktopListRequest
-	6,  // 3: proto.Hyper.DesktopXMLGet:input_type -> proto.DesktopXMLGetRequest
-	8,  // 4: proto.Hyper.DesktopMigrateLive:input_type -> proto.DesktopMigrateLiveRequest
-	10, // 5: proto.Hyper.DesktopScreenshot:input_type -> proto.DesktopScreenshotRequest
-	1,  // 6: proto.Hyper.DesktopStart:output_type -> proto.DesktopStartResponse
-	3,  // 7: proto.Hyper.DesktopStop:output_type -> proto.DesktopStopResponse
-	5,  // 8: proto.Hyper.DesktopList:output_type -> proto.DesktopListResponse
-	7,  // 9: proto.Hyper.DesktopXMLGet:output_type -> proto.DesktopXMLGetResponse
-	9,  // 10: proto.Hyper.DesktopMigrateLive:output_type -> proto.DesktopMigrateLiveResponse
-	11, // 11: proto.Hyper.DesktopScreenshot:output_type -> proto.DesktopScreenshotResponse
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
+	12, // 2: proto.Hyper.DesktopResume:input_type -> proto.DesktopResumeRequest
+	14, // 3: proto.Hyper.DesktopSuspend:input_type -> proto.DesktopSuspendRequest
+	18, // 4: proto.Hyper.DesktopSave:input_type -> proto.DesktopSaveRequest
+	16, // 5: proto.Hyper.DesktopRestore:input_type -> proto.DesktopRestoreRequest
+	4,  // 6: proto.Hyper.DesktopList:input_type -> proto.DesktopListRequest
+	6,  // 7: proto.Hyper.DesktopXMLGet:input_type -> proto.DesktopXMLGetRequest
+	8,  // 8: proto.Hyper.DesktopMigrateLive:input_type -> proto.DesktopMigrateLiveRequest
+	10, // 9: proto.Hyper.DesktopScreenshot:input_type -> proto.DesktopScreenshotRequest
+	1,  // 10: proto.Hyper.DesktopStart:output_type -> proto.DesktopStartResponse
+	3,  // 11: proto.Hyper.DesktopStop:output_type -> proto.DesktopStopResponse
+	13, // 12: proto.Hyper.DesktopResume:output_type -> proto.DesktopResumeResponse
+	15, // 13: proto.Hyper.DesktopSuspend:output_type -> proto.DesktopSuspendResponse
+	19, // 14: proto.Hyper.DesktopSave:output_type -> proto.DesktopSaveResponse
+	17, // 15: proto.Hyper.DesktopRestore:output_type -> proto.DesktopRestoreResponse
+	5,  // 16: proto.Hyper.DesktopList:output_type -> proto.DesktopListResponse
+	7,  // 17: proto.Hyper.DesktopXMLGet:output_type -> proto.DesktopXMLGetResponse
+	9,  // 18: proto.Hyper.DesktopMigrateLive:output_type -> proto.DesktopMigrateLiveResponse
+	11, // 19: proto.Hyper.DesktopScreenshot:output_type -> proto.DesktopScreenshotResponse
+	10, // [10:20] is the sub-list for method output_type
+	0,  // [0:10] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -853,6 +1255,102 @@ func file_pkg_proto_hyper_proto_init() {
 				return nil
 			}
 		}
+		file_pkg_proto_hyper_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopResumeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopResumeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopSuspendRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopSuspendResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopRestoreRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopRestoreResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopSaveRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopSaveResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -860,7 +1358,7 @@ func file_pkg_proto_hyper_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pkg_proto_hyper_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -888,6 +1386,10 @@ const _ = grpc.SupportPackageIsVersion6
 type HyperClient interface {
 	DesktopStart(ctx context.Context, in *DesktopStartRequest, opts ...grpc.CallOption) (*DesktopStartResponse, error)
 	DesktopStop(ctx context.Context, in *DesktopStopRequest, opts ...grpc.CallOption) (*DesktopStopResponse, error)
+	DesktopResume(ctx context.Context, in *DesktopResumeRequest, opts ...grpc.CallOption) (*DesktopResumeResponse, error)
+	DesktopSuspend(ctx context.Context, in *DesktopSuspendRequest, opts ...grpc.CallOption) (*DesktopSuspendResponse, error)
+	DesktopSave(ctx context.Context, in *DesktopSaveRequest, opts ...grpc.CallOption) (*DesktopSaveResponse, error)
+	DesktopRestore(ctx context.Context, in *DesktopRestoreRequest, opts ...grpc.CallOption) (*DesktopRestoreResponse, error)
 	DesktopList(ctx context.Context, in *DesktopListRequest, opts ...grpc.CallOption) (*DesktopListResponse, error)
 	DesktopXMLGet(ctx context.Context, in *DesktopXMLGetRequest, opts ...grpc.CallOption) (*DesktopXMLGetResponse, error)
 	DesktopMigrateLive(ctx context.Context, in *DesktopMigrateLiveRequest, opts ...grpc.CallOption) (*DesktopMigrateLiveResponse, error)
@@ -914,6 +1416,42 @@ func (c *hyperClient) DesktopStart(ctx context.Context, in *DesktopStartRequest,
 func (c *hyperClient) DesktopStop(ctx context.Context, in *DesktopStopRequest, opts ...grpc.CallOption) (*DesktopStopResponse, error) {
 	out := new(DesktopStopResponse)
 	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopStop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hyperClient) DesktopResume(ctx context.Context, in *DesktopResumeRequest, opts ...grpc.CallOption) (*DesktopResumeResponse, error) {
+	out := new(DesktopResumeResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopResume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hyperClient) DesktopSuspend(ctx context.Context, in *DesktopSuspendRequest, opts ...grpc.CallOption) (*DesktopSuspendResponse, error) {
+	out := new(DesktopSuspendResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopSuspend", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hyperClient) DesktopSave(ctx context.Context, in *DesktopSaveRequest, opts ...grpc.CallOption) (*DesktopSaveResponse, error) {
+	out := new(DesktopSaveResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopSave", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hyperClient) DesktopRestore(ctx context.Context, in *DesktopRestoreRequest, opts ...grpc.CallOption) (*DesktopRestoreResponse, error) {
+	out := new(DesktopRestoreResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopRestore", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -960,6 +1498,10 @@ func (c *hyperClient) DesktopScreenshot(ctx context.Context, in *DesktopScreensh
 type HyperServer interface {
 	DesktopStart(context.Context, *DesktopStartRequest) (*DesktopStartResponse, error)
 	DesktopStop(context.Context, *DesktopStopRequest) (*DesktopStopResponse, error)
+	DesktopResume(context.Context, *DesktopResumeRequest) (*DesktopResumeResponse, error)
+	DesktopSuspend(context.Context, *DesktopSuspendRequest) (*DesktopSuspendResponse, error)
+	DesktopSave(context.Context, *DesktopSaveRequest) (*DesktopSaveResponse, error)
+	DesktopRestore(context.Context, *DesktopRestoreRequest) (*DesktopRestoreResponse, error)
 	DesktopList(context.Context, *DesktopListRequest) (*DesktopListResponse, error)
 	DesktopXMLGet(context.Context, *DesktopXMLGetRequest) (*DesktopXMLGetResponse, error)
 	DesktopMigrateLive(context.Context, *DesktopMigrateLiveRequest) (*DesktopMigrateLiveResponse, error)
@@ -975,6 +1517,18 @@ func (*UnimplementedHyperServer) DesktopStart(context.Context, *DesktopStartRequ
 }
 func (*UnimplementedHyperServer) DesktopStop(context.Context, *DesktopStopRequest) (*DesktopStopResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DesktopStop not implemented")
+}
+func (*UnimplementedHyperServer) DesktopResume(context.Context, *DesktopResumeRequest) (*DesktopResumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopResume not implemented")
+}
+func (*UnimplementedHyperServer) DesktopSuspend(context.Context, *DesktopSuspendRequest) (*DesktopSuspendResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopSuspend not implemented")
+}
+func (*UnimplementedHyperServer) DesktopSave(context.Context, *DesktopSaveRequest) (*DesktopSaveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopSave not implemented")
+}
+func (*UnimplementedHyperServer) DesktopRestore(context.Context, *DesktopRestoreRequest) (*DesktopRestoreResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopRestore not implemented")
 }
 func (*UnimplementedHyperServer) DesktopList(context.Context, *DesktopListRequest) (*DesktopListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DesktopList not implemented")
@@ -1025,6 +1579,78 @@ func _Hyper_DesktopStop_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HyperServer).DesktopStop(ctx, req.(*DesktopStopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Hyper_DesktopResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopResumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopResume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopResume(ctx, req.(*DesktopResumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Hyper_DesktopSuspend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopSuspendRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopSuspend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopSuspend",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopSuspend(ctx, req.(*DesktopSuspendRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Hyper_DesktopSave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopSaveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopSave(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopSave",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopSave(ctx, req.(*DesktopSaveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Hyper_DesktopRestore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopRestoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopRestore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopRestore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopRestore(ctx, req.(*DesktopRestoreRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1112,6 +1738,22 @@ var _Hyper_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DesktopStop",
 			Handler:    _Hyper_DesktopStop_Handler,
+		},
+		{
+			MethodName: "DesktopResume",
+			Handler:    _Hyper_DesktopResume_Handler,
+		},
+		{
+			MethodName: "DesktopSuspend",
+			Handler:    _Hyper_DesktopSuspend_Handler,
+		},
+		{
+			MethodName: "DesktopSave",
+			Handler:    _Hyper_DesktopSave_Handler,
+		},
+		{
+			MethodName: "DesktopRestore",
+			Handler:    _Hyper_DesktopRestore_Handler,
 		},
 		{
 			MethodName: "DesktopList",

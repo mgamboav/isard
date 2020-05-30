@@ -9,7 +9,7 @@ import (
 )
 
 func (h *HyperServer) DesktopList(ctx context.Context, req *proto.DesktopListRequest) (*proto.DesktopListResponse, error) {
-	d, err := h.hyper.List()
+	d, err := h.hyper.DesktopList()
 	if err != nil {
 		return nil, status.Errorf(codes.Unknown, "list desktops: %v", err)
 	}

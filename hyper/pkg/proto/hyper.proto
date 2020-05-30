@@ -6,6 +6,10 @@ option go_package = "github.com/isard-vdi/isard/hyper/pkg/proto";
 service Hyper {
     rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
     rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
+    rpc DesktopResume(DesktopResumeRequest) returns (DesktopResumeResponse) {}
+    rpc DesktopSuspend(DesktopSuspendRequest) returns (DesktopSuspendResponse) {}
+    rpc DesktopSave(DesktopSaveRequest) returns (DesktopSaveResponse) {}
+    rpc DesktopRestore(DesktopRestoreRequest) returns (DesktopRestoreResponse) {}
     rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
     rpc DesktopXMLGet(DesktopXMLGetRequest) returns (DesktopXMLGetResponse) {}
     rpc DesktopMigrateLive(DesktopMigrateLiveRequest) returns (DesktopMigrateLiveResponse) {}
@@ -55,3 +59,28 @@ message DesktopScreenshotRequest {
 message DesktopScreenshotResponse {
     string screen = 1;
 }
+
+message DesktopResumeRequest {
+    string id = 1;
+}
+
+message DesktopResumeResponse {}
+
+message DesktopSuspendRequest {
+    string id = 1;
+}
+
+message DesktopSuspendResponse {}
+
+message DesktopRestoreRequest {
+    string savepath = 1;
+}
+
+message DesktopRestoreResponse {}
+
+message DesktopSaveRequest {
+    string id = 1;
+    string savepath = 2;
+}
+
+message DesktopSaveResponse {}

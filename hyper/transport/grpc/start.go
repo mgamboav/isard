@@ -19,7 +19,7 @@ func (h *HyperServer) DesktopStart(ctx context.Context, req *proto.DesktopStartR
 		return nil, err
 	}
 
-	xml, err := h.hyper.Start(req.Xml, false)
+	xml, err := h.hyper.DesktopStart(req.Xml, false)
 	if err != nil {
 		var e libvirt.Error
 		if errors.As(err, &e) {

@@ -11,6 +11,10 @@ import (
 type Interface interface {
 	DesktopStart(xml string, paused bool) (string, error)
 	DesktopStop(id string) error
+	DesktopResume(id string) error
+	DesktopSuspend(id string) error
+	DesktopRestore(id string) error
+	DesktopSave(id string, savepath string) error
 	DesktopXMLGet(id string) (string, error)
 	DesktopList() ([]libvirt.Domain, error)
 	DesktopMigrateLive(id string, hypervisor string, bandwidth uint64)
