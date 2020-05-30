@@ -14,6 +14,7 @@ type Interface interface {
 	DesktopXMLGet(id string) (string, error)
 	DesktopList() ([]libvirt.Domain, error)
 	DesktopMigrateLive(id string, hypervisor string, bandwidth uint64)
+	DesktopScreenshot(id string) (string, error)
 	Close() error
 }
 

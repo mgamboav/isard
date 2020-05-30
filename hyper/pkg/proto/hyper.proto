@@ -9,6 +9,7 @@ service Hyper {
     rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
     rpc DesktopXMLGet(DesktopXMLGetRequest) returns (DesktopXMLGetResponse) {}
     rpc DesktopMigrateLive(DesktopMigrateLiveRequest) returns (DesktopMigrateLiveResponse) {}
+    rpc DesktopScreenshot(DesktopScreenshotRequest) returns (DesktopScreenshotResponse) {}
 }
 
 message DesktopStartRequest {
@@ -46,3 +47,11 @@ message DesktopMigrateLiveRequest {
 }
 
 message DesktopMigrateLiveResponse {}
+
+message DesktopScreenshotRequest {
+    string id = 1;
+}
+
+message DesktopScreenshotResponse {
+    string screen = 1;
+}
