@@ -8,6 +8,7 @@ service Hyper {
     rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
     rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
     rpc DesktopXMLGet(DesktopXMLGetRequest) returns (DesktopXMLGetResponse) {}
+    rpc DesktopMigrateLive(DesktopMigrateLiveRequest) returns (DesktopMigrateLiveResponse) {}
 }
 
 message DesktopStartRequest {
@@ -37,3 +38,11 @@ message DesktopXMLGetRequest {
 message DesktopXMLGetResponse {
     string xml = 1;
 }
+
+message DesktopMigrateLiveRequest {
+    string id = 1;
+    string hypervisor = 2;
+    uint64 bandwidth =3;
+}
+
+message DesktopMigrateLiveResponse {}

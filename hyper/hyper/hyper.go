@@ -9,10 +9,11 @@ import (
 )
 
 type Interface interface {
-	Start(xml string, paused bool) (string, error)
-	Stop(id string) error
-	XMLGet(id string) (string, error)
-	List() ([]libvirt.Domain, error)
+	DesktopStart(xml string, paused bool) (string, error)
+	DesktopStop(id string) error
+	DesktopXMLGet(id string) (string, error)
+	DesktopList() ([]libvirt.Domain, error)
+	DesktopMigrateLive(id string, hypervisor string, bandwidth uint64)
 	Close() error
 }
 

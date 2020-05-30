@@ -9,13 +9,29 @@ import (
 	"libvirt.org/libvirt-go"
 )
 
-func (h *Hyper) QMPScreenshot(name string) (image *os.File, error) {
-	cmdtxt := "{'execute':'screendump', 'arguments':{'filename':'/tmp/image.ppm'}}"
-	cmd := exec.Command("virsh", "qemu-monitor-command", name, cmdtxt)
-	if out, err := cmd.CombinedOutput(); err != nil {
-		return os.File, fmt.Errorf("screenshot: %w: %s", err, out)
+func (h *Hyper) DesktopScreenshot(id string) (image string, error) {
+	desktop, err := h.conn.LookupDomainByName(id)
+	if err != nil {
+		var e libvirt.Error
+		if errors.As(err, &e) {
+			switch e.Code {
+			case libvirt.ERR_NO_DOMAIN:
+				return ErrDesktopNotStarted
+
+			default:
+				return fmt.Errorf("desktop screenshot: %s", e.Message)
+			}
+		}
+
+		return fmt.Errorf("desktops screenshot: %w", err)
 	}
-	return os.File, nil
+	defer desktop.Free()
+
+	screen, err := desktop.Screenshot(&libvirt.Stream{},1)
+	if err != nil {
+		return "", fmt.Errorf("desktop screenshot: %w", err)
+	}
+	return screen, nil
 }
 
 

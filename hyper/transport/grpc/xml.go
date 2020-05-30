@@ -17,7 +17,7 @@ func (h *HyperServer) DesktopXMLGet(ctx context.Context, req *proto.DesktopXMLGe
 		return nil, err
 	}
 
-	xml, err := h.hyper.XMLGet(req.Id)
+	xml, err := h.hyper.DesktopXMLGet(req.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Unknown, "get XML: %v", err)
 	}
