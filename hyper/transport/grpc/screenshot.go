@@ -19,7 +19,10 @@ func (h *HyperServer) DesktopScreenshot(ctx context.Context, req *proto.DesktopS
 		return nil, err
 	}
 
-	if screen, err := h.hyper.DesktopScreenshot(req.Id); err != nil {
+	/*  */
+	screen := proto.DesktopStartResponse{}
+	screen, err := h.hyper.DesktopScreenshot(req.Id)
+	if err != nil {
 		if errors.Is(err, hyper.ErrDesktopNotStarted) {
 			return nil, status.Errorf(codes.FailedPrecondition, "desktop screenshot: %v", err)
 		}
@@ -27,5 +30,7 @@ func (h *HyperServer) DesktopScreenshot(ctx context.Context, req *proto.DesktopS
 		return nil, status.Errorf(codes.Unknown, "desktop screenshot: %v", err)
 	}
 
-	return &proto.DesktopScreenshotResponse{}, nil
+	return &proto.DesktopScreenshotResponse{
+		Stream: screen.Stream,
+		Mime:   screen.Mime}, nil
 }

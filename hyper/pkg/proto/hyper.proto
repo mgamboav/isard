@@ -57,7 +57,8 @@ message DesktopScreenshotRequest {
 }
 
 message DesktopScreenshotResponse {
-    string screen = 1;
+    bytes stream =1;
+    string mime = 2;
 }
 
 message DesktopResumeRequest {
