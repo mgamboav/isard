@@ -10,12 +10,17 @@ import (
 
 type Cfg struct {
 	Redis Redis `mapstructure:"redis"`
+	GRPC  GRPC  `mapstructure:"grpc"`
 }
 
 type Redis struct {
 	Host     string `mapstructure:"host"`
 	Port     int    `mapstructure:"port"`
 	Password string `mapstructure:"password"`
+}
+
+type GRPC struct {
+	Port int `mapstructure:"port"`
 }
 
 func Init(sugar *zap.SugaredLogger) Cfg {

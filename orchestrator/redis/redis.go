@@ -9,9 +9,10 @@ import (
 	"github.com/go-redis/redis/v7"
 	hypRedis "github.com/isard-vdi/isard/hyper-stats/pkg/redis"
 	"github.com/isard-vdi/isard/orchestrator/env"
+	"github.com/isard-vdi/isard/orchestrator/provider"
 )
 
-func Init(env *env.Env) {
+func Init(env *env.Env, pool provider.PoolInterface) {
 	env.Redis = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", env.Cfg.Redis.Host, env.Cfg.Redis.Port),
 		Password: env.Cfg.Redis.Password,
@@ -25,13 +26,13 @@ func Init(env *env.Env) {
 	}
 
 	env.WG.Add(1)
-	go listenHyperConnections(env)
+	go listenHyperConnections(env, pool)
 
 	// Wait to recieve messages of all the availabe hypers before starting
 	time.Sleep(10 * time.Second)
 }
 
-func listenHyperConnections(env *env.Env) {
+func listenHyperConnections(env *env.Env, pool provider.PoolInterface) {
 	sub := env.Redis.Subscribe(hypRedis.Channel)
 	ch := sub.Channel()
 
@@ -50,20 +51,20 @@ func listenHyperConnections(env *env.Env) {
 
 			switch h.State {
 			case hypRedis.HyperStateOK:
-				env.Orchestrator.AddHyper(h.Host, h.Time)
+				pool.AddHyper(h.Host, h.Time)
 
 			case hypRedis.HyperStateMigrating:
-				env.Orchestrator.SetHyperMigrating(h.Host)
+				pool.SetHyperMigrating(h.Host)
 
 			case hypRedis.HyperStateStopping:
-				env.Orchestrator.RemoveHyper(h.Host)
+				pool.RemoveHyper(h.Host)
 
 			default:
 				env.Sugar.Errorw("unknown hyper state",
 					"state", h.State,
 				)
 
-				env.Orchestrator.RemoveHyper(h.Host)
+				pool.RemoveHyper(h.Host)
 			}
 
 		case <-env.Ctx.Done():

@@ -32,6 +32,6 @@ message ViewerGetResponse {
         int32 websocket_port = 4;      
     }
 
-    repeated Spice spice = 2;
-    repeated Vnc vnc = 3;
+    repeated Spice spice = 1;
+    repeated Vnc vnc = 2;
 }

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github.com/isard-vdi/isard/orchestrator/pkg/proto";
+
+service Orchestrator {
+    rpc GetHyper(GetHyperRequest) returns (GetHyperResponse) {}
+}
+
+message GetHyperRequest {
+    bool gpu = 1;
+}
+
+message GetHyperResponse {
+    string host = 1;
+}

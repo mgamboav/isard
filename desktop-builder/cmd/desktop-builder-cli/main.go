@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/isard-vdi/isard/desktop-builder/pkg/proto"
 	"google.golang.org/grpc"
@@ -14,6 +15,12 @@ func main() {
 		panic(err)
 	}
 	defer conn.Close()
+
+	for {
+		fmt.Println(conn.GetState())
+
+		time.Sleep(1 * time.Second)
+	}
 
 	cli := proto.NewDesktopBuilderClient(conn)
 	rsp, err := cli.XMLGet(context.Background(), &proto.XMLGetRequest{Id: "win10"})

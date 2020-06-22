@@ -7,9 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/isard-vdi/isard/orchestrator/cfg"
-	"github.com/isard-vdi/isard/orchestrator/env"
-	"github.com/isard-vdi/isard/orchestrator/redis"
+	"github.com/isard-vdi/isard/controller/env"
 
 	"go.uber.org/zap"
 )
@@ -24,13 +22,9 @@ func main() {
 
 	env := &env.Env{
 		Sugar: sugar,
-		Cfg:   cfg.Init(sugar),
 	}
 
-	var cancel context.CancelFunc
-	env.Ctx, cancel = context.WithCancel(context.Background())
-
-	redis.Init(env)
+	ctx, cancel := context.WithCancel(context.Background())
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt)
@@ -38,12 +32,10 @@ func main() {
 	select {
 	case <-stop:
 		fmt.Println("")
-		env.Sugar.Info("stoping hyper-stats...")
+		env.Sugar.Info("stopping controller...")
 
 		cancel()
 
 		env.WG.Wait()
-
-		env.Redis.Close()
 	}
 }

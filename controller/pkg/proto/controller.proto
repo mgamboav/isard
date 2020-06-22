@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github.com/isard-vdi/isard/controller/pkg/proto";
+
+service Controller {
+    rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
+    rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
+    rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
+    rpc ViewerGet(ViewerGetRequest) returns (ViewerGetResponse) {}
+}
+
+message Viewer {
+    message Spice {
+        string pwd = 1;
+        int32 port = 2;
+        int32 tls_port = 3;
+    }
+    message Vnc {
+        string pwd = 1;
+        int32 port = 2;
+        int32 websocket_port = 3;
+    }
+
+    repeated Spice spice = 1;
+    repeated Vnc vnc = 2;
+}
+
+message DesktopListRequest {}
+
+message DesktopListResponse {}
+
+message DesktopStartRequest {
+    string id = 1;
+}
+
+message DesktopStartResponse {
+    Viewer viewer = 1;
+}
+
+message DesktopStopRequest {
+    string id = 1;
+}
+
+message DesktopStopResponse {}
+
+message ViewerGetRequest {
+    string id = 1;
+}
+
+message ViewerGetResponse {
+    Viewer viewer = 1;
+}
