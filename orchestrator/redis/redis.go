@@ -18,8 +18,7 @@ func Init(env *env.Env, pool provider.PoolInterface) {
 		Password: env.Cfg.Redis.Password,
 	})
 
-	_, err := env.Redis.Ping().Result()
-	if err != nil {
+	if _, err := env.Redis.Ping().Result(); err != nil {
 		env.Sugar.Fatalw("connect to redis",
 			"err", err,
 		)

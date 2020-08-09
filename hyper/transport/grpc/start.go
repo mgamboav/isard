@@ -7,9 +7,9 @@ import (
 	"github.com/isard-vdi/isard/common/pkg/grpc"
 	"github.com/isard-vdi/isard/hyper/pkg/proto"
 
-	"github.com/libvirt/libvirt-go"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"libvirt.org/libvirt-go"
 )
 
 func (h *HyperServer) DesktopStart(ctx context.Context, req *proto.DesktopStartRequest) (*proto.DesktopStartResponse, error) {

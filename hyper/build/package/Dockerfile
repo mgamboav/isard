@@ -5,7 +5,8 @@ RUN apk add --no-cache \
     git \
 	libvirt \
 	libvirt-dev \
-	musl-dev
+	musl-dev \
+    gcc
 
 WORKDIR /go/src/github.com/isard-vdi/isard
 COPY ./go.mod ./go.sum /go/src/github.com/isard-vdi/isard/
