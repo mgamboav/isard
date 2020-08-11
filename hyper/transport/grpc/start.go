@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/isard-vdi/isard/common/pkg/grpc"
+	"github.com/isard-vdi/isard/hyper/hyper"
 	"github.com/isard-vdi/isard/hyper/pkg/proto"
 
 	"google.golang.org/grpc/codes"
@@ -19,7 +20,7 @@ func (h *HyperServer) DesktopStart(ctx context.Context, req *proto.DesktopStartR
 		return nil, err
 	}
 
-	xml, err := h.hyper.Start(req.Xml, false)
+	desktop, err := h.hyper.Start(req.Xml, &hyper.StartOptions{})
 	if err != nil {
 		var e libvirt.Error
 		if errors.As(err, &e) {
@@ -30,6 +31,12 @@ func (h *HyperServer) DesktopStart(ctx context.Context, req *proto.DesktopStartR
 		}
 
 		return nil, status.Errorf(codes.Unknown, "start desktop: %v", err)
+	}
+	defer desktop.Free()
+
+	xml, err := h.hyper.XMLGet(desktop)
+	if err != nil {
+		return nil, status.Error(codes.Unknown, err.Error())
 	}
 
 	return &proto.DesktopStartResponse{

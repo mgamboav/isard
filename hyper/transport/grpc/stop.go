@@ -19,11 +19,17 @@ func (h *HyperServer) DesktopStop(ctx context.Context, req *proto.DesktopStopReq
 		return nil, err
 	}
 
-	if err := h.hyper.Stop(req.Id); err != nil {
-		if errors.Is(err, hyper.ErrDesktopNotStarted) {
-			return nil, status.Errorf(codes.FailedPrecondition, "stop desktop: %v", err)
+	desktop, err := h.hyper.Get(req.Id)
+	if err != nil {
+		if errors.Is(err, hyper.ErrDesktopNotFound) {
+			return nil, status.Errorf(codes.FailedPrecondition, "stop desktop: get desktop: %v", err)
 		}
 
+		return nil, status.Errorf(codes.Unknown, "stop desktop: get desktop: %v", err)
+	}
+	defer desktop.Free()
+
+	if err := h.hyper.Stop(desktop); err != nil {
 		return nil, status.Errorf(codes.Unknown, "stop desktop: %v", err)
 	}
 

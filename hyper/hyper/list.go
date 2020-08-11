@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/jinzhu/copier"
 	"libvirt.org/libvirt-go"
 )
 
@@ -21,12 +20,7 @@ func (h *Hyper) List() ([]libvirt.Domain, error) {
 
 	var desktops []libvirt.Domain
 	for _, desktop := range d {
-		defer desktop.Free()
-
-		copiedDesktop := libvirt.Domain{}
-		copier.Copy(&copiedDesktop, &desktop)
-
-		desktops = append(desktops, copiedDesktop)
+		desktops = append(desktops, desktop)
 	}
 
 	return desktops, nil

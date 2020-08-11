@@ -1,6 +1,7 @@
 package hyper
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/isard-vdi/isard/hyper/env"
@@ -8,10 +9,15 @@ import (
 	"libvirt.org/libvirt-go"
 )
 
+var (
+	ErrDesktopNotFound = errors.New("desktop not found")
+)
+
 type Interface interface {
-	Start(xml string, paused bool) (string, error)
-	Stop(id string) error
-	XMLGet(id string) (string, error)
+	Get(name string) (*libvirt.Domain, error)
+	Start(xml string, options *StartOptions) (*libvirt.Domain, error)
+	Stop(desktop *libvirt.Domain) error
+	XMLGet(desktop *libvirt.Domain) (string, error)
 	List() ([]libvirt.Domain, error)
 	Close() error
 }

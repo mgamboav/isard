@@ -11,8 +11,8 @@
     <video>
       <model type="qxl"></model>
     </video>
-    <controller type='pci' index='0' model='pcie-root'>                                                                                               
-      <alias name='pci.0'/>                                                                                                                          
-    </controller> 
+    <controller type='pci' index='0' model='pcie-root'>
+      <alias name='pci.0'/>
+    </controller>
   </devices>
 </domain>
