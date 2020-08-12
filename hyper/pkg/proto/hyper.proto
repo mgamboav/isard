@@ -7,6 +7,10 @@ service Hyper {
     rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
     rpc DesktopValidate(DesktopValidateRequest) returns (DesktopValidateResponse) {}
     rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
+    rpc DesktopResume(DesktopResumeRequest) returns (DesktopResumeResponse) {}
+    rpc DesktopSuspend(DesktopSuspendRequest) returns (DesktopSuspendResponse) {}
+    rpc DesktopSave(DesktopSaveRequest) returns (DesktopSaveResponse) {}
+    rpc DesktopRestore(DesktopRestoreRequest) returns (DesktopRestoreResponse) {}    
     rpc DesktopXMLGet(DesktopXMLGetRequest) returns (DesktopXMLGetResponse) {}
     rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
     rpc DesktopMigrate(DesktopMigrateRequest) returns (DesktopMigrateResponse) {}
@@ -52,3 +56,28 @@ message DesktopMigrateRequest {
 }
 
 message DesktopMigrateResponse {}
+
+message DesktopResumeRequest {
+    string id = 1;
+}
+
+message DesktopResumeResponse {}
+
+message DesktopSuspendRequest {
+    string id = 1;
+}
+
+message DesktopSuspendResponse {}
+
+message DesktopRestoreRequest {
+    string path = 1;
+}
+
+message DesktopRestoreResponse {}
+
+message DesktopSaveRequest {
+    string id = 1;
+    string path = 2;
+}
+
+message DesktopSaveResponse {}

@@ -19,6 +19,18 @@ type Interface interface {
 	// Stop stops a running desktop
 	Stop(desktop *libvirt.Domain) error
 
+	// Suspends a running desktop
+	Suspend(desktop *libvirt.Domain) error
+
+	// Resumes a suspended desktop
+	Resume(desktop *libvirt.Domain) error
+
+	// Save a running desktop
+	Save(desktop *libvirt.Domain, path string) error
+
+	// Restore a saved desktop
+	Restore(path string) error
+
 	// XMLGet returns the XML definition of a desktop
 	XMLGet(desktop *libvirt.Domain) (string, error)
 

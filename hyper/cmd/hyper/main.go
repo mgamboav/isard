@@ -11,6 +11,7 @@ import (
 	"github.com/isard-vdi/isard/hyper/env"
 	"github.com/isard-vdi/isard/hyper/hyper"
 	"github.com/isard-vdi/isard/hyper/transport/grpc"
+	"github.com/spf13/afero"
 
 	"go.uber.org/zap"
 )
@@ -25,6 +26,7 @@ func main() {
 
 	env := &env.Env{
 		Sugar: sugar,
+		FS:    afero.NewOsFs(),
 		Cfg:   cfg.Init(sugar),
 	}
 
