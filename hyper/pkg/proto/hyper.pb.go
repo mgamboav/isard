@@ -293,278 +293,6 @@ func (*DesktopStopResponse) Descriptor() ([]byte, []int) {
 	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{5}
 }
 
-type DesktopListRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *DesktopListRequest) Reset() {
-	*x = DesktopListRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopListRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopListRequest) ProtoMessage() {}
-
-func (x *DesktopListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopListRequest.ProtoReflect.Descriptor instead.
-func (*DesktopListRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{6}
-}
-
-type DesktopListResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Ids []string `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
-}
-
-func (x *DesktopListResponse) Reset() {
-	*x = DesktopListResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopListResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopListResponse) ProtoMessage() {}
-
-func (x *DesktopListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopListResponse.ProtoReflect.Descriptor instead.
-func (*DesktopListResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *DesktopListResponse) GetIds() []string {
-	if x != nil {
-		return x.Ids
-	}
-	return nil
-}
-
-type DesktopXMLGetRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (x *DesktopXMLGetRequest) Reset() {
-	*x = DesktopXMLGetRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopXMLGetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopXMLGetRequest) ProtoMessage() {}
-
-func (x *DesktopXMLGetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopXMLGetRequest.ProtoReflect.Descriptor instead.
-func (*DesktopXMLGetRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *DesktopXMLGetRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DesktopXMLGetResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Xml string `protobuf:"bytes,1,opt,name=xml,proto3" json:"xml,omitempty"`
-}
-
-func (x *DesktopXMLGetResponse) Reset() {
-	*x = DesktopXMLGetResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[9]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopXMLGetResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopXMLGetResponse) ProtoMessage() {}
-
-func (x *DesktopXMLGetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[9]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopXMLGetResponse.ProtoReflect.Descriptor instead.
-func (*DesktopXMLGetResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *DesktopXMLGetResponse) GetXml() string {
-	if x != nil {
-		return x.Xml
-	}
-	return ""
-}
-
-type DesktopMigrateRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id    string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Hyper string `protobuf:"bytes,2,opt,name=hyper,proto3" json:"hyper,omitempty"`
-}
-
-func (x *DesktopMigrateRequest) Reset() {
-	*x = DesktopMigrateRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[10]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopMigrateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopMigrateRequest) ProtoMessage() {}
-
-func (x *DesktopMigrateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[10]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopMigrateRequest.ProtoReflect.Descriptor instead.
-func (*DesktopMigrateRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *DesktopMigrateRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *DesktopMigrateRequest) GetHyper() string {
-	if x != nil {
-		return x.Hyper
-	}
-	return ""
-}
-
-type DesktopMigrateResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *DesktopMigrateResponse) Reset() {
-	*x = DesktopMigrateResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[11]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopMigrateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopMigrateResponse) ProtoMessage() {}
-
-func (x *DesktopMigrateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[11]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopMigrateResponse.ProtoReflect.Descriptor instead.
-func (*DesktopMigrateResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{11}
-}
-
 type DesktopResumeRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -576,7 +304,7 @@ type DesktopResumeRequest struct {
 func (x *DesktopResumeRequest) Reset() {
 	*x = DesktopResumeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[12]
+		mi := &file_pkg_proto_hyper_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -589,7 +317,7 @@ func (x *DesktopResumeRequest) String() string {
 func (*DesktopResumeRequest) ProtoMessage() {}
 
 func (x *DesktopResumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[12]
+	mi := &file_pkg_proto_hyper_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -602,7 +330,7 @@ func (x *DesktopResumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesktopResumeRequest.ProtoReflect.Descriptor instead.
 func (*DesktopResumeRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{12}
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DesktopResumeRequest) GetId() string {
@@ -621,7 +349,7 @@ type DesktopResumeResponse struct {
 func (x *DesktopResumeResponse) Reset() {
 	*x = DesktopResumeResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[13]
+		mi := &file_pkg_proto_hyper_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -634,7 +362,7 @@ func (x *DesktopResumeResponse) String() string {
 func (*DesktopResumeResponse) ProtoMessage() {}
 
 func (x *DesktopResumeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[13]
+	mi := &file_pkg_proto_hyper_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -647,7 +375,7 @@ func (x *DesktopResumeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesktopResumeResponse.ProtoReflect.Descriptor instead.
 func (*DesktopResumeResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{13}
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{7}
 }
 
 type DesktopSuspendRequest struct {
@@ -661,7 +389,7 @@ type DesktopSuspendRequest struct {
 func (x *DesktopSuspendRequest) Reset() {
 	*x = DesktopSuspendRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[14]
+		mi := &file_pkg_proto_hyper_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -674,7 +402,7 @@ func (x *DesktopSuspendRequest) String() string {
 func (*DesktopSuspendRequest) ProtoMessage() {}
 
 func (x *DesktopSuspendRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[14]
+	mi := &file_pkg_proto_hyper_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -687,7 +415,7 @@ func (x *DesktopSuspendRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesktopSuspendRequest.ProtoReflect.Descriptor instead.
 func (*DesktopSuspendRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{14}
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DesktopSuspendRequest) GetId() string {
@@ -706,7 +434,7 @@ type DesktopSuspendResponse struct {
 func (x *DesktopSuspendResponse) Reset() {
 	*x = DesktopSuspendResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[15]
+		mi := &file_pkg_proto_hyper_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -719,7 +447,7 @@ func (x *DesktopSuspendResponse) String() string {
 func (*DesktopSuspendResponse) ProtoMessage() {}
 
 func (x *DesktopSuspendResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[15]
+	mi := &file_pkg_proto_hyper_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -732,92 +460,7 @@ func (x *DesktopSuspendResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesktopSuspendResponse.ProtoReflect.Descriptor instead.
 func (*DesktopSuspendResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{15}
-}
-
-type DesktopRestoreRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
-}
-
-func (x *DesktopRestoreRequest) Reset() {
-	*x = DesktopRestoreRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[16]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopRestoreRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopRestoreRequest) ProtoMessage() {}
-
-func (x *DesktopRestoreRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[16]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopRestoreRequest.ProtoReflect.Descriptor instead.
-func (*DesktopRestoreRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *DesktopRestoreRequest) GetPath() string {
-	if x != nil {
-		return x.Path
-	}
-	return ""
-}
-
-type DesktopRestoreResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *DesktopRestoreResponse) Reset() {
-	*x = DesktopRestoreResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[17]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DesktopRestoreResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DesktopRestoreResponse) ProtoMessage() {}
-
-func (x *DesktopRestoreResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[17]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DesktopRestoreResponse.ProtoReflect.Descriptor instead.
-func (*DesktopRestoreResponse) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{17}
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{9}
 }
 
 type DesktopSaveRequest struct {
@@ -832,7 +475,7 @@ type DesktopSaveRequest struct {
 func (x *DesktopSaveRequest) Reset() {
 	*x = DesktopSaveRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[18]
+		mi := &file_pkg_proto_hyper_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -845,7 +488,7 @@ func (x *DesktopSaveRequest) String() string {
 func (*DesktopSaveRequest) ProtoMessage() {}
 
 func (x *DesktopSaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[18]
+	mi := &file_pkg_proto_hyper_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -858,7 +501,7 @@ func (x *DesktopSaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesktopSaveRequest.ProtoReflect.Descriptor instead.
 func (*DesktopSaveRequest) Descriptor() ([]byte, []int) {
-	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{18}
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DesktopSaveRequest) GetId() string {
@@ -884,7 +527,7 @@ type DesktopSaveResponse struct {
 func (x *DesktopSaveResponse) Reset() {
 	*x = DesktopSaveResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pkg_proto_hyper_proto_msgTypes[19]
+		mi := &file_pkg_proto_hyper_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -897,7 +540,7 @@ func (x *DesktopSaveResponse) String() string {
 func (*DesktopSaveResponse) ProtoMessage() {}
 
 func (x *DesktopSaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pkg_proto_hyper_proto_msgTypes[19]
+	mi := &file_pkg_proto_hyper_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -910,6 +553,363 @@ func (x *DesktopSaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesktopSaveResponse.ProtoReflect.Descriptor instead.
 func (*DesktopSaveResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{11}
+}
+
+type DesktopRestoreRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+}
+
+func (x *DesktopRestoreRequest) Reset() {
+	*x = DesktopRestoreRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopRestoreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopRestoreRequest) ProtoMessage() {}
+
+func (x *DesktopRestoreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopRestoreRequest.ProtoReflect.Descriptor instead.
+func (*DesktopRestoreRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DesktopRestoreRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+type DesktopRestoreResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopRestoreResponse) Reset() {
+	*x = DesktopRestoreResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopRestoreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopRestoreResponse) ProtoMessage() {}
+
+func (x *DesktopRestoreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopRestoreResponse.ProtoReflect.Descriptor instead.
+func (*DesktopRestoreResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{13}
+}
+
+type DesktopListRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopListRequest) Reset() {
+	*x = DesktopListRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopListRequest) ProtoMessage() {}
+
+func (x *DesktopListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopListRequest.ProtoReflect.Descriptor instead.
+func (*DesktopListRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{14}
+}
+
+type DesktopListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Ids []string `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
+}
+
+func (x *DesktopListResponse) Reset() {
+	*x = DesktopListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopListResponse) ProtoMessage() {}
+
+func (x *DesktopListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopListResponse.ProtoReflect.Descriptor instead.
+func (*DesktopListResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *DesktopListResponse) GetIds() []string {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
+type DesktopXMLGetRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *DesktopXMLGetRequest) Reset() {
+	*x = DesktopXMLGetRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopXMLGetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopXMLGetRequest) ProtoMessage() {}
+
+func (x *DesktopXMLGetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopXMLGetRequest.ProtoReflect.Descriptor instead.
+func (*DesktopXMLGetRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DesktopXMLGetRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DesktopXMLGetResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Xml string `protobuf:"bytes,1,opt,name=xml,proto3" json:"xml,omitempty"`
+}
+
+func (x *DesktopXMLGetResponse) Reset() {
+	*x = DesktopXMLGetResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopXMLGetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopXMLGetResponse) ProtoMessage() {}
+
+func (x *DesktopXMLGetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopXMLGetResponse.ProtoReflect.Descriptor instead.
+func (*DesktopXMLGetResponse) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *DesktopXMLGetResponse) GetXml() string {
+	if x != nil {
+		return x.Xml
+	}
+	return ""
+}
+
+type DesktopMigrateRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id    string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Hyper string `protobuf:"bytes,2,opt,name=hyper,proto3" json:"hyper,omitempty"`
+}
+
+func (x *DesktopMigrateRequest) Reset() {
+	*x = DesktopMigrateRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopMigrateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopMigrateRequest) ProtoMessage() {}
+
+func (x *DesktopMigrateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopMigrateRequest.ProtoReflect.Descriptor instead.
+func (*DesktopMigrateRequest) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *DesktopMigrateRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *DesktopMigrateRequest) GetHyper() string {
+	if x != nil {
+		return x.Hyper
+	}
+	return ""
+}
+
+type DesktopMigrateResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DesktopMigrateResponse) Reset() {
+	*x = DesktopMigrateResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_hyper_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DesktopMigrateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesktopMigrateResponse) ProtoMessage() {}
+
+func (x *DesktopMigrateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_hyper_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesktopMigrateResponse.ProtoReflect.Descriptor instead.
+func (*DesktopMigrateResponse) Descriptor() ([]byte, []int) {
 	return file_pkg_proto_hyper_proto_rawDescGZIP(), []int{19}
 }
 
@@ -931,39 +931,39 @@ var file_pkg_proto_hyper_proto_rawDesc = []byte{
 	0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e,
 	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x15,
 	0x0a, 0x13, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x14, 0x0a, 0x12, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
-	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x27, 0x0a, 0x13, 0x44,
-	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x69, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52,
-	0x03, 0x69, 0x64, 0x73, 0x22, 0x26, 0x0a, 0x14, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x58,
-	0x4d, 0x4c, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x29, 0x0a, 0x15,
-	0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x58, 0x4d, 0x4c, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x78, 0x6d, 0x6c, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x03, 0x78, 0x6d, 0x6c, 0x22, 0x3d, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74,
-	0x6f, 0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64,
-	0x12, 0x14, 0x0a, 0x05, 0x68, 0x79, 0x70, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x68, 0x79, 0x70, 0x65, 0x72, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
-	0x70, 0x4d, 0x69, 0x67, 0x72, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x26, 0x0a, 0x14, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x75, 0x6d,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b,
-	0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x75, 0x6d, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x27, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x75, 0x73, 0x70,
-	0x65, 0x6e, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65,
-	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2b, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52,
-	0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a,
-	0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74,
-	0x68, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x74,
-	0x6f, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x38, 0x0a, 0x12, 0x44,
-	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
-	0x64, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x70, 0x61, 0x74, 0x68, 0x22, 0x15, 0x0a, 0x13, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
-	0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x8d, 0x06, 0x0a,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x26, 0x0a, 0x14, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70,
+	0x52, 0x65, 0x73, 0x75, 0x6d, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x17, 0x0a,
+	0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x75, 0x6d, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
+	0x70, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22,
+	0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x75, 0x73, 0x70, 0x65, 0x6e,
+	0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x38, 0x0a, 0x12, 0x44, 0x65, 0x73,
+	0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12,
+	0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70,
+	0x61, 0x74, 0x68, 0x22, 0x15, 0x0a, 0x13, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x61,
+	0x76, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2b, 0x0a, 0x15, 0x44, 0x65,
+	0x73, 0x6b, 0x74, 0x6f, 0x70, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74,
+	0x6f, 0x70, 0x52, 0x65, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x14, 0x0a, 0x12, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x27, 0x0a, 0x13, 0x44, 0x65, 0x73, 0x6b, 0x74,
+	0x6f, 0x70, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x10,
+	0x0a, 0x03, 0x69, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x03, 0x69, 0x64, 0x73,
+	0x22, 0x26, 0x0a, 0x14, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x58, 0x4d, 0x4c, 0x47, 0x65,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x29, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b,
+	0x74, 0x6f, 0x70, 0x58, 0x4d, 0x4c, 0x47, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x10, 0x0a, 0x03, 0x78, 0x6d, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
+	0x78, 0x6d, 0x6c, 0x22, 0x3d, 0x0a, 0x15, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69,
+	0x67, 0x72, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05,
+	0x68, 0x79, 0x70, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x68, 0x79, 0x70,
+	0x65, 0x72, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x4d, 0x69, 0x67,
+	0x72, 0x61, 0x74, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x8d, 0x06, 0x0a,
 	0x05, 0x48, 0x79, 0x70, 0x65, 0x72, 0x12, 0x49, 0x0a, 0x0c, 0x44, 0x65, 0x73, 0x6b, 0x74, 0x6f,
 	0x70, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x44,
 	0x65, 0x73, 0x6b, 0x74, 0x6f, 0x70, 0x53, 0x74, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
@@ -1039,42 +1039,42 @@ var file_pkg_proto_hyper_proto_goTypes = []interface{}{
 	(*DesktopValidateResponse)(nil), // 3: proto.DesktopValidateResponse
 	(*DesktopStopRequest)(nil),      // 4: proto.DesktopStopRequest
 	(*DesktopStopResponse)(nil),     // 5: proto.DesktopStopResponse
-	(*DesktopListRequest)(nil),      // 6: proto.DesktopListRequest
-	(*DesktopListResponse)(nil),     // 7: proto.DesktopListResponse
-	(*DesktopXMLGetRequest)(nil),    // 8: proto.DesktopXMLGetRequest
-	(*DesktopXMLGetResponse)(nil),   // 9: proto.DesktopXMLGetResponse
-	(*DesktopMigrateRequest)(nil),   // 10: proto.DesktopMigrateRequest
-	(*DesktopMigrateResponse)(nil),  // 11: proto.DesktopMigrateResponse
-	(*DesktopResumeRequest)(nil),    // 12: proto.DesktopResumeRequest
-	(*DesktopResumeResponse)(nil),   // 13: proto.DesktopResumeResponse
-	(*DesktopSuspendRequest)(nil),   // 14: proto.DesktopSuspendRequest
-	(*DesktopSuspendResponse)(nil),  // 15: proto.DesktopSuspendResponse
-	(*DesktopRestoreRequest)(nil),   // 16: proto.DesktopRestoreRequest
-	(*DesktopRestoreResponse)(nil),  // 17: proto.DesktopRestoreResponse
-	(*DesktopSaveRequest)(nil),      // 18: proto.DesktopSaveRequest
-	(*DesktopSaveResponse)(nil),     // 19: proto.DesktopSaveResponse
+	(*DesktopResumeRequest)(nil),    // 6: proto.DesktopResumeRequest
+	(*DesktopResumeResponse)(nil),   // 7: proto.DesktopResumeResponse
+	(*DesktopSuspendRequest)(nil),   // 8: proto.DesktopSuspendRequest
+	(*DesktopSuspendResponse)(nil),  // 9: proto.DesktopSuspendResponse
+	(*DesktopSaveRequest)(nil),      // 10: proto.DesktopSaveRequest
+	(*DesktopSaveResponse)(nil),     // 11: proto.DesktopSaveResponse
+	(*DesktopRestoreRequest)(nil),   // 12: proto.DesktopRestoreRequest
+	(*DesktopRestoreResponse)(nil),  // 13: proto.DesktopRestoreResponse
+	(*DesktopListRequest)(nil),      // 14: proto.DesktopListRequest
+	(*DesktopListResponse)(nil),     // 15: proto.DesktopListResponse
+	(*DesktopXMLGetRequest)(nil),    // 16: proto.DesktopXMLGetRequest
+	(*DesktopXMLGetResponse)(nil),   // 17: proto.DesktopXMLGetResponse
+	(*DesktopMigrateRequest)(nil),   // 18: proto.DesktopMigrateRequest
+	(*DesktopMigrateResponse)(nil),  // 19: proto.DesktopMigrateResponse
 }
 var file_pkg_proto_hyper_proto_depIdxs = []int32{
 	0,  // 0: proto.Hyper.DesktopStart:input_type -> proto.DesktopStartRequest
 	2,  // 1: proto.Hyper.DesktopValidate:input_type -> proto.DesktopValidateRequest
 	4,  // 2: proto.Hyper.DesktopStop:input_type -> proto.DesktopStopRequest
-	12, // 3: proto.Hyper.DesktopResume:input_type -> proto.DesktopResumeRequest
-	14, // 4: proto.Hyper.DesktopSuspend:input_type -> proto.DesktopSuspendRequest
-	18, // 5: proto.Hyper.DesktopSave:input_type -> proto.DesktopSaveRequest
-	16, // 6: proto.Hyper.DesktopRestore:input_type -> proto.DesktopRestoreRequest
-	8,  // 7: proto.Hyper.DesktopXMLGet:input_type -> proto.DesktopXMLGetRequest
-	6,  // 8: proto.Hyper.DesktopList:input_type -> proto.DesktopListRequest
-	10, // 9: proto.Hyper.DesktopMigrate:input_type -> proto.DesktopMigrateRequest
+	6,  // 3: proto.Hyper.DesktopResume:input_type -> proto.DesktopResumeRequest
+	8,  // 4: proto.Hyper.DesktopSuspend:input_type -> proto.DesktopSuspendRequest
+	10, // 5: proto.Hyper.DesktopSave:input_type -> proto.DesktopSaveRequest
+	12, // 6: proto.Hyper.DesktopRestore:input_type -> proto.DesktopRestoreRequest
+	16, // 7: proto.Hyper.DesktopXMLGet:input_type -> proto.DesktopXMLGetRequest
+	14, // 8: proto.Hyper.DesktopList:input_type -> proto.DesktopListRequest
+	18, // 9: proto.Hyper.DesktopMigrate:input_type -> proto.DesktopMigrateRequest
 	1,  // 10: proto.Hyper.DesktopStart:output_type -> proto.DesktopStartResponse
 	3,  // 11: proto.Hyper.DesktopValidate:output_type -> proto.DesktopValidateResponse
 	5,  // 12: proto.Hyper.DesktopStop:output_type -> proto.DesktopStopResponse
-	13, // 13: proto.Hyper.DesktopResume:output_type -> proto.DesktopResumeResponse
-	15, // 14: proto.Hyper.DesktopSuspend:output_type -> proto.DesktopSuspendResponse
-	19, // 15: proto.Hyper.DesktopSave:output_type -> proto.DesktopSaveResponse
-	17, // 16: proto.Hyper.DesktopRestore:output_type -> proto.DesktopRestoreResponse
-	9,  // 17: proto.Hyper.DesktopXMLGet:output_type -> proto.DesktopXMLGetResponse
-	7,  // 18: proto.Hyper.DesktopList:output_type -> proto.DesktopListResponse
-	11, // 19: proto.Hyper.DesktopMigrate:output_type -> proto.DesktopMigrateResponse
+	7,  // 13: proto.Hyper.DesktopResume:output_type -> proto.DesktopResumeResponse
+	9,  // 14: proto.Hyper.DesktopSuspend:output_type -> proto.DesktopSuspendResponse
+	11, // 15: proto.Hyper.DesktopSave:output_type -> proto.DesktopSaveResponse
+	13, // 16: proto.Hyper.DesktopRestore:output_type -> proto.DesktopRestoreResponse
+	17, // 17: proto.Hyper.DesktopXMLGet:output_type -> proto.DesktopXMLGetResponse
+	15, // 18: proto.Hyper.DesktopList:output_type -> proto.DesktopListResponse
+	19, // 19: proto.Hyper.DesktopMigrate:output_type -> proto.DesktopMigrateResponse
 	10, // [10:20] is the sub-list for method output_type
 	0,  // [0:10] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
@@ -1161,78 +1161,6 @@ func file_pkg_proto_hyper_proto_init() {
 			}
 		}
 		file_pkg_proto_hyper_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopListRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopListResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopXMLGetRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopXMLGetResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopMigrateRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopMigrateResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DesktopResumeRequest); i {
 			case 0:
 				return &v.state
@@ -1244,7 +1172,7 @@ func file_pkg_proto_hyper_proto_init() {
 				return nil
 			}
 		}
-		file_pkg_proto_hyper_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_proto_hyper_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DesktopResumeResponse); i {
 			case 0:
 				return &v.state
@@ -1256,7 +1184,7 @@ func file_pkg_proto_hyper_proto_init() {
 				return nil
 			}
 		}
-		file_pkg_proto_hyper_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_proto_hyper_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DesktopSuspendRequest); i {
 			case 0:
 				return &v.state
@@ -1268,7 +1196,7 @@ func file_pkg_proto_hyper_proto_init() {
 				return nil
 			}
 		}
-		file_pkg_proto_hyper_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_proto_hyper_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DesktopSuspendResponse); i {
 			case 0:
 				return &v.state
@@ -1280,31 +1208,7 @@ func file_pkg_proto_hyper_proto_init() {
 				return nil
 			}
 		}
-		file_pkg_proto_hyper_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopRestoreRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DesktopRestoreResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pkg_proto_hyper_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_proto_hyper_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DesktopSaveRequest); i {
 			case 0:
 				return &v.state
@@ -1316,8 +1220,104 @@ func file_pkg_proto_hyper_proto_init() {
 				return nil
 			}
 		}
-		file_pkg_proto_hyper_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_proto_hyper_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DesktopSaveResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopRestoreRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopRestoreResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopListRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopXMLGetRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopXMLGetResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopMigrateRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_hyper_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DesktopMigrateResponse); i {
 			case 0:
 				return &v.state
 			case 1:

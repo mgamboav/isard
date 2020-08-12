@@ -19,16 +19,16 @@ type Interface interface {
 	// Stop stops a running desktop
 	Stop(desktop *libvirt.Domain) error
 
-	// Suspends a running desktop
+	// Suspend suspends a running desktop
 	Suspend(desktop *libvirt.Domain) error
 
-	// Resumes a suspended desktop
+	// Resume resumes a suspended desktop
 	Resume(desktop *libvirt.Domain) error
 
-	// Save a running desktop
+	// Save saves a running desktop
 	Save(desktop *libvirt.Domain, path string) error
 
-	// Restore a saved desktop
+	// Restore restores a saved desktop
 	Restore(path string) error
 
 	// XMLGet returns the XML definition of a desktop
@@ -37,7 +37,7 @@ type Interface interface {
 	// List returns a list of all the running desktops
 	List() ([]libvirt.Domain, error)
 
-	// Migrate live migrates a running desktop to another hypervisor
+	// Migrate migrates a running desktop to another hypervisor
 	Migrate(desktop *libvirt.Domain, hyperURI string) error
 
 	// Close closes the connection with the hypervisor

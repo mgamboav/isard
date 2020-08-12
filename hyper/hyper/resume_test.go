@@ -25,6 +25,7 @@ func TestResume(t *testing.T) {
 
 				err = h.Suspend(desktop)
 				require.NoError(err)
+
 				return desktop
 			},
 		},

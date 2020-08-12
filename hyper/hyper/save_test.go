@@ -1,6 +1,9 @@
 package hyper_test
 
 import (
+	"io/ioutil"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
@@ -46,7 +49,13 @@ func TestSave(t *testing.T) {
 				defer desktop.Free()
 			}
 
-			err = h.Save(desktop, "/tmp/test.dump")
+			dir, err := ioutil.TempDir("", "dumps")
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer os.RemoveAll(dir)
+
+			err = h.Save(desktop, dir+"/test.dump")
 
 			if tc.ExpectedErr == "" {
 				assert.NoError(err)

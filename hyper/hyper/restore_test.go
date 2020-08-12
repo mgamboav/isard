@@ -1,6 +1,9 @@
 package hyper_test
 
 import (
+	"io/ioutil"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
@@ -14,22 +17,28 @@ func TestRestore(t *testing.T) {
 	assert := assert.New(t)
 
 	cases := map[string]struct {
-		PrepareDesktop func(h *hyper.Hyper) string
-		ExpectedErr    string
+		PrepareTest func(h *hyper.Hyper) string
+		ExpectedErr string
 	}{
 		"restore the desktop correctly": {
-			PrepareDesktop: func(h *hyper.Hyper) string {
+			PrepareTest: func(h *hyper.Hyper) string {
 				desktop, err := h.Start(hyper.TestMinDesktopXML(t), &hyper.StartOptions{})
 				require.NoError(err)
 
-				err = h.Save(desktop, "test.dump")
+				dir, err := ioutil.TempDir("", "dumps")
+				if err != nil {
+					log.Fatal(err)
+				}
+				defer os.RemoveAll(dir)
+
+				err = h.Save(desktop, dir+"test.dump")
 				require.NoError(err)
 
-				return "test.dump"
+				return dir + "test.dump"
 			},
 		},
 		"should return an error if there's an error restoring the desktop": {
-			PrepareDesktop: func(h *hyper.Hyper) string {
+			PrepareTest: func(h *hyper.Hyper) string {
 				return ""
 			},
 			ExpectedErr: "virError(Code=38, Domain=12, Message='incomplete save header in '/home/darta/github/nouisard/hyper/hyper/': Is a directory')",
@@ -43,7 +52,7 @@ func TestRestore(t *testing.T) {
 
 			defer h.Close()
 
-			path := tc.PrepareDesktop(h)
+			path := tc.PrepareTest(h)
 
 			err = h.Restore(path)
 

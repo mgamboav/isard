@@ -2,11 +2,10 @@ package grpc
 
 import (
 	"context"
-	"errors"
+	"os"
 
 	"github.com/isard-vdi/isard/common/pkg/grpc"
 	"github.com/isard-vdi/isard/hyper/pkg/proto"
-	"github.com/spf13/afero"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -20,14 +19,19 @@ func (h *HyperServer) DesktopRestore(ctx context.Context, req *proto.DesktopRest
 		return nil, err
 	}
 
+	if _, err := os.Stat(req.Path); err != nil {
+		if os.IsNotExist(err) {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+		return nil, status.Error(codes.Unknown, err.Error())
+	}
+
 	if err := h.hyper.Restore(req.Path); err != nil {
 		return nil, status.Error(codes.Unknown, err.Error())
 	}
 
-	if err := h.env.FS.Remove(req.Path); err != nil {
-		if !errors.Is(err, afero.ErrFileNotFound) {
-			return nil, status.Error(codes.NotFound, err.Error())
-		}
+	if err := os.Remove(req.Path); err != nil {
+		return nil, status.Error(codes.Unknown, err.Error())
 	}
 
 	return &proto.DesktopRestoreResponse{}, nil
