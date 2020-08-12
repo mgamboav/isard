@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"libvirt.org/libvirt-go"
@@ -15,7 +16,6 @@ func TestGet(t *testing.T) {
 
 	cases := map[string]struct {
 		Name          string
-		PrepareTest   func(h *hyper.Hyper)
 		ExpectedErr   string
 		ExpectedState libvirt.DomainState
 	}{
@@ -24,14 +24,7 @@ func TestGet(t *testing.T) {
 			ExpectedState: libvirt.DOMAIN_RUNNING,
 		},
 		"should return ErrDesktopNotFound if the desktop doesn't exist": {
-			ExpectedErr: hyper.ErrDesktopNotFound.Error(),
-		},
-		"should return an error if there's an error getting the desktop": {
-			Name: "test",
-			PrepareTest: func(h *hyper.Hyper) {
-				h.Close()
-			},
-			ExpectedErr: "virError(Code=6, Domain=20, Message='invalid connection pointer in virDomainLookupByName')",
+			ExpectedErr: "virError(Code=42, Domain=12, Message='Domain not found')",
 		},
 	}
 
@@ -41,10 +34,6 @@ func TestGet(t *testing.T) {
 			require.NoError(err)
 
 			defer h.Close()
-
-			if tc.PrepareTest != nil {
-				tc.PrepareTest(h)
-			}
 
 			desktop, err := h.Get(tc.Name)
 			if desktop != nil {

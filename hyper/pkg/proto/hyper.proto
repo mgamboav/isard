@@ -5,9 +5,11 @@ option go_package = "github.com/isard-vdi/isard/hyper/pkg/proto";
 
 service Hyper {
     rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
+    rpc DesktopValidate(DesktopValidateRequest) returns (DesktopValidateResponse) {}
     rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
-    rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
     rpc DesktopXMLGet(DesktopXMLGetRequest) returns (DesktopXMLGetResponse) {}
+    rpc DesktopList(DesktopListRequest) returns (DesktopListResponse) {}
+    rpc DesktopMigrate(DesktopMigrateRequest) returns (DesktopMigrateResponse) {}
 }
 
 message DesktopStartRequest {
@@ -17,6 +19,12 @@ message DesktopStartRequest {
 message DesktopStartResponse {
     string xml = 1;
 }
+
+message DesktopValidateRequest {
+    string xml = 1;
+}
+
+message DesktopValidateResponse {}
 
 message DesktopStopRequest {
     string id = 1;
@@ -37,3 +45,10 @@ message DesktopXMLGetRequest {
 message DesktopXMLGetResponse {
     string xml = 1;
 }
+
+message DesktopMigrateRequest {
+    string id = 1;
+    string hyper = 2;
+}
+
+message DesktopMigrateResponse {}

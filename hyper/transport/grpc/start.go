@@ -13,6 +13,7 @@ import (
 	"libvirt.org/libvirt-go"
 )
 
+// DesktopStart starts a desktop based in the XML definition
 func (h *HyperServer) DesktopStart(ctx context.Context, req *proto.DesktopStartRequest) (*proto.DesktopStartResponse, error) {
 	if err := grpc.Required(grpc.RequiredParams{
 		"xml": req.Xml,
@@ -25,18 +26,18 @@ func (h *HyperServer) DesktopStart(ctx context.Context, req *proto.DesktopStartR
 		var e libvirt.Error
 		if errors.As(err, &e) {
 			switch e.Code {
-			case libvirt.ERR_XML_ERROR:
-				return nil, status.Errorf(codes.InvalidArgument, "start desktop: invalid XML: %s", e.Message)
+			case libvirt.ERR_XML_ERROR, libvirt.ERR_XML_DETAIL:
+				return nil, status.Errorf(codes.InvalidArgument, "invalid XML: %s", e.Message)
 			}
 		}
 
-		return nil, status.Errorf(codes.Unknown, "start desktop: %v", err)
+		return nil, status.Error(codes.Unknown, err.Error())
 	}
 	defer desktop.Free()
 
 	xml, err := h.hyper.XMLGet(desktop)
 	if err != nil {
-		return nil, status.Error(codes.Unknown, err.Error())
+		return nil, status.Errorf(codes.Unknown, "get desktop XML: %v", err)
 	}
 
 	return &proto.DesktopStartResponse{

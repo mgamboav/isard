@@ -26,17 +26,11 @@ func TestStop(t *testing.T) {
 				return desktop
 			},
 		},
-		"should return ErrDesktopNotFound if the desktop is not found": {
+		"should return an error if there's an error stopping the desktop": {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
-				desktop, err := h.Start(hyper.TestMinDesktopXML(t), &hyper.StartOptions{})
-				require.NoError(err)
-
-				err = h.Stop(desktop)
-				require.NoError(err)
-
-				return desktop
+				return &libvirt.Domain{}
 			},
-			ExpectedErr: hyper.ErrDesktopNotFound.Error(),
+			ExpectedErr: "virError(Code=7, Domain=6, Message='invalid domain pointer in virDomainDestroy')",
 		},
 	}
 

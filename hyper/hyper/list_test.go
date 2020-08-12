@@ -14,11 +14,19 @@ func TestList(t *testing.T) {
 	assert := assert.New(t)
 
 	cases := map[string]struct {
-		DesktopNames []string
-		ExpectedErr  string
+		PrepareTest          func(h *hyper.Hyper)
+		ExpectedErr          string
+		ExpectedDesktopNames []string
 	}{
 		"should list the desktops correctly": {
-			DesktopNames: []string{"test"},
+			ExpectedDesktopNames: []string{"test"},
+		},
+		"should return a libvirt error message if there's an error listing the desktops": {
+			PrepareTest: func(h *hyper.Hyper) {
+				h.Close()
+			},
+			ExpectedDesktopNames: []string{},
+			ExpectedErr:          "virError(Code=6, Domain=20, Message='invalid connection pointer in virConnectListAllDomains')",
 		},
 	}
 
@@ -28,6 +36,10 @@ func TestList(t *testing.T) {
 			require.NoError(err)
 
 			defer h.Close()
+
+			if tc.PrepareTest != nil {
+				tc.PrepareTest(h)
+			}
 
 			desktops, err := h.List()
 
@@ -45,7 +57,7 @@ func TestList(t *testing.T) {
 				names = append(names, name)
 			}
 
-			assert.Equal(tc.DesktopNames, names)
+			assert.Equal(tc.ExpectedDesktopNames, names)
 		})
 	}
 }

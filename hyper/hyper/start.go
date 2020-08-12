@@ -1,13 +1,12 @@
 package hyper
 
 import (
-	"errors"
-	"fmt"
-
 	"libvirt.org/libvirt-go"
 )
 
+// StartOptions are a set of parameters that modify how the desktop is started
 type StartOptions struct {
+	// Paused sets whether the desktop is paused when started or not
 	Paused bool
 }
 
@@ -20,18 +19,7 @@ func (h *Hyper) Start(xml string, options *StartOptions) (*libvirt.Domain, error
 
 	desktop, err := h.conn.DomainCreateXML(xml, flag)
 	if err != nil {
-		var e libvirt.Error
-		if errors.As(err, &e) {
-			switch e.Code {
-			case libvirt.ERR_XML_ERROR, libvirt.ERR_XML_DETAIL:
-				return nil, fmt.Errorf("create desktop: %w", e)
-
-			default:
-				return nil, fmt.Errorf("create desktop: %s", e.Message)
-			}
-		}
-
-		return nil, fmt.Errorf("create desktop: %w", err)
+		return nil, err
 	}
 
 	return desktop, nil

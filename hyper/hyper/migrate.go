@@ -1,15 +1,20 @@
 package hyper
 
-import "libvirt.org/libvirt-go"
+import (
+	"fmt"
 
-func (h *Hyper) Migrate(d *libvirt.Domain, hyper string) error {
+	"libvirt.org/libvirt-go"
+)
+
+// Migrate live migrates a running desktop to another hypervisor
+func (h *Hyper) Migrate(d *libvirt.Domain, hyperURI string) error {
 	name, err := d.GetName()
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("get desktop name: %w", err)
 	}
 
-	if err := d.MigrateToURI(hyper, libvirt.MIGRATE_PEER2PEER, name, 0); err != nil {
-		panic(err)
+	if err := d.MigrateToURI(hyperURI, libvirt.MIGRATE_PEER2PEER, name, 0); err != nil {
+		return err
 	}
 
 	return nil

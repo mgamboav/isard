@@ -44,6 +44,14 @@ func TestStart(t *testing.T) {
 				assert.Equal(libvirt.DOMAIN_PAUSED, state)
 			},
 		},
+		"should return an error if there's an error creating the desktop": {
+			XML:         "<domain",
+			Opts:        &hyper.StartOptions{},
+			ExpectedErr: "virError(Code=35, Domain=20, Message='(domain_definition):1: Couldn't find end of Start Tag domain line 1\n<domain\n-------^')",
+			ExpectedDesktop: func(desktop *libvirt.Domain) {
+				assert.Nil(desktop)
+			},
+		},
 	}
 
 	for name, tc := range cases {

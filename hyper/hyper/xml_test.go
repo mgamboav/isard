@@ -5,10 +5,10 @@ import (
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
-	"libvirt.org/libvirt-go"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"libvirt.org/libvirt-go"
 )
 
 func TestXMLGet(t *testing.T) {
@@ -31,6 +31,12 @@ func TestXMLGet(t *testing.T) {
 				return desktop
 			},
 			ExpectedXML: string(okCaseXML),
+		},
+		"should return an error if there's an error getting the XML": {
+			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
+				return &libvirt.Domain{}
+			},
+			ExpectedErr: "virError(Code=7, Domain=6, Message='invalid domain pointer in virDomainGetXMLDesc')",
 		},
 	}
 

@@ -102,6 +102,76 @@ func (m *DesktopStartResponse) GetXml() string {
 	return ""
 }
 
+type DesktopValidateRequest struct {
+	Xml                  string   `protobuf:"bytes,1,opt,name=xml,proto3" json:"xml,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DesktopValidateRequest) Reset()         { *m = DesktopValidateRequest{} }
+func (m *DesktopValidateRequest) String() string { return proto.CompactTextString(m) }
+func (*DesktopValidateRequest) ProtoMessage()    {}
+func (*DesktopValidateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_185da63e8c382495, []int{2}
+}
+
+func (m *DesktopValidateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DesktopValidateRequest.Unmarshal(m, b)
+}
+func (m *DesktopValidateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DesktopValidateRequest.Marshal(b, m, deterministic)
+}
+func (m *DesktopValidateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DesktopValidateRequest.Merge(m, src)
+}
+func (m *DesktopValidateRequest) XXX_Size() int {
+	return xxx_messageInfo_DesktopValidateRequest.Size(m)
+}
+func (m *DesktopValidateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DesktopValidateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DesktopValidateRequest proto.InternalMessageInfo
+
+func (m *DesktopValidateRequest) GetXml() string {
+	if m != nil {
+		return m.Xml
+	}
+	return ""
+}
+
+type DesktopValidateResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DesktopValidateResponse) Reset()         { *m = DesktopValidateResponse{} }
+func (m *DesktopValidateResponse) String() string { return proto.CompactTextString(m) }
+func (*DesktopValidateResponse) ProtoMessage()    {}
+func (*DesktopValidateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_185da63e8c382495, []int{3}
+}
+
+func (m *DesktopValidateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DesktopValidateResponse.Unmarshal(m, b)
+}
+func (m *DesktopValidateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DesktopValidateResponse.Marshal(b, m, deterministic)
+}
+func (m *DesktopValidateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DesktopValidateResponse.Merge(m, src)
+}
+func (m *DesktopValidateResponse) XXX_Size() int {
+	return xxx_messageInfo_DesktopValidateResponse.Size(m)
+}
+func (m *DesktopValidateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DesktopValidateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DesktopValidateResponse proto.InternalMessageInfo
+
 type DesktopStopRequest struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -113,7 +183,7 @@ func (m *DesktopStopRequest) Reset()         { *m = DesktopStopRequest{} }
 func (m *DesktopStopRequest) String() string { return proto.CompactTextString(m) }
 func (*DesktopStopRequest) ProtoMessage()    {}
 func (*DesktopStopRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_185da63e8c382495, []int{2}
+	return fileDescriptor_185da63e8c382495, []int{4}
 }
 
 func (m *DesktopStopRequest) XXX_Unmarshal(b []byte) error {
@@ -151,7 +221,7 @@ func (m *DesktopStopResponse) Reset()         { *m = DesktopStopResponse{} }
 func (m *DesktopStopResponse) String() string { return proto.CompactTextString(m) }
 func (*DesktopStopResponse) ProtoMessage()    {}
 func (*DesktopStopResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_185da63e8c382495, []int{3}
+	return fileDescriptor_185da63e8c382495, []int{5}
 }
 
 func (m *DesktopStopResponse) XXX_Unmarshal(b []byte) error {
@@ -182,7 +252,7 @@ func (m *DesktopListRequest) Reset()         { *m = DesktopListRequest{} }
 func (m *DesktopListRequest) String() string { return proto.CompactTextString(m) }
 func (*DesktopListRequest) ProtoMessage()    {}
 func (*DesktopListRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_185da63e8c382495, []int{4}
+	return fileDescriptor_185da63e8c382495, []int{6}
 }
 
 func (m *DesktopListRequest) XXX_Unmarshal(b []byte) error {
@@ -214,7 +284,7 @@ func (m *DesktopListResponse) Reset()         { *m = DesktopListResponse{} }
 func (m *DesktopListResponse) String() string { return proto.CompactTextString(m) }
 func (*DesktopListResponse) ProtoMessage()    {}
 func (*DesktopListResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_185da63e8c382495, []int{5}
+	return fileDescriptor_185da63e8c382495, []int{7}
 }
 
 func (m *DesktopListResponse) XXX_Unmarshal(b []byte) error {
@@ -253,7 +323,7 @@ func (m *DesktopXMLGetRequest) Reset()         { *m = DesktopXMLGetRequest{} }
 func (m *DesktopXMLGetRequest) String() string { return proto.CompactTextString(m) }
 func (*DesktopXMLGetRequest) ProtoMessage()    {}
 func (*DesktopXMLGetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_185da63e8c382495, []int{6}
+	return fileDescriptor_185da63e8c382495, []int{8}
 }
 
 func (m *DesktopXMLGetRequest) XXX_Unmarshal(b []byte) error {
@@ -292,7 +362,7 @@ func (m *DesktopXMLGetResponse) Reset()         { *m = DesktopXMLGetResponse{} }
 func (m *DesktopXMLGetResponse) String() string { return proto.CompactTextString(m) }
 func (*DesktopXMLGetResponse) ProtoMessage()    {}
 func (*DesktopXMLGetResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_185da63e8c382495, []int{7}
+	return fileDescriptor_185da63e8c382495, []int{9}
 }
 
 func (m *DesktopXMLGetResponse) XXX_Unmarshal(b []byte) error {
@@ -320,40 +390,127 @@ func (m *DesktopXMLGetResponse) GetXml() string {
 	return ""
 }
 
+type DesktopMigrateRequest struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Hyper                string   `protobuf:"bytes,2,opt,name=hyper,proto3" json:"hyper,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DesktopMigrateRequest) Reset()         { *m = DesktopMigrateRequest{} }
+func (m *DesktopMigrateRequest) String() string { return proto.CompactTextString(m) }
+func (*DesktopMigrateRequest) ProtoMessage()    {}
+func (*DesktopMigrateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_185da63e8c382495, []int{10}
+}
+
+func (m *DesktopMigrateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DesktopMigrateRequest.Unmarshal(m, b)
+}
+func (m *DesktopMigrateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DesktopMigrateRequest.Marshal(b, m, deterministic)
+}
+func (m *DesktopMigrateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DesktopMigrateRequest.Merge(m, src)
+}
+func (m *DesktopMigrateRequest) XXX_Size() int {
+	return xxx_messageInfo_DesktopMigrateRequest.Size(m)
+}
+func (m *DesktopMigrateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DesktopMigrateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DesktopMigrateRequest proto.InternalMessageInfo
+
+func (m *DesktopMigrateRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *DesktopMigrateRequest) GetHyper() string {
+	if m != nil {
+		return m.Hyper
+	}
+	return ""
+}
+
+type DesktopMigrateResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DesktopMigrateResponse) Reset()         { *m = DesktopMigrateResponse{} }
+func (m *DesktopMigrateResponse) String() string { return proto.CompactTextString(m) }
+func (*DesktopMigrateResponse) ProtoMessage()    {}
+func (*DesktopMigrateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_185da63e8c382495, []int{11}
+}
+
+func (m *DesktopMigrateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DesktopMigrateResponse.Unmarshal(m, b)
+}
+func (m *DesktopMigrateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DesktopMigrateResponse.Marshal(b, m, deterministic)
+}
+func (m *DesktopMigrateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DesktopMigrateResponse.Merge(m, src)
+}
+func (m *DesktopMigrateResponse) XXX_Size() int {
+	return xxx_messageInfo_DesktopMigrateResponse.Size(m)
+}
+func (m *DesktopMigrateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DesktopMigrateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DesktopMigrateResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*DesktopStartRequest)(nil), "proto.DesktopStartRequest")
 	proto.RegisterType((*DesktopStartResponse)(nil), "proto.DesktopStartResponse")
+	proto.RegisterType((*DesktopValidateRequest)(nil), "proto.DesktopValidateRequest")
+	proto.RegisterType((*DesktopValidateResponse)(nil), "proto.DesktopValidateResponse")
 	proto.RegisterType((*DesktopStopRequest)(nil), "proto.DesktopStopRequest")
 	proto.RegisterType((*DesktopStopResponse)(nil), "proto.DesktopStopResponse")
 	proto.RegisterType((*DesktopListRequest)(nil), "proto.DesktopListRequest")
 	proto.RegisterType((*DesktopListResponse)(nil), "proto.DesktopListResponse")
 	proto.RegisterType((*DesktopXMLGetRequest)(nil), "proto.DesktopXMLGetRequest")
 	proto.RegisterType((*DesktopXMLGetResponse)(nil), "proto.DesktopXMLGetResponse")
+	proto.RegisterType((*DesktopMigrateRequest)(nil), "proto.DesktopMigrateRequest")
+	proto.RegisterType((*DesktopMigrateResponse)(nil), "proto.DesktopMigrateResponse")
 }
 
 func init() { proto.RegisterFile("pkg/proto/hyper.proto", fileDescriptor_185da63e8c382495) }
 
 var fileDescriptor_185da63e8c382495 = []byte{
-	// 295 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0xdd, 0x4a, 0x03, 0x31,
-	0x10, 0x85, 0xdb, 0x2d, 0x15, 0x1c, 0x7f, 0x90, 0xd8, 0x85, 0x1a, 0xbd, 0x28, 0x41, 0xb4, 0x8a,
-	0xee, 0x82, 0xbe, 0x81, 0x88, 0x3f, 0xb0, 0xde, 0xd4, 0x1b, 0xf1, 0xae, 0x35, 0xa1, 0x0d, 0xb5,
-	0x26, 0x6e, 0x52, 0xd1, 0xb7, 0xf2, 0x11, 0x25, 0x9b, 0x6e, 0xcc, 0x86, 0xf4, 0x2a, 0xc3, 0xce,
-	0xd9, 0x33, 0x67, 0x3e, 0x06, 0x52, 0x39, 0x9f, 0xe6, 0xb2, 0x14, 0x5a, 0xe4, 0xb3, 0x1f, 0xc9,
-	0xca, 0xac, 0xaa, 0x51, 0xb7, 0x7a, 0xc8, 0x29, 0xec, 0xdf, 0x32, 0x35, 0xd7, 0x42, 0x3e, 0xeb,
-	0x71, 0xa9, 0x47, 0xec, 0x73, 0xc9, 0x94, 0x46, 0x7b, 0xd0, 0xf9, 0x5e, 0xbc, 0xf7, 0xdb, 0x83,
-	0xf6, 0x70, 0x73, 0x64, 0x4a, 0x32, 0x84, 0x5e, 0x53, 0xa8, 0xa4, 0xf8, 0x50, 0x2c, 0xa2, 0x3c,
-	0x06, 0xe4, 0x94, 0x42, 0xd6, 0x8e, 0xbb, 0x90, 0x70, 0xba, 0x92, 0x25, 0x9c, 0x92, 0xd4, 0x1b,
-	0x6c, 0x54, 0xd6, 0x8e, 0xf4, 0xdc, 0xcf, 0x05, 0x57, 0x75, 0x1c, 0x2f, 0xa5, 0xfd, 0xfa, 0x3f,
-	0x9b, 0x53, 0xd5, 0x6f, 0x0f, 0x3a, 0x66, 0x36, 0xa7, 0x8a, 0x9c, 0xb8, 0x94, 0x2f, 0x4f, 0xc5,
-	0x3d, 0xd3, 0xeb, 0xa6, 0x9f, 0x41, 0x1a, 0xe8, 0xd6, 0xad, 0x73, 0xf5, 0x9b, 0x40, 0xf7, 0xc1,
-	0x80, 0x43, 0x8f, 0xb0, 0xed, 0x23, 0x40, 0xd8, 0xa2, 0xcc, 0x22, 0x00, 0xf1, 0x61, 0xb4, 0xb7,
-	0x5a, 0xb2, 0x85, 0xee, 0x60, 0xcb, 0xdb, 0x1e, 0x1d, 0x84, 0x6a, 0xc7, 0x0d, 0xe3, 0x58, 0x2b,
-	0xe2, 0x63, 0xc0, 0x84, 0x3e, 0x1e, 0xc2, 0xd0, 0xc7, 0xe7, 0x48, 0x5a, 0xa8, 0x80, 0x9d, 0x06,
-	0x0f, 0x14, 0xe4, 0x6f, 0xd0, 0xc4, 0x47, 0xf1, 0x66, 0xed, 0x76, 0x73, 0xf1, 0x7a, 0x3e, 0xe5,
-	0x7a, 0xb6, 0x9c, 0x64, 0x6f, 0x62, 0x91, 0x73, 0x35, 0x2e, 0xe9, 0xe5, 0x17, 0xe5, 0xb6, 0xb2,
-	0x57, 0x98, 0xbb, 0xab, 0x9c, 0x6c, 0x54, 0xcf, 0xf5, 0x5f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x6d,
-	0xf5, 0x7c, 0x3d, 0xa9, 0x02, 0x00, 0x00,
+	// 376 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x53, 0x5f, 0x4b, 0xfb, 0x30,
+	0x14, 0xdd, 0x1f, 0xf6, 0x83, 0xdf, 0x55, 0xa7, 0xc4, 0x4d, 0xbb, 0xe8, 0x64, 0x04, 0xd1, 0x39,
+	0x74, 0x05, 0x7d, 0xf6, 0x45, 0xc4, 0x3f, 0xb0, 0x21, 0x4c, 0x10, 0xf1, 0xad, 0x33, 0x61, 0x0b,
+	0xdb, 0x6c, 0x6d, 0x32, 0xd1, 0x0f, 0xea, 0xf7, 0x91, 0x36, 0x5d, 0x4c, 0x63, 0xfa, 0xd4, 0x34,
+	0xf7, 0xdc, 0x73, 0xcf, 0xbd, 0xe7, 0x06, 0x9a, 0xd1, 0x6c, 0xe2, 0x47, 0x71, 0x28, 0x43, 0x7f,
+	0xfa, 0x15, 0xb1, 0xb8, 0x9f, 0x9e, 0x51, 0x2d, 0xfd, 0x90, 0x63, 0xd8, 0xbe, 0x66, 0x62, 0x26,
+	0xc3, 0xe8, 0x51, 0x06, 0xb1, 0x1c, 0xb1, 0xf7, 0x25, 0x13, 0x12, 0x6d, 0x41, 0xf5, 0x73, 0x31,
+	0xf7, 0xca, 0x9d, 0x72, 0xf7, 0xff, 0x28, 0x39, 0x92, 0x2e, 0x34, 0xf2, 0x40, 0x11, 0x85, 0x6f,
+	0x82, 0x39, 0x90, 0x3d, 0xd8, 0xc9, 0x90, 0x4f, 0xc1, 0x9c, 0xd3, 0x40, 0xb2, 0x62, 0xd6, 0x16,
+	0xec, 0xfe, 0xc1, 0x2a, 0x62, 0x72, 0x08, 0x48, 0x17, 0x0c, 0xa3, 0x15, 0x45, 0x1d, 0x2a, 0x9c,
+	0x66, 0x0c, 0x15, 0x4e, 0x49, 0xd3, 0xd0, 0x9f, 0xa0, 0xb2, 0xe4, 0x86, 0x4e, 0x1e, 0x70, 0xb1,
+	0xea, 0xca, 0x68, 0x56, 0xdd, 0xfe, 0xb6, 0xc0, 0xa9, 0xf0, 0xca, 0x9d, 0x6a, 0x22, 0x8b, 0x53,
+	0x41, 0x8e, 0x74, 0xb3, 0xcf, 0xc3, 0xc1, 0x2d, 0x93, 0x45, 0xd5, 0x4f, 0xa0, 0x69, 0xe1, 0x0a,
+	0xa7, 0x72, 0xa9, 0xa1, 0x43, 0x3e, 0x89, 0x8d, 0xa1, 0x58, 0x9c, 0xa8, 0x01, 0xb5, 0xd4, 0x27,
+	0xaf, 0x92, 0x5e, 0xa9, 0x1f, 0xe2, 0xe9, 0xa1, 0xea, 0x74, 0x55, 0xea, 0xfc, 0xbb, 0x0a, 0xb5,
+	0xbb, 0x04, 0x83, 0xee, 0x61, 0xdd, 0xb4, 0x08, 0x61, 0x65, 0x75, 0xdf, 0x61, 0x30, 0xde, 0x73,
+	0xc6, 0xb2, 0xe9, 0x95, 0xd0, 0x08, 0x36, 0x2d, 0x5f, 0x50, 0x3b, 0x9f, 0x61, 0x79, 0x8b, 0x0f,
+	0x8a, 0xc2, 0x9a, 0xf3, 0x06, 0xd6, 0x0c, 0xab, 0x50, 0xcb, 0x56, 0xa0, 0x4d, 0xc6, 0xd8, 0x15,
+	0xd2, 0x3c, 0x03, 0xd8, 0xc8, 0x0d, 0x1d, 0x59, 0xbd, 0xe4, 0x2c, 0xc3, 0xfb, 0xee, 0xa0, 0x43,
+	0x55, 0xb2, 0x13, 0xb6, 0x2a, 0x63, 0x7b, 0x6c, 0x55, 0xe6, 0x0a, 0x91, 0x12, 0x7a, 0x80, 0x7a,
+	0xde, 0x20, 0x64, 0x55, 0xce, 0xdb, 0x8e, 0xdb, 0x05, 0xd1, 0x15, 0xe1, 0xd5, 0xe9, 0x4b, 0x6f,
+	0xc2, 0xe5, 0x74, 0x39, 0xee, 0xbf, 0x86, 0x0b, 0x9f, 0x8b, 0x20, 0xa6, 0x67, 0x1f, 0x94, 0xab,
+	0x93, 0x7a, 0xca, 0xbe, 0x7e, 0xda, 0xe3, 0x7f, 0xe9, 0xe7, 0xe2, 0x27, 0x00, 0x00, 0xff, 0xff,
+	0x40, 0xd9, 0x23, 0xa0, 0xee, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -369,9 +526,11 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type HyperClient interface {
 	DesktopStart(ctx context.Context, in *DesktopStartRequest, opts ...grpc.CallOption) (*DesktopStartResponse, error)
+	DesktopValidate(ctx context.Context, in *DesktopValidateRequest, opts ...grpc.CallOption) (*DesktopValidateResponse, error)
 	DesktopStop(ctx context.Context, in *DesktopStopRequest, opts ...grpc.CallOption) (*DesktopStopResponse, error)
-	DesktopList(ctx context.Context, in *DesktopListRequest, opts ...grpc.CallOption) (*DesktopListResponse, error)
 	DesktopXMLGet(ctx context.Context, in *DesktopXMLGetRequest, opts ...grpc.CallOption) (*DesktopXMLGetResponse, error)
+	DesktopList(ctx context.Context, in *DesktopListRequest, opts ...grpc.CallOption) (*DesktopListResponse, error)
+	DesktopMigrate(ctx context.Context, in *DesktopMigrateRequest, opts ...grpc.CallOption) (*DesktopMigrateResponse, error)
 }
 
 type hyperClient struct {
@@ -391,18 +550,18 @@ func (c *hyperClient) DesktopStart(ctx context.Context, in *DesktopStartRequest,
 	return out, nil
 }
 
-func (c *hyperClient) DesktopStop(ctx context.Context, in *DesktopStopRequest, opts ...grpc.CallOption) (*DesktopStopResponse, error) {
-	out := new(DesktopStopResponse)
-	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopStop", in, out, opts...)
+func (c *hyperClient) DesktopValidate(ctx context.Context, in *DesktopValidateRequest, opts ...grpc.CallOption) (*DesktopValidateResponse, error) {
+	out := new(DesktopValidateResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopValidate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *hyperClient) DesktopList(ctx context.Context, in *DesktopListRequest, opts ...grpc.CallOption) (*DesktopListResponse, error) {
-	out := new(DesktopListResponse)
-	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopList", in, out, opts...)
+func (c *hyperClient) DesktopStop(ctx context.Context, in *DesktopStopRequest, opts ...grpc.CallOption) (*DesktopStopResponse, error) {
+	out := new(DesktopStopResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopStop", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -418,12 +577,32 @@ func (c *hyperClient) DesktopXMLGet(ctx context.Context, in *DesktopXMLGetReques
 	return out, nil
 }
 
+func (c *hyperClient) DesktopList(ctx context.Context, in *DesktopListRequest, opts ...grpc.CallOption) (*DesktopListResponse, error) {
+	out := new(DesktopListResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hyperClient) DesktopMigrate(ctx context.Context, in *DesktopMigrateRequest, opts ...grpc.CallOption) (*DesktopMigrateResponse, error) {
+	out := new(DesktopMigrateResponse)
+	err := c.cc.Invoke(ctx, "/proto.Hyper/DesktopMigrate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // HyperServer is the server API for Hyper service.
 type HyperServer interface {
 	DesktopStart(context.Context, *DesktopStartRequest) (*DesktopStartResponse, error)
+	DesktopValidate(context.Context, *DesktopValidateRequest) (*DesktopValidateResponse, error)
 	DesktopStop(context.Context, *DesktopStopRequest) (*DesktopStopResponse, error)
-	DesktopList(context.Context, *DesktopListRequest) (*DesktopListResponse, error)
 	DesktopXMLGet(context.Context, *DesktopXMLGetRequest) (*DesktopXMLGetResponse, error)
+	DesktopList(context.Context, *DesktopListRequest) (*DesktopListResponse, error)
+	DesktopMigrate(context.Context, *DesktopMigrateRequest) (*DesktopMigrateResponse, error)
 }
 
 // UnimplementedHyperServer can be embedded to have forward compatible implementations.
@@ -433,14 +612,20 @@ type UnimplementedHyperServer struct {
 func (*UnimplementedHyperServer) DesktopStart(ctx context.Context, req *DesktopStartRequest) (*DesktopStartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DesktopStart not implemented")
 }
+func (*UnimplementedHyperServer) DesktopValidate(ctx context.Context, req *DesktopValidateRequest) (*DesktopValidateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopValidate not implemented")
+}
 func (*UnimplementedHyperServer) DesktopStop(ctx context.Context, req *DesktopStopRequest) (*DesktopStopResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DesktopStop not implemented")
+}
+func (*UnimplementedHyperServer) DesktopXMLGet(ctx context.Context, req *DesktopXMLGetRequest) (*DesktopXMLGetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopXMLGet not implemented")
 }
 func (*UnimplementedHyperServer) DesktopList(ctx context.Context, req *DesktopListRequest) (*DesktopListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DesktopList not implemented")
 }
-func (*UnimplementedHyperServer) DesktopXMLGet(ctx context.Context, req *DesktopXMLGetRequest) (*DesktopXMLGetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DesktopXMLGet not implemented")
+func (*UnimplementedHyperServer) DesktopMigrate(ctx context.Context, req *DesktopMigrateRequest) (*DesktopMigrateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DesktopMigrate not implemented")
 }
 
 func RegisterHyperServer(s *grpc.Server, srv HyperServer) {
@@ -465,6 +650,24 @@ func _Hyper_DesktopStart_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Hyper_DesktopValidate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopValidateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopValidate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopValidate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopValidate(ctx, req.(*DesktopValidateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Hyper_DesktopStop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DesktopStopRequest)
 	if err := dec(in); err != nil {
@@ -479,24 +682,6 @@ func _Hyper_DesktopStop_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HyperServer).DesktopStop(ctx, req.(*DesktopStopRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Hyper_DesktopList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DesktopListRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(HyperServer).DesktopList(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Hyper/DesktopList",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HyperServer).DesktopList(ctx, req.(*DesktopListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -519,6 +704,42 @@ func _Hyper_DesktopXMLGet_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Hyper_DesktopList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopList(ctx, req.(*DesktopListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Hyper_DesktopMigrate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesktopMigrateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HyperServer).DesktopMigrate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Hyper/DesktopMigrate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HyperServer).DesktopMigrate(ctx, req.(*DesktopMigrateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Hyper_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.Hyper",
 	HandlerType: (*HyperServer)(nil),
@@ -528,16 +749,24 @@ var _Hyper_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Hyper_DesktopStart_Handler,
 		},
 		{
+			MethodName: "DesktopValidate",
+			Handler:    _Hyper_DesktopValidate_Handler,
+		},
+		{
 			MethodName: "DesktopStop",
 			Handler:    _Hyper_DesktopStop_Handler,
+		},
+		{
+			MethodName: "DesktopXMLGet",
+			Handler:    _Hyper_DesktopXMLGet_Handler,
 		},
 		{
 			MethodName: "DesktopList",
 			Handler:    _Hyper_DesktopList_Handler,
 		},
 		{
-			MethodName: "DesktopXMLGet",
-			Handler:    _Hyper_DesktopXMLGet_Handler,
+			MethodName: "DesktopMigrate",
+			Handler:    _Hyper_DesktopMigrate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
