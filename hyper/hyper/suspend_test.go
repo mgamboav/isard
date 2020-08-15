@@ -48,11 +48,17 @@ func TestSuspend(t *testing.T) {
 
 			err = h.Suspend(desktop)
 
+			state, _, _ := desktop.GetState()
+			if state != libvirt.DOMAIN_PMSUSPENDED {
+				assert.Error(libvirt.ERR_OPERATION_FAILED)
+			}
+
 			if tc.ExpectedErr == "" {
 				assert.NoError(err)
 			} else {
 				assert.EqualError(err, tc.ExpectedErr)
 			}
+
 		})
 	}
 }

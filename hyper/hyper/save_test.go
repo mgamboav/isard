@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
@@ -55,7 +56,7 @@ func TestSave(t *testing.T) {
 			}
 			defer os.RemoveAll(dir)
 
-			err = h.Save(desktop, dir+"/test.dump")
+			err = h.Save(desktop, filepath.Join(dir, "test.dump"))
 
 			if tc.ExpectedErr == "" {
 				assert.NoError(err)

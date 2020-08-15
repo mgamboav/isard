@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
@@ -29,19 +30,34 @@ func TestRestore(t *testing.T) {
 				if err != nil {
 					log.Fatal(err)
 				}
-				defer os.RemoveAll(dir)
 
-				err = h.Save(desktop, dir+"test.dump")
+				path := filepath.Join(dir, "test.dump")
+				err = h.Save(desktop, path)
 				require.NoError(err)
 
-				return dir + "test.dump"
+				return path
 			},
 		},
-		"should return an error if there's an error restoring the desktop": {
+		"should return an error as the libvirt conection is closed. Using tempdir": {
+			PrepareTest: func(h *hyper.Hyper) string {
+				h.Close()
+
+				dir, err := ioutil.TempDir("", "dumps")
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				path := filepath.Join(dir, "test.dump")
+				ioutil.WriteFile(path, []byte("content"), os.FileMode(0777))
+				return path
+			},
+			ExpectedErr: "virError(Code=6, Domain=20, Message='invalid connection pointer in virDomainRestore')",
+		},
+		"should return an error if the path is incorrect or file missing": {
 			PrepareTest: func(h *hyper.Hyper) string {
 				return ""
 			},
-			ExpectedErr: "virError(Code=38, Domain=12, Message='incomplete save header in '/home/darta/github/nouisard/hyper/hyper/': Is a directory')",
+			ExpectedErr: "stat : no such file or directory",
 		},
 	}
 
@@ -61,6 +77,7 @@ func TestRestore(t *testing.T) {
 			} else {
 				assert.EqualError(err, tc.ExpectedErr)
 			}
+			os.RemoveAll(path)
 		})
 	}
 }
