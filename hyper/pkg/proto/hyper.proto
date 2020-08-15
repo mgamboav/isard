@@ -5,6 +5,7 @@ option go_package = "github.com/isard-vdi/isard/hyper/pkg/proto";
 
 service Hyper {
     rpc DesktopStart(DesktopStartRequest) returns (DesktopStartResponse) {}
+    rpc DesktopState(DesktopStateRequest) returns (DesktopStateResponse) {}
     rpc DesktopValidate(DesktopValidateRequest) returns (DesktopValidateResponse) {}
     rpc DesktopStop(DesktopStopRequest) returns (DesktopStopResponse) {}
     rpc DesktopResume(DesktopResumeRequest) returns (DesktopResumeResponse) {}
@@ -22,6 +23,25 @@ message DesktopStartRequest {
 
 message DesktopStartResponse {
     string xml = 1;
+}
+
+message DesktopStateRequest {
+    string id = 1;
+}
+
+message DesktopStateResponse {
+    enum DesktopState {
+        Unknown = 0;
+       Started = 1;
+       Stopped = 2;
+       Stopping = 3;
+       Paused = 4;
+       Suspended = 5;
+       Blocked = 6;
+       Crashed = 7;
+       Nostate = 8;
+    }
+    DesktopState State = 1;
 }
 
 message DesktopValidateRequest {
