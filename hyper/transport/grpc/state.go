@@ -35,43 +35,32 @@ func (h *HyperServer) DesktopState(ctx context.Context, req *proto.DesktopStateR
 	defer desktop.Free()
 
 	state, _, err := desktop.GetState()
-	if state == libvirt.DOMAIN_NOSTATE {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Nostate,
-		}, nil
-	} else if state == libvirt.DOMAIN_RUNNING {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Started,
-		}, nil
-	} else if state == libvirt.DOMAIN_BLOCKED {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Blocked,
-		}, nil
-	} else if state == libvirt.DOMAIN_PAUSED {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Paused,
-		}, nil
-	} else if state == libvirt.DOMAIN_SHUTDOWN {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Stopping,
-		}, nil
-	} else if state == libvirt.DOMAIN_SHUTOFF {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Stopped,
-		}, nil
-	} else if state == libvirt.DOMAIN_CRASHED {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Crashed,
-		}, nil
-	} else if state == libvirt.DOMAIN_PMSUSPENDED {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Suspended,
-		}, nil
-	} else {
-		return &proto.DesktopStateResponse{
-			State: proto.DesktopStateResponse_Unknown,
-		}, nil
+	if err != nil {
+		return nil, status.Errorf(codes.Unknown, "get desktop state: %v", err)
 	}
+	return &proto.DesktopStateResponse{
+		State: StateMap(state),
+	}, nil
+}
 
-	return &proto.DesktopStateResponse{}, nil
+func StateMap(state libvirt.DomainState) proto.DesktopStateResponse_DesktopState {
+	switch state {
+	case libvirt.DOMAIN_NOSTATE:
+		return proto.DesktopStateResponse_DESKTOP_STATE_NOSTATE
+	case libvirt.DOMAIN_RUNNING:
+		return proto.DesktopStateResponse_DESKTOP_STATE_STARTED
+	case libvirt.DOMAIN_BLOCKED:
+		return proto.DesktopStateResponse_DESKTOP_STATE_BLOCKED
+	case libvirt.DOMAIN_PAUSED:
+		return proto.DesktopStateResponse_DESKTOP_STATE_PAUSED
+	case libvirt.DOMAIN_SHUTDOWN:
+		return proto.DesktopStateResponse_DESKTOP_STATE_STOPPING
+	case libvirt.DOMAIN_SHUTOFF:
+		return proto.DesktopStateResponse_DESKTOP_STATE_STOPPED
+	case libvirt.DOMAIN_CRASHED:
+		return proto.DesktopStateResponse_DESKTOP_STATE_CRASHED
+	case libvirt.DOMAIN_PMSUSPENDED:
+		return proto.DesktopStateResponse_DESKTOP_STATE_SUSPENDED
+	}
+	return proto.DesktopStateResponse_DESKTOP_STATE_UNKNOWN
 }

@@ -30,7 +30,7 @@ func TestSave(t *testing.T) {
 				return desktop
 			},
 		},
-		"should return an error if there's an error suspending the desktop": {
+		"should return an error if there's an error saving the desktop": {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
 				return &libvirt.Domain{}
 			},
@@ -50,7 +50,7 @@ func TestSave(t *testing.T) {
 				defer desktop.Free()
 			}
 
-			dir, err := ioutil.TempDir("", "dumps")
+			dir, err := ioutil.TempDir("", "isard-test-restore")
 			if err != nil {
 				log.Fatal(err)
 			}

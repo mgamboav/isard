@@ -15,8 +15,9 @@ func TestSuspend(t *testing.T) {
 	assert := assert.New(t)
 
 	cases := map[string]struct {
-		PrepareDesktop func(h *hyper.Hyper) *libvirt.Domain
-		ExpectedErr    string
+		PrepareDesktop       func(h *hyper.Hyper) *libvirt.Domain
+		ExpectedErr          string
+		ExpectedDesktopState libvirt.DomainState
 	}{
 		"suspend the desktop correctly": {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
@@ -30,7 +31,8 @@ func TestSuspend(t *testing.T) {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
 				return &libvirt.Domain{}
 			},
-			ExpectedErr: "virError(Code=7, Domain=6, Message='invalid domain pointer in virDomainSuspend')",
+			ExpectedErr:          "virError(Code=7, Domain=6, Message='invalid domain pointer in virDomainSuspend')",
+			ExpectedDesktopState: libvirt.DOMAIN_PMSUSPENDED,
 		},
 	}
 
@@ -47,17 +49,16 @@ func TestSuspend(t *testing.T) {
 			}
 
 			err = h.Suspend(desktop)
-
-			state, _, _ := desktop.GetState()
-			if state != libvirt.DOMAIN_PMSUSPENDED {
-				assert.Error(libvirt.ERR_OPERATION_FAILED)
-			}
-
-			if tc.ExpectedErr == "" {
-				assert.NoError(err)
-			} else {
+			if tc.ExpectedErr != "" {
 				assert.EqualError(err, tc.ExpectedErr)
 			}
+
+			state, _, err := desktop.GetState()
+			if tc.ExpectedDesktopState != state {
+				assert.EqualError(err, tc.ExpectedErr)
+			}
+
+			assert.NoError(err)
 
 		})
 	}

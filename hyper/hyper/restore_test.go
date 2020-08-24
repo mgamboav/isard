@@ -26,7 +26,7 @@ func TestRestore(t *testing.T) {
 				desktop, err := h.Start(hyper.TestMinDesktopXML(t), &hyper.StartOptions{})
 				require.NoError(err)
 
-				dir, err := ioutil.TempDir("", "dumps")
+				dir, err := ioutil.TempDir("", "isard-test-restore")
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -42,14 +42,7 @@ func TestRestore(t *testing.T) {
 			PrepareTest: func(h *hyper.Hyper) string {
 				h.Close()
 
-				dir, err := ioutil.TempDir("", "dumps")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				path := filepath.Join(dir, "test.dump")
-				ioutil.WriteFile(path, []byte("content"), os.FileMode(0777))
-				return path
+				return ""
 			},
 			ExpectedErr: "virError(Code=6, Domain=20, Message='invalid connection pointer in virDomainRestore')",
 		},

@@ -10,7 +10,7 @@ import (
 
 // Interface is an interface with all the actions that a hypervisor has to be able to do
 type Interface interface {
-	// Get returns a running desktop object from it's name
+	// Get returns a running desktop struct from it's name
 	Get(name string) (*libvirt.Domain, error)
 
 	// Start starts a new machine using the provided XML definition
@@ -23,19 +23,19 @@ type Interface interface {
 	// Suspend suspends a running desktop temporarily saving its memory state. It won't persist hypervisor restarts.
 	Suspend(desktop *libvirt.Domain) error
 
-	// Resume resumes a suspended desktop to its original running state, continuingly execution where it left off.
+	// Resume resumes a suspended desktop to its original running state, continuing the execution where it left off.
 	Resume(desktop *libvirt.Domain) error
 
 	// Save saves a running desktop saving its memory state to a file. Will persiste hypervisor restart.
 	Save(desktop *libvirt.Domain, path string) error
 
-	// Restore restores a saved desktop to its original running state, continuing execution where it left off.
+	// Restore restores a saved desktop to its original running state, continuing the execution where it left off.
 	Restore(path string) error
 
-	// XMLGet returns the running XML definition of a running desktop, so it will have running parameters.
+	// XMLGet returns the running XML definition of a running desktop.
 	XMLGet(desktop *libvirt.Domain) (string, error)
 
-	// List returns a list of all the running desktops names.
+	// List returns a list of all the running desktops structs.
 	List() ([]libvirt.Domain, error)
 
 	// Migrate migrates a running desktop to another hypervisor using PEER2PEER method
