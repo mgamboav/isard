@@ -1,6 +1,7 @@
 package hyper_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/isard-vdi/isard/hyper/hyper"
@@ -15,8 +16,9 @@ func TestResume(t *testing.T) {
 	assert := assert.New(t)
 
 	cases := map[string]struct {
-		PrepareDesktop func(h *hyper.Hyper) *libvirt.Domain
-		ExpectedErr    string
+		PrepareDesktop  func(h *hyper.Hyper) *libvirt.Domain
+		ExpectedErr     string
+		ExpectedDesktop func(desktop *libvirt.Domain)
 	}{
 		"resume the desktop correctly": {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
@@ -28,12 +30,22 @@ func TestResume(t *testing.T) {
 
 				return desktop
 			},
+			ExpectedDesktop: func(desktop *libvirt.Domain) {
+				state, _, err := desktop.GetState()
+
+				assert.NoError(err)
+				assert.Equal(libvirt.DOMAIN_RUNNING, state)
+			},
 		},
 		"should return an error if there's an error resuming the desktop": {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
 				return &libvirt.Domain{}
 			},
-			ExpectedErr: "virError(Code=7, Domain=6, Message='invalid domain pointer in virDomainResume')",
+			ExpectedErr: libvirt.Error{
+				Code:    libvirt.ERR_INVALID_DOMAIN,
+				Domain:  libvirt.ErrorDomain(6),
+				Message: "invalid domain pointer in virDomainResume",
+			}.Error(),
 		},
 	}
 
@@ -53,9 +65,16 @@ func TestResume(t *testing.T) {
 
 			if tc.ExpectedErr == "" {
 				assert.NoError(err)
+				tc.ExpectedDesktop(desktop)
 			} else {
-				assert.EqualError(err, tc.ExpectedErr)
+				var e libvirt.Error
+				if errors.As(err, &e) {
+					assert.Equal(tc.ExpectedErr, e.Error())
+				} else {
+					assert.EqualError(err, tc.ExpectedErr)
+				}
 			}
+
 		})
 	}
 }
