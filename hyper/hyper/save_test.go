@@ -22,6 +22,7 @@ func TestSave(t *testing.T) {
 	cases := map[string]struct {
 		PrepareDesktop func(h *hyper.Hyper) *libvirt.Domain
 		ExpectedErr    string
+		AfterTest      func(h *hyper.Hyper, desktop_name string, path string)
 	}{
 		"save the desktop correctly": {
 			PrepareDesktop: func(h *hyper.Hyper) *libvirt.Domain {
@@ -29,6 +30,16 @@ func TestSave(t *testing.T) {
 				require.NoError(err)
 
 				return desktop
+			},
+			AfterTest: func(h *hyper.Hyper, desktop_name string, path string) {
+				err := h.Restore(path)
+				assert.NoError(err)
+
+				desktop, _ := h.Get(desktop_name)
+				state, _, err := desktop.GetState()
+				assert.NoError(err)
+
+				assert.Equal(libvirt.DOMAIN_RUNNING, state)
 			},
 		},
 		"should return an error if there's an error saving the desktop": {
@@ -65,6 +76,11 @@ func TestSave(t *testing.T) {
 
 			if tc.ExpectedErr == "" {
 				assert.NoError(err)
+
+				desktop_name, err := desktop.GetName()
+				assert.NoError(err)
+
+				tc.AfterTest(h, desktop_name, filepath.Join(dir, "test.dump"))
 			} else {
 				var e libvirt.Error
 				if errors.As(err, &e) {
@@ -73,6 +89,7 @@ func TestSave(t *testing.T) {
 					assert.EqualError(err, tc.ExpectedErr)
 				}
 			}
+
 		})
 	}
 }
