@@ -93,6 +93,7 @@ if [[ $1 == "web" ]]; then
                 -f ymls/devel/isardvdi-portal.yml.devel \
                 -f ymls/devel/isard-engine.yml.devel \
                 -f ymls/devel/isard-webapp.yml.devel \
+                -f ymls/devel/isard-api.yml.devel \
                 -f ymls/devel/isard-stats.yml.devel \
                 config > devel-web.yml
     echo "You have the web.yml and devel-web.yml compose files. Have fun!"
