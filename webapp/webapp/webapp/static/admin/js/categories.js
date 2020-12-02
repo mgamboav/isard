@@ -163,12 +163,13 @@ $(document).ready(function() {
                 if('frontend' in data){
                     data['frontend']=true
                 }
-                if(!data['ephimeral-enabled']){
+                if(!('ephimeral-enabled' in data)){
                     delete data['ephimeral-minutes'];
                     delete data['ephimeral-action'];
                 }
-                delete data['ephimeral-enabled'];
-                delete data['auto-desktops-enabled'];
+                if(!('auto-desktops-enabled' in data)){
+                    delete data['auto-desktops'];
+                }
                 data['table']='categories';
                 socket.emit('role_category_group_add',data)  
             }
