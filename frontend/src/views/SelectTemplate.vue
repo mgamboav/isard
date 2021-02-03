@@ -54,7 +54,6 @@
 
 <script>
 // @ is an alias to /src
-import i18n from '@/i18n'
 import DesktopsCards from '@/components/DesktopsCards.vue'
 import Help from '@/components/Help'
 import { mapActions } from 'vuex'
@@ -122,22 +121,17 @@ export default {
       status: {
         notCreated: {
           icon: ['fas', 'play'],
-          variant: 'success',
-          actionText: i18n.t('views.select-template.status.notCreated.action')
+          variant: 'success'
         },
         started: {
           action: 'stop',
           icon: ['fas', 'stop'],
-          variant: 'danger',
-          text: i18n.t('views.select-template.status.started.text'),
-          actionText: i18n.t('views.select-template.status.started.action')
+          variant: 'danger'
         },
         stopped: {
           action: 'start',
           icon: ['fas', 'play'],
-          variant: 'success',
-          text: i18n.t('views.select-template.status.stopped.text'),
-          actionText: i18n.t('views.select-template.status.stopped.action')
+          variant: 'success'
         }
       }
     }

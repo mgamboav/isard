@@ -146,6 +146,9 @@
                 "notCreated": {
                     "action": "Crear"
                 },
+                "failed": {
+                    "text": "Fallat"
+                },
                 "started": {
                     "text": "Iniciat",
                     "action": "Atura"

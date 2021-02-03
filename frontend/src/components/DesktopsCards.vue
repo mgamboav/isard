@@ -15,7 +15,7 @@
                 </h6>
               </b-card-title>
               <b-card-sub-title class="mb-2">
-                <small>{{status[desktop.state.toLowerCase()].text}}</small>
+                <small>{{$t(`views.select-template.status.${desktop.state.toLowerCase()}.text`)}}</small>
               </b-card-sub-title>
               <!-- Viewers button/drowpdown -->
               <span v-if="desktop.state.toLowerCase() == 'started'">
@@ -51,10 +51,10 @@
                 </b-dropdown>
               </span>
               <!-- Change status button -->
-              <b-button :variant="status[desktop.state.toLowerCase()].variant" class="m-1"
+              <b-button v-if="['started','stopped'].includes(desktop.state.toLowerCase())" :variant="status[desktop.state.toLowerCase()].variant" class="m-1"
                @click="changeDesktopStatus({ action: status[desktop.state.toLowerCase()].action, desktopId: desktop.id })">
                 <font-awesome-icon :icon="status[desktop.state.toLowerCase()].icon" class="mr-2"/>
-                {{status[desktop.state.toLowerCase()].actionText}}
+                {{$t(`views.select-template.status.${desktop.state.toLowerCase()}.action`)}}
               </b-button>
             </b-card-body>
             <b-card-footer v-if="desktop.template && templates.filter(template => template.id ===  desktop.template).length > 0">
@@ -82,19 +82,19 @@
                     </h6>
                   </b-card-title>
                   <b-card-sub-title class="mb-2" v-if="desktop.state">
-                    <small>{{status[desktop.state.toLowerCase()].text}}</small>
+                    <small>{{$t(`views.select-template.status.${desktop.state.toLowerCase()}.text`)}}</small>
                   </b-card-sub-title>
                   <!-- If the desktop doesn't exist we can create it using its template id -->
                   <b-button v-if="!desktop.state" size="sm" :variant="status.notCreated.variant" @click="chooseDesktop(desktop.id)">
                     <font-awesome-icon :icon="status.notCreated.icon" class="mr-2"/>
-                    {{status.notCreated.actionText}}
+                    {{$t('views.select-template.status.notCreated.action')}}
                   </b-button>
                   <span v-else>
                     <!-- If it's stopped we can start it -->
                     <b-button v-if="desktop.state.toLowerCase() === 'stopped'" size="sm" :variant="status.stopped.variant"
                     @click="changeDesktopStatus({ action: status.stopped.action, desktopId: desktop.id })">
                       <font-awesome-icon :icon="status.stopped.icon" class="mr-2"/>
-                      {{status.stopped.actionText}}
+                      {{$t('views.select-template.status.stopped.action')}}
                     </b-button>
                     <!-- If it's executing we can use its viewers -->
                     <span v-else-if="desktop.state.toLowerCase() === 'started'">
@@ -147,10 +147,10 @@
         id="desktops-table" class="text-left" key="desktops_table">
           <!-- Persistent desktops -->
           <template #cell(action)="data">
-              <b-button :variant="status[data.item.state.toLowerCase()].variant"
+              <b-button v-if="['started','stopped'].includes(data.item.state.toLowerCase())" :variant="status[data.item.state.toLowerCase()].variant"
               @click="changeDesktopStatus({action: status[data.item.state.toLowerCase()].action, desktopId: data.item.id})">
                 <font-awesome-icon :icon="status[data.item.state.toLowerCase()].icon" class="mr-2"/>
-                {{status[data.item.state.toLowerCase()].actionText}}
+                {{$t(`views.select-template.status.${data.item.state.toLowerCase()}.action`)}}
               </b-button>
           </template>
           <template #cell(viewers)="data">
@@ -201,19 +201,19 @@
           <!-- Non persistent desktops -->
           <template #cell(action)="data">
             <!-- If the desktop doesn't exist we can create it using its template id -->
-            <b-button v-if="!data.item.state" :variant="status.notCreated.variant"  @click="chooseDesktop(data.item.id)">
+            <b-button v-if="!data.item.state" :variant="status.notCreated.variant"  @click="chooseDesktop(data.item.id)" class="mr-1">
               <font-awesome-icon :icon="status.notCreated.icon" class="mr-2"/>
-              {{status.notCreated.actionText}}
+              {{$t('views.select-template.status.notCreated.action')}}
             </b-button>
             <span v-else>
               <!-- If it's stopped we can start it -->
-              <b-button v-if="data.item.state.toLowerCase() === 'stopped'" :variant="status.stopped.variant"
+              <b-button v-if="data.item.state.toLowerCase() === 'stopped'" :variant="status.stopped.variant" class="mr-1"
               @click="changeDesktopStatus({ action: status.stopped.action, desktopId: data.item.id })">
                 <font-awesome-icon :icon="status.stopped.icon" class="mr-2"/>
-                {{status.stopped.actionText}}
+                {{$t('views.select-template.status.stopped.action')}}
               </b-button>
               <!-- We can delete it anyways -->
-              <b-button variant="danger" @click="deleteDesktop(data.item.id)" class="m-1">
+              <b-button variant="danger" @click="deleteDesktop(data.item.id)">
                 <font-awesome-icon :icon="['fas', 'trash']" class="mr-2"/>
                 {{ $t('views.select-template.remove') }}
               </b-button>
@@ -262,7 +262,7 @@
             </b-row>
           </template>
           <template #cell(status)="data">
-            <span v-if="data.item.state">{{status[data.item.state.toLowerCase()].text}}</span>
+            <span v-if="data.item.state">{{$t(`views.select-template.status.${data.item.state.toLowerCase()}.text`)}}</span>
           </template>
         </b-table>
       </b-row>
@@ -340,7 +340,7 @@ export default {
           key: 'state',
           sortable: true,
           formatter: value => {
-            return value ? this.status[value.toLowerCase()].text : ''
+            return value ? i18n.t(`views.select-template.status.${value.toLowerCase()}.text`) : ''
           },
           sortByFormatted: true,
           label: i18n.t('components.desktop-cards.table-header.state'),
