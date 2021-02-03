@@ -143,6 +143,9 @@
                 }
             },
             "status": {
+                "notCreated": {
+                    "action": "Create"
+                },
                 "started": {
                     "text": "Started",
                     "action": "Stop"

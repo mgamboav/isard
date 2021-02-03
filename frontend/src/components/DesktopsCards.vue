@@ -84,48 +84,57 @@
                   <b-card-sub-title class="mb-2" v-if="desktop.state">
                     <small>{{status[desktop.state.toLowerCase()].text}}</small>
                   </b-card-sub-title>
-                  <!-- If the desktop is executing we can use its viewers or delete it -->
-                  <span v-if="desktop.state">
-                    <b-button variant="primary" class="m-1" v-if="desktop.viewers.length === 1"
-                    @click="openDesktop({desktopId: desktop.id, viewer: desktop.viewers[0]})">
-                      <i18n path="views.select-template.viewer">
-                        <template v-slot:name>
-                          {{$t(`views.select-template.viewer-name.${desktop.viewers[0]}`)}}
-                        </template>
-                      </i18n>
+                  <!-- If the desktop doesn't exist we can create it using its template id -->
+                  <b-button v-if="!desktop.state" size="sm" :variant="status.notCreated.variant" @click="chooseDesktop(desktop.id)">
+                    <font-awesome-icon :icon="status.notCreated.icon" class="mr-2"/>
+                    {{status.notCreated.actionText}}
+                  </b-button>
+                  <span v-else>
+                    <!-- If it's stopped we can start it -->
+                    <b-button v-if="desktop.state.toLowerCase() === 'stopped'" size="sm" :variant="status.stopped.variant"
+                    @click="changeDesktopStatus({ action: status.stopped.action, desktopId: desktop.id })">
+                      <font-awesome-icon :icon="status.stopped.icon" class="mr-2"/>
+                      {{status.stopped.actionText}}
                     </b-button>
-                    <b-dropdown v-else-if="viewer" variant="primary" split class="m-1"
-                    :text="viewerText" @click="openDesktop({desktopId: desktop.id, viewer: viewer})">
-                      <b-dropdown-item v-for="dkpviewer in desktop.viewers.filter(dkpviewer => dkpviewer !== viewer)" :key="dkpviewer"
-                      @click="openDesktop({desktopId: desktop.id, viewer: dkpviewer})">
+                    <!-- If it's executing we can use its viewers -->
+                    <span v-else-if="desktop.state.toLowerCase() === 'started'">
+                      <b-button variant="primary" class="m-1" v-if="desktop.viewers.length === 1"
+                      @click="openDesktop({desktopId: desktop.id, viewer: desktop.viewers[0]})">
                         <i18n path="views.select-template.viewer">
                           <template v-slot:name>
-                            {{$t(`views.select-template.viewer-name.${dkpviewer}`)}}
+                            {{$t(`views.select-template.viewer-name.${desktop.viewers[0]}`)}}
                           </template>
                         </i18n>
-                      </b-dropdown-item>
-                    </b-dropdown>
-                    <b-dropdown v-else variant="primary" size="sm"
-                    :text="$t('views.select-template.viewers')" class="m-1">
-                      <b-dropdown-item v-for="dkpviewer in desktop.viewers" :key="dkpviewer"
-                      @click="openDesktop({desktopId: desktop.id, viewer: dkpviewer})">
-                        <i18n path="views.select-template.viewer">
-                          <template v-slot:name>
-                            {{$t(`views.select-template.viewer-name.${dkpviewer}`)}}
-                          </template>
-                        </i18n>
-                      </b-dropdown-item>
-                    </b-dropdown>
-                    <b-button variant="danger" size="sm" @click="deleteDesktop(desktop.id)">
+                      </b-button>
+                      <b-dropdown v-else-if="viewer" variant="primary" split class="m-1"
+                      :text="viewerText" @click="openDesktop({desktopId: desktop.id, viewer: viewer})">
+                        <b-dropdown-item v-for="dkpviewer in desktop.viewers.filter(dkpviewer => dkpviewer !== viewer)" :key="dkpviewer"
+                        @click="openDesktop({desktopId: desktop.id, viewer: dkpviewer})">
+                          <i18n path="views.select-template.viewer">
+                            <template v-slot:name>
+                              {{$t(`views.select-template.viewer-name.${dkpviewer}`)}}
+                            </template>
+                          </i18n>
+                        </b-dropdown-item>
+                      </b-dropdown>
+                      <b-dropdown v-else variant="primary" size="sm"
+                      :text="$t('views.select-template.viewers')" class="m-1">
+                        <b-dropdown-item v-for="dkpviewer in desktop.viewers" :key="dkpviewer"
+                        @click="openDesktop({desktopId: desktop.id, viewer: dkpviewer})">
+                          <i18n path="views.select-template.viewer">
+                            <template v-slot:name>
+                              {{$t(`views.select-template.viewer-name.${dkpviewer}`)}}
+                            </template>
+                          </i18n>
+                        </b-dropdown-item>
+                      </b-dropdown>
+                    </span>
+                    <!-- We can remove it anyways -->
+                    <b-button variant="danger" size="sm" @click="deleteDesktop(desktop.id)" class="m-1">
                       <font-awesome-icon :icon="['fas', 'trash']" class="mr-2"/>
                       {{ $t('views.select-template.remove') }}
                     </b-button>
                   </span>
-                  <!-- Otherwise we can create it using the template id -->
-                  <b-button v-else size="sm" :variant="status.stopped.variant"  @click="chooseDesktop(desktop.id)">
-                    <font-awesome-icon :icon="status.stopped.icon" class="mr-2"/>
-                    {{status.stopped.actionText}}
-                  </b-button>
                 </b-col>
               </b-row>
             </b-card-body>
@@ -191,14 +200,24 @@
         id="desktops-table" class="text-left" key="desktops_table">
           <!-- Non persistent desktops -->
           <template #cell(action)="data">
-            <b-button v-if="data.item.state" variant="danger" @click="deleteDesktop(data.item.id)">
-              <font-awesome-icon :icon="['fas', 'trash']" class="mr-2"/>
-              {{ $t('views.select-template.remove') }}
+            <!-- If the desktop doesn't exist we can create it using its template id -->
+            <b-button v-if="!data.item.state" :variant="status.notCreated.variant"  @click="chooseDesktop(data.item.id)">
+              <font-awesome-icon :icon="status.notCreated.icon" class="mr-2"/>
+              {{status.notCreated.actionText}}
             </b-button>
-            <b-button v-else :variant="status.stopped.variant"  @click="chooseDesktop(data.item.id)">
-              <font-awesome-icon :icon="status.stopped.icon" class="mr-2"/>
-              {{status.stopped.actionText}}
-            </b-button>
+            <span v-else>
+              <!-- If it's stopped we can start it -->
+              <b-button v-if="data.item.state.toLowerCase() === 'stopped'" :variant="status.stopped.variant"
+              @click="changeDesktopStatus({ action: status.stopped.action, desktopId: data.item.id })">
+                <font-awesome-icon :icon="status.stopped.icon" class="mr-2"/>
+                {{status.stopped.actionText}}
+              </b-button>
+              <!-- We can delete it anyways -->
+              <b-button variant="danger" @click="deleteDesktop(data.item.id)" class="m-1">
+                <font-awesome-icon :icon="['fas', 'trash']" class="mr-2"/>
+                {{ $t('views.select-template.remove') }}
+              </b-button>
+            </span>
           </template>
           <template #cell(viewers)="data">
             <div v-if="data.item.state && data.item.state.toLowerCase() == 'started'">
@@ -310,7 +329,7 @@ export default {
         {
           key: 'action',
           label: i18n.t('components.desktop-cards.table-header.action'),
-          thStyle: { width: '4cm' }
+          thStyle: { width: '7cm' }
         },
         {
           key: 'viewers',

@@ -143,6 +143,9 @@
                 }
             },
             "status": {
+                "notCreated": {
+                    "action": "Crear"
+                },
                 "started": {
                     "text": "Iniciat",
                     "action": "Atura"

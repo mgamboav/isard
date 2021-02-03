@@ -120,6 +120,11 @@ export default {
         centos: ['fab', 'centos']
       },
       status: {
+        notCreated: {
+          icon: ['fas', 'play'],
+          variant: 'success',
+          actionText: i18n.t('views.select-template.status.notCreated.action')
+        },
         started: {
           action: 'stop',
           icon: ['fas', 'stop'],
